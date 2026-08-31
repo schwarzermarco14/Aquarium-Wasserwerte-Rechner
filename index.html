@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AquaLab Pro - Interaktive Diagnose</title>
+  <title>AquaLab Pro - Vollständige Yokuchi Analyse</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -94,7 +94,7 @@
       text-align: right;
     }
 
-    /* 2-Spalten-Layout für Wasserwerte */
+    /* 2-Spalten-Layout für Wasserwerte wie im Original */
     .water-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -109,9 +109,24 @@
       margin-bottom: 10px;
       color: var(--text);
     }
-    .water-field { margin-bottom: 8px; }
-    .water-field label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px; }
-    .water-field input { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.8rem; }
+    .water-field {
+      margin-bottom: 8px;
+    }
+    .water-field label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .water-field input {
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: #fff;
+      font-size: 0.8rem;
+    }
 
     .check-group {
       display: flex;
@@ -145,8 +160,6 @@
       display: none;
       margin-top: 15px;
     }
-
-    /* KLICKBARE WARN-KARTEN */
     .alert-card {
       padding: 12px;
       border-radius: 8px;
@@ -154,38 +167,10 @@
       font-size: 0.85rem;
       line-height: 1.4;
       border-left: 4px solid;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .alert-card:hover {
-      opacity: 0.9;
     }
     .alert-blue { background: rgba(2, 132, 199, 0.15); border-color: var(--warn-blue); color: #38bdf8; }
     .alert-orange { background: rgba(217, 119, 6, 0.15); border-color: var(--warn-orange); color: #fbbf24; }
     .alert-red { background: rgba(220, 38, 38, 0.15); border-color: var(--warn-red); color: #f87171; }
-
-    /* AUSKLAPPBARE ERKLÄRUNGEN (ANFÄNGER-HILFE) */
-    .alert-details {
-      display: none;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px dashed rgba(255,255,255,0.2);
-      font-size: 0.8rem;
-      color: #cbd5e1;
-      line-height: 1.5;
-    }
-    .alert-details ul {
-      margin-left: 15px;
-      margin-top: 4px;
-    }
-    .click-hint {
-      display: block;
-      font-size: 0.7rem;
-      text-align: right;
-      color: var(--text-muted);
-      margin-top: 4px;
-      font-style: italic;
-    }
   </style>
 </head>
 <body>
@@ -255,25 +240,29 @@
       </div>
     </div>
 
-    <!-- TAB 3: WASSERWERTE -->
+    <!-- TAB 3: WASSERWERTE (EXAKT WIE AUF YOKUCHI FOTO 2) -->
     <div id="tab-wasser" class="tab-content">
       <div class="card">
         <h2>🧪 Wasserwerte-Vergleich</h2>
         <div class="water-grid">
+          
+          <!-- Spalte 1: Wasser für den Wasserwechsel -->
           <div class="water-column">
             <h3>Wasserwechsel</h3>
-            <div class="water-field"><label>pH:</label><input type="text" value="7,2"></div>
-            <div class="water-field"><label>GH:</label><input type="text" value="10,0"></div>
-            <div class="water-field"><label>KH:</label><input type="text" value="6,0"></div>
-            <div class="water-field"><label>NH₄ (ppm):</label><input type="text" value="0,01"></div>
-            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" value="0,01"></div>
-            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" value="0,01"></div>
-            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0,01"></div>
-            <div class="water-field"><label>K (ppm):</label><input type="text" value="0,01"></div>
-            <div class="water-field"><label>Ca (ppm):</label><input type="text" value="0,01"></div>
-            <div class="water-field"><label>Mg (ppm):</label><input type="text" value="0,01"></div>
-            <div class="water-field"><label>Fe (ppm):</label><input type="text" value="0,01"></div>
+            <div class="water-field"><label>pH:</label><input type="text" placeholder="z. B. 7,2"></div>
+            <div class="water-field"><label>GH:</label><input type="text" placeholder="z. B. 10,0"></div>
+            <div class="water-field"><label>KH:</label><input type="text" placeholder="z. B. 6,0"></div>
+            <div class="water-field"><label>NH₄ (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
+            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
+            <div class="water-field"><label>K (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
+            <div class="water-field"><label>Ca (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
+            <div class="water-field"><label>Mg (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
+            <div class="water-field"><label>Fe (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
           </div>
+
+          <!-- Spalte 2: Aquarienwasser -->
           <div class="water-column">
             <h3>Aquarienwasser</h3>
             <div class="water-field"><label>pH:</label><input type="text" value="6,8"></div>
@@ -288,84 +277,98 @@
             <div class="water-field"><label>Mg (ppm):</label><input type="text" value="10,0"></div>
             <div class="water-field"><label>Fe (ppm):</label><input type="text" value="0,05"></div>
           </div>
+
         </div>
+      </div>
+
+      <div class="card">
+        <h2>🔄 Wasserwechsel Intervall</h2>
+        <div class="form-group">
+          <label>Wechsel-Intervall:</label>
+          <select><option>Wöchentlich</option><option>Alle zwei Wochen</option></select>
+        </div>
+        <div class="form-group"><label>Wechselmenge (%):</label><input type="number" value="30"></div>
       </div>
     </div>
 
-    <!-- TAB 4: BESATZ -->
+    <!-- TAB 4: BESATZ & FÜTTERUNG -->
     <div id="tab-besatz" class="tab-content">
       <div class="card">
         <h2>🐟 Tierbesatz & Fütterung</h2>
         <div class="form-group"><label>Kleine Fische (bis 3 cm):</label><input type="number" value="10"></div>
         <div class="form-group"><label>Mittelgroße Fische (3–8 cm):</label><input type="number" value="5"></div>
+        <div class="form-group"><label>Große Fische (über 8 cm):</label><input type="number" value="0"></div>
+        <div class="form-group"><label>Algenfressende Fische:</label><input type="number" value="2"></div>
         <div class="form-group"><label>Garnelen (Stk.):</label><input type="number" value="15"></div>
         <div class="form-group"><label>Schnecken (Stk.):</label><input type="number" value="10"></div>
+        
+        <h3 style="margin-top:15px;">Fütterungshäufigkeit:</h3>
+        <div class="form-group">
+          <label>Intervall:</label>
+          <select><option>Einmal täglich</option><option>Zweimal täglich</option></select>
+        </div>
       </div>
     </div>
 
-    <!-- TAB 5: SYMPTOME -->
+    <!-- TAB 5: SYMPTOME (KOMPLETT MIT ALLEN YOKUCHI-OPTIONEN) -->
     <div id="tab-symptome" class="tab-content">
       <div class="card">
         <h2>⚠️ Beobachtete Probleme</h2>
-        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Wählen Sie zutreffende Probleme aus:</p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Wählen Sie die Probleme aus, die Sie tatsächlich beobachten:</p>
         
         <h3>Algen</h3>
         <label class="check-group"><input type="checkbox"> Grüne Fadenalgen</label>
+        <label class="check-group"><input type="checkbox"> Grüne Punktalgen (GSA)</label>
+        <label class="check-group"><input type="checkbox"> Cyanobakterien</label>
         <label class="check-group"><input type="checkbox"> Pinselalgen / Bartalgen (BBA)</label>
-        
+        <label class="check-group"><input type="checkbox"> Spirogyra</label>
+        <label class="check-group"><input type="checkbox"> Kieselalgen</label>
+        <label class="check-group"><input type="checkbox"> Grüner Belag auf den Scheiben</label>
+        <label class="check-group"><input type="checkbox"> Grüne Wasserblüte</label>
+
         <h3>Pflanzen</h3>
-        <label class="check-group"><input type="checkbox" checked> Löcher in den Blättern</label>
+        <label class="check-group"><input type="checkbox"> Kein Wachstum</label>
+        <label class="check-group"><input type="checkbox"> Verblassen / Farbverlust</label>
+        <label class="check-group"><input type="checkbox"> Löcher in den Blättern</label>
+        <label class="check-group"><input type="checkbox"> Blattzerfall / Pflanzenmelt</label>
+        <label class="check-group"><input type="checkbox"> Stängelfäule</label>
         <label class="check-group"><input type="checkbox"> Vergilbende Blätter</label>
+        <label class="check-group"><input type="checkbox"> Kleine, deformierte neue Blätter</label>
+        <label class="check-group"><input type="checkbox"> Abfallende untere Blätter</label>
+
+        <h3>Fische und Wirbellose</h3>
+        <label class="check-group"><input type="checkbox"> Schnappen nach Luft an Oberfläche</label>
+        <label class="check-group"><input type="checkbox"> Teilnahmslosigkeit / Appetitlosigkeit</label>
+        <label class="check-group"><input type="checkbox"> Todesfälle in den letzten Tagen</label>
+        <label class="check-group"><input type="checkbox"> Weiße Punkte oder Beläge</label>
+        <label class="check-group"><input type="checkbox"> Ausgefranste / aufgelöste Flossen</label>
+
+        <h3>Wasser und Erscheinungsbild</h3>
+        <label class="check-group"><input type="checkbox"> Trübes Wasser</label>
+        <label class="check-group"><input type="checkbox"> Gelbe / teefarbene Wasserfärbung</label>
+        <label class="check-group"><input type="checkbox"> Mineralische Ablagerungen</label>
+        <label class="check-group"><input type="checkbox"> Unangenehmer Geruch</label>
+        <label class="check-group"><input type="checkbox"> Weißer Belag / Biofilm auf Holz</label>
 
         <button type="submit" class="btn-red">Analysieren</button>
       </div>
 
-      <!-- KLICKBARE ERGEBNIS- & WARN-BOXEN -->
+      <!-- DIAGNOSE & WARNUNGEN (ERSCHEINT NACH KLICK) -->
       <div id="resultSection" class="result-box">
         <div class="card" style="border-color: var(--accent);">
           <h2>📊 Diagnose & Warnungen</h2>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Tippe auf eine Warnung, um eine genaue Erklärung und Handlungstipps zu erhalten:</p>
           
-          <!-- Warnung 1: Blau -->
-          <div class="alert-card alert-blue" onclick="toggleDetails('det-1')">
+          <div class="alert-card alert-blue">
             <strong>ℹ️ Nährstoff-Check:</strong> Das Verhältnis von Nitrat zu Phosphat bewegt sich im optimalen Bereich.
-            <span class="click-hint">▼ Tippen für Details</span>
-            <div id="det-1" class="alert-details">
-              <strong>Bedeutung für Anfänger:</strong> Ein gutes Nährstoffverhältnis (idealerweise ca. 10:1 bis 15:1 zwischen Nitrat und Phosphat) sorgt dafür, dass Pflanzen gleichmäßig wachsen und Algen keine Chance haben.<br>
-              <strong>Was du tun musst:</strong> Du musst aktuell nichts ändern. Behalte die Werte beim nächsten Wassertest einfach im Auge!
-            </div>
           </div>
 
-          <!-- Warnung 2: Orange (CO2 / KH) -->
-          <div class="alert-card alert-orange" onclick="toggleDetails('det-2')">
-            <strong>⚠️ Hinweis:</strong> Überprüfe die CO₂-Versorgung im Verhältnis zur Karbonathärte (KH).
-            <span class="click-hint">▼ Tippen für Details</span>
-            <div id="det-2" class="alert-details">
-              <strong>Bedeutung für Anfänger:</strong> Der pH-Wert und die Karbonathärte (KH) hängen direkt mit dem CO₂-Gehalt im Wasser zusammen. Ist die KH zu hoch oder zu niedrig im Verhältnis zum CO₂, können Pflanzen keine Nährstoffe mehr aufnehmen.<br>
-              <strong>Was du tun musst:</strong>
-              <ul>
-                <li>Messe deinen KH-Wert im Aquarienwasser.</li>
-                <li>Prüfe, ob dein CO₂-Dauertest (Dropper) hellgrün ist.</li>
-                <li>Bei zu wenig CO₂: Blasenzahl der CO₂-Anlage leicht erhöhen oder CO₂-Dünger (Flüssig-CO₂) verwenden.</li>
-              </ul>
-            </div>
+          <div class="alert-card alert-orange">
+            <strong>⚠️ Hinweis:</strong> Überprüfe die CO₂-Versorgung im Verhältnis zur Karbonathärte.
           </div>
 
-          <!-- Warnung 3: Rot -->
-          <div class="alert-card alert-red" onclick="toggleDetails('det-3')">
-            <strong>🚨 Kritische Belastung:</strong> Bitte beobachte die ausgewählten Symptome (Löcher in Blättern) genau.
-            <span class="click-hint">▼ Tippen für Details</span>
-            <div id="det-3" class="alert-details">
-              <strong>Bedeutung für Anfänger:</strong> Löcher in Blättern deuten fast immer auf einen akuten **Kalium- oder Makronährstoffmangel** hin. Die Pflanze zehrt sich selbst aus.<br>
-              <strong>Was du tun musst:</strong>
-              <ul>
-                <li>Überprüfe deinen Kalium-Wert (K) im Aquarium.</li>
-                <li>Dosiere gezielt einen Makro- oder Kaliumdünger nach Herstellerangabe.</li>
-                <li>Führe einen großzügigen Wasserwechsel (min. 50%) durch, um das System zu stabilisieren.</li>
-              </ul>
-            </div>
+          <div class="alert-card alert-red">
+            <strong>🚨 Kritische Belastung:</strong> Bitte beobachte die ausgewählten Symptome genau und passe gegebenenfalls die Düngung an.
           </div>
-
         </div>
       </div>
 
@@ -394,20 +397,11 @@
       resultSec.style.display = 'block';
       resultSec.scrollIntoView({ behavior: 'smooth' });
     }
-
-    // Funktion zum Ein- und Ausklappen der Erklärungen
-    function toggleDetails(id) {
-      const el = document.getElementById(id);
-      if (el.style.display === 'block') {
-        el.style.display = 'none';
-      } else {
-        el.style.display = 'block';
-      }
-    }
   </script>
 
 </body>
 </html>
+
 
 
 
