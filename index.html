@@ -3,241 +3,291 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yokuchi Aquarium Analyse</title>
+  <title>AquaLab Pro - Vollständige Analyse</title>
   <style>
     :root {
-      --bg-color: #f8f9fa;
-      --card-bg: #ffffff;
-      --text-main: #333333;
-      --text-muted: #666666;
-      --accent: #ff4d4d;
-      --border-color: #dddddd;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --accent: #0ea5e9;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --btn-red: #ef4444;
     }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      margin: 0;
-      padding: 20px;
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 12px;
+      padding-bottom: 60px;
     }
+    .header { text-align: center; padding: 10px 0 15px; }
+    .header h1 { font-size: 1.4rem; color: var(--accent); }
+    .header p { font-size: 0.8rem; color: var(--text-muted); }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
+    /* Navigations-Tabs oben */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 15px;
+      background: #020617;
+      padding: 4px;
+      border-radius: 10px;
+      overflow-x: auto;
     }
+    .tab-btn {
+      flex: 1;
+      padding: 10px 6px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .tab-btn.active { background: var(--accent); color: #0f172a; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
     .card {
-      background-color: var(--card-bg);
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 14px;
+      margin-bottom: 12px;
     }
-
-    h2 {
-      font-size: 1.2rem;
-      color: var(--text-main);
-      margin-top: 0;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #f0f0f0;
-      padding-bottom: 8px;
-    }
-
-    h3 {
+    .card h2 {
       font-size: 0.95rem;
       color: var(--accent);
-      margin-top: 20px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+    .card h3 {
+      font-size: 0.85rem;
+      color: var(--text);
+      margin: 10px 0 6px 0;
     }
 
-    .form-group-block {
-      margin-bottom: 15px;
+    .form-group {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-
-    label {
-      display: block;
-      font-size: 0.9rem;
-      font-weight: bold;
-      margin-bottom: 5px;
-      color: var(--text-main);
-    }
-
-    input[type="number"],
-    input[type="text"],
-    select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid var(--border-color);
+    .form-group label { font-size: 0.85rem; flex: 1; padding-right: 10px; }
+    .form-group input, .form-group select {
+      width: 140px;
+      padding: 8px;
       border-radius: 6px;
-      font-size: 0.95rem;
-      box-sizing: border-box;
-      background-color: #fff;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: #fff;
+      font-size: 0.85rem;
+      text-align: right;
     }
 
-    .checkbox-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    .checkbox-grid label {
-      font-weight: normal;
+    .check-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
       cursor: pointer;
     }
-
-    input[type="checkbox"] {
+    .check-group input[type="checkbox"] {
       width: 18px;
       height: 18px;
       accent-color: var(--accent);
     }
 
-    .btn-submit {
-      background-color: var(--accent);
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
+    .btn-red {
       width: 100%;
-      box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
-      transition: background-color 0.2s;
-    }
-
-    .btn-submit:hover {
-      background-color: #e03e3e;
+      background: var(--btn-red);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-top: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <form action="#" method="POST">
+  <div class="header">
+    <h1>💧 AquaLab Pro</h1>
+    <p>Vollständige Analyse & Diagnose</p>
+  </div>
 
-    <!-- 1. BAUSTEIN: Tierbesatz -->
-    <div class="card">
-      <h2>Tierbesatz</h2>
+  <!-- TABS NAVIGATION -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="openTab(event, 'tab-becken')">Becken & Technik</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-duengung')">Bodengrund & Deko</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-wasser')">Wasserwerte</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-besatz')">Besatz & Futter</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-symptome')">Symptome</button>
+  </div>
 
-      <div class="form-group-block">
-        <label for="fische_klein">Kleine Fische (bis 3 cm):</label>
-        <input type="number" id="fische_klein" name="fische_klein" placeholder="z. B. 10">
+  <form onsubmit="event.preventDefault(); alert('Formular bereit zur Analyse!');">
+
+    <!-- TAB 1: BECKEN, FILTER & LICHT -->
+    <div id="tab-becken" class="tab-content active">
+      <div class="card">
+        <h2>📐 Angaben zum Aquarium</h2>
+        <div class="form-group"><label>Aquarienlänge (cm):</label><input type="number" id="l" value="60" oninput="calcVol()"></div>
+        <div class="form-group"><label>Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
+        <div class="form-group"><label>Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
+        <div class="form-group"><label>Aquarienvolumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
+        <div class="form-group"><label>Einrichtungszeit:</label><input type="text" placeholder="z. B. 7 Wochen"></div>
       </div>
 
-      <div class="form-group-block">
-        <label for="fische_mittel">Mittelgroße Fische (3–8 cm):</label>
-        <input type="number" id="fische_mittel" name="fische_mittel" placeholder="z. B. 5">
-      </div>
-
-      <div class="form-group-block">
-        <label for="fische_gross">Große Fische (über 8 cm):</label>
-        <input type="number" id="fische_gross" name="fische_gross" placeholder="z. B. 2">
-      </div>
-
-      <div class="form-group-block">
-        <label for="fische_algenfressend">Algenfressende Fische (Crossocheilus, Otocinclus usw.):</label>
-        <input type="number" id="fische_algenfressend" name="fische_algenfressend" placeholder="z. B. 3">
-      </div>
-
-      <div class="form-group-block">
-        <label for="garnelen">Garnelen (Stk.):</label>
-        <input type="number" id="garnelen" name="garnelen" placeholder="z. B. 15">
-      </div>
-
-      <div class="form-group-block">
-        <label for="schnecken">Schnecken (Stk.):</label>
-        <input type="number" id="schnecken" name="schnecken" placeholder="z. B. 10">
-      </div>
-
-      <div class="form-group-block">
-        <label>Fütterung:</label>
-        <div class="checkbox-grid" style="grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));">
-          <label><input type="checkbox" name="fuetterung" value="Lebendfutter"> Lebendfutter</label>
-          <label><input type="checkbox" name="fuetterung" value="Frostfutter"> Frostfutter</label>
-          <label><input type="checkbox" name="fuetterung" value="Trockenfutter"> Trockenfutter</label>
+      <div class="card">
+        <h2>🌀 Filterung & Heizung</h2>
+        <div class="form-group">
+          <label>Filtertyp:</label>
+          <select>
+            <option>Innenfilter</option>
+            <option>Rucksackfilter</option>
+            <option selected>Außenfilter</option>
+            <option>Filterbecken (Sump)</option>
+          </select>
         </div>
+        <div class="form-group"><label>Filterdurchfluss (L/h):</label><input type="number" value="500"></div>
+        <div class="form-group"><label>Wassertemperatur (°C):</label><input type="number" value="24" step="0.5"></div>
       </div>
 
-      <div class="form-group-block">
-        <label for="fuetterungshaeufigkeit">Fütterungshäufigkeit:</label>
-        <select id="fuetterungshaeufigkeit" name="fuetterungshaeufigkeit">
-          <option value="">-- Aus der Liste auswählen --</option>
-          <option value="Einmal täglich">Einmal täglich</option>
-          <option value="Zweimal täglich">Zweimal täglich</option>
-          <option value="Dreimal täglich">Dreimal täglich</option>
-          <option value="Mehr als dreimal täglich">Mehr als dreimal täglich</option>
-        </select>
+      <div class="card">
+        <h2>💡 CO₂ und Beleuchtung</h2>
+        <div class="form-group">
+          <label>Beleuchtungsart:</label>
+          <select><option selected>LED</option><option>T5/T8</option><option>HQI</option></select>
+        </div>
+        <div class="form-group"><label>Leistung (W):</label><input type="number" value="30"></div>
+        <div class="form-group"><label>Lichtstrom (lm):</label><input type="number" value="2000"></div>
+        <div class="form-group"><label>Beleuchtungsdauer (h/Tag):</label><input type="number" value="8"></div>
       </div>
     </div>
 
-    <!-- 2. BAUSTEIN: Beobachtete Probleme & Analysieren-Button -->
-    <div class="card">
-      <h2>Beobachtete Probleme</h2>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
-        Wählen Sie die Probleme aus, die Sie tatsächlich beobachten. Dadurch können Diagnose und Empfehlungen genauer abgestimmt werden.
-      </p>
+    <!-- TAB 2: BODENGRUND & DEKO -->
+    <div id="tab-duengung" class="tab-content">
+      <div class="card">
+        <h2>🪨 Bodengrund und Dekoration</h2>
+        <div class="form-group">
+          <label>Art des Bodengrunds:</label>
+          <select>
+            <option>-- Aus der Liste auswählen --</option>
+            <option>Aktiver Bodengrund</option>
+            <option>Quarzkies</option>
+            <option>Basaltkies</option>
+            <option>Dolomitkies</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Nährstoffreicher Untergrund?</label><select><option>Nein</option><option>Ja</option></select></div>
+        <div class="form-group"><label>Regelmäßige Bodendünger?</label><select><option>Nein</option><option>Ja</option></select></div>
+        <div class="form-group"><label>Gesamtvolumen Bodengrund (L):</label><input type="number" value="10"></div>
+        <div class="form-group"><label>Wurzeln und Holz (kg):</label><input type="number" value="2" step="0.1"></div>
+        <div class="form-group"><label>Steine und Felsen (kg):</label><input type="number" value="5" step="0.1"></div>
+      </div>
+    </div>
 
-      <!-- Algen -->
-      <h3>Algen</h3>
-      <div class="checkbox-grid">
-        <label><input type="checkbox" name="probleme_algen" value="Grüne Fadenalgen"> Grüne Fadenalgen</label>
-        <label><input type="checkbox" name="probleme_algen" value="Grüne Punktalgen (GSA)"> Grüne Punktalgen (GSA)</label>
-        <label><input type="checkbox" name="probleme_algen" value="Cyanobakterien"> Cyanobakterien</label>
-        <label><input type="checkbox" name="probleme_algen" value="Pinsenalgen / Bartalgen (BBA)"> Pinsenalgen / Bartalgen (BBA)</label>
-        <label><input type="checkbox" name="probleme_algen" value="Spirogyra"> Spirogyra</label>
-        <label><input type="checkbox" name="probleme_algen" value="Kieselalgen"> Kieselalgen</label>
-        <label><input type="checkbox" name="probleme_algen" value="Grüner Belag auf den Aquarienscheiben"> Grüner Belag auf den Aquarienscheiben</label>
-        <label><input type="checkbox" name="probleme_algen" value="Grüne Wasserblüte"> Grüne Wasserblüte</label>
+    <!-- TAB 3: WASSERWERTE & WASSERWECHSEL -->
+    <div id="tab-wasser" class="tab-content">
+      <div class="card">
+        <h2>🧪 Aquarienwasser (Ist-Werte)</h2>
+        <div class="form-group"><label>GH (°dGH):</label><input type="number" value="12"></div>
+        <div class="form-group"><label>Calcium Ca (mg/L):</label><input type="number" value="40"></div>
+        <div class="form-group"><label>Magnesium Mg (mg/L):</label><input type="number" value="10"></div>
+        <div class="form-group"><label>Nitrat NO₃ (mg/L):</label><input type="number" value="10"></div>
+        <div class="form-group"><label>Phosphat PO₄ (mg/L):</label><input type="number" value="0.5" step="0.1"></div>
+        <div class="form-group"><label>Kalium K (mg/L):</label><input type="number" value="10"></div>
+        <div class="form-group"><label>Ammonium NH₄ (mg/L):</label><input type="number" value="0"></div>
+        <div class="form-group"><label>Nitrit NO₂ (mg/L):</label><input type="number" value="0"></div>
       </div>
 
-      <!-- Pflanzen -->
-      <h3>Pflanzen</h3>
-      <div class="checkbox-grid">
-        <label><input type="checkbox" name="probleme_pflanzen" value="Kein Wachstum"> Kein Wachstum</label>
-        <label><input type="checkbox" name="probleme_pflanzen" value="Verblassen / Farbverlust"> Verblassen / Farbverlust</label>
-        <label><input type="checkbox" name="probleme_pflanzen" value="Löcher in den Blättern"> Löcher in den Blättern</label>
-        <label><input type="checkbox" name="probleme_pflanzen" value="Blattzerfall / Pflanzenmelt"> Blattzerfall / Pflanzenmelt</label>
-        <label><input type="checkbox" name="probleme_pflanzen" value="Stängelfäule"> Stängelfäule</label>
-        <label><input type="checkbox" name="probleme_pflanzen" value="Vergilbende Blätter"> Vergilbende Blätter</label>
-        <label><input type="checkbox" name="probleme_pflanzen" value="Kleine, deformierte neue Blätter"> Kleine, deformierte neue Blätter</label>
-        <label><input type="checkbox" name="probleme_pflanzen" value="Abfallende untere Blätter"> Abfallende untere Blätter</label>
+      <div class="card">
+        <h2>🔄 Wasserwechsel</h2>
+        <div class="form-group">
+          <label>Wechsel-Intervall:</label>
+          <select>
+            <option>Wöchentlich</option>
+            <option>Alle zwei Wochen</option>
+            <option>Monatlich</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Wechselmenge (%):</label><input type="number" value="30"></div>
       </div>
+    </div>
 
-      <!-- Fische und Wirbellose -->
-      <h3>Fische und Wirbellose</h3>
-      <div class="checkbox-grid">
-        <label><input type="checkbox" name="probleme_tiere" value="Schnappen nach Luft an der Wasseroberfläche"> Schnappen nach Luft an der Wasseroberfläche</label>
-        <label><input type="checkbox" name="probleme_tiere" value="Teilnahmslosigkeit / Appetitlosigkeit"> Teilnahmslosigkeit / Appetitlosigkeit</label>
-        <label><input type="checkbox" name="probleme_tiere" value="Todesfälle in den letzten Tagen"> Todesfälle in den letzten Tagen</label>
-        <label><input type="checkbox" name="probleme_tiere" value="Weiße Punkte oder Beläge auf den Fischen"> Weiße Punkte oder Beläge auf den Fischen (z. B. Weißpünktchenkrankheit)</label>
-        <label><input type="checkbox" name="probleme_tiere" value="Ausgefranste oder sich auflösende Flossen"> Ausgefranste oder sich auflösende Flossen</label>
+    <!-- TAB 4: BESATZ & FÜTTERUNG -->
+    <div id="tab-besatz" class="tab-content">
+      <div class="card">
+        <h2>🐟 Tierbesatz & Fütterung</h2>
+        <div class="form-group"><label>Kleine Fische (bis 3 cm):</label><input type="number" value="10"></div>
+        <div class="form-group"><label>Mittelgroße Fische (3–8 cm):</label><input type="number" value="5"></div>
+        <div class="form-group"><label>Große Fische (über 8 cm):</label><input type="number" value="0"></div>
+        <div class="form-group"><label>Algenfressende Fische:</label><input type="number" value="2"></div>
+        <div class="form-group"><label>Garnelen (Stk.):</label><input type="number" value="15"></div>
+        <div class="form-group"><label>Schnecken (Stk.):</label><input type="number" value="10"></div>
+        
+        <h3 style="margin-top:15px;">Fütterungshäufigkeit:</h3>
+        <div class="form-group">
+          <label>Intervall:</label>
+          <select>
+            <option>Einmal täglich</option>
+            <option>Zweimal täglich</option>
+            <option>Dreimal täglich</option>
+          </select>
+        </div>
       </div>
+    </div>
 
-      <!-- Wasser und Erscheinungsbild -->
-      <h3>Wasser und Erscheinungsbild</h3>
-      <div class="checkbox-grid">
-        <label><input type="checkbox" name="probleme_wasser" value="Trübes Wasser"> Trübes Wasser</label>
-        <label><input type="checkbox" name="probleme_wasser" value="Gelbe oder teefarbene Wasserfärbung (Gerbstoffe)"> Gelbe oder teefarbene Wasserfärbung (Gerbstoffe)</label>
-        <label><input type="checkbox" name="probleme_wasser" value="Mineralische Ablagerungen auf Scheiben und Technik"> Mineralische Ablagerungen auf Scheiben und Technik</label>
-        <label><input type="checkbox" name="probleme_wasser" value="Unangenehmer Geruch"> Unangenehmer Geruch</label>
-        <label><input type="checkbox" name="probleme_wasser" value="Weißer Belag oder Biofilm auf Holz und Wurzeln"> Weißer Belag oder Biofilm auf Holz und Wurzeln</label>
-      </div>
+    <!-- TAB 5: SYMPTOME & ANALYSE -->
+    <div id="tab-symptome" class="tab-content">
+      <div class="card">
+        <h2>⚠️ Beobachtete Probleme</h2>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Wählen Sie zutreffende Probleme für eine genauere Diagnose aus:</p>
+        
+        <label class="check-group"><input type="checkbox"> Grüne Fadenalgen</label>
+        <label class="check-group"><input type="checkbox"> Grüne Punktalgen (GSA)</label>
+        <label class="check-group"><input type="checkbox"> Pinselalgen / Bartalgen (BBA)</label>
+        <label class="check-group"><input type="checkbox"> Cyanobakterien</label>
+        <label class="check-group"><input type="checkbox"> Löcher in den Blättern</label>
+        <label class="check-group"><input type="checkbox"> Vergilbende Blätter</label>
+        <label class="check-group"><input type="checkbox"> Schnappen nach Luft an Oberfläche</label>
+        <label class="check-group"><input type="checkbox"> Trübes Wasser</label>
 
-      <!-- Analysieren Button -->
-      <div style="margin-top: 30px;">
-        <button type="submit" class="btn-submit">Analysieren</button>
+        <button type="submit" class="btn-red">Analysieren</button>
       </div>
     </div>
 
   </form>
-</div>
+
+  <script>
+    function openTab(evt, tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    function calcVol() {
+      const l = parseFloat(document.getElementById('l').value) || 0;
+      const b = parseFloat(document.getElementById('b').value) || 0;
+      const h = parseFloat(document.getElementById('h').value) || 0;
+      document.getElementById('volumen').value = ((l * b * h) / 1000).toFixed(1);
+    }
+  </script>
 
 </body>
 </html>
+
 
 
 
