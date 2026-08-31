@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -29,7 +28,6 @@
     .header h1 { font-size: 1.4rem; color: var(--accent); }
     .header p { font-size: 0.8rem; color: var(--text-muted); }
 
-    /* Navigatios-Tabs */
     .tabs {
       display: flex;
       gap: 4px;
@@ -71,7 +69,6 @@
       padding-bottom: 6px;
     }
 
-    /* Formularelemente */
     .form-group {
       margin-bottom: 10px;
       display: flex;
@@ -80,17 +77,16 @@
     }
     .form-group label { font-size: 0.85rem; flex: 1; padding-right: 10px; }
     .form-group input, .form-group select {
-      width: 90px;
+      width: 130px;
       padding: 8px;
       border-radius: 6px;
       border: 1px solid var(--border);
       background: #0f172a;
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-align: right;
     }
 
-    /* Checkboxen für Symptome */
     .check-group {
       display: flex;
       align-items: center;
@@ -115,17 +111,16 @@
       text-align: center;
     }
 
-    /* Red Action Buttons */
     .btn-red {
       width: 100%;
       background: var(--btn-red);
       color: #fff;
       font-weight: bold;
       border: none;
-      padding: 12px;
+      padding: 14px;
       border-radius: 8px;
-      font-size: 0.95rem;
-      margin-top: 8px;
+      font-size: 1rem;
+      margin-top: 10px;
       cursor: pointer;
     }
 
@@ -145,19 +140,20 @@
 
   <div class="header">
     <h1>💧 AquaLab Pro</h1>
-    <p>Wasserwerte & Symptom-Diagnose</p>
+    <p>Vollständige Aquaristik-Analyse</p>
   </div>
 
   <div class="tabs">
     <button class="tab-btn active" onclick="openTab(event, 'tab-becken')">Becken & Technik</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-duengung')">Düngung</button>
     <button class="tab-btn" onclick="openTab(event, 'tab-wasser')">Wasserwerte</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-symptome')">Symptome & Probleme</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-symptome')">Symptome</button>
   </div>
 
   <!-- TAB 1: BECKEN & TECHNIK -->
   <div id="tab-becken" class="tab-content active">
     <div class="card">
-      <h2>📐 Becken-Abmessungen</h2>
+      <h2>📐 Becken-Abmessungen & Volumen</h2>
       <div class="form-group"><label>Länge (cm):</label><input type="number" id="l" value="60" onchange="calcVol()"></div>
       <div class="form-group"><label>Breite (cm):</label><input type="number" id="b" value="30" onchange="calcVol()"></div>
       <div class="form-group"><label>Höhe (cm):</label><input type="number" id="h" value="36" onchange="calcVol()"></div>
@@ -166,21 +162,55 @@
     </div>
 
     <div class="card">
-      <h2>💡 Beleuchtung & Düngung</h2>
+      <h2>💡 Beleuchtung</h2>
       <div class="form-group"><label>Lichtstärke (Lumen):</label><input type="number" id="lumen" value="2000"></div>
-      <div class="form-group"><label>Beleuchtungsdauer (Std/Tag):</label><input type="number" id="licht_std" value="8"></div>
+      <div class="form-group"><label>Dauer (Std/Tag):</label><input type="number" id="licht_std" value="8"></div>
+    </div>
+
+    <div class="card">
+      <h2>🌀 Filter & CO₂-Technik</h2>
+      <div class="form-group">
+        <label>Filtertyp:</label>
+        <select id="filter_typ">
+          <option value="aussen">Außenfilter</option>
+          <option value="innen">Innenfilter</option>
+          <option value="rucksack">Rucksackfilter</option>
+          <option value="hMF">HMF Hamburger Mattenfilter</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Filterleistung (L/h):</label><input type="number" id="filter_lh" value="500"></div>
       <div class="form-group">
         <label>CO₂-Anlage:</label>
         <select id="co2"><option value="ja">Ja</option><option value="nein">Nein</option></select>
       </div>
-      <div class="form-group"><label>Dünger (ml / Woche):</label><input type="number" id="duenger_ml" value="10"></div>
+      <div class="form-group">
+        <label>CO₂-Zugabe über:</label>
+        <select id="co2_art">
+          <option value="diffusor">Diffusor</option>
+          <option value="reaktor">Inline Reaktor / Reaktor</option>
+          <option value="flipper">Flipper</option>
+        </select>
+      </div>
+      <div class="form-group"><label>CO₂ Blasen / Min:</label><input type="number" id="blasen" value="30"></div>
     </div>
   </div>
 
-  <!-- TAB 2: WASSERWERTE -->
+  <!-- TAB 2: DÜNGUNG -->
+  <div id="tab-duengung" class="tab-content">
+    <div class="card">
+      <h2>🌿 Verwendete Dünger & Dosierung (ml/Woche)</h2>
+      <div class="form-group"><label>Eisen-Volldünger / Mikro:</label><input type="number" id="d_fe_ml" value="5"></div>
+      <div class="form-group"><label>NPK Makrodünger:</label><input type="number" id="d_npk_ml" value="10"></div>
+      <div class="form-group"><label>Einzel-Nitrat (N):</label><input type="number" id="d_n_ml" value="0"></div>
+      <div class="form-group"><label>Einzel-Phosphat (P):</label><input type="number" id="d_p_ml" value="0"></div>
+      <div class="form-group"><label>Einzel-Kalium (K):</label><input type="number" id="d_k_ml" value="0"></div>
+    </div>
+  </div>
+
+  <!-- TAB 3: WASSERWERTE -->
   <div id="tab-wasser" class="tab-content">
     <div class="card">
-      <h2>🧪 Wasserwerte (Messung)</h2>
+      <h2>🧪 Gemessene Wasserwerte</h2>
       <div class="form-group"><label>Gesamthärte (°dGH):</label><input type="number" id="gh" value="8"></div>
       <div class="form-group"><label>Karbonathärte (°dKH):</label><input type="number" id="kh" value="4"></div>
       <div class="form-group"><label>pH-Wert:</label><input type="number" id="ph" value="6.8" step="0.1"></div>
@@ -195,19 +225,19 @@
     </div>
   </div>
 
-  <!-- TAB 3: SYMPTOME & PROBLEME -->
+  <!-- TAB 4: SYMPTOME & PROBLEME -->
   <div id="tab-symptome" class="tab-content">
-    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Wählen Sie die Probleme aus, die Sie tatsächlich beobachten:</p>
+    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Beobachtete Probleme auswählen:</p>
 
     <div class="card">
       <h2>🟢 Algen</h2>
       <label class="check-group"><input type="checkbox" id="alg_faden"> Grüne Fadenalgen</label>
       <label class="check-group"><input type="checkbox" id="alg_punkt"> Grüne Punktalgen (GSA)</label>
-      <label class="check-group"><input type="checkbox" id="alg_cyano"> Cyanobakterien (Blaualgen)</label>
+      <label class="check-group"><input type="checkbox" id="alg_cyano"> Cyanobakterien</label>
       <label class="check-group"><input type="checkbox" id="alg_pinsel"> Pinselalgen / Bartalgen (BBA)</label>
       <label class="check-group"><input type="checkbox" id="alg_spiro"> Spirogyra</label>
       <label class="check-group"><input type="checkbox" id="alg_kiesel"> Kieselalgen</label>
-      <label class="check-group"><input type="checkbox" id="alg_belag"> Grüner Belag auf den Scheiben</label>
+      <label class="check-group"><input type="checkbox" id="alg_belag"> Grüner Belag auf den Aquarienscheiben</label>
       <label class="check-group"><input type="checkbox" id="alg_bluete"> Grüne Wasserblüte</label>
     </div>
 
@@ -228,17 +258,17 @@
       <label class="check-group"><input type="checkbox" id="fisch_luft"> Schnappen nach Luft an der Wasseroberfläche</label>
       <label class="check-group"><input type="checkbox" id="fisch_teilnahme"> Teilnahmslosigkeit / Appetitlosigkeit</label>
       <label class="check-group"><input type="checkbox" id="fisch_tod"> Todesfälle in den letzten Tagen</label>
-      <label class="check-group"><input type="checkbox" id="fisch_punkte"> Weiße Punkte oder Beläge</label>
+      <label class="check-group"><input type="checkbox" id="fisch_punkte"> Weiße Punkte oder Beläge auf den Fischen</label>
       <label class="check-group"><input type="checkbox" id="fisch_flossen"> Ausgefranste oder sich auflösende Flossen</label>
     </div>
 
     <div class="card">
       <h2>💧 Wasser und Erscheinungsbild</h2>
       <label class="check-group"><input type="checkbox" id="w_trueb"> Trübes Wasser</label>
-      <label class="check-group"><input type="checkbox" id="w_gelb"> Gelbe oder teefarbene Wasserfärbung</label>
-      <label class="check-group"><input type="checkbox" id="w_belag_scheibe"> Mineralische Ablagerungen auf Scheiben</label>
+      <label class="check-group"><input type="checkbox" id="w_gelb"> Gelbe oder teefarbene Wasserfärbung (Gerbstoffe)</label>
+      <label class="check-group"><input type="checkbox" id="w_belag_scheibe"> Mineralische Ablagerungen auf Scheiben und Technik</label>
       <label class="check-group"><input type="checkbox" id="w_geruch"> Unangenehmer Geruch</label>
-      <label class="check-group"><input type="checkbox" id="w_biofilm"> Weißer Belag oder Biofilm auf Holz</label>
+      <label class="check-group"><input type="checkbox" id="w_biofilm"> Weißer Belag oder Biofilm auf Holz und Wurzeln</label>
     </div>
 
     <button class="btn-red" onclick="runAnalysis()">Analysieren</button>
@@ -267,54 +297,60 @@
     }
 
     function runAnalysis() {
-      let html = '<div class="card"><h2>📋 Diagnose & Handlungsempfehlungen</h2>';
+      let html = '<div class="card"><h2>📋 Vollständige Auswertung</h2>';
       let count = 0;
 
-      // Algen-Diagnosen
+      // Filterumsatz
+      const netVol = calcVol();
+      const filterLh = parseFloat(document.getElementById('filter_lh').value) || 0;
+      const umsatz = filterLh / (netVol || 1);
+      html += `<div class="alert alert-success">🌀 <strong>Filterumsatz:</strong> ca. ${umsatz.toFixed(1)}-facher Beckeninhalt pro Stunde.</div>`;
+
+      // Algen-Check
       if (document.getElementById('alg_faden').checked) {
-        html += `<div class="alert alert-warn">⚠️ <strong>Grüne Fadenalgen:</strong> Oft verursacht durch Nitratmangel, Schwankungen beim CO₂-Gehalt oder plötzlichen Lichtüberschuss. Checke Nitrat & CO₂!</div>`;
+        html += `<div class="alert alert-warn">⚠️ <strong>Grüne Fadenalgen:</strong> CO₂-Schwankungen oder Nitratmangel. CO₂ und Düngung prüfen!</div>`;
         count++;
       }
       if (document.getElementById('alg_punkt').checked) {
-        html += `<div class="alert alert-warn">⚠️ <strong>Grüne Punktalgen (GSA):</strong> Typisches Zeichen für Phosphatmangel (PO₄). Dünge gezielt Phosphat nach.</div>`;
+        html += `<div class="alert alert-warn">⚠️ <strong>Grüne Punktalgen:</strong> Deuten auf Phosphatmangel hin. PO₄ leicht anheben.</div>`;
         count++;
       }
       if (document.getElementById('alg_pinsel').checked) {
-        html += `<div class="alert alert-warn">⚠️ <strong>Pinselalgen / Bartalgen:</strong> Deuten meist auf CO₂-Mangel, starke Strömung oder Eisenüberschuss hin.</div>`;
+        html += `<div class="alert alert-warn">⚠️ <strong>Pinselalgen / BBA:</strong> Oft bedingt durch zu viel Spurenelemente/Eisen oder ungünstige Strömung.</div>`;
         count++;
       }
       if (document.getElementById('alg_cyano').checked) {
-        html += `<div class="alert alert-danger">🚨 <strong>Cyanobakterien:</strong> Bakterielle Beläge. Dunkelkur (5-7 Tage) oder gründliches Absaugen sowie Anpassung der Mikroflora empfohlen.</div>`;
+        html += `<div class="alert alert-danger">🚨 <strong>Cyanobakterien:</strong> Blaualgen-Befall. Dunkelkur und Bakterienpräparate empfohlen.</div>`;
         count++;
       }
 
-      // Pflanzen-Diagnosen
+      // Pflanzen-Check
       if (document.getElementById('pfl_loecher').checked) {
-        html += `<div class="alert alert-warn">🌱 <strong>Löcher in den Blättern:</strong> Häufiges Symptom für Kaliummangel (K). Kaliumdünger leicht erhöhen.</div>`;
-        count++;
-      }
-      if (document.getElementById('pfl_gelb').checked) {
-        html += `<div class="alert alert-warn">🌱 <strong>Vergilbende Blätter:</strong> Typischer Eisenmangel (Fe) oder Nitratmangel. Chlorose der Blätter prüfen.</div>`;
+        html += `<div class="alert alert-warn">🌱 <strong>Löcher in Blättern:</strong> Typischer Kaliummangel (K). Kalium-Einzeldünger erhöhen.</div>`;
         count++;
       }
 
-      // Fisch-Diagnosen
+      // Fisch-Check
       if (document.getElementById('fisch_luft').checked) {
-        html += `<div class="alert alert-danger">🚨 <strong>Schnappen nach Luft:</strong> Akuter Sauerstoffmangel oder Nitrit-/CO₂-Vergiftung! Sofort 50-70% Wasser wechseln und durchlüften.</div>`;
+        html += `<div class="alert alert-danger">🚨 <strong>Fische schnappen nach Luft:</strong> Akute Notlage (Nitrit oder Sauerstoffmangel)! Sofort 60% Wasser wechseln!</div>`;
         count++;
       }
 
       if (count === 0) {
-        html += `<div class="alert alert-success">✅ Keine auffälligen Symptome ausgewählt. Passe ggf. die Wasserwerte in Tab 2 an.</div>`;
+        html += `<div class="alert alert-success">✅ Keine kritischen Symptome ausgewählt. Dein System läuft stabil!</div>`;
       }
 
       html += '</div>';
       document.getElementById('results').innerHTML = html;
+      
+      // Automatisch zum Ergebnis scrollen
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
     }
 
     calcVol();
   </script>
 </body>
 </html>
+
 
 
