@@ -167,10 +167,80 @@
       font-size: 0.85rem;
       line-height: 1.4;
       border-left: 4px solid;
+      cursor: pointer;
     }
     .alert-blue { background: rgba(2, 132, 199, 0.15); border-color: var(--warn-blue); color: #38bdf8; }
     .alert-orange { background: rgba(217, 119, 6, 0.15); border-color: var(--warn-orange); color: #fbbf24; }
     .alert-red { background: rgba(220, 38, 38, 0.15); border-color: var(--warn-red); color: #f87171; }
+
+    .alert-details {
+      display: none;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(255,255,255,0.2);
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+    .click-hint {
+      display: block;
+      font-size: 0.7rem;
+      text-align: right;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    /* Kalender Styles */
+    .calendar-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+    .calendar-nav button {
+      background: var(--border);
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      text-align: center;
+    }
+    .cal-header-day { font-size: 0.7rem; color: var(--text-muted); padding-bottom: 4px; }
+    .cal-day {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 2px;
+      font-size: 0.8rem;
+      min-height: 45px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .cal-day.empty { background: transparent; border: none; cursor: default; }
+    .cal-day.has-entry { border-color: var(--accent); background: rgba(14, 165, 233, 0.15); }
+    .entry-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 3px; }
+    
+    #historyDetailBox {
+      display: none;
+      background: #020617;
+      border: 1px solid var(--accent);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
   </style>
 </head>
 <body>
@@ -187,6 +257,7 @@
     <button class="tab-btn" onclick="openTab(event, 'tab-wasser')">Wasserwerte</button>
     <button class="tab-btn" onclick="openTab(event, 'tab-besatz')">Besatz & Futter</button>
     <button class="tab-btn" onclick="openTab(event, 'tab-symptome')">Symptome</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-kalender')">📅 Kalender</button>
   </div>
 
   <form onsubmit="runAnalysis(event)">
@@ -249,7 +320,7 @@
           <!-- Spalte 1: Wasser für den Wasserwechsel -->
           <div class="water-column">
             <h3>Wasserwechsel</h3>
-            <div class="water-field"><label>pH:</label><input type="text" placeholder="z. B. 7,2"></div>
+            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" placeholder="z. B. 7,2"></div>
             <div class="water-field"><label>GH:</label><input type="text" placeholder="z. B. 10,0"></div>
             <div class="water-field"><label>KH:</label><input type="text" placeholder="z. B. 6,0"></div>
             <div class="water-field"><label>NH₄ (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
@@ -265,12 +336,12 @@
           <!-- Spalte 2: Aquarienwasser -->
           <div class="water-column">
             <h3>Aquarienwasser</h3>
-            <div class="water-field"><label>pH:</label><input type="text" value="6,8"></div>
+            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6,8"></div>
             <div class="water-field"><label>GH:</label><input type="text" value="12,0"></div>
-            <div class="water-field"><label>KH:</label><input type="text" value="4,0"></div>
+            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4,0"></div>
             <div class="water-field"><label>NH₄ (ppm):</label><input type="text" value="0,0"></div>
             <div class="water-field"><label>NO₂ (ppm):</label><input type="text" value="0,0"></div>
-            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" value="10,0"></div>
+            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10,0"></div>
             <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0,5"></div>
             <div class="water-field"><label>K (ppm):</label><input type="text" value="10,0"></div>
             <div class="water-field"><label>Ca (ppm):</label><input type="text" value="40,0"></div>
@@ -317,71 +388,111 @@
         <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Wählen Sie die Probleme aus, die Sie tatsächlich beobachten:</p>
         
         <h3>Algen</h3>
-        <label class="check-group"><input type="checkbox"> Grüne Fadenalgen</label>
-        <label class="check-group"><input type="checkbox"> Grüne Punktalgen (GSA)</label>
-        <label class="check-group"><input type="checkbox"> Cyanobakterien</label>
-        <label class="check-group"><input type="checkbox"> Pinselalgen / Bartalgen (BBA)</label>
-        <label class="check-group"><input type="checkbox"> Spirogyra</label>
-        <label class="check-group"><input type="checkbox"> Kieselalgen</label>
-        <label class="check-group"><input type="checkbox"> Grüner Belag auf den Scheiben</label>
-        <label class="check-group"><input type="checkbox"> Grüne Wasserblüte</label>
+        <label class="check-group"><input type="checkbox" id="chk_faden"> Grüne Fadenalgen</label>
+        <label class="check-group"><input type="checkbox" id="chk_punkt"> Grüne Punktalgen (GSA)</label>
+        <label class="check-group"><input type="checkbox" id="chk_cyano"> Cyanobakterien</label>
+        <label class="check-group"><input type="checkbox" id="chk_pinsel"> Pinselalgen / Bartalgen (BBA)</label>
+        <label class="check-group"><input type="checkbox" id="chk_spiro"> Spirogyra</label>
+        <label class="check-group"><input type="checkbox" id="chk_kiesel"> Kieselalgen</label>
+        <label class="check-group"><input type="checkbox" id="chk_scheiben"> Grüner Belag auf den Scheiben</label>
+        <label class="check-group"><input type="checkbox" id="chk_bluete"> Grüne Wasserblüte</label>
 
         <h3>Pflanzen</h3>
-        <label class="check-group"><input type="checkbox"> Kein Wachstum</label>
-        <label class="check-group"><input type="checkbox"> Verblassen / Farbverlust</label>
-        <label class="check-group"><input type="checkbox"> Löcher in den Blättern</label>
-        <label class="check-group"><input type="checkbox"> Blattzerfall / Pflanzenmelt</label>
-        <label class="check-group"><input type="checkbox"> Stängelfäule</label>
-        <label class="check-group"><input type="checkbox"> Vergilbende Blätter</label>
-        <label class="check-group"><input type="checkbox"> Kleine, deformierte neue Blätter</label>
-        <label class="check-group"><input type="checkbox"> Abfallende untere Blätter</label>
+        <label class="check-group"><input type="checkbox" id="chk_wuchs"> Kein Wachstum</label>
+        <label class="check-group"><input type="checkbox" id="chk_blass"> Verblassen / Farbverlust</label>
+        <label class="check-group"><input type="checkbox" id="chk_loechoer"> Löcher in den Blättern</label>
+        <label class="check-group"><input type="checkbox" id="chk_melt"> Blattzerfall / Pflanzenmelt</label>
+        <label class="check-group"><input type="checkbox" id="chk_faeule"> Stängelfäule</label>
+        <label class="check-group"><input type="checkbox" id="chk_gilb"> Vergilbende Blätter</label>
+        <label class="check-group"><input type="checkbox" id="chk_deform"> Kleine, deformierte neue Blätter</label>
+        <label class="check-group"><input type="checkbox" id="chk_abfall"> Abfallende untere Blätter</label>
 
         <h3>Fische und Wirbellose</h3>
-        <label class="check-group"><input type="checkbox"> Schnappen nach Luft an Oberfläche</label>
-        <label class="check-group"><input type="checkbox"> Teilnahmslosigkeit / Appetitlosigkeit</label>
-        <label class="check-group"><input type="checkbox"> Todesfälle in den letzten Tagen</label>
-        <label class="check-group"><input type="checkbox"> Weiße Punkte oder Beläge</label>
-        <label class="check-group"><input type="checkbox"> Ausgefranste / aufgelöste Flossen</label>
+        <label class="check-group"><input type="checkbox" id="chk_luft"> Schnappen nach Luft an Oberfläche</label>
+        <label class="check-group"><input type="checkbox" id="chk_apathisch"> Teilnahmslosigkeit / Appetitlosigkeit</label>
+        <label class="check-group"><input type="checkbox" id="chk_tode"> Todesfälle in den letzten Tagen</label>
+        <label class="check-group"><input type="checkbox" id="chk_punkte"> Weiße Punkte oder Beläge</label>
+        <label class="check-group"><input type="checkbox" id="chk_flossen"> Ausgefranste / aufgelöste Flossen</label>
 
         <h3>Wasser und Erscheinungsbild</h3>
-        <label class="check-group"><input type="checkbox"> Trübes Wasser</label>
-        <label class="check-group"><input type="checkbox"> Gelbe / teefarbene Wasserfärbung</label>
-        <label class="check-group"><input type="checkbox"> Mineralische Ablagerungen</label>
-        <label class="check-group"><input type="checkbox"> Unangenehmer Geruch</label>
-        <label class="check-group"><input type="checkbox"> Weißer Belag / Biofilm auf Holz</label>
+        <label class="check-group"><input type="checkbox" id="chk_trueb"> Trübes Wasser</label>
+        <label class="check-group"><input type="checkbox" id="chk_gelb"> Gelbe / teefarbene Wasserfärbung</label>
+        <label class="check-group"><input type="checkbox" id="chk_ablager"> Mineralische Ablagerungen</label>
+        <label class="check-group"><input type="checkbox" id="chk_geruch"> Unangenehmer Geruch</label>
+        <label class="check-group"><input type="checkbox" id="chk_biofilm"> Weißer Belag / Biofilm auf Holz</label>
 
-        <button type="submit" class="btn-red">Analysieren</button>
+        <button type="submit" class="btn-red">Analysieren & im Kalender speichern</button>
       </div>
 
       <!-- DIAGNOSE & WARNUNGEN (ERSCHEINT NACH KLICK) -->
       <div id="resultSection" class="result-box">
         <div class="card" style="border-color: var(--accent);">
           <h2>📊 Diagnose & Warnungen</h2>
+          <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">Tippe auf eine Warnung für Details und Handlungsanweisungen:</p>
           
-          <div class="alert-card alert-blue">
+          <div class="alert-card alert-blue" onclick="toggleDetails('det-1')">
             <strong>ℹ️ Nährstoff-Check:</strong> Das Verhältnis von Nitrat zu Phosphat bewegt sich im optimalen Bereich.
+            <span class="click-hint">▼ Tippen für Details</span>
+            <div id="det-1" class="alert-details">
+              <strong>Bedeutung:</strong> Die Hauptnährstoffe sind ausgewogen.<br>
+              <strong>Was tun:</strong> Keine Änderung erforderlich, aktuellen Rhythmus beibehalten.
+            </div>
           </div>
 
-          <div class="alert-card alert-orange">
+          <div class="alert-card alert-orange" onclick="toggleDetails('det-2')">
             <strong>⚠️ Hinweis:</strong> Überprüfe die CO₂-Versorgung im Verhältnis zur Karbonathärte.
+            <span class="click-hint">▼ Tippen für Details</span>
+            <div id="det-2" class="alert-details">
+              <strong>Bedeutung:</strong> Bei einer KH von 4 sollte der pH-Wert optimal im sauren Bereich liegen.<br>
+              <strong>Was tun:</strong> CO₂-Dauertest kontrollieren (sollte hellgrün sein) und ggf. Blasenzahl anpassen.
+            </div>
           </div>
 
-          <div class="alert-card alert-red">
+          <div class="alert-card alert-red" onclick="toggleDetails('det-3')">
             <strong>🚨 Kritische Belastung:</strong> Bitte beobachte die ausgewählten Symptome genau und passe gegebenenfalls die Düngung an.
+            <span class="click-hint">▼ Tippen für Details</span>
+            <div id="det-3" class="alert-details">
+              <strong>Bedeutung:</strong> Es wurden Auffälligkeiten markiert.<br>
+              <strong>Was tun:</strong> Überprüfe gezielt die Spurenelemente und Makrodünger nach Yokuchi-Vorgaben.
+            </div>
           </div>
         </div>
       </div>
 
     </div>
 
+    <!-- TAB 6: KALENDER (NEU DAZUGEPACKT) -->
+    <div id="tab-kalender" class="tab-content">
+      <div class="card">
+        <h2>📅 Aquarien-Tagebuch</h2>
+        <div class="calendar-nav">
+          <button type="button" onclick="changeMonth(-1)">‹</button>
+          <span id="calMonthYear">März 2026</span>
+          <button type="button" onclick="changeMonth(1)">›</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+
+        <div id="historyDetailBox">
+          <h3 id="historyDateTitle" style="color:var(--accent); margin-bottom:4px;">Eintrag</h3>
+          <p id="historyContentText">Keine Daten vorhanden.</p>
+        </div>
+      </div>
+    </div>
+
   </form>
 
   <script>
+    let today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+    let analysisDiary = {};
+
     function openTab(evt, tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       evt.currentTarget.classList.add('active');
+      if(tabId === 'tab-kalender') { renderCalendar(); }
     }
 
     function calcVol() {
@@ -391,23 +502,133 @@
       document.getElementById('volumen').value = ((l * b * h) / 1000).toFixed(1);
     }
 
+    function toggleDetails(id) {
+      const el = document.getElementById(id);
+      el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    }
+
     function runAnalysis(event) {
       event.preventDefault();
       const resultSec = document.getElementById('resultSection');
       resultSec.style.display = 'block';
       resultSec.scrollIntoView({ behavior: 'smooth' });
+
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const dateKey = `${year}-${month}-${day}`;
+
+      let symptoms = [];
+      if(document.getElementById('chk_faden').checked) symptoms.push("Grüne Fadenalgen");
+      if(document.getElementById('chk_punkt').checked) symptoms.push("Grüne Punktalgen");
+      if(document.getElementById('chk_cyano').checked) symptoms.push("Cyanobakterien");
+      if(document.getElementById('chk_pinsel').checked) symptoms.push("Pinselalgen");
+      if(document.getElementById('chk_spiro').checked) symptoms.push("Spirogyra");
+      if(document.getElementById('chk_kiesel').checked) symptoms.push("Kieselalgen");
+      if(document.getElementById('chk_scheiben').checked) symptoms.push("Grüner Scheibenbelag");
+      if(document.getElementById('chk_bluete').checked) symptoms.push("Grüne Wasserblüte");
+      if(document.getElementById('chk_wuchs').checked) symptoms.push("Kein Wachstum");
+      if(document.getElementById('chk_blass').checked) symptoms.push("Farbverlust");
+      if(document.getElementById('chk_loechoer').checked) symptoms.push("Löcher in Blättern");
+      if(document.getElementById('chk_melt').checked) symptoms.push("Blattzerfall");
+      if(document.getElementById('chk_faeule').checked) symptoms.push("Stängelfäule");
+      if(document.getElementById('chk_gilb').checked) symptoms.push("Vergilbende Blätter");
+      if(document.getElementById('chk_deform').checked) symptoms.push("Deformierte Blätter");
+      if(document.getElementById('chk_abfall').checked) symptoms.push("Abfallende Blätter");
+      if(document.getElementById('chk_luft').checked) symptoms.push("Schnappen nach Luft");
+      if(document.getElementById('chk_apathisch').checked) symptoms.push("Apathische Fische");
+      if(document.getElementById('chk_tode').checked) symptoms.push("Todesfälle");
+      if(document.getElementById('chk_punkte').checked) symptoms.push("Weiße Punkte");
+      if(document.getElementById('chk_flossen').checked) symptoms.push("Flossenfäule");
+      if(document.getElementById('chk_trueb').checked) symptoms.push("Trübes Wasser");
+      if(document.getElementById('chk_gelb').checked) symptoms.push("Gelbe Färbung");
+      if(document.getElementById('chk_ablager').checked) symptoms.push("Ablagerungen");
+      if(document.getElementById('chk_geruch').checked) symptoms.push("Geruch");
+      if(document.getElementById('chk_biofilm').checked) symptoms.push("Biofilm");
+
+      analysisDiary[dateKey] = {
+        ph: document.getElementById('w_ph_akt').value,
+        kh: document.getElementById('w_kh_akt').value,
+        no3: document.getElementById('w_no3_akt').value,
+        symptoms: symptoms.length > 0 ? symptoms.join(", ") : "Keine Auffälligkeiten"
+      };
+    }
+
+    function renderCalendar() {
+      const grid = document.getElementById('calendarGrid');
+      grid.innerHTML = '';
+
+      const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+      document.getElementById('calMonthYear').innerText = `${monthNames[currentMonth]} ${currentYear}`;
+
+      const daysOfWeek = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+      daysOfWeek.forEach(d => {
+        let div = document.createElement('div');
+        div.className = 'cal-header-day';
+        div.innerText = d;
+        grid.appendChild(div);
+      });
+
+      let firstDayIndex = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
+      let totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+      for (let i = 0; i < firstDayIndex; i++) {
+        let div = document.createElement('div');
+        div.className = 'cal-day empty';
+        grid.appendChild(div);
+      }
+
+      for (let d = 1; d <= totalDays; d++) {
+        let div = document.createElement('div');
+        div.className = 'cal-day';
+        
+        let mStr = String(currentMonth + 1).padStart(2, '0');
+        let dStr = String(d).padStart(2, '0');
+        let dateKey = `${currentYear}-${mStr}-${dStr}`;
+
+        div.innerHTML = `<span>${d}</span>`;
+
+        if (analysisDiary[dateKey]) {
+          div.classList.add('has-entry');
+          let dot = document.createElement('div');
+          dot.className = 'entry-dot';
+          div.appendChild(dot);
+        }
+
+        div.onclick = function() { showHistoryDetails(dateKey); };
+        grid.appendChild(div);
+      }
+    }
+
+    function changeMonth(direction) {
+      currentMonth += direction;
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+      else if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      renderCalendar();
+    }
+
+    function showHistoryDetails(dateKey) {
+      const box = document.getElementById('historyDetailBox');
+      const title = document.getElementById('historyDateTitle');
+      const content = document.getElementById('historyContentText');
+
+      box.style.display = 'block';
+      title.innerText = `Analyse vom ${dateKey}`;
+
+      if (analysisDiary[dateKey]) {
+        let data = analysisDiary[dateKey];
+        content.innerHTML = `
+          <strong>pH:</strong> ${data.ph} | <strong>KH:</strong> ${data.kh} | <strong>NO₃:</strong> ${data.no3}<br>
+          <strong>Symptome:</strong> ${data.symptoms}
+        `;
+      } else {
+        content.innerText = "Für diesen Tag wurde noch keine Analyse gespeichert.";
+      }
     }
   </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
 
 
 
