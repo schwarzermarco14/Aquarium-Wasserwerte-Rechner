@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaBalance Master</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #06b6d4;
+      --text: #f8fafc;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text);
+      margin: 0;
+      padding: 15px;
+    }
+    .header {
+      text-align: center;
+      padding: 10px 0;
+      border-bottom: 2px solid var(--accent);
+      margin-bottom: 20px;
+    }
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+    }
+    h2 { font-size: 1.1rem; color: var(--accent); margin-top: 0; }
+    .form-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    label { font-size: 0.9rem; }
+    input[type="number"] {
+      width: 70px;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #fff;
+      text-align: right;
+    }
+    .btn {
+      width: 100%;
+      background: var(--accent);
+      color: #0f172a;
+      font-weight: bold;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .alert {
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 8px;
+      font-size: 0.85rem;
+    }
+    .alert-danger { background: rgba(239,68,68,0.2); border: 1px solid var(--danger); color: #fca5a5; }
+    .alert-warn { background: rgba(245,158,11,0.2); border: 1px solid var(--warn); color: #fde047; }
+    .alert-success { background: rgba(16,185,129,0.2); border: 1px solid var(--success); color: #6ee7b7; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🌊 AquaBalance</h1>
+    <p style="font-size:0.8rem; color:#94a3b8;">Wasserwert-Analyse & Nährstoffrechner</p>
+  </div>
+
+  <div class="card">
+    <h2>1. Aquarienwasser (Ist-Werte)</h2>
+    <div class="form-group"><label>GH (°dGH):</label><input type="number" id="gh" value="12"></div>
+    <div class="form-group"><label>Calcium Ca (mg/L):</label><input type="number" id="ca" value="1"></div>
+    <div class="form-group"><label>Magnesium Mg (mg/L):</label><input type="number" id="mg" value="1"></div>
+    <div class="form-group"><label>Nitrat NO₃ (mg/L):</label><input type="number" id="no3" value="1"></div>
+    <div class="form-group"><label>Phosphat PO₄ (mg/L):</label><input type="number" id="po4" value="1"></div>
+    <div class="form-group"><label>Kalium K (mg/L):</label><input type="number" id="k" value="1"></div>
+    <div class="form-group"><label>Ammonium NH₄ (mg/L):</label><input type="number" id="nh4" value="0"></div>
+    <div class="form-group"><label>Nitrit NO₂ (mg/L):</label><input type="number" id="no2" value="0"></div>
+  </div>
+
+  <button class="btn" onclick="analyseData()">Ergebnis Berechnen</button>
+
+  <div id="results" style="margin-top: 20px;"></div>
+
+  <script>
+    function analyseData() {
+      const gh = parseFloat(document.getElementById('gh').value) || 0;
+      const ca = parseFloat(document.getElementById('ca').value) || 0;
+      const mg = parseFloat(document.getElementById('mg').value) || 0;
+      const no3 = parseFloat(document.getElementById('no3').value) || 0;
+      const po4 = parseFloat(document.getElementById('po4').value) || 0;
+      const k = parseFloat(document.getElementById('k').value) || 0;
+      const nh4 = parseFloat(document.getElementById('nh4').value) || 0;
+      const no2 = parseFloat(document.getElementById('no2').value) || 0;
+
+      let html = '<div class="card"><h2>2. Diagnose & Warnungen</h2>';
+
+      const ghBerechnet = (ca * 0.14) + (mg * 0.23);
+      if (Math.abs(gh - ghBerechnet) > 0.5) {
+        html += `<div class="alert alert-warn">
+          <strong>⚠️ Messwert-Abweichung:</strong> Gemessener GH (${gh}°) stimmt nicht mit Ca/Mg überein (berechnet: ${ghBerechnet.toFixed(2)}°). Prüfe deine Tröpfchentests.
+        </div>`;
+      }
+
+      if (nh4 > 0 || no2 > 0) {
+        html += `<div class="alert alert-danger">
+          <strong>🚨 Kritische Belastung:</strong> Nachweisbares Ammonium/Nitrit (${nh4} mg/L NH₄ / ${no2} mg/L NO₂). Sofortigen Teilwasserwechsel durchführen und Filterbakterien ergänzen!
+        </div>`;
+      }
+
+      if (k > 0) {
+        const ratioNO3K = no3 / k;
+        if (ratioNO3K < 6.5 || ratioNO3K > 8.5) {
+          html += `<div class="alert alert-warn">
+            <strong>⚖️ Nährstoff-Ungleichgewicht:</strong> Das NO₃:K-Verhältnis liegt bei ${ratioNO3K.toFixed(1)}:1 (Ideal: 6.5:1 bis 8.5:1). Ein falsches Verhältnis behindert die Pflanzenernährung.
+          </div>`;
+        } else {
+          html += `<div class="alert alert-success">
+            <strong>✅ Optimal:</strong> NO₃ zu Kalium-Verhältnis ist perfekt eingestellt.
+          </div>`;
+        }
+      }
+
+      html += '</div>';
+      document.getElementById('results').innerHTML = html;
+    }
+  </script>
+</body>
+</html>
+
