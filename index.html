@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AquaLab Pro - Vollständige Yokuchi Analyse</title>
+  <title>AquaLab Pro - Complete Analysis</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -25,9 +25,24 @@
       padding: 12px;
       padding-bottom: 60px;
     }
-    .header { text-align: center; padding: 10px 0 15px; }
+    .header { text-align: center; padding: 10px 0 15px; position: relative; }
     .header h1 { font-size: 1.4rem; color: var(--accent); }
     .header p { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Sprachauswahl oben rechts */
+    .lang-selector {
+      position: absolute;
+      top: 10px;
+      right: 0;
+      background: #020617;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      max-width: 150px;
+    }
 
     /* Navigations-Tabs oben */
     .tabs {
@@ -94,7 +109,7 @@
       text-align: right;
     }
 
-    /* 2-Spalten-Layout für Wasserwerte wie im Original */
+    /* 2-Spalten-Layout für Wasserwerte */
     .water-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -246,23 +261,37 @@
 <body>
 
   <div class="header">
-    <h1>💧 AquaLab Pro</h1>
-    <p>Vollständige Yokuchi Analyse</p>
+    <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
+      <option value="de">🇩🇪 Deutsch (DE/AT/CH/LU)</option>
+      <option value="nl">🇳🇱 Nederlands (NL/BE)</option>
+      <option value="fr">🇫🇷 Français (FR/BE/CH/LU)</option>
+      <option value="da">🇩🇰 Dansk (DK)</option>
+      <option value="en">🇬🇧 English</option>
+      <option value="es">🇪🇸 Español</option>
+      <option value="it">🇮🇹 Italiano (IT/CH)</option>
+      <option value="pl">🇵🇱 Polski (PL)</option>
+      <option value="sv">🇸🇪 Svenska (SE)</option>
+      <option value="cs">🇨🇿 Čeština (CZ)</option>
+      <option value="hu">🇭🇺 Magyar (HU)</option>
+      <option value="el">🇬🇷 Ελληνικά (GR)</option>
+      <option value="pt">🇵🇹 Português (PT)</option>
+      <option value="ru">🇷🇺 Русский (RU)</option>
+    </select>
+    <h1 data-i18n="title">💧 AquaLab Pro</h1>
+    <p data-i18n="subtitle">Vollständige Analyse</p>
   </div>
 
-  <!-- TABS NAVIGATION -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="openTab(event, 'tab-becken')">Becken & Technik</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-duengung')">Bodengrund & Deko</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-wasser')">Wasserwerte</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-besatz')">Besatz & Futter</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-symptome')">Symptome</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-kalender')">📅 Kalender</button>
+    <button class="tab-btn active" onclick="openTab(event, 'tab-becken')" data-i18n="tab_tech">Becken & Technik</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-duengung')" data-i18n="tab_deco">Bodengrund & Deko</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-wasser')" data-i18n="tab_water">Wasserwerte</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-besatz')" data-i18n="tab_stock">Besatz & Futter</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-symptome')" data-i18n="tab_symptoms">Symptome</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-kalender')" data-i18n="tab_cal">📅 Kalender</button>
   </div>
 
   <form onsubmit="runAnalysis(event)">
 
-    <!-- TAB 1: BECKEN, FILTER & LICHT -->
     <div id="tab-becken" class="tab-content active">
       <div class="card">
         <h2>📐 Angaben zum Aquarium</h2>
@@ -295,29 +324,31 @@
       </div>
     </div>
 
-    <!-- TAB 2: BODENGRUND & DEKO -->
     <div id="tab-duengung" class="tab-content">
       <div class="card">
         <h2>🪨 Bodengrund und Dekoration</h2>
         <div class="form-group">
           <label>Art des Bodengrunds:</label>
-          <select><option>Aktiver Bodengrund</option><option selected>Quarzkies</option><option>Basaltkies</option></select>
+          <select id="bodenArt" onchange="calcSubstrate()">
+            <option value="quarzkies" selected>Quarzkies</option>
+            <option value="sand">Sand</option>
+            <option value="soil">Soil (Aktiver Bodengrund)</option>
+          </select>
         </div>
         <div class="form-group"><label>Nährstoffreicher Untergrund?</label><select><option>Nein</option><option>Ja</option></select></div>
         <div class="form-group"><label>Regelmäßige Bodendünger?</label><select><option>Nein</option><option>Ja</option></select></div>
-        <div class="form-group"><label>Gesamtvolumen Bodengrund (L):</label><input type="number" value="10"></div>
+        <div class="form-group"><label>Empfohlene Schichthöhe (cm):</label><input type="number" id="bodenhoehe" value="5" oninput="calcSubstrate()"></div>
+        <div class="form-group"><label>Errechnetes Bodengrund-Volumen (L):</label><input type="number" id="bodenVolumen" value="9.0" readonly style="background:#020617; color:var(--accent);"></div>
         <div class="form-group"><label>Wurzeln und Holz (kg):</label><input type="number" value="2" step="0.1"></div>
         <div class="form-group"><label>Steine und Felsen (kg):</label><input type="number" value="5" step="0.1"></div>
       </div>
     </div>
 
-    <!-- TAB 3: WASSERWERTE (EXAKT WIE AUF YOKUCHI FOTO 2) -->
     <div id="tab-wasser" class="tab-content">
       <div class="card">
         <h2>🧪 Wasserwerte-Vergleich</h2>
         <div class="water-grid">
           
-          <!-- Spalte 1: Wasser für den Wasserwechsel -->
           <div class="water-column">
             <h3>Wasserwechsel</h3>
             <div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" placeholder="z. B. 7,2"></div>
@@ -333,7 +364,6 @@
             <div class="water-field"><label>Fe (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
           </div>
 
-          <!-- Spalte 2: Aquarienwasser -->
           <div class="water-column">
             <h3>Aquarienwasser</h3>
             <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6,8"></div>
@@ -362,7 +392,6 @@
       </div>
     </div>
 
-    <!-- TAB 4: BESATZ & FÜTTERUNG -->
     <div id="tab-besatz" class="tab-content">
       <div class="card">
         <h2>🐟 Tierbesatz & Fütterung</h2>
@@ -381,7 +410,6 @@
       </div>
     </div>
 
-    <!-- TAB 5: SYMPTOME (KOMPLETT MIT ALLEN YOKUCHI-OPTIONEN) -->
     <div id="tab-symptome" class="tab-content">
       <div class="card">
         <h2>⚠️ Beobachtete Probleme</h2>
@@ -424,7 +452,6 @@
         <button type="submit" class="btn-red">Analysieren & im Kalender speichern</button>
       </div>
 
-      <!-- DIAGNOSE & WARNUNGEN (ERSCHEINT NACH KLICK) -->
       <div id="resultSection" class="result-box">
         <div class="card" style="border-color: var(--accent);">
           <h2>📊 Diagnose & Warnungen</h2>
@@ -453,7 +480,7 @@
             <span class="click-hint">▼ Tippen für Details</span>
             <div id="det-3" class="alert-details">
               <strong>Bedeutung:</strong> Es wurden Auffälligkeiten markiert.<br>
-              <strong>Was tun:</strong> Überprüfe gezielt die Spurenelemente und Makrodünger nach Yokuchi-Vorgaben.
+              <strong>Was tun:</strong> Überprüfe gezielt die Spurenelemente und Makrodünger nach Herstellerangaben.
             </div>
           </div>
         </div>
@@ -461,7 +488,6 @@
 
     </div>
 
-    <!-- TAB 6: KALENDER (NEU DAZUGEPACKT) -->
     <div id="tab-kalender" class="tab-content">
       <div class="card">
         <h2>📅 Aquarien-Tagebuch</h2>
@@ -487,6 +513,36 @@
     let currentYear = today.getFullYear();
     let analysisDiary = {};
 
+    const translations = {
+      de: { title: "💧 AquaLab Pro", subtitle: "Vollständige Analyse", tab_tech: "Becken & Technik", tab_deco: "Bodengrund & Deko", tab_water: "Wasserwerte", tab_stock: "Besatz & Futter", tab_symptoms: "Symptome", tab_cal: "📅 Kalender" },
+      nl: { title: "💧 AquaLab Pro", subtitle: "Volledige Analyse", tab_tech: "Aquarium & Techniek", tab_deco: "Bodem & Decor", tab_water: "Waterwaarden", tab_stock: "Visbestand & Voer", tab_symptoms: "Symptomen", tab_cal: "📅 Kalender" },
+      fr: { title: "💧 AquaLab Pro", subtitle: "Analyse Complète", tab_tech: "Bac & Technique", tab_deco: "Sol & Décor", tab_water: "Paramètres de l'eau", tab_stock: "Population & Nourriture", tab_symptoms: "Symptômes", tab_cal: "📅 Kalendrier" },
+      da: { title: "💧 AquaLab Pro", subtitle: "Komplet Analyse", tab_tech: "Akvarium & Teknik", tab_deco: "Bundlag & Dekoration", tab_water: "Vandværdier", tab_stock: "Fisk & Foder", tab_symptoms: "Symptomer", tab_cal: "📅 Kalender" },
+      en: { title: "💧 AquaLab Pro", subtitle: "Complete Analysis", tab_tech: "Tank & Tech", tab_deco: "Substrate & Decor", tab_water: "Water Parameters", tab_stock: "Livestock & Food", tab_symptoms: "Symptoms", tab_cal: "📅 Calendar" },
+      es: { title: "💧 AquaLab Pro", subtitle: "Análisis Completo", tab_tech: "Acuario y Técnica", tab_deco: "Sustrato y Decoración", tab_water: "Parámetros del Agua", tab_stock: "Población y Comida", tab_symptoms: "Síntomas", tab_cal: "📅 Calendario" },
+      it: { title: "💧 AquaLab Pro", subtitle: "Analisi Completa", tab_tech: "Vasca e Tecnica", tab_deco: "Fondo e Arredo", tab_water: "Valori dell'acqua", tab_stock: "Fauna e Cibo", tab_symptoms: "Sintomi", tab_cal: "📅 Calendario" },
+      pl: { title: "💧 AquaLab Pro", subtitle: "Pełna Analiza", tab_tech: "Akwarium i Technika", tab_deco: "Podłoże i Dekoracje", tab_water: "Parametry wody", tab_stock: "Obsada i Karma", tab_symptoms: "Objawy", tab_cal: "📅 Kalendarz" },
+      sv: { title: "💧 AquaLab Pro", subtitle: "Komplett Analys", tab_tech: "Akvarium & Teknik", tab_deco: "Bottenmaterial & Inredning", tab_water: "Vattenvärden", tab_stock: "Fiskar & Foder", tab_symptoms: "Symptom", tab_cal: "📅 Kalender" },
+      cs: { title: "💧 AquaLab Pro", subtitle: "Kompletní Analýza", tab_tech: "Nádrž a Technika", tab_deco: "Substrát a Dekorace", tab_water: "Parametry vody", tab_stock: "Osádka a Krmivo", tab_symptoms: "Příznaky", tab_cal: "📅 Kalendář" },
+      hu: { title: "💧 AquaLab Pro", subtitle: "Teljes Elemzés", tab_tech: "Akvárium & Technika", tab_deco: "Talaj & Dekoráció", tab_water: "Vízzértékek", tab_stock: "Halállomány & Eledel", tab_symptoms: "Tünetek", tab_cal: "📅 Naptár" },
+      el: { title: "💧 AquaLab Pro", subtitle: "Πλήρης Ανάλυση", tab_tech: "Ενυδρείο & Τεχνική", tab_deco: "Υπόστρωμα & Διακόσμηση", tab_water: "Παράμετροι Νερού", tab_stock: "Ψάρια & Τροφή", tab_symptoms: "Συμπτώματα", tab_cal: "📅 Ημερολόγιο" },
+      pt: { title: "💧 AquaLab Pro", subtitle: "Análise Completa", tab_tech: "Aquário e Técnica", tab_deco: "Substrato e Decoração", tab_water: "Parámetros da Água", tab_stock: "População e Alimento", tab_symptoms: "Sintomas", tab_cal: "📅 Calendário" },
+      ru: { title: "💧 AquaLab Pro", subtitle: "Полный Анализ", tab_tech: "Аквариум и Техника", tab_deco: "Грунт и Декор", tab_water: "Параметры воды", tab_stock: "Население и Корм", tab_symptoms: "Симптомы", tab_cal: "📅 Календарь" }
+    };
+
+    function changeLanguage(lang) {
+      const t = translations[lang];
+      if(!t) return;
+      document.querySelector('[data-i18n="title"]').innerText = t.title;
+      document.querySelector('[data-i18n="subtitle"]').innerText = t.subtitle;
+      document.querySelector('[data-i18n="tab_tech"]').innerText = t.tab_tech;
+      document.querySelector('[data-i18n="tab_deco"]').innerText = t.tab_deco;
+      document.querySelector('[data-i18n="tab_water"]').innerText = t.tab_water;
+      document.querySelector('[data-i18n="tab_stock"]').innerText = t.tab_stock;
+      document.querySelector('[data-i18n="tab_symptoms"]').innerText = t.tab_symptoms;
+      document.querySelector('[data-i18n="tab_cal"]').innerText = t.tab_cal;
+    }
+
     function openTab(evt, tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -500,6 +556,17 @@
       const b = parseFloat(document.getElementById('b').value) || 0;
       const h = parseFloat(document.getElementById('h').value) || 0;
       document.getElementById('volumen').value = ((l * b * h) / 1000).toFixed(1);
+      calcSubstrate();
+    }
+
+    function calcSubstrate() {
+      const l = parseFloat(document.getElementById('l').value) || 0;
+      const b = parseFloat(document.getElementById('b').value) || 0;
+      const height = parseFloat(document.getElementById('bodenhoehe').value) || 0;
+      
+      // Volumen = Länger * Breite * gewünschte Schichthöhe in cm / 1000 (ergibt Liter)
+      const vol = (l * b * height) / 1000;
+      document.getElementById('bodenVolumen').value = vol.toFixed(1);
     }
 
     function toggleDetails(id) {
@@ -629,6 +696,7 @@
 
 </body>
 </html>
+
 
 
 
