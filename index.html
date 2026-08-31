@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AquaLab Pro - Complete Analysis</title>
+  <title>Aquarium-Wasserwerte-Rechner (AWR) - Vollständige Aquarium-Analyse</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -26,7 +26,6 @@
       padding-bottom: 60px;
     }
     
-    /* Header neu ausgerichtet via Flexbox gegen Überlappung */
     .header { 
       display: flex;
       justify-content: space-between;
@@ -38,10 +37,9 @@
     .header-left {
       text-align: left;
     }
-    .header h1 { font-size: 1.3rem; color: var(--accent); }
+    .header h1 { font-size: 1.1rem; color: var(--accent); }
     .header p { font-size: 0.75rem; color: var(--text-muted); }
 
-    /* Sprachauswahl jetzt sauber im Header integriert */
     .lang-selector {
       background: #020617;
       border: 1px solid var(--border);
@@ -53,7 +51,6 @@
       max-width: 140px;
     }
 
-    /* Navigations-Tabs oben */
     .tabs {
       display: flex;
       gap: 4px;
@@ -118,7 +115,6 @@
       text-align: right;
     }
 
-    /* 2-Spalten-Layout für Wasserwerte */
     .water-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -215,7 +211,6 @@
       font-style: italic;
     }
 
-    /* Kalender Styles */
     .calendar-nav {
       display: flex;
       justify-content: space-between;
@@ -265,15 +260,32 @@
       margin-top: 12px;
       font-size: 0.85rem;
     }
+
+    /* Footer / Branding */
+    .app-footer {
+      text-align: center;
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .app-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .app-footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Neuer Header mit Flexbox gegen Überlappung -->
+  <!-- Header -->
   <div class="header">
     <div class="header-left">
-      <h1 data-i18n="title">💧 AquaLab Pro</h1>
-      <p data-i18n="subtitle">Vollständige Analyse</p>
+      <h1 data-i18n="title">Aquarium-Wasserwerte-Rechner (AWR)</h1>
+      <p data-i18n="subtitle">Vollständige Aquarium-Analyse</p>
     </div>
     <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
       <option value="de">🇩🇪 Deutsch</option>
@@ -365,7 +377,6 @@
         <h2>🧪 Wasserwerte-Vergleich</h2>
         <div class="water-grid">
           
-          <!-- Spalte 1: Wasser für den Wasserwechsel -->
           <div class="water-column">
             <h3>Wasserwechsel</h3>
             <div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" placeholder="z. B. 7,2"></div>
@@ -381,7 +392,6 @@
             <div class="water-field"><label>Fe (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
           </div>
 
-          <!-- Spalte 2: Aquarienwasser -->
           <div class="water-column">
             <h3>Aquarienwasser</h3>
             <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6,8"></div>
@@ -529,6 +539,12 @@
 
   </form>
 
+  <!-- FOOTER MIT DEINEM BRANDING -->
+  <div class="app-footer">
+    Bereitgestellt von <a href="https://www.aqua-enthusiasts.de" target="_blank">Aqua-Enthusiasts.de</a><br>
+    &copy; 2026 Aquarium-Wasserwerte-Rechner (AWR)
+  </div>
+
   <script>
     let today = new Date();
     let currentMonth = today.getMonth();
@@ -536,20 +552,20 @@
     let analysisDiary = {};
 
     const translations = {
-      de: { title: "💧 AquaLab Pro", subtitle: "Vollständige Analyse", tab_tech: "Becken & Technik", tab_deco: "Bodengrund & Deko", tab_water: "Wasserwerte", tab_stock: "Besatz & Futter", tab_symptoms: "Symptome", tab_cal: "📅 Kalender" },
-      nl: { title: "💧 AquaLab Pro", subtitle: "Volledige Analyse", tab_tech: "Aquarium & Techniek", tab_deco: "Bodem & Decor", tab_water: "Waterwaarden", tab_stock: "Visbestand & Voer", tab_symptoms: "Symptomen", tab_cal: "📅 Kalender" },
-      fr: { title: "💧 AquaLab Pro", subtitle: "Analyse Complète", tab_tech: "Bac & Technique", tab_deco: "Sol & Décor", tab_water: "Paramètres de l'eau", tab_stock: "Population & Nourriture", tab_symptoms: "Symptômes", tab_cal: "📅 Kalendrier" },
-      da: { title: "💧 AquaLab Pro", subtitle: "Komplet Analyse", tab_tech: "Akvarium & Teknik", tab_deco: "Bundlag & Dekoration", tab_water: "Vandværdier", tab_stock: "Fisk & Foder", tab_symptoms: "Symptomer", tab_cal: "📅 Kalender" },
-      en: { title: "💧 AquaLab Pro", subtitle: "Complete Analysis", tab_tech: "Tank & Tech", tab_deco: "Substrate & Decor", tab_water: "Water Parameters", tab_stock: "Livestock & Food", tab_symptoms: "Symptoms", tab_cal: "📅 Calendar" },
-      es: { title: "💧 AquaLab Pro", subtitle: "Análisis Completo", tab_tech: "Acuario y Técnica", tab_deco: "Sustrato y Decoración", tab_water: "Parámetros del Agua", tab_stock: "Población y Comida", tab_symptoms: "Síntomas", tab_cal: "📅 Calendario" },
-      it: { title: "💧 AquaLab Pro", subtitle: "Analisi Completa", tab_tech: "Vasca e Tecnica", tab_deco: "Fondo e Arredo", tab_water: "Valori dell'acqua", tab_stock: "Fauna e Cibo", tab_symptoms: "Sintomi", tab_cal: "📅 Calendario" },
-      pl: { title: "💧 AquaLab Pro", subtitle: "Pełna Analiza", tab_tech: "Akwarium i Technika", tab_deco: "Podłoże i Dekoracje", tab_water: "Parametry wody", tab_stock: "Obsada i Karma", tab_symptoms: "Objawy", tab_cal: "📅 Kalendarz" },
-      sv: { title: "💧 AquaLab Pro", subtitle: "Komplett Analys", tab_tech: "Akvarium & Teknik", tab_deco: "Bottenmaterial & Inredning", tab_water: "Vattenvärden", tab_stock: "Fiskar & Foder", tab_symptoms: "Symptom", tab_cal: "📅 Kalender" },
-      cs: { title: "💧 AquaLab Pro", subtitle: "Kompletní Analýza", tab_tech: "Nádrž a Technika", tab_deco: "Substrát a Dekorace", tab_water: "Parametry vody", tab_stock: "Osádka a Krmivo", tab_symptoms: "Příznaky", tab_cal: "📅 Kalendář" },
-      hu: { title: "💧 AquaLab Pro", subtitle: "Teljes Elemzés", tab_tech: "Akvárium & Technika", tab_deco: "Talaj & Dekoráció", tab_water: "Vízzértékek", tab_stock: "Halállomány & Eledel", tab_symptoms: "Tünetek", tab_cal: "📅 Naptár" },
-      el: { title: "💧 AquaLab Pro", subtitle: "Πλήρης Ανάλυση", tab_tech: "Ενυδρείο & Τεχνική", tab_deco: "Υπόστρωμα & Διακόσμηση", tab_water: "Παράμετροι Νερού", tab_stock: "Ψάρια & Τροφή", tab_symptoms: "Συμπτώματα", tab_cal: "📅 Ημερολόγιο" },
-      pt: { title: "💧 AquaLab Pro", subtitle: "Análise Completa", tab_tech: "Aquário e Técnica", tab_deco: "Substrato e Decoração", tab_water: "Parámetros da Água", tab_stock: "População e Alimento", tab_symptoms: "Sintomas", tab_cal: "📅 Calendário" },
-      ru: { title: "💧 AquaLab Pro", subtitle: "Полный Анализ", tab_tech: "Аквариум и Техника", tab_deco: "Грунт и Декор", tab_water: "Параметры воды", tab_stock: "Население и Корм", tab_symptoms: "Симптомы", tab_cal: "📅 Календарь" }
+      de: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Vollständige Aquarium-Analyse", tab_tech: "Becken & Technik", tab_deco: "Bodengrund & Deko", tab_water: "Wasserwerte", tab_stock: "Besatz & Futter", tab_symptoms: "Symptome", tab_cal: "📅 Kalender" },
+      nl: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Volledige Aquarium-Analyse", tab_tech: "Aquarium & Techniek", tab_deco: "Bodem & Decor", tab_water: "Waterwaarden", tab_stock: "Visbestand & Voer", tab_symptoms: "Symptomen", tab_cal: "📅 Kalender" },
+      fr: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Analyse Complète d'Aquarium", tab_tech: "Bac & Technique", tab_deco: "Sol & Décor", tab_water: "Paramètres de l'eau", tab_stock: "Population & Nourriture", tab_symptoms: "Symptômes", tab_cal: "📅 Kalendrier" },
+      da: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Komplet Akvarieanalyse", tab_tech: "Akvarium & Teknik", tab_deco: "Bundlag & Dekoration", tab_water: "Vandværdier", tab_stock: "Fisk & Foder", tab_symptoms: "Symptomer", tab_cal: "📅 Kalender" },
+      en: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Complete Aquarium Analysis", tab_tech: "Tank & Tech", tab_deco: "Substrate & Decor", tab_water: "Water Parameters", tab_stock: "Livestock & Food", tab_symptoms: "Symptoms", tab_cal: "📅 Calendar" },
+      es: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Análisis Completo de Acuario", tab_tech: "Acuario y Técnica", tab_deco: "Sustrato y Decoración", tab_water: "Parámetros del Agua", tab_stock: "Población y Comida", tab_symptoms: "Síntomas", tab_cal: "📅 Calendario" },
+      it: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Analisi Completa dell'Acquario", tab_tech: "Vasca e Tecnica", tab_deco: "Fondo e Arredo", tab_water: "Valori dell'acqua", tab_stock: "Fauna e Cibo", tab_symptoms: "Sintomi", tab_cal: "📅 Calendario" },
+      pl: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Pełna Analiza Akwarium", tab_tech: "Akwarium i Technika", tab_deco: "Podłoże i Dekoracje", tab_water: "Parametry wody", tab_stock: "Obsada i Karma", tab_symptoms: "Objawy", tab_cal: "📅 Kalendarz" },
+      sv: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Komplett Akvarieanalys", tab_tech: "Akvarium & Teknik", tab_deco: "Bottenmaterial & Inredning", tab_water: "Vattenvärden", tab_stock: "Fiskar & Foder", tab_symptoms: "Symptom", tab_cal: "📅 Kalender" },
+      cs: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Kompletní Analýza Akvária", tab_tech: "Nádrž a Technika", tab_deco: "Substrát a Dekorace", tab_water: "Parametry vody", tab_stock: "Osádka a Krmivo", tab_symptoms: "Příznaky", tab_cal: "📅 Kalendář" },
+      hu: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Teljes Akváriumi Elemzés", tab_tech: "Akvárium & Technika", tab_deco: "Talaj & Dekoráció", tab_water: "Vízzértékek", tab_stock: "Halállomány & Eledel", tab_symptoms: "Tünetek", tab_cal: "📅 Naptár" },
+      el: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Πλήρης Ανάλυση Ενυδρείου", tab_tech: "Ενυδρείο & Τεχνική", tab_deco: "Υπόστρωμα & Διακόσμηση", tab_water: "Παράμετροι Νερού", tab_stock: "Ψάρια & Τροφή", tab_symptoms: "Συμπτώματα", tab_cal: "📅 Ημερολόγιο" },
+      pt: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Análise Completa do Aquário", tab_tech: "Aquário e Técnica", tab_deco: "Substrato e Decoração", tab_water: "Parámetros da Água", tab_stock: "População e Alimento", tab_symptoms: "Sintomas", tab_cal: "📅 Calendário" },
+      ru: { title: "Aquarium-Wasserwerte-Rechner (AWR)", subtitle: "Полный Анализ Аквариума", tab_tech: "Аквариум и Техника", tab_deco: "Грунт и Декор", tab_water: "Параметры воды", tab_stock: "Население и Корм", tab_symptoms: "Симптомы", tab_cal: "📅 Календарь" }
     };
 
     function changeLanguage(lang) {
@@ -717,6 +733,7 @@
 
 </body>
 </html>
+
 
 
 
