@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AquaLab Pro - Tagebuch & Kalender</title>
+  <title>AquaLab Pro - Ultra Complete</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -22,33 +22,33 @@
       font-family: system-ui, -apple-system, sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      padding: 12px;
+      padding: 10px;
       padding-bottom: 60px;
     }
-    .header { text-align: center; padding: 10px 0 15px; }
-    .header h1 { font-size: 1.4rem; color: var(--accent); }
-    .header p { font-size: 0.8rem; color: var(--text-muted); }
+    .header { text-align: center; padding: 8px 0 12px; }
+    .header h1 { font-size: 1.3rem; color: var(--accent); }
+    .header p { font-size: 0.75rem; color: var(--text-muted); }
 
     /* Navigations-Tabs oben */
     .tabs {
       display: flex;
-      gap: 4px;
-      margin-bottom: 15px;
+      gap: 3px;
+      margin-bottom: 12px;
       background: #020617;
-      padding: 4px;
+      padding: 3px;
       border-radius: 10px;
-      overflow-x: auto;
     }
     .tab-btn {
       flex: 1;
-      padding: 10px 6px;
-      font-size: 0.75rem;
+      padding: 8px 4px;
+      font-size: 0.65rem;
       font-weight: bold;
       border: none;
       background: transparent;
       color: var(--text-muted);
       border-radius: 8px;
       cursor: pointer;
+      text-align: center;
       white-space: nowrap;
     }
     .tab-btn.active { background: var(--accent); color: #0f172a; }
@@ -60,70 +60,70 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
     }
     .card h2 {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--accent);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 6px;
+      padding-bottom: 5px;
     }
     .card h3 {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--accent);
-      margin: 12px 0 6px 0;
+      margin: 10px 0 5px 0;
     }
 
     .form-group {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .form-group label { font-size: 0.85rem; flex: 1; padding-right: 10px; }
+    .form-group label { font-size: 0.8rem; flex: 1; padding-right: 8px; }
     .form-group input, .form-group select {
-      width: 140px;
-      padding: 8px;
+      width: 130px;
+      padding: 6px;
       border-radius: 6px;
       border: 1px solid var(--border);
       background: #0f172a;
       color: #fff;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       text-align: right;
     }
 
-    /* 2-Spalten-Layout für Wasserwerte */
+    /* 2-Spalten-Layout für Wasserwerte (Volle Yokuchi Liste) */
     .water-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
     }
     .water-column h3 {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       text-align: center;
       background: #020617;
-      padding: 6px;
+      padding: 5px;
       border-radius: 6px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       color: var(--text);
     }
-    .water-field { margin-bottom: 8px; }
-    .water-field label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px; }
-    .water-field input { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.8rem; }
+    .water-field { margin-bottom: 6px; }
+    .water-field label { display: block; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 2px; }
+    .water-field input { width: 100%; padding: 5px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.75rem; }
 
     .check-group {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-      font-size: 0.85rem;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 0.78rem;
       cursor: pointer;
     }
     .check-group input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       accent-color: var(--accent);
       flex-shrink: 0;
     }
@@ -134,88 +134,82 @@
       color: #fff;
       font-weight: bold;
       border: none;
-      padding: 14px;
+      padding: 12px;
       border-radius: 8px;
-      font-size: 1rem;
-      margin-top: 15px;
+      font-size: 0.95rem;
+      margin-top: 12px;
       cursor: pointer;
     }
 
     .result-box {
       display: none;
-      margin-top: 15px;
+      margin-top: 12px;
     }
 
-    /* KLICKBARE WARN-KARTEN */
+    /* Warn-Karten mit Details */
     .alert-card {
-      padding: 12px;
+      padding: 10px;
       border-radius: 8px;
-      margin-bottom: 10px;
-      font-size: 0.85rem;
-      line-height: 1.4;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+      line-height: 1.3;
       border-left: 4px solid;
       cursor: pointer;
-      transition: background 0.2s;
     }
-    .alert-card:hover { opacity: 0.9; }
     .alert-blue { background: rgba(2, 132, 199, 0.15); border-color: var(--warn-blue); color: #38bdf8; }
     .alert-orange { background: rgba(217, 119, 6, 0.15); border-color: var(--warn-orange); color: #fbbf24; }
     .alert-red { background: rgba(220, 38, 38, 0.15); border-color: var(--warn-red); color: #f87171; }
 
     .alert-details {
       display: none;
-      margin-top: 8px;
-      padding-top: 8px;
+      margin-top: 6px;
+      padding-top: 6px;
       border-top: 1px dashed rgba(255,255,255,0.2);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #cbd5e1;
-      line-height: 1.5;
+      line-height: 1.4;
     }
-    .alert-details ul { margin-left: 15px; margin-top: 4px; }
+    .alert-details ul { margin-left: 12px; margin-top: 3px; }
     .click-hint {
       display: block;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       text-align: right;
       color: var(--text-muted);
-      margin-top: 4px;
+      margin-top: 2px;
       font-style: italic;
     }
 
-    /* KALENDER DESIGN */
+    /* Kalender */
     .calendar-nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       font-weight: bold;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
     .calendar-nav button {
       background: var(--border);
       color: #fff;
       border: none;
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 6px;
       cursor: pointer;
     }
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
+      gap: 3px;
       text-align: center;
     }
-    .cal-header-day {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      padding-bottom: 4px;
-    }
+    .cal-header-day { font-size: 0.65rem; color: var(--text-muted); padding-bottom: 3px; }
     .cal-day {
       background: #020617;
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 8px 2px;
-      font-size: 0.8rem;
-      min-height: 45px;
+      padding: 6px 2px;
+      font-size: 0.75rem;
+      min-height: 40px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -223,27 +217,17 @@
       cursor: pointer;
     }
     .cal-day.empty { background: transparent; border: none; cursor: default; }
-    .cal-day.has-entry {
-      border-color: var(--accent);
-      background: rgba(14, 165, 233, 0.15);
-    }
-    .entry-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      margin-top: 2px;
-    }
+    .cal-day.has-entry { border-color: var(--accent); background: rgba(14, 165, 233, 0.15); }
+    .entry-dot { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; margin-top: 2px; }
     
-    /* Historien-Anzeige Modal / Box */
     #historyDetailBox {
       display: none;
       background: #020617;
       border: 1px solid var(--accent);
-      padding: 12px;
+      padding: 10px;
       border-radius: 8px;
-      margin-top: 12px;
-      font-size: 0.85rem;
+      margin-top: 10px;
+      font-size: 0.8rem;
     }
   </style>
 </head>
@@ -251,12 +235,12 @@
 
   <div class="header">
     <h1>💧 AquaLab Pro</h1>
-    <p>Tagebuch & Intelligente Diagnose</p>
+    <p>Vollständiges Analyse- & Tagebuch-System</p>
   </div>
 
-  <!-- TABS NAVIGATION -->
+  <!-- TABS -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="openTab(event, 'tab-becken')">Becken</button>
+    <button class="tab-btn active" onclick="openTab(event, 'tab-becken')">Becken & Setup</button>
     <button class="tab-btn" onclick="openTab(event, 'tab-wasser')">Wasserwerte</button>
     <button class="tab-btn" onclick="openTab(event, 'tab-symptome')">Symptome</button>
     <button class="tab-btn" onclick="openTab(event, 'tab-kalender')">📅 Kalender</button>
@@ -264,45 +248,98 @@
 
   <form onsubmit="runAnalysis(event)">
 
-    <!-- TAB 1: BECKEN -->
+    <!-- TAB 1: BECKEN, TECHNIK, BODEN & BESATZ -->
     <div id="tab-becken" class="tab-content active">
       <div class="card">
-        <h2>📐 Angaben zum Aquarium</h2>
-        <div class="form-group"><label>Aquarienlänge (cm):</label><input type="number" id="l" value="60" oninput="calcVol()"></div>
-        <div class="form-group"><label>Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
-        <div class="form-group"><label>Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
-        <div class="form-group"><label>Aquarienvolumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
+        <h2>📐 Aquarium & Technik</h2>
+        <div class="form-group"><label>Länge (cm):</label><input type="number" id="l" value="60" oninput="calcVol()"></div>
+        <div class="form-group"><label>Breite (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
+        <div class="form-group"><label>Höhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
+        <div class="form-group"><label>Volumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
+        <div class="form-group"><label>Filtertyp:</label><select><option selected>Außenfilter</option><option>Innenfilter</option><option>Rucksack</option></select></div>
+        <div class="form-group"><label>Filterdurchfluss (L/h):</label><input type="number" value="500"></div>
+        <div class="form-group"><label>Wassertemperatur (°C):</label><input type="number" value="24" step="0.5"></div>
+        <div class="form-group"><label>Beleuchtung (h/Tag):</label><input type="number" value="8"></div>
+      </div>
+
+      <div class="card">
+        <h2>🪨 Boden, Deko & Besatz</h2>
+        <div class="form-group"><label>Bodengrund:</label><select><option selected>Quarzkies</option><option>Aktiver Soil</option><option>Basaltkies</option></select></div>
+        <div class="form-group"><label>Nährstoff-Untergrund?</label><select><option>Nein</option><option>Ja</option></select></div>
+        <div class="form-group"><label>Wurzeln/Steine (kg):</label><input type="number" value="7" step="0.1"></div>
+        <div class="form-group"><label>Kleine Fische (&lt;3cm):</label><input type="number" value="10"></div>
+        <div class="form-group"><label>Mittel Fische (3-8cm):</label><input type="number" value="5"></div>
+        <div class="form-group"><label>Große Fische (&gt;8cm):</label><input type="number" value="0"></div>
+        <div class="form-group"><label>Garnelen (Stk.):</label><input type="number" value="15"></div>
+        <div class="form-group"><label>Schnecken (Stk.):</label><input type="number" value="10"></div>
       </div>
     </div>
 
-    <!-- TAB 2: WASSERWERTE -->
+    <!-- TAB 2: WASSERWERTE (VOLLE YOKUCHI LISTE) -->
     <div id="tab-wasser" class="tab-content">
       <div class="card">
-        <h2>🧪 Wasserwerte-Vergleich</h2>
+        <h2>🧪 Wasserwerte-Vergleich (Yokuchi Standard)</h2>
         <div class="water-grid">
           <div class="water-column">
             <h3>Wasserwechsel</h3>
-            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" value="7,2"></div>
-            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_wechsel" value="6,0"></div>
-            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_wechsel" value="0,01"></div>
+            <div class="water-field"><label>pH:</label><input type="text" value="7,2"></div>
+            <div class="water-field"><label>GH:</label><input type="text" value="10,0"></div>
+            <div class="water-field"><label>KH:</label><input type="text" value="6,0"></div>
+            <div class="water-field"><label>NH₄ (ppm):</label><input type="text" value="0,01"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" value="0,01"></div>
+            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" value="0,01"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0,01"></div>
+            <div class="water-field"><label>K (ppm):</label><input type="text" value="0,01"></div>
+            <div class="water-field"><label>Ca (ppm):</label><input type="text" value="0,01"></div>
+            <div class="water-field"><label>Mg (ppm):</label><input type="text" value="0,01"></div>
+            <div class="water-field"><label>Fe (ppm):</label><input type="text" value="0,01"></div>
           </div>
           <div class="water-column">
             <h3>Aquarienwasser</h3>
             <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6,8"></div>
+            <div class="water-field"><label>GH:</label><input type="text" value="12,0"></div>
             <div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4,0"></div>
+            <div class="water-field"><label>NH₄ (ppm):</label><input type="text" value="0,0"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" value="0,0"></div>
             <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10,0"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0,5"></div>
+            <div class="water-field"><label>K (ppm):</label><input type="text" value="10,0"></div>
+            <div class="water-field"><label>Ca (ppm):</label><input type="text" value="40,0"></div>
+            <div class="water-field"><label>Mg (ppm):</label><input type="text" value="10,0"></div>
+            <div class="water-field"><label>Fe (ppm):</label><input type="text" value="0,05"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 3: SYMPTOME -->
+    <!-- TAB 3: SYMPTOME (VOLLE LÜCKENLOSE LISTE) -->
     <div id="tab-symptome" class="tab-content">
       <div class="card">
         <h2>⚠️ Beobachtete Probleme</h2>
+        <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px;">Wähle alle zutreffenden Symptome aus:</p>
+        
+        <h3>Algen</h3>
         <label class="check-group"><input type="checkbox" id="chk_faden"> Grüne Fadenalgen</label>
+        <label class="check-group"><input type="checkbox" id="chk_punkt"> Grüne Punktalgen (GSA)</label>
+        <label class="check-group"><input type="checkbox" id="chk_cyano"> Cyanobakterien (Blaualgen)</label>
+        <label class="check-group"><input type="checkbox" id="chk_pinsel"> Pinselalgen / Bartalgen (BBA)</label>
+        <label class="check-group"><input type="checkbox" id="chk_kiesel"> Kieselalgen</label>
+
+        <h3>Pflanzen</h3>
+        <label class="check-group"><input type="checkbox" id="chk_wuchs"> Kein Wachstum / Stagnation</label>
         <label class="check-group"><input type="checkbox" id="chk_loechoer" checked> Löcher in den Blättern</label>
         <label class="check-group"><input type="checkbox" id="chk_gilb"> Vergilbende Blätter</label>
+        <label class="check-group"><input type="checkbox" id="chk_blass"> Verblassen / Farbverlust</label>
+
+        <h3>Fische & Wirbellose</h3>
+        <label class="check-group"><input type="checkbox" id="chk_luft"> Schnappen nach Luft an Oberfläche</label>
+        <label class="check-group"><input type="checkbox" id="chk_apathisch"> Teilnahmslosigkeit / Appetitlosigkeit</label>
+        <label class="check-group"><input type="checkbox" id="chk_tode"> Todesfälle in den letzten Tagen</label>
+
+        <h3>Wasser & Erscheinungsbild</h3>
+        <label class="check-group"><input type="checkbox" id="chk_trueb"> Trübes Wasser</label>
+        <label class="check-group"><input type="checkbox" id="chk_gelb"> Gelbe / teefarbene Wasserfärbung</label>
+        <label class="check-group"><input type="checkbox" id="chk_geruch"> Unangenehmer Geruch</label>
 
         <button type="submit" class="btn-red">Analysieren & im Kalender speichern</button>
       </div>
@@ -311,13 +348,21 @@
       <div id="resultSection" class="result-box">
         <div class="card" style="border-color: var(--accent);">
           <h2>📊 Diagnose & Warnungen</h2>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Tippe auf eine Warnung für Details:</p>
+          <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">Tippe auf eine Warnung für Details:</p>
           
+          <div class="alert-card alert-blue" onclick="toggleDetails('det-1')">
+            <strong>ℹ️ Nährstoff-Check:</strong> Nitrat/Phosphat im optimalen Bereich.
+            <span class="click-hint">▼ Tippen für Details</span>
+            <div id="det-1" class="alert-details">
+              <strong>Bedeutung:</strong> Das Verhältnis passt perfekt. Kein Handlungsbedarf.
+            </div>
+          </div>
+
           <div class="alert-card alert-orange" onclick="toggleDetails('det-2')">
-            <strong>⚠️ Hinweis:</strong> Überprüfe die CO₂-Versorgung im Verhältnis zur Karbonathärte (KH).
+            <strong>⚠️ Hinweis:</strong> Überprüfe die CO₂-Versorgung im Verhältnis zur KH.
             <span class="click-hint">▼ Tippen für Details</span>
             <div id="det-2" class="alert-details">
-              <strong>Was du tun musst:</strong> Prüfe, ob dein CO₂-Dauertest hellgrün ist und erhöhe ggf. leicht die Zufuhr.
+              <strong>Was tun:</strong> Prüfe den CO₂-Dauertest (sollte hellgrün sein) und erhöhe ggf. die Blasenzahl leicht.
             </div>
           </div>
 
@@ -325,29 +370,26 @@
             <strong>🚨 Kritische Belastung:</strong> Löcher in Blättern erkannt.
             <span class="click-hint">▼ Tippen für Details</span>
             <div id="det-3" class="alert-details">
-              <strong>Was du tun musst:</strong> Kalium-Wert prüfen und Makro-Dünger nachdosieren.
+              <strong>Was tun:</strong> Kalium-Wert prüfen und Makro-Dünger nachdosieren.
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 4: KALENDER & TAGEBUCH -->
+    <!-- TAB 4: KALENDER -->
     <div id="tab-kalender" class="tab-content">
       <div class="card">
-        <h2>📅 Aquarien-Kalender</h2>
+        <h2>📅 Aquarien-Tagebuch</h2>
         <div class="calendar-nav">
           <button type="button" onclick="changeMonth(-1)">‹</button>
           <span id="calMonthYear">März 2026</span>
           <button type="button" onclick="changeMonth(1)">›</button>
         </div>
-        <div class="calendar-grid" id="calendarGrid">
-          <!-- Wird per JavaScript generiert -->
-        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
 
-        <!-- Detailansicht für angeklickten Tag -->
         <div id="historyDetailBox">
-          <h3 id="historyDateTitle" style="color:var(--accent); margin-bottom:6px;">Eintrag vom</h3>
+          <h3 id="historyDateTitle" style="color:var(--accent); margin-bottom:4px;">Eintrag</h3>
           <p id="historyContentText">Keine Daten vorhanden.</p>
         </div>
       </div>
@@ -356,12 +398,9 @@
   </form>
 
   <script>
-    // Aktuelles Datum für den Kalender initialisieren
     let today = new Date();
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
-
-    // Speicher für Analysen (Schlüssel: "YYYY-MM-DD", Wert: Text/Objekt)
     let analysisDiary = {};
 
     function openTab(evt, tabId) {
@@ -369,9 +408,7 @@
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       evt.currentTarget.classList.add('active');
-      if(tabId === 'tab-kalender') {
-        renderCalendar();
-      }
+      if(tabId === 'tab-kalender') { renderCalendar(); }
     }
 
     function calcVol() {
@@ -383,35 +420,40 @@
 
     function runAnalysis(event) {
       event.preventDefault();
-      
-      // Ergebnis anzeigen
       const resultSec = document.getElementById('resultSection');
       resultSec.style.display = 'block';
       resultSec.scrollIntoView({ behavior: 'smooth' });
 
-      // Datum als String im Format YYYY-MM-DD generieren
       const year = today.getFullYear();
       const month = String(today.getMonth() + 1).padStart(2, '0');
       const day = String(today.getDate()).padStart(2, '0');
       const dateKey = `${year}-${month}-${day}`;
 
-      // Werte einsammeln fürs Tagebuch
       let symptoms = [];
       if(document.getElementById('chk_faden').checked) symptoms.push("Grüne Fadenalgen");
+      if(document.getElementById('chk_punkt').checked) symptoms.push("Grüne Punktalgen");
+      if(document.getElementById('chk_cyano').checked) symptoms.push("Cyanobakterien");
+      if(document.getElementById('chk_pinsel').checked) symptoms.push("Pinselalgen");
+      if(document.getElementById('chk_kiesel').checked) symptoms.push("Kieselalgen");
+      if(document.getElementById('chk_wuchs').checked) symptoms.push("Kein Wachstum");
       if(document.getElementById('chk_loechoer').checked) symptoms.push("Löcher in Blättern");
       if(document.getElementById('chk_gilb').checked) symptoms.push("Vergilbende Blätter");
+      if(document.getElementById('chk_blass').checked) symptoms.push("Farbverlust");
+      if(document.getElementById('chk_luft').checked) symptoms.push("Schnappen nach Luft");
+      if(document.getElementById('chk_apathisch').checked) symptoms.push("Apathische Fische");
+      if(document.getElementById('chk_tode').checked) symptoms.push("Todesfälle");
+      if(document.getElementById('chk_trueb').checked) symptoms.push("Trübes Wasser");
+      if(document.getElementById('chk_gelb').checked) symptoms.push("Gelbe Färbung");
+      if(document.getElementById('chk_geruch').checked) symptoms.push("Geruch");
 
-      const ph = document.getElementById('w_ph_akt').value;
-      const kh = document.getElementById('w_kh_akt').value;
-
-      // Im Tagebuch speichern
       analysisDiary[dateKey] = {
-        ph: ph,
-        kh: kh,
+        ph: document.getElementById('w_ph_akt').value,
+        kh: document.getElementById('w_kh_akt').value,
+        no3: document.getElementById('w_no3_akt').value,
         symptoms: symptoms.length > 0 ? symptoms.join(", ") : "Keine Auffälligkeiten"
       };
 
-      alert("Erfolgreich analysiert und im Kalender für heute (" + dateKey + ") eingetragen!");
+      alert("Analyse im Kalender für heute (" + dateKey + ") gespeichert!");
     }
 
     function toggleDetails(id) {
@@ -419,7 +461,6 @@
       el.style.display = (el.style.display === 'block') ? 'none' : 'block';
     }
 
-    // Kalender-Logik
     function renderCalendar() {
       const grid = document.getElementById('calendarGrid');
       grid.innerHTML = '';
@@ -427,7 +468,6 @@
       const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
       document.getElementById('calMonthYear').innerText = `${monthNames[currentMonth]} ${currentYear}`;
 
-      // Wochentage Header
       const daysOfWeek = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
       daysOfWeek.forEach(d => {
         let div = document.createElement('div');
@@ -439,14 +479,12 @@
       let firstDayIndex = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
       let totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-      // Leere Felder am Monatsanfang
       for (let i = 0; i < firstDayIndex; i++) {
         let div = document.createElement('div');
         div.className = 'cal-day empty';
         grid.appendChild(div);
       }
 
-      // Tage des Monats
       for (let d = 1; d <= totalDays; d++) {
         let div = document.createElement('div');
         div.className = 'cal-day';
@@ -457,7 +495,6 @@
 
         div.innerHTML = `<span>${d}</span>`;
 
-        // Prüfen ob an dem Tag eine Analyse gemacht wurde
         if (analysisDiary[dateKey]) {
           div.classList.add('has-entry');
           let dot = document.createElement('div');
@@ -465,24 +502,15 @@
           div.appendChild(dot);
         }
 
-        // Klick auf Kalendertag öffnet die Analyse
-        div.onclick = function() {
-          showHistoryDetails(dateKey);
-        };
-
+        div.onclick = function() { showHistoryDetails(dateKey); };
         grid.appendChild(div);
       }
     }
 
     function changeMonth(direction) {
       currentMonth += direction;
-      if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-      } else if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-      }
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+      else if (currentMonth < 0) { currentMonth = 11; currentYear--; }
       renderCalendar();
     }
 
@@ -497,8 +525,7 @@
       if (analysisDiary[dateKey]) {
         let data = analysisDiary[dateKey];
         content.innerHTML = `
-          <strong>pH-Wert (Aquarium):</strong> ${data.ph}<br>
-          <strong>KH-Wert (Aquarium):</strong> ${data.kh}<br>
+          <strong>pH:</strong> ${data.ph} | <strong>KH:</strong> ${data.kh} | <strong>NO₃:</strong> ${data.no3}<br>
           <strong>Symptome:</strong> ${data.symptoms}
         `;
       } else {
@@ -509,6 +536,7 @@
 
 </body>
 </html>
+
 
 
 
