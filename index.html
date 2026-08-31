@@ -25,23 +25,32 @@
       padding: 12px;
       padding-bottom: 60px;
     }
-    .header { text-align: center; padding: 10px 0 15px; position: relative; }
-    .header h1 { font-size: 1.4rem; color: var(--accent); }
-    .header p { font-size: 0.8rem; color: var(--text-muted); }
+    
+    /* Header neu ausgerichtet via Flexbox gegen Überlappung */
+    .header { 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0 15px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 15px;
+    }
+    .header-left {
+      text-align: left;
+    }
+    .header h1 { font-size: 1.3rem; color: var(--accent); }
+    .header p { font-size: 0.75rem; color: var(--text-muted); }
 
-    /* Sprachauswahl oben rechts */
+    /* Sprachauswahl jetzt sauber im Header integriert */
     .lang-selector {
-      position: absolute;
-      top: 10px;
-      right: 0;
       background: #020617;
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 4px 8px;
+      padding: 6px 10px;
       border-radius: 6px;
       font-size: 0.75rem;
       cursor: pointer;
-      max-width: 150px;
+      max-width: 140px;
     }
 
     /* Navigations-Tabs oben */
@@ -260,27 +269,31 @@
 </head>
 <body>
 
+  <!-- Neuer Header mit Flexbox gegen Überlappung -->
   <div class="header">
+    <div class="header-left">
+      <h1 data-i18n="title">💧 AquaLab Pro</h1>
+      <p data-i18n="subtitle">Vollständige Analyse</p>
+    </div>
     <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
-      <option value="de">🇩🇪 Deutsch (DE/AT/CH/LU)</option>
-      <option value="nl">🇳🇱 Nederlands (NL/BE)</option>
-      <option value="fr">🇫🇷 Français (FR/BE/CH/LU)</option>
-      <option value="da">🇩🇰 Dansk (DK)</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="nl">🇳🇱 Nederlands</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="da">🇩🇰 Dansk</option>
       <option value="en">🇬🇧 English</option>
       <option value="es">🇪🇸 Español</option>
-      <option value="it">🇮🇹 Italiano (IT/CH)</option>
-      <option value="pl">🇵🇱 Polski (PL)</option>
-      <option value="sv">🇸🇪 Svenska (SE)</option>
-      <option value="cs">🇨🇿 Čeština (CZ)</option>
-      <option value="hu">🇭🇺 Magyar (HU)</option>
-      <option value="el">🇬🇷 Ελληνικά (GR)</option>
-      <option value="pt">🇵🇹 Português (PT)</option>
-      <option value="ru">🇷🇺 Русский (RU)</option>
+      <option value="it">🇮🇹 Italiano</option>
+      <option value="pl">🇵🇱 Polski</option>
+      <option value="sv">🇸🇪 Svenska</option>
+      <option value="cs">🇨🇿 Čeština</option>
+      <option value="hu">🇭🇺 Magyar</option>
+      <option value="el">🇬🇷 Ελληνικά</option>
+      <option value="pt">🇵🇹 Português</option>
+      <option value="ru">🇷🇺 Русский</option>
     </select>
-    <h1 data-i18n="title">💧 AquaLab Pro</h1>
-    <p data-i18n="subtitle">Vollständige Analyse</p>
   </div>
 
+  <!-- TABS NAVIGATION -->
   <div class="tabs">
     <button class="tab-btn active" onclick="openTab(event, 'tab-becken')" data-i18n="tab_tech">Becken & Technik</button>
     <button class="tab-btn" onclick="openTab(event, 'tab-duengung')" data-i18n="tab_deco">Bodengrund & Deko</button>
@@ -292,6 +305,7 @@
 
   <form onsubmit="runAnalysis(event)">
 
+    <!-- TAB 1: BECKEN, FILTER & LICHT -->
     <div id="tab-becken" class="tab-content active">
       <div class="card">
         <h2>📐 Angaben zum Aquarium</h2>
@@ -324,6 +338,7 @@
       </div>
     </div>
 
+    <!-- TAB 2: BODENGRUND & DEKO -->
     <div id="tab-duengung" class="tab-content">
       <div class="card">
         <h2>🪨 Bodengrund und Dekoration</h2>
@@ -344,11 +359,13 @@
       </div>
     </div>
 
+    <!-- TAB 3: WASSERWERTE -->
     <div id="tab-wasser" class="tab-content">
       <div class="card">
         <h2>🧪 Wasserwerte-Vergleich</h2>
         <div class="water-grid">
           
+          <!-- Spalte 1: Wasser für den Wasserwechsel -->
           <div class="water-column">
             <h3>Wasserwechsel</h3>
             <div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" placeholder="z. B. 7,2"></div>
@@ -364,6 +381,7 @@
             <div class="water-field"><label>Fe (ppm):</label><input type="text" placeholder="z. B. 0,01"></div>
           </div>
 
+          <!-- Spalte 2: Aquarienwasser -->
           <div class="water-column">
             <h3>Aquarienwasser</h3>
             <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6,8"></div>
@@ -392,6 +410,7 @@
       </div>
     </div>
 
+    <!-- TAB 4: BESATZ & FÜTTERUNG -->
     <div id="tab-besatz" class="tab-content">
       <div class="card">
         <h2>🐟 Tierbesatz & Fütterung</h2>
@@ -410,6 +429,7 @@
       </div>
     </div>
 
+    <!-- TAB 5: SYMPTOME -->
     <div id="tab-symptome" class="tab-content">
       <div class="card">
         <h2>⚠️ Beobachtete Probleme</h2>
@@ -452,6 +472,7 @@
         <button type="submit" class="btn-red">Analysieren & im Kalender speichern</button>
       </div>
 
+      <!-- DIAGNOSE & WARNUNGEN -->
       <div id="resultSection" class="result-box">
         <div class="card" style="border-color: var(--accent);">
           <h2>📊 Diagnose & Warnungen</h2>
@@ -488,6 +509,7 @@
 
     </div>
 
+    <!-- TAB 6: KALENDER -->
     <div id="tab-kalender" class="tab-content">
       <div class="card">
         <h2>📅 Aquarien-Tagebuch</h2>
@@ -564,7 +586,6 @@
       const b = parseFloat(document.getElementById('b').value) || 0;
       const height = parseFloat(document.getElementById('bodenhoehe').value) || 0;
       
-      // Volumen = Länger * Breite * gewünschte Schichthöhe in cm / 1000 (ergibt Liter)
       const vol = (l * b * height) / 1000;
       document.getElementById('bodenVolumen').value = vol.toFixed(1);
     }
@@ -696,6 +717,7 @@
 
 </body>
 </html>
+
 
 
 
