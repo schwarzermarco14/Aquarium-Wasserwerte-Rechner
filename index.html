@@ -1,250 +1,318 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AquaLab Pro - Wasseranalyse</title>
+  <title>AquaLab Pro - Rechner & Diagnose</title>
   <style>
     :root {
-      --bg: #0b0f19;
-      --card: #151c2c;
-      --card-border: #232f48;
-      --primary: #00d2ff;
-      --primary-dark: #0077ff;
-      --text: #f1f5f9;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --accent: #0ea5e9;
+      --text: #f8fafc;
       --text-muted: #94a3b8;
+      --btn-red: #ef4444;
       --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
+      --warn: #f59e0b;
     }
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
       color: var(--text);
-      margin: 0;
-      padding: 15px;
-      padding-bottom: 40px;
+      padding: 12px;
+      padding-bottom: 60px;
     }
-    .header {
-      text-align: center;
-      padding: 15px 0 20px 0;
+    .header { text-align: center; padding: 10px 0 15px; }
+    .header h1 { font-size: 1.4rem; color: var(--accent); }
+    .header p { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Navigatios-Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 15px;
+      background: #020617;
+      padding: 4px;
+      border-radius: 10px;
+      overflow-x: auto;
     }
-    .header h1 {
-      margin: 0;
-      font-size: 1.6rem;
-      background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .tab-btn {
+      flex: 1;
+      padding: 10px 6px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
     }
+    .tab-btn.active { background: var(--accent); color: #0f172a; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
     .card {
       background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 15px;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.4);
-    }
-    .card-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-top: 0;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .input-box {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    .input-box label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-    .input-box input {
-      background: #0b0f19;
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 10px;
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      outline: none;
-    }
-    .input-box input:focus {
-      border-color: var(--primary);
-    }
-    .btn-main {
-      width: 100%;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-      border: none;
-      padding: 14px;
+      border: 1px solid var(--border);
       border-radius: 12px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
-      margin-top: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
     }
-    .status-bar-wrap {
-      margin-top: 12px;
+    .card h2 {
+      font-size: 0.95rem;
+      color: var(--accent);
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
     }
-    .status-header {
+
+    /* Formularelemente */
+    .form-group {
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+    }
+    .form-group label { font-size: 0.85rem; flex: 1; padding-right: 10px; }
+    .form-group input, .form-group select {
+      width: 90px;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: #fff;
+      font-size: 0.9rem;
+      text-align: right;
+    }
+
+    /* Checkboxen für Symptome */
+    .check-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
       font-size: 0.85rem;
-      margin-bottom: 5px;
+      cursor: pointer;
     }
-    .bar-bg {
-      height: 10px;
-      background: #0b0f19;
-      border-radius: 5px;
-      overflow: hidden;
-      position: relative;
+    .check-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
     }
-    .bar-fill {
-      height: 100%;
-      transition: width 0.4s ease;
+
+    .calc-info {
+      background: #020617;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-top: 8px;
+      text-align: center;
     }
-    .diag-card {
+
+    /* Red Action Buttons */
+    .btn-red {
+      width: 100%;
+      background: var(--btn-red);
+      color: #fff;
+      font-weight: bold;
+      border: none;
       padding: 12px;
-      border-radius: 10px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    .alert {
+      padding: 10px;
+      border-radius: 8px;
       font-size: 0.85rem;
-      margin-top: 10px;
+      margin-top: 8px;
       line-height: 1.4;
     }
-    .diag-ok { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #6ee7b7; }
-    .diag-warn { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); color: #fde047; }
-    .diag-bad { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #fca5a5; }
+    .alert-danger { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--btn-red); color: #fca5a5; }
+    .alert-warn { background: rgba(245, 158, 11, 0.2); border: 1px solid var(--warn); color: #fde047; }
+    .alert-success { background: rgba(16, 185, 129, 0.2); border: 1px solid var(--success); color: #6ee7b7; }
   </style>
 </head>
 <body>
 
   <div class="header">
     <h1>💧 AquaLab Pro</h1>
-    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Professioneller Aquaristik-Analyseassistent</p>
+    <p>Wasserwerte & Symptom-Diagnose</p>
   </div>
 
-  <div class="card">
-    <div class="card-title">📐 Beckendaten</div>
-    <div class="grid-2">
-      <div class="input-box">
-        <label>Volumen (Liter)</label>
-        <input type="number" id="vol" value="100">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="openTab(event, 'tab-becken')">Becken & Technik</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-wasser')">Wasserwerte</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-symptome')">Symptome & Probleme</button>
+  </div>
+
+  <!-- TAB 1: BECKEN & TECHNIK -->
+  <div id="tab-becken" class="tab-content active">
+    <div class="card">
+      <h2>📐 Becken-Abmessungen</h2>
+      <div class="form-group"><label>Länge (cm):</label><input type="number" id="l" value="60" onchange="calcVol()"></div>
+      <div class="form-group"><label>Breite (cm):</label><input type="number" id="b" value="30" onchange="calcVol()"></div>
+      <div class="form-group"><label>Höhe (cm):</label><input type="number" id="h" value="36" onchange="calcVol()"></div>
+      <div class="form-group"><label>Bodenhöhe / Soil (cm):</label><input type="number" id="soil" value="5" onchange="calcVol()"></div>
+      <div class="calc-info" id="vol-res">Nettovolumen: ca. 55.8 Liter</div>
+    </div>
+
+    <div class="card">
+      <h2>💡 Beleuchtung & Düngung</h2>
+      <div class="form-group"><label>Lichtstärke (Lumen):</label><input type="number" id="lumen" value="2000"></div>
+      <div class="form-group"><label>Beleuchtungsdauer (Std/Tag):</label><input type="number" id="licht_std" value="8"></div>
+      <div class="form-group">
+        <label>CO₂-Anlage:</label>
+        <select id="co2"><option value="ja">Ja</option><option value="nein">Nein</option></select>
       </div>
-      <div class="input-box">
-        <label>GH Gemessen (°dGH)</label>
-        <input type="number" id="gh" value="10">
-      </div>
+      <div class="form-group"><label>Dünger (ml / Woche):</label><input type="number" id="duenger_ml" value="10"></div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">🌿 Pflanzennährstoffe (mg/L)</div>
-    <div class="grid-2">
-      <div class="input-box"><label>Nitrat (NO₃)</label><input type="number" id="no3" value="15"></div>
-      <div class="input-box"><label>Phosphat (PO₄)</label><input type="number" id="po4" value="0.5"></div>
-      <div class="input-box"><label>Kalium (K)</label><input type="number" id="k" value="10"></div>
-      <div class="input-box"><label>Magnesium (Mg)</label><input type="number" id="mg" value="10"></div>
-      <div class="input-box"><label>Calcium (Ca)</label><input type="number" id="ca" value="50"></div>
-      <div class="input-box"><label>Eisen (Fe)</label><input type="number" id="fe" value="0.05"></div>
+  <!-- TAB 2: WASSERWERTE -->
+  <div id="tab-wasser" class="tab-content">
+    <div class="card">
+      <h2>🧪 Wasserwerte (Messung)</h2>
+      <div class="form-group"><label>Gesamthärte (°dGH):</label><input type="number" id="gh" value="8"></div>
+      <div class="form-group"><label>Karbonathärte (°dKH):</label><input type="number" id="kh" value="4"></div>
+      <div class="form-group"><label>pH-Wert:</label><input type="number" id="ph" value="6.8" step="0.1"></div>
+      <div class="form-group"><label>Calcium Ca (mg/L):</label><input type="number" id="ca" value="40"></div>
+      <div class="form-group"><label>Magnesium Mg (mg/L):</label><input type="number" id="mg" value="10"></div>
+      <div class="form-group"><label>Nitrat NO₃ (mg/L):</label><input type="number" id="no3" value="15"></div>
+      <div class="form-group"><label>Phosphat PO₄ (mg/L):</label><input type="number" id="po4" value="0.5" step="0.1"></div>
+      <div class="form-group"><label>Kalium K (mg/L):</label><input type="number" id="k" value="10"></div>
+      <div class="form-group"><label>Eisen Fe (mg/L):</label><input type="number" id="fe" value="0.05" step="0.01"></div>
+      <div class="form-group"><label>Ammonium NH₄ (mg/L):</label><input type="number" id="nh4" value="0"></div>
+      <div class="form-group"><label>Nitrit NO₂ (mg/L):</label><input type="number" id="no2" value="0"></div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">⚠️ Schadstoffe (mg/L)</div>
-    <div class="grid-2">
-      <div class="input-box"><label>Ammonium (NH₄)</label><input type="number" id="nh4" value="0"></div>
-      <div class="input-box"><label>Nitrit (NO₂)</label><input type="number" id="no2" value="0"></div>
-    </div>
-  </div>
+  <!-- TAB 3: SYMPTOME & PROBLEME -->
+  <div id="tab-symptome" class="tab-content">
+    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Wählen Sie die Probleme aus, die Sie tatsächlich beobachten:</p>
 
-  <button class="btn-main" onclick="runAnalysis()">Vollständige Analyse Starten</button>
+    <div class="card">
+      <h2>🟢 Algen</h2>
+      <label class="check-group"><input type="checkbox" id="alg_faden"> Grüne Fadenalgen</label>
+      <label class="check-group"><input type="checkbox" id="alg_punkt"> Grüne Punktalgen (GSA)</label>
+      <label class="check-group"><input type="checkbox" id="alg_cyano"> Cyanobakterien (Blaualgen)</label>
+      <label class="check-group"><input type="checkbox" id="alg_pinsel"> Pinselalgen / Bartalgen (BBA)</label>
+      <label class="check-group"><input type="checkbox" id="alg_spiro"> Spirogyra</label>
+      <label class="check-group"><input type="checkbox" id="alg_kiesel"> Kieselalgen</label>
+      <label class="check-group"><input type="checkbox" id="alg_belag"> Grüner Belag auf den Scheiben</label>
+      <label class="check-group"><input type="checkbox" id="alg_bluete"> Grüne Wasserblüte</label>
+    </div>
+
+    <div class="card">
+      <h2>🌿 Pflanzen</h2>
+      <label class="check-group"><input type="checkbox" id="pfl_keinwachstum"> Kein Wachstum</label>
+      <label class="check-group"><input type="checkbox" id="pfl_verblassen"> Verblassen / Farbverlust</label>
+      <label class="check-group"><input type="checkbox" id="pfl_loecher"> Löcher in den Blättern</label>
+      <label class="check-group"><input type="checkbox" id="pfl_melt"> Blattzerfall / Pflanzenmelt</label>
+      <label class="check-group"><input type="checkbox" id="pfl_faeule"> Stängelfäule</label>
+      <label class="check-group"><input type="checkbox" id="pfl_gelb"> Vergilbende Blätter</label>
+      <label class="check-group"><input type="checkbox" id="pfl_deformiert"> Kleine, deformierte neue Blätter</label>
+      <label class="check-group"><input type="checkbox" id="pfl_abfall"> Abfallende untere Blätter</label>
+    </div>
+
+    <div class="card">
+      <h2>🐟 Fische und Wirbellose</h2>
+      <label class="check-group"><input type="checkbox" id="fisch_luft"> Schnappen nach Luft an der Wasseroberfläche</label>
+      <label class="check-group"><input type="checkbox" id="fisch_teilnahme"> Teilnahmslosigkeit / Appetitlosigkeit</label>
+      <label class="check-group"><input type="checkbox" id="fisch_tod"> Todesfälle in den letzten Tagen</label>
+      <label class="check-group"><input type="checkbox" id="fisch_punkte"> Weiße Punkte oder Beläge</label>
+      <label class="check-group"><input type="checkbox" id="fisch_flossen"> Ausgefranste oder sich auflösende Flossen</label>
+    </div>
+
+    <div class="card">
+      <h2>💧 Wasser und Erscheinungsbild</h2>
+      <label class="check-group"><input type="checkbox" id="w_trueb"> Trübes Wasser</label>
+      <label class="check-group"><input type="checkbox" id="w_gelb"> Gelbe oder teefarbene Wasserfärbung</label>
+      <label class="check-group"><input type="checkbox" id="w_belag_scheibe"> Mineralische Ablagerungen auf Scheiben</label>
+      <label class="check-group"><input type="checkbox" id="w_geruch"> Unangenehmer Geruch</label>
+      <label class="check-group"><input type="checkbox" id="w_biofilm"> Weißer Belag oder Biofilm auf Holz</label>
+    </div>
+
+    <button class="btn-red" onclick="runAnalysis()">Analysieren</button>
+  </div>
 
   <div id="results"></div>
 
   <script>
-    function runAnalysis() {
-      const vol = parseFloat(document.getElementById('vol').value) || 0;
-      const gh = parseFloat(document.getElementById('gh').value) || 0;
-      const no3 = parseFloat(document.getElementById('no3').value) || 0;
-      const po4 = parseFloat(document.getElementById('po4').value) || 0;
-      const k = parseFloat(document.getElementById('k').value) || 0;
-      const mg = parseFloat(document.getElementById('mg').value) || 0;
-      const ca = parseFloat(document.getElementById('ca').value) || 0;
-      const nh4 = parseFloat(document.getElementById('nh4').value) || 0;
-      const no2 = parseFloat(document.getElementById('no2').value) || 0;
-
-      let out = '<div class="card"><div class="card-title">📊 Analyse-Ergebnisse</div>';
-
-      // 1. Giftstoff-Prüfung
-      if (nh4 > 0 || no2 > 0) {
-        out += `<div class="diag-card diag-bad">
-          <strong>🚨 GEFAHR FÜR FISCHE:</strong><br>
-          Nachweisbare Giftstoffe (NH₄: ${nh4} mg/L, NO₂: ${no2} mg/L). Führe sofort 50% Wasserwechsel durch!
-        </div>`;
-      } else {
-        out += `<div class="diag-card diag-ok">
-          <strong>✅ Biologische Filterung stabil:</strong> Keine kritischen NH₄- oder NO₂-Werte festgestellt.
-        </div>`;
-      }
-
-      // 2. Ca:Mg Verhältnis (Ideal 3:1 bis 4:1)
-      if (mg > 0) {
-        const caMgRatio = (ca / mg).toFixed(1);
-        let ratioClass = 'diag-ok';
-        let ratioMsg = `Das Calcium-Magnesium-Verhältnis beträgt <strong>${caMgRatio} : 1</strong>. (Ideal: 3:1 bis 4:1)`;
-        
-        if (caMgRatio < 2 || caMgRatio > 5) {
-          ratioClass = 'diag-warn';
-          ratioMsg += `<br>👉 <em>Empfehlung:</em> Passe das Verhältnis an, um Wuchsstörungen und Algenbildung vorzubeugen.`;
-        }
-
-        out += `<div class="diag-card ${ratioClass}">
-          <strong>⚖️ Ca : Mg Verhältnis</strong><br>${ratioMsg}
-        </div>`;
-      }
-
-      // 3. Redfield-Verhältnis (NO3 : PO4)
-      if (po4 > 0) {
-        const redfield = (no3 / po4).toFixed(1);
-        let rfClass = 'diag-ok';
-        let rfText = `Redfield-Verhältnis liegt bei <strong>${redfield} : 1</strong>. (Ideal: 10:1 bis 15:1)`;
-
-        if (redfield < 8) {
-          rfClass = 'diag-warn';
-          rfText += `<br>⚠️ Phosphatüberschuss relativ zu Nitrat – erhöhtes Risiko für Punktalgen!`;
-        } else if (redfield > 20) {
-          rfClass = 'diag-warn';
-          rfText += `<br>⚠️ Nitratüberschuss relativ zu Phosphat – erhöhtes Risiko für Fadenalgen!`;
-        }
-
-        out += `<div class="diag-card ${rfClass}">
-          <strong>🌱 Redfield-Verhältnis (NO₃:PO₄)</strong><br>${rfText}
-        </div>`;
-      }
-
-      // 4. GH Plausibilität
-      const ghCalc = (ca * 0.14) + (mg * 0.23);
-      if (Math.abs(gh - ghCalc) > 1.0) {
-        out += `<div class="diag-card diag-warn">
-          <strong>🔍 Tröpfchentest-Check:</strong><br>
-          Aus Ca (${ca}) & Mg (${mg}) errechnet sich eine GH von <strong>${ghCalc.toFixed(1)}°dGH</strong>. Gemessen wurden ${gh}°dGH. Bitte Tests prüfen.
-        </div>`;
-      }
-
-      out += '</div>';
-      document.getElementById('results').innerHTML = out;
+    function openTab(evt, tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
     }
+
+    function calcVol() {
+      const l = parseFloat(document.getElementById('l').value) || 0;
+      const b = parseFloat(document.getElementById('b').value) || 0;
+      const h = parseFloat(document.getElementById('h').value) || 0;
+      const soil = parseFloat(document.getElementById('soil').value) || 0;
+
+      const nettoH = Math.max(0, h - soil - 2);
+      const nettoLiter = (l * b * nettoH) / 1000;
+      document.getElementById('vol-res').innerText = `Nettovolumen: ca. ${nettoLiter.toFixed(1)} Liter`;
+      return nettoLiter;
+    }
+
+    function runAnalysis() {
+      let html = '<div class="card"><h2>📋 Diagnose & Handlungsempfehlungen</h2>';
+      let count = 0;
+
+      // Algen-Diagnosen
+      if (document.getElementById('alg_faden').checked) {
+        html += `<div class="alert alert-warn">⚠️ <strong>Grüne Fadenalgen:</strong> Oft verursacht durch Nitratmangel, Schwankungen beim CO₂-Gehalt oder plötzlichen Lichtüberschuss. Checke Nitrat & CO₂!</div>`;
+        count++;
+      }
+      if (document.getElementById('alg_punkt').checked) {
+        html += `<div class="alert alert-warn">⚠️ <strong>Grüne Punktalgen (GSA):</strong> Typisches Zeichen für Phosphatmangel (PO₄). Dünge gezielt Phosphat nach.</div>`;
+        count++;
+      }
+      if (document.getElementById('alg_pinsel').checked) {
+        html += `<div class="alert alert-warn">⚠️ <strong>Pinselalgen / Bartalgen:</strong> Deuten meist auf CO₂-Mangel, starke Strömung oder Eisenüberschuss hin.</div>`;
+        count++;
+      }
+      if (document.getElementById('alg_cyano').checked) {
+        html += `<div class="alert alert-danger">🚨 <strong>Cyanobakterien:</strong> Bakterielle Beläge. Dunkelkur (5-7 Tage) oder gründliches Absaugen sowie Anpassung der Mikroflora empfohlen.</div>`;
+        count++;
+      }
+
+      // Pflanzen-Diagnosen
+      if (document.getElementById('pfl_loecher').checked) {
+        html += `<div class="alert alert-warn">🌱 <strong>Löcher in den Blättern:</strong> Häufiges Symptom für Kaliummangel (K). Kaliumdünger leicht erhöhen.</div>`;
+        count++;
+      }
+      if (document.getElementById('pfl_gelb').checked) {
+        html += `<div class="alert alert-warn">🌱 <strong>Vergilbende Blätter:</strong> Typischer Eisenmangel (Fe) oder Nitratmangel. Chlorose der Blätter prüfen.</div>`;
+        count++;
+      }
+
+      // Fisch-Diagnosen
+      if (document.getElementById('fisch_luft').checked) {
+        html += `<div class="alert alert-danger">🚨 <strong>Schnappen nach Luft:</strong> Akuter Sauerstoffmangel oder Nitrit-/CO₂-Vergiftung! Sofort 50-70% Wasser wechseln und durchlüften.</div>`;
+        count++;
+      }
+
+      if (count === 0) {
+        html += `<div class="alert alert-success">✅ Keine auffälligen Symptome ausgewählt. Passe ggf. die Wasserwerte in Tab 2 an.</div>`;
+      }
+
+      html += '</div>';
+      document.getElementById('results').innerHTML = html;
+    }
+
+    calcVol();
   </script>
 </body>
 </html>
