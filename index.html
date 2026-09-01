@@ -583,7 +583,7 @@ color: var(--text-muted);
 <option value="mangrove" data-i18n="wt_mangrove">Mangrovenholz (Säuert leicht an)</option>
 <option value="moorkien" data-i18n="wt_moor">Moorkienholz (Säuert stark an)</option>
 <option value="spider_wood" data-i18n="wt_spider">Spider Wood (Astig, hell)</option>
-<option value="driftwood" data-i18n="wt_drift">Treibholz (Leicht sauer)</option>
+<option value="drift" data-i18n="wt_drift">Treibholz (Leicht sauer)</option>
 <option value="savannenholz" data-i18n="wt_savannah">Savannenholz (Hart, glatt)</option>
 <option value="rondeletia" data-i18n="wt_ironwood">Eisenholz (Sehr hart und schwer)</option>
 <option value="jumbo" data-i18n="wt_jumbo">Jumbo-Wurzel (Großstückig)</option>
@@ -1280,7 +1280,6 @@ footer_save: "Guardar datos"
 }
 };
 
-// Automatischer Fallback für alle anderen Sprachen (nutzen vorerst Englisch als Basis)
 ['nl', 'fr', 'da', 'it', 'pl', 'sv', 'cs', 'hu', 'el', 'pt', 'ru'].forEach(l => {
 if(!translations[l]) translations[l] = translations['en'];
 });
@@ -1479,7 +1478,6 @@ closeModal();
 renderCalendar();
 }
 
-// Sofortiges Ausführen beim Laden der Seite basierend auf dem aktuellen Dropdown-Wert
 window.addEventListener('DOMContentLoaded', () => {
 const initialLang = document.getElementById('langSelect').value;
 changeLanguage(initialLang);
