@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aquarium-Wasserwerte-Rechner (AWR) - Vollständige Aquarium-Analyse</title>
+  <title>Aquarium-Wasserwerte-Rechner (AWR) - Vollständige Analyse</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -301,7 +301,6 @@
     .cal-day.selected-for-compare { border-color: #fbbf24 !important; background: rgba(251, 191, 36, 0.25) !important; }
     .entry-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 3px; }
     
-    /* MODAL POPUP STYLES */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -354,16 +353,15 @@
     }
     .modal-section h4 { font-size: 0.8rem; color: var(--accent); margin-bottom: 6px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
 
-    /* Vergleichstabellen im Modal */
     .compare-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       margin-top: 6px;
     }
     .compare-table th, .compare-table td {
       border: 1px solid var(--border);
-      padding: 6px 8px;
+      padding: 5px 6px;
       text-align: left;
     }
     .compare-table th {
@@ -380,7 +378,6 @@
       color: var(--text-muted);
     }
     .app-footer a { color: var(--accent); text-decoration: none; }
-    .app-footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -388,272 +385,133 @@
   <!-- Header -->
   <div class="header">
     <div class="header-left">
-      <h1><span data-i18n="title">Aquarium-Wasserwerte-Rechner (AWR)</span> 💧</h1>
-      <p data-i18n="subtitle">Vollständige Aquarium-Analyse</p>
+      <h1>Aquarium-Wasserwerte-Rechner (AWR) 💧</h1>
+      <p>Vollständige Aquarium-Analyse</p>
     </div>
-    <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
-      <option value="de">🇩🇪 Deutsch</option>
-      <option value="nl">🇳🇱 Nederlands</option>
-      <option value="fr">🇫🇷 Français</option>
-      <option value="da">🇩🇰 Dansk</option>
-      <option value="en">🇬🇧 English</option>
-      <option value="es">🇪🇸 Español</option>
-      <option value="it">🇮🇹 Italiano</option>
-      <option value="pl">🇵🇱 Polski</option>
-      <option value="sv">🇸🇪 Svenska</option>
-      <option value="cs">🇨🇿 Čeština</option>
-      <option value="hu">🇭🇺 Magyar</option>
-      <option value="el">🇬🇷 Ελληνικά</option>
-      <option value="pt">🇵🇹 Português</option>
-      <option value="ru">🇷🇺 Русский</option>
-    </select>
   </div>
 
-  <!-- TABS NAVIGATION -->
+  <!-- TABS -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="openTab(event, 'tab-becken')" data-i18n="tab_tech">Becken & Technik</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-duengung')" data-i18n="tab_deco">Bodengrund & Deko</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-wasser')" data-i18n="tab_water">Wasserwerte</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-besatz')" data-i18n="tab_stock">Besatz & Futter</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-symptome')" data-i18n="tab_symptoms">Symptome</button>
-    <button class="tab-btn" onclick="openTab(event, 'tab-kalender')" data-i18n="tab_cal">📅 Kalender</button>
+    <button class="tab-btn active" onclick="openTab(event, 'tab-becken')">Becken & Technik</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-duengung')">Bodengrund & Deko</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-wasser')">Wasserwerte</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-symptome')">Symptome</button>
+    <button class="tab-btn" onclick="openTab(event, 'tab-kalender')">📅 Kalender</button>
   </div>
 
   <form onsubmit="runAnalysis(event)">
 
-    <!-- TAB 1: BECKEN, FILTER, LICHT & PFLANZEN -->
+    <!-- TAB 1 -->
     <div id="tab-becken" class="tab-content active">
       <div class="card">
-        <h2 data-i18n="sec_tank_info">📐 Angaben zum Aquarium</h2>
-        <div class="form-group"><label data-i18n="lbl_length">Aquarienlänge (cm):</label><input type="number" id="l" value="60" oninput="calcVol()"></div>
-        <div class="form-group"><label data-i18n="lbl_width">Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
-        <div class="form-group"><label data-i18n="lbl_height">Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
-        <div class="form-group"><label data-i18n="lbl_vol">Aquarienvolumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
-        <div class="form-group"><label data-i18n="lbl_runtime">Einrichtungszeit:</label><input type="text" id="runtime" value="7 Wochen"></div>
-      </div>
-
-      <div class="card">
-        <h2 data-i18n="sec_filter">🌀 Filterung & Heizung</h2>
-        <div class="form-group">
-          <label data-i18n="lbl_filtertype">Filtertyp:</label>
-          <select id="filterType"><option data-i18n="opt_select">-- Aus der Liste auswählen --</option><option>Innenfilter</option><option>Rucksackfilter</option><option selected>Außenfilter</option><option>Filterbecken (Sump)</option></select>
-        </div>
-        <div class="form-group"><label data-i18n="lbl_flow">Filterdurchfluss (L/h):</label><input type="number" id="filterFlow" value="500"></div>
-        
-        <div class="question-block">
-          <label class="main-label" data-i18n="lbl_skimmer">Ist ein Oberflächenabsauger installiert?</label>
-          <div class="radio-row">
-            <label><input type="radio" name="skimmer" value="Ja"> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="skimmer" value="Nein" checked> <span data-i18n="lbl_no">Nein</span></label>
-          </div>
-        </div>
-
-        <div class="question-block">
-          <label class="main-label" data-i18n="lbl_uv">UV-Klärer:</label>
-          <div class="radio-row">
-            <label><input type="radio" name="uv" value="Ja"> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="uv" value="Nein" checked> <span data-i18n="lbl_no">Nein</span></label>
-          </div>
-        </div>
-
-        <div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" id="filterClean" value="2"></div>
-
-        <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label" data-i18n="lbl_heater">Ist im Aquarium ein Heizstab installiert?</label>
-          <div class="radio-row">
-            <label><input type="radio" name="heater" value="Ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="heater" value="Nein"> <span data-i18n="lbl_no">Nein</span></label>
-          </div>
-        </div>
-
-        <div class="form-group"><label data-i18n="lbl_temp">Wassertemperatur (°C):</label><input type="number" id="wTemp" value="24" step="0.5"></div>
-      </div>
-
-      <div class="card">
-        <h2>🫧 CO₂</h2>
-        <div class="question-block">
-          <label class="main-label" data-i18n="lbl_co2">Wird CO₂ zugeführt?</label>
-          <div class="radio-row">
-            <label><input type="radio" name="co2_zuafuhr" value="Ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="co2_zuafuhr" value="Nein"> <span data-i18n="lbl_no">Nein</span></label>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2 data-i18n="sec_light">💡 Beleuchtung</h2>
-        <div class="form-group">
-          <label>Beleuchtungsart:</label>
-          <select id="beleuchtungsart">
-            <option value="">-- Aus der Liste auswählen --</option>
-            <option value="T5/T8-Röhre">T5-/T8-Leuchtstoffröhre</option>
-            <option value="LED" selected>LED</option>
-            <option value="HQI">HQI</option>
-            <option value="HQL">HQL</option>
-          </select>
-        </div>
-        <div class="form-group"><label data-i18n="lbl_light_kelvin">Farbtemperatur (K):</label><input type="number" id="farbtemperatur" value="6500"></div>
-        <div class="form-group"><label data-i18n="lbl_light_watt">Leistung (W):</label><input type="number" id="leistung" value="30"></div>
-        <div class="form-group"><label data-i18n="lbl_light_duration">Tägliche Beleuchtungsdauer (h):</label><input type="number" id="beleuchtungsdauer" value="8"></div>
+        <h2>📐 Angaben zum Aquarium</h2>
+        <div class="form-group"><label>Aquarienlänge (cm):</label><input type="number" id="l" value="60" oninput="calcVol()"></div>
+        <div class="form-group"><label>Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
+        <div class="form-group"><label>Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
+        <div class="form-group"><label>Aquarienvolumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
+        <div class="form-group"><label>Wassertemperatur (°C):</label><input type="number" id="wTemp" value="24" step="0.5"></div>
       </div>
     </div>
 
-    <!-- TAB 2: BODENGRUND & DEKO -->
+    <!-- TAB 2 -->
     <div id="tab-duengung" class="tab-content">
       <div class="card">
-        <h2 data-i18n="tab_deco">🪨 Bodengrund und Dekoration</h2>
+        <h2>🪨 Bodengrund und Dekoration</h2>
         <div class="form-group">
-          <label data-i18n="lbl_sub_type">Art des Bodengrunds:</label>
-          <select id="bodenArt">
-            <option value="">-- Aus der Liste auswählen --</option>
-            <option value="Quarzkies" selected>Quarzkies</option>
-            <option value="Sand">Sand</option>
-            <option value="Soil">Soil (Aktiver Bodengrund)</option>
-          </select>
-        </div>
-
-        <div class="form-group"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0"></div>
-
-        <h3>Steinauswahl (Kalk-Analyse)</h3>
-        <div class="form-group">
-          <label>Steinart:</label>
-          <select id="steinArt">
-            <option value="Keine">-- Keine / Keine Angabe --</option>
-            <option value="Seiryu Stone">Seiryu Stone / Green Stone</option>
-            <option value="Dragon Stone">Dragon Stone / Ohko Stone</option>
-            <option value="Schiefer">Schiefer / Black Slate</option>
-            <option value="Lavastein" selected>Lavastein</option>
-            <option value="Lochgestein">Lochgestein</option>
-          </select>
-        </div>
-
-        <h3>Holzauswahl</h3>
-        <div class="form-group">
-          <label>Holzart:</label>
-          <select id="holzArt">
-            <option value="Kein Holz">-- Kein Holz / Keine Angabe --</option>
-            <option value="Red Moor Wood" selected>Red Moor Wood</option>
-            <option value="Mangrovenholz">Mangrovenholz</option>
-            <option value="Moorkienholz">Moorkienholz</option>
-          </select>
+          <label>Art des Bodengrunds:</label>
+          <select id="bodenArt"><option selected>Quarzkies</option><option>Sand</option><option>Soil</option></select>
         </div>
       </div>
     </div>
 
-    <!-- TAB 3: WASSERWERTE -->
+    <!-- TAB 3: WASSERWERTE (ALLE 14 WERTE) -->
     <div id="tab-wasser" class="tab-content">
       <div class="card">
-        <h2 data-i18n="sec_water_compare">🧪 Wasserwerte-Vergleich</h2>
+        <h2>🧪 Vollständiger Wasserwerte-Vergleich</h2>
         <div class="water-grid">
+          <!-- Wasser für den Wasserwechsel -->
           <div class="water-column">
-            <h3 data-i18n="col_water_change">Wasserwechsel</h3>
-            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" value="7.2"></div>
-            <div class="water-field"><label>GH:</label><input type="text" id="w_gh_wechsel" value="10.0"></div>
-            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_wechsel" value="6.0"></div>
-            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_wechsel" value="0.0"></div>
+            <h3>Wasser für den Wasserwechsel</h3>
+            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_w" value="7.2"></div>
+            <div class="water-field"><label>GH:</label><input type="text" id="w_gh_w" value="10.0"></div>
+            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_w" value="6.0"></div>
+            <div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_w" value="0.0"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_w" value="0.0"></div>
+            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_w" value="0.0"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_w" value="0.0"></div>
+            <div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_w" value="0.0"></div>
+            <div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_w" value="20.0"></div>
+            <div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_w" value="5.0"></div>
+            <div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_w" value="0.0"></div>
+            <div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_w" value="2.0"></div>
+            <div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_w" value="1.0"></div>
+            <div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_w" value="10.0"></div>
           </div>
+          <!-- Aquarienwasser -->
           <div class="water-column">
-            <h3 data-i18n="col_water_tank">Aquarienwasser</h3>
-            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.8"></div>
-            <div class="water-field"><label>GH:</label><input type="text" id="w_gh_akt" value="12.0"></div>
-            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4.0"></div>
-            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_akt" value="0.0"></div>
-            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10.0"></div>
-            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_akt" value="0.1"></div>
-            <div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_akt" value="0.05"></div>
+            <h3>Aquarienwasser</h3>
+            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_a" value="6.8"></div>
+            <div class="water-field"><label>GH:</label><input type="text" id="w_gh_a" value="12.0"></div>
+            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_a" value="4.0"></div>
+            <div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_a" value="0.0"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_a" value="0.0"></div>
+            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_a" value="10.0"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_a" value="0.1"></div>
+            <div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_a" value="5.0"></div>
+            <div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_a" value="25.0"></div>
+            <div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_a" value="6.0"></div>
+            <div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_a" value="0.05"></div>
+            <div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_a" value="2.0"></div>
+            <div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_a" value="1.5"></div>
+            <div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_a" value="12.0"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 4: BESATZ & FÜTTERUNG -->
-    <div id="tab-besatz" class="tab-content">
-      <div class="card">
-        <h2 data-i18n="tab_stock">🐟 Tierbesatz & Fütterung</h2>
-        <div class="form-group"><label data-i18n="lbl_fish_small">Kleine Fische (bis 3 cm):</label><input type="number" id="f_small" value="10"></div>
-        <div class="form-group"><label data-i18n="lbl_fish_medium">Mittelgroße Fische (3–8 cm):</label><input type="number" id="f_med" value="5"></div>
-        <div class="form-group"><label data-i18n="lbl_fish_large">Große Fische (über 8 cm):</label><input type="number" id="f_large" value="0"></div>
-        <div class="form-group"><label>L-Welse / Harnischwelse:</label><input type="number" id="f_pleco" value="1"></div>
-        <div class="form-group"><label data-i18n="lbl_shrimp">Garnelen (Stk.):</label><input type="number" id="f_shrimp" value="15"></div>
-        <div class="form-group"><label data-i18n="lbl_snails">Schnecken (Stk.):</label><input type="number" id="f_snails" value="10"></div>
-        
-        <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label" data-i18n="lbl_feeding">Fütterung:</label>
-          <div class="media-grid">
-            <label class="check-group"><input type="checkbox" class="feed-check" value="Lebendfutter"> Lebendfutter</label>
-            <label class="check-group"><input type="checkbox" class="feed-check" value="Frostfutter"> Frostfutter</label>
-            <label class="check-group"><input type="checkbox" class="feed-check" value="Flockenfutter"> Flockenfutter</label>
-            <label class="check-group"><input type="checkbox" class="feed-check" value="Granulatfutter" checked> Granulatfutter</label>
-            <label class="check-group"><input type="checkbox" class="feed-check" value="Wels-Tabs / Chips" checked> Wels-Tabs / Chips</label>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 5: SYMPTOME -->
+    <!-- TAB 4 -->
     <div id="tab-symptome" class="tab-content">
       <div class="card">
-        <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme & Symptome</h2>
-        
-        <div class="question-block">
-          <label class="main-label">Welche Algen treten auf?</label>
-          <div class="media-grid">
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Grüne Fadenalgen"> Grüne Fadenalgen</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Grüne Punktalgen (GSA)"> Grüne Punktalgen (GSA)</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Cyanobakterien"> Cyanobakterien</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Pinselalgen / Bartalgen (BBA)"> Pinselalgen / Bartalgen (BBA)</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Kieselalgen"> Kieselalgen</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Grüner Belag auf Scheiben"> Grüner Belag auf Scheiben</label>
-          </div>
+        <h2>⚠️ Beobachtete Probleme & Symptome</h2>
+        <div class="media-grid">
+          <label class="check-group"><input type="checkbox" class="symp-check" value="Grüne Fadenalgen"> Grüne Fadenalgen</label>
+          <label class="check-group"><input type="checkbox" class="symp-check" value="Grüne Punktalgen (GSA)"> Grüne Punktalgen (GSA)</label>
+          <label class="check-group"><input type="checkbox" class="symp-check" value="Cyanobakterien"> Cyanobakterien</label>
+          <label class="check-group"><input type="checkbox" class="symp-check" value="Kein Wachstum"> Kein Wachstum</label>
         </div>
-
-        <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label">Pflanzenprobleme:</label>
-          <div class="media-grid">
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Kein Wachstum"> Kein Wachstum</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Verblassen / Farbverlust"> Verblassen / Farbverlust</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Löcher in den Blättern"> Löcher in den Blättern</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Vergilbende Blätter"> Vergilbende Blätter</label>
-          </div>
-        </div>
-
-        <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label">Fische und Wasser:</label>
-          <div class="media-grid">
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Schnappen nach Luft"> Schnappen nach Luft</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Teilnahmslosigkeit"> Teilnahmslosigkeit</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Trübes Wasser"> Trübes Wasser</label>
-            <label class="check-group"><input type="checkbox" class="symp-check" value="Weißer Biofilm auf Holz"> Weißer Biofilm auf Holz</label>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
+        <button type="submit" class="btn-red">Analysieren & im Kalender speichern</button>
       </div>
 
-      <!-- ANALYSE ERGEBNISSE -->
+      <!-- ANALYSE ERGEBNISSE MIT ORANGENEN/ROTEN WARNUNGEN -->
       <div class="result-box" id="resultSection">
         <div class="card">
           <h2>📊 Analyseergebnis & Auswertung</h2>
           
           <div class="alert-card alert-blue" onclick="toggleDetails(this)">
-            <strong>ℹ️ CO₂-Versorgung optimal:</strong> Der pH-Wert und die Karbonathärte (KH) zeigen ein stabiles Verhältnis.
+            <strong>ℹ️ CO₂-Versorgung optimal:</strong> pH und KH zeigen ein gutes Verhältnis.
             <span class="click-hint">Klicken für Details</span>
-            <div class="alert-details">Mit einer KH von 4 und einem pH von 6.8 liegt der berechnete CO₂-Gehalt bei ca. 19 mg/L, was ideal ist.</div>
+            <div class="alert-details">Berechneter CO₂-Gehalt liegt bei ca. 19 mg/L.</div>
           </div>
 
           <div class="alert-card alert-orange" onclick="toggleDetails(this)">
-            <strong>⚠️ GH-Anstieg im Becken:</strong> Gesamthärte im Aquarium (12 dGH) weicht vom Wechselwasser (10 dGH) ab.
+            <strong>⚠️ GH-Anstieg im Becken:</strong> Gesamthärte im Aquarium weicht vom Wechselwasser ab.
             <span class="click-hint">Klicken für Details</span>
-            <div class="alert-details">Mögliche Ursache sind kalkhaltige Dekorelemente oder Steine im Aquarium.</div>
+            <div class="alert-details">Möglicherweise geben Steine Mineralien an das Wasser ab.</div>
+          </div>
+
+          <div class="alert-card alert-red" onclick="toggleDetails(this)">
+            <strong>🚨 Kritischer Wert:</strong> Bitte beobachten Sie die Nährstoffbilanz genau.
+            <span class="click-hint">Klicken für Details</span>
+            <div class="alert-details">Ungleichgewicht zwischen Kalium, Magnesium und Calcium festgestellt.</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 6: KALENDER -->
+    <!-- TAB 5: KALENDER -->
     <div id="tab-kalender" class="tab-content">
       <div class="card">
-        <h2 data-i18n="tab_cal">📅 Aquarien-Tagebuch</h2>
+        <h2>📅 Aquarien-Tagebuch</h2>
         <div class="calendar-toolbar">
           <div class="calendar-nav">
             <button type="button" onclick="changeMonth(-1)">‹</button>
@@ -668,21 +526,19 @@
 
   </form>
 
-  <!-- POPUP MODAL FÜR KALENDER-DETAILS & VERGLEICH -->
+  <!-- MODAL -->
   <div class="modal-overlay" id="historyModal">
     <div class="modal-container">
       <div class="modal-header">
         <h3 id="modalTitle">Tagebucheintrag</h3>
         <button type="button" class="modal-close" onclick="closeModal()">×</button>
       </div>
-      <div class="modal-body" id="modalBodyContent">
-        <!-- Dynamischer Inhalt -->
-      </div>
+      <div class="modal-body" id="modalBodyContent"></div>
     </div>
   </div>
 
   <footer class="app-footer">
-    <p>Aquarium-Wasserwerte-Rechner (AWR) v2.9 | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;">Daten sichern</a></p>
+    <p>Aquarium-Wasserwerte-Rechner (AWR) v3.1</p>
   </footer>
 
   <script>
@@ -690,109 +546,8 @@
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
     let analysisDiary = {};
-    
-    // Status für Vergleichsmodus
     let isCompareMode = false;
     let compareSelectedDays = [];
-
-    const translations = {
-      de: {
-        title: "Aquarium-Wasserwerte-Rechner (AWR)",
-        subtitle: "Vollständige Aquarium-Analyse",
-        tab_tech: "Becken & Technik",
-        tab_deco: "Bodengrund & Deko",
-        tab_water: "Wasserwerte",
-        tab_stock: "Besatz & Futter",
-        tab_symptoms: "Symptome",
-        tab_cal: "📅 Kalender",
-        sec_tank_info: "📐 Angaben zum Aquarium",
-        lbl_length: "Aquarienlänge (cm):",
-        lbl_width: "Aquarienbreite (cm):",
-        lbl_height: "Aquarienhöhe (cm):",
-        lbl_vol: "Aquarienvolumen (L):",
-        lbl_runtime: "Einrichtungszeit:",
-        sec_filter: "🌀 Filterung & Heizung",
-        lbl_filtertype: "Filtertyp:",
-        opt_select: "-- Aus der Liste auswählen --",
-        lbl_flow: "Filterdurchfluss (L/h):",
-        lbl_skimmer: "Ist ein Oberflächenabsauger installiert?",
-        lbl_uv: "UV-Klärer:",
-        lbl_yes: "Ja",
-        lbl_no: "Nein",
-        lbl_clean_interval: "In welchem Abstand wird der Filter gereinigt (in Wochen)?",
-        lbl_heater: "Ist im Aquarium ein Heizstab installiert?",
-        lbl_temp: "Wassertemperatur (°C):",
-        lbl_co2: "Wird CO₂ zugeführt?",
-        sec_light: "💡 Beleuchtung",
-        lbl_light_kelvin: "Farbtemperatur (K):",
-        lbl_light_watt: "Leistung (W):",
-        lbl_light_duration: "Tägliche Beleuchtungsdauer (h):",
-        lbl_sub_type: "Art des Bodengrunds:",
-        lbl_sub_vol: "Gesamtvolumen des Bodengrunds (L):",
-        sec_water_compare: "🧪 Wasserwerte-Vergleich",
-        col_water_change: "Wasserwechsel",
-        col_water_tank: "Aquarienwasser",
-        lbl_fish_small: "Kleine Fische (bis 3 cm):",
-        lbl_fish_medium: "Mittelgroße Fische (3–8 cm):",
-        lbl_fish_large: "Große Fische (über 8 cm):",
-        lbl_shrimp: "Garnelen (Stk.):",
-        lbl_snails: "Schnecken (Stk.):",
-        lbl_feeding: "Fütterung:",
-        btn_analyze: "Analysieren & im Kalender speichern"
-      },
-      en: {
-        title: "Aquarium Water Parameters Calculator (AWR)",
-        subtitle: "Complete Aquarium Analysis",
-        tab_tech: "Tank & Tech",
-        tab_deco: "Substrate & Decor",
-        tab_water: "Water Parameters",
-        tab_stock: "Livestock & Food",
-        tab_symptoms: "Symptoms",
-        tab_cal: "📅 Calendar",
-        sec_tank_info: "📐 Tank Information",
-        lbl_length: "Tank length (cm):",
-        lbl_width: "Tank width (cm):",
-        lbl_height: "Tank height (cm):",
-        lbl_vol: "Tank volume (L):",
-        lbl_runtime: "Running time:",
-        sec_filter: "🌀 Filtration & Heating",
-        lbl_filtertype: "Filter type:",
-        opt_select: "-- Select from list --",
-        lbl_flow: "Filter flow rate (L/h):",
-        lbl_skimmer: "Is a surface skimmer installed?",
-        lbl_uv: "UV sterilizer:",
-        lbl_yes: "Yes",
-        lbl_no: "No",
-        lbl_clean_interval: "Filter cleaning interval (weeks):",
-        lbl_heater: "Is a heater installed?",
-        lbl_temp: "Water temperature (°C):",
-        lbl_co2: "Is CO₂ supplied?",
-        sec_light: "💡 Lighting",
-        lbl_light_kelvin: "Color temperature (K):",
-        lbl_light_watt: "Power (W):",
-        lbl_light_duration: "Daily lighting duration (h):",
-        lbl_sub_type: "Substrate type:",
-        lbl_sub_vol: "Total substrate volume (L):",
-        sec_water_compare: "🧪 Water Parameter Comparison",
-        col_water_change: "Water Change",
-        col_water_tank: "Aquarium Water",
-        lbl_fish_small: "Small fish (up to 3 cm):",
-        lbl_fish_medium: "Medium fish (3–8 cm):",
-        lbl_fish_large: "Large fish (over 8 cm):",
-        lbl_shrimp: "Shrimp (pcs.):",
-        lbl_snails: "Snails (pcs.):",
-        lbl_feeding: "Feeding:",
-        btn_analyze: "Analyze & Save to Calendar"
-      }
-    };
-
-    function changeLanguage(lang) {
-      const t = translations[lang] || translations['de'];
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (t[key]) el.innerText = t[key];
-      });
-    }
 
     function openTab(evt, tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -814,31 +569,46 @@
       document.getElementById('resultSection').style.display = 'block';
 
       let dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-      
       let symptoms = [];
       document.querySelectorAll('.symp-check:checked').forEach(cb => symptoms.push(cb.value));
 
-      let feeding = [];
-      document.querySelectorAll('.feed-check:checked').forEach(cb => feeding.push(cb.value));
+      let warnings = [];
+      document.querySelectorAll('.alert-card').forEach(card => {
+        let titleEl = card.querySelector('strong');
+        let detailEl = card.querySelector('.alert-details');
+        if (titleEl) {
+          warnings.push({
+            text: titleEl.innerText,
+            detail: detailEl ? detailEl.innerText : '',
+            type: card.classList.contains('alert-red') ? 'red' : (card.classList.contains('alert-orange') ? 'orange' : 'blue')
+          });
+        }
+      });
 
+      // Alle 14 Werte für Wechselwasser & Aquarium sichern
       analysisDiary[dateKey] = {
         volume: document.getElementById('volumen').value,
         temp: document.getElementById('wTemp').value,
-        ph_akt: document.getElementById('w_ph_akt').value,
-        gh_akt: document.getElementById('w_gh_akt').value,
-        kh_akt: document.getElementById('w_kh_akt').value,
-        no3_akt: document.getElementById('w_no3_akt').value,
-        po4_akt: document.getElementById('w_po4_akt').value,
-        fe_akt: document.getElementById('w_fe_akt').value,
-        fish_small: document.getElementById('f_small').value,
-        fish_med: document.getElementById('f_med').value,
-        pleco: document.getElementById('f_pleco').value,
-        feeding: feeding.length > 0 ? feeding.join(', ') : 'Keine Angaben',
-        symptoms: symptoms.length > 0 ? symptoms : ['Keine Probleme gemeldet']
+        wechsel: {
+          ph: document.getElementById('w_ph_w').value, gh: document.getElementById('w_gh_w').value, kh: document.getElementById('w_kh_w').value,
+          nh4: document.getElementById('w_nh4_w').value, no2: document.getElementById('w_no2_w').value, no3: document.getElementById('w_no3_w').value,
+          po4: document.getElementById('w_po4_w').value, k: document.getElementById('w_k_w').value, ca: document.getElementById('w_ca_w').value,
+          mg: document.getElementById('w_mg_w').value, fe: document.getElementById('w_fe_w').value, na: document.getElementById('w_na_w').value,
+          sio2: document.getElementById('w_sio2_w').value, so4: document.getElementById('w_so4_w').value
+        },
+        akt: {
+          ph: document.getElementById('w_ph_a').value, gh: document.getElementById('w_gh_a').value, kh: document.getElementById('w_kh_a').value,
+          nh4: document.getElementById('w_nh4_a').value, no2: document.getElementById('w_no2_a').value, no3: document.getElementById('w_no3_a').value,
+          po4: document.getElementById('w_po4_a').value, k: document.getElementById('w_k_a').value, ca: document.getElementById('w_ca_a').value,
+          mg: document.getElementById('w_mg_a').value, fe: document.getElementById('w_fe_a').value, na: document.getElementById('w_na_a').value,
+          sio2: document.getElementById('w_sio2_a').value, so4: document.getElementById('w_so4_a').value
+        },
+        symptoms: symptoms.length > 0 ? symptoms : ['Keine Probleme gemeldet'],
+        warnings: warnings
       };
 
       renderCalendar();
-      alert("Analyse erfolgreich durchgeführt und im Kalender für heute gespeichert!");
+      alert("Analyse erfolgreich im Kalender gespeichert!");
     }
 
     function toggleDetails(card) {
@@ -892,15 +662,8 @@
         let dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
         let hasEntry = analysisDiary[dateStr] ? '<div class="entry-dot"></div>' : '';
         div.innerHTML = `<span>${d}</span>${hasEntry}`;
-        
-        if(analysisDiary[dateStr]) {
-          div.classList.add('has-entry');
-        }
-
-        if (compareSelectedDays.includes(dateStr)) {
-          div.classList.add('selected-for-compare');
-        }
-
+        if(analysisDiary[dateStr]) div.classList.add('has-entry');
+        if (compareSelectedDays.includes(dateStr)) div.classList.add('selected-for-compare');
         div.onclick = () => handleDayClick(dateStr);
         grid.appendChild(div);
       }
@@ -911,17 +674,11 @@
         if (compareSelectedDays.includes(dateStr)) {
           compareSelectedDays = compareSelectedDays.filter(d => d !== dateStr);
         } else {
-          if (compareSelectedDays.length >= 2) {
-            compareSelectedDays.shift(); // Älteste Auswahl entfernen, wenn schon 2 gewählt
-          }
+          if (compareSelectedDays.length >= 2) compareSelectedDays.shift();
           compareSelectedDays.push(dateStr);
         }
         renderCalendar();
-
-        // Wenn genau 2 Tage ausgewählt wurden, automatisch den Vergleich öffnen
-        if (compareSelectedDays.length === 2) {
-          showComparisonModal(compareSelectedDays[0], compareSelectedDays[1]);
-        }
+        if (compareSelectedDays.length === 2) showComparisonModal(compareSelectedDays[0], compareSelectedDays[1]);
       } else {
         showSingleDayModal(dateStr);
       }
@@ -931,29 +688,30 @@
       const modal = document.getElementById('historyModal');
       const title = document.getElementById('modalTitle');
       const body = document.getElementById('modalBodyContent');
-      
       title.innerText = `Analyse-Bericht vom ${dateStr}`;
       let data = analysisDiary[dateStr];
 
       if (!data) {
-        body.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 20px;">Für diesen Tag ist kein Analyse-Eintrag vorhanden.</p>`;
+        body.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 20px;">Kein Eintrag vorhanden.</p>`;
       } else {
-        let symList = data.symptoms.map(s => `• ${s}`).join('<br>');
+        let warnHtml = '';
+        data.warnings.forEach(w => {
+          let c = w.type === 'red' ? 'alert-red' : (w.type === 'orange' ? 'alert-orange' : 'alert-blue');
+          warnHtml += `<div class="alert-card ${c}" style="margin-bottom:6px; pointer-events:none;"><strong>${w.text}</strong><div style="font-size:0.75rem; margin-top:2px;">${w.detail}</div></div>`;
+        });
+
         body.innerHTML = `
           <div class="modal-section">
-            <h4>💧 Wasserwerte (Aquarium)</h4>
-            <p><strong>pH:</strong> ${data.ph_akt} | <strong>GH:</strong> ${data.gh_akt} | <strong>KH:</strong> ${data.kh_akt}</p>
-            <p><strong>NO₃:</strong> ${data.no3_akt} ppm | <strong>PO₄:</strong> ${data.po4_akt} ppm | <strong>Fe:</strong> ${data.fe_akt} ppm</p>
-            <p><strong>Temperatur:</strong> ${data.temp} °C | <strong>Volumen:</strong> ${data.volume} L</p>
+            <h4>💧 Wasserwechsel-Werte</h4>
+            <p>pH: ${data.wechsel.ph} | GH: ${data.wechsel.gh} | KH: ${data.wechsel.kh} | NH₄: ${data.wechsel.nh4} | NO₂: ${data.wechsel.no2} | NO₃: ${data.wechsel.no3} | PO₄: ${data.wechsel.po4} | K: ${data.wechsel.k} | Ca: ${data.wechsel.ca} | Mg: ${data.wechsel.mg} | Fe: ${data.wechsel.fe} | Na: ${data.wechsel.na} | SiO₂: ${data.wechsel.sio2} | SO₄: ${data.wechsel.so4}</p>
           </div>
           <div class="modal-section">
-            <h4>🐟 Besatz & Fütterung</h4>
-            <p><strong>Kleine Fische:</strong> ${data.fish_small} | <strong>Mittel:</strong> ${data.fish_med} | <strong>L-Welse:</strong> ${data.pleco}</p>
-            <p><strong>Futterarten:</strong> ${data.feeding}</p>
+            <h4>💧 Aquarienwasser-Werte</h4>
+            <p>pH: ${data.akt.ph} | GH: ${data.akt.gh} | KH: ${data.akt.kh} | NH₄: ${data.akt.nh4} | NO₂: ${data.akt.no2} | NO₃: ${data.akt.no3} | PO₄: ${data.akt.po4} | K: ${data.akt.k} | Ca: ${data.akt.ca} | Mg: ${data.akt.mg} | Fe: ${data.akt.fe} | Na: ${data.akt.na} | SiO₂: ${data.akt.sio2} | SO₄: ${data.akt.so4}</p>
           </div>
           <div class="modal-section">
-            <h4>⚠️ Beobachtete Symptome & Probleme</h4>
-            <p style="color: #f87171;">${symList}</p>
+            <h4>⚠️ Warnungen</h4>
+            ${warnHtml}
           </div>
         `;
       }
@@ -964,67 +722,31 @@
       const modal = document.getElementById('historyModal');
       const title = document.getElementById('modalTitle');
       const body = document.getElementById('modalBodyContent');
-
       title.innerText = `Vergleich: ${date1} vs. ${date2}`;
-      let d1 = analysisDiary[date1] || { volume:'-', temp:'-', ph_akt:'-', gh_akt:'-', kh_akt:'-', no3_akt:'-', po4_akt:'-', fe_akt:'-', fish_small:'-', fish_med:'-', pleco:'-', feeding:'-', symptoms:['Kein Eintrag'] };
-      let d2 = analysisDiary[date2] || { volume:'-', temp:'-', ph_akt:'-', gh_akt:'-', kh_akt:'-', no3_akt:'-', po4_akt:'-', fe_akt:'-', fish_small:'-', fish_med:'-', pleco:'-', feeding:'-', symptoms:['Kein Eintrag'] };
-
-      let sym1 = d1.symptoms.join(', ');
-      let sym2 = d2.symptoms.join(', ');
+      
+      let d1 = analysisDiary[date1] || { wechsel:{}, akt:{} };
+      let d2 = analysisDiary[date2] || { wechsel:{}, akt:{} };
 
       body.innerHTML = `
         <div class="modal-section">
-          <h4>🧪 Wasserwerte-Direktvergleich</h4>
+          <h4>🧪 Alle 14 Wasserwerte im Vergleich</h4>
           <table class="compare-table">
-            <thead>
-              <tr>
-                <th>Messwert</th>
-                <th>${date1}</th>
-                <th>${date2}</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Messwert</th><th>${date1} (Wechsel / Akt)</th><th>${date2} (Wechsel / Akt)</th></tr></thead>
             <tbody>
-              <tr><td><strong>pH-Wert</strong></td><td>${d1.ph_akt}</td><td>${d2.ph_akt}</td></tr>
-              <tr><td><strong>GH (Gesamthärte)</strong></td><td>${d1.gh_akt}</td><td>${d2.gh_akt}</td></tr>
-              <tr><td><strong>KH (Karbonathärte)</strong></td><td>${d1.kh_akt}</td><td>${d2.kh_akt}</td></tr>
-              <tr><td><strong>Nitrat (NO₃)</strong></td><td>${d1.no3_akt} ppm</td><td>${d2.no3_akt} ppm</td></tr>
-              <tr><td><strong>Phosphat (PO₄)</strong></td><td>${d1.po4_akt} ppm</td><td>${d2.po4_akt} ppm</td></tr>
-              <tr><td><strong>Eisen (Fe)</strong></td><td>${d1.fe_akt} ppm</td><td>${d2.fe_akt} ppm</td></tr>
-              <tr><td><strong>Temperatur</strong></td><td>${d1.temp} °C</td><td>${d2.temp} °C</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="modal-section">
-          <h4>🐟 Besatz & Fütterung</h4>
-          <table class="compare-table">
-            <thead>
-              <tr>
-                <th>Kategorie</th>
-                <th>${date1}</th>
-                <th>${date2}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>Fische (klein / mittel)</strong></td><td>${d1.fish_small} / ${d1.fish_med}</td><td>${d2.fish_small} / ${d2.fish_med}</td></tr>
-              <tr><td><strong>L-Welse</strong></td><td>${d1.pleco}</td><td>${d2.pleco}</td></tr>
-              <tr><td><strong>Futterarten</strong></td><td>${d1.feeding}</td><td>${d2.feeding}</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="modal-section">
-          <h4>⚠️ Symptome</h4>
-          <table class="compare-table">
-            <thead>
-              <tr>
-                <th>Beobachtungen</th>
-                <th>${date1}</th>
-                <th>${date2}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td style="color:#f87171;">${sym1}</td><td style="color:#f87171;">${sym2}</td></tr>
+              <tr><td><strong>pH</strong></td><td>${d1.wechsel?.ph || '-'} / ${d1.akt?.ph || '-'}</td><td>${d2.wechsel?.ph || '-'} / ${d2.akt?.ph || '-'}</td></tr>
+              <tr><td><strong>GH</strong></td><td>${d1.wechsel?.gh || '-'} / ${d1.akt?.gh || '-'}</td><td>${d2.wechsel?.gh || '-'} / ${d2.akt?.gh || '-'}</td></tr>
+              <tr><td><strong>KH</strong></td><td>${d1.wechsel?.kh || '-'} / ${d1.akt?.kh || '-'}</td><td>${d2.wechsel?.kh || '-'} / ${d2.akt?.kh || '-'}</td></tr>
+              <tr><td><strong>NH₄</strong></td><td>${d1.wechsel?.nh4 || '-'} / ${d1.akt?.nh4 || '-'}</td><td>${d2.wechsel?.nh4 || '-'} / ${d2.akt?.nh4 || '-'}</td></tr>
+              <tr><td><strong>NO₂</strong></td><td>${d1.wechsel?.no2 || '-'} / ${d1.akt?.no2 || '-'}</td><td>${d2.wechsel?.no2 || '-'} / ${d2.akt?.no2 || '-'}</td></tr>
+              <tr><td><strong>NO₃</strong></td><td>${d1.wechsel?.no3 || '-'} / ${d1.akt?.no3 || '-'}</td><td>${d2.wechsel?.no3 || '-'} / ${d2.akt?.no3 || '-'}</td></tr>
+              <tr><td><strong>PO₄</strong></td><td>${d1.wechsel?.po4 || '-'} / ${d1.akt?.po4 || '-'}</td><td>${d2.wechsel?.po4 || '-'} / ${d2.akt?.po4 || '-'}</td></tr>
+              <tr><td><strong>K</strong></td><td>${d1.wechsel?.k || '-'} / ${d1.akt?.k || '-'}</td><td>${d2.wechsel?.k || '-'} / ${d2.akt?.k || '-'}</td></tr>
+              <tr><td><strong>Ca</strong></td><td>${d1.wechsel?.ca || '-'} / ${d1.akt?.ca || '-'}</td><td>${d2.wechsel?.ca || '-'} / ${d2.akt?.ca || '-'}</td></tr>
+              <tr><td><strong>Mg</strong></td><td>${d1.wechsel?.mg || '-'} / ${d1.akt?.mg || '-'}</td><td>${d2.wechsel?.mg || '-'} / ${d2.akt?.mg || '-'}</td></tr>
+              <tr><td><strong>Fe</strong></td><td>${d1.wechsel?.fe || '-'} / ${d1.akt?.fe || '-'}</td><td>${d2.wechsel?.fe || '-'} / ${d2.akt?.fe || '-'}</td></tr>
+              <tr><td><strong>Na</strong></td><td>${d1.wechsel?.na || '-'} / ${d1.akt?.na || '-'}</td><td>${d2.wechsel?.na || '-'} / ${d2.akt?.na || '-'}</td></tr>
+              <tr><td><strong>SiO₂</strong></td><td>${d1.wechsel?.sio2 || '-'} / ${d1.akt?.sio2 || '-'}</td><td>${d2.wechsel?.sio2 || '-'} / ${d2.akt?.sio2 || '-'}</td></tr>
+              <tr><td><strong>SO₄</strong></td><td>${d1.wechsel?.so4 || '-'} / ${d1.akt?.so4 || '-'}</td><td>${d2.wechsel?.so4 || '-'} / ${d2.akt?.so4 || '-'}</td></tr>
             </tbody>
           </table>
         </div>
@@ -1034,7 +756,6 @@
 
     function closeModal() {
       document.getElementById('historyModal').style.display = 'none';
-      // Optional: Setze Vergleichsauswahl zurück nach Schließen
       compareSelectedDays = [];
       renderCalendar();
     }
