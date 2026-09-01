@@ -112,6 +112,7 @@
       font-size: 0.85rem;
       text-align: right;
     }
+    .form-group select { text-align-last: right; }
 
     .question-block {
       margin-bottom: 12px;
@@ -507,8 +508,48 @@
         </div>
 
         <div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0"></div>
-        <div class="form-group"><label data-i18n="lbl_wood">Gesamtmenge an Wurzeln und Holz (kg):</label><input type="number" value="2" step="0.1"></div>
-        <div class="form-group"><label data-i18n="lbl_stones">Gesamtmenge an Steinen und Felsen (kg):</label><input type="number" value="5" step="0.1"></div>
+
+        <h3>Steinauswahl (Kalk-Analyse)</h3>
+        <div class="form-group">
+          <label>Steinart:</label>
+          <select id="steinArt">
+            <option value="">-- Keine / Keine Angabe --</option>
+            <option value="seiryu">Seiryu Stone / Green Stone (Kalkhaltig, härtet auf)</option>
+            <option value="dragon">Dragon Stone / Ohko Stone (Tonstein, meist neutral bis leicht aufhärtend)</option>
+            <option value="rokkaku">Rokkaku Stone (Kalkhaltig)</option>
+            <option value="mini_landscape">Mini-Landscape (Identisch mit Seiryu, kalkhaltig)</option>
+            <option value="schiefer">Schiefer / Black Slate (Neutral, härtet nicht auf)</option>
+            <option value="lava">Lavastein / Red/Black Lava (Neutral, porös)</option>
+            <option value="manten">Manten Stone (Sandstein-Mix, meist neutral)</option>
+            <option value="ada_eyi">ADA Eiyu / Ryuoh Stone (Kalkhaltig, härtet stark auf)</option>
+            <option value="granit">Granit (Neutral, absolut inert)</option>
+            <option value="marmor">Marmor / Weissmarmor (Stark kalkhaltig, härtet extrem auf)</option>
+            <option value="lochgestein">Lochgestein (Stark kalkhaltig, härtet stark auf)</option>
+            <option value="flusskiesel">Flusskiesel / Findlinge (Meist neutral)</option>
+            <option value="zebra">Zebra Stone (Neutral bis leicht kalkhaltig)</option>
+            <option value="holzstein">Holzstein / Petrified Wood (Mineralisiert, meist neutral)</option>
+            <option value="tiger">Tiger Stone (Neutral)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Menge an Steinen (kg):</label><input type="number" value="5" step="0.1"></div>
+
+        <h3>Holzauswahl</h3>
+        <div class="form-group">
+          <label>Holzart:</label>
+          <select id="holzArt">
+            <option value="">-- Kein Holz / Keine Angabe --</option>
+            <option value="red_moor">Red Moor Wood (Verzweigt, gibt leicht Tannine ab)</option>
+            <option value="mangrove">Mangrovenholz (Schwer, dunkel, säuert leicht an)</option>
+            <option value="moorkien">Moorkienholz (Urigen, weich, säuert stark an / senkt pH/KH)</option>
+            <option value="spider_wood">Spider Wood / Aztek-Wurzel (Astig, hell)</option>
+            <option value="driftwood">Treibholz / Driftwood (Neutral bis leicht sauer)</option>
+            <option value="savannenholz">Savannenholz (Hart, glatt)</option>
+            <option value="rondeletia">Rondeletia / Eisenholz (Sehr hart und schwer)</option>
+            <option value="jumbo">Jumbo-Wurzel (Großstückig, massiv)</option>
+            <option value="korkenzieher">Korkenzieherhasel / -weide (Dekorativ)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Menge an Holz (kg):</label><input type="number" value="2" step="0.1"></div>
       </div>
     </div>
 
@@ -663,7 +704,7 @@
           <div class="alert-card alert-orange" onclick="toggleDetails(this)">
             <strong>⚠️ GH-Anstieg im Becken:</strong> Gesamthärte im Aquarium (12 dGH) weicht vom Wechselwasser (10 dGH) ab.
             <span class="click-hint">Klicken für Details</span>
-            <div class="alert-details">Mögliche Ursache sind kalkhaltige Steine oder Dekorationselemente im Aquarium, die Mineralien an das Wasser abgeben.</div>
+            <div class="alert-details">Mögliche Ursache sind kalkhaltige Steine (oder Dekorationselemente) im Aquarium, die Mineralien an das Wasser abgeben.</div>
           </div>
 
           <div class="alert-card alert-red" onclick="toggleDetails(this)">
@@ -695,7 +736,7 @@
   </form>
 
   <footer class="app-footer">
-    <p>Aquarium-Wasserwerte-Rechner (AWR) v2.5 | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;">Daten sichern</a></p>
+    <p>Aquarium-Wasserwerte-Rechner (AWR) v2.6 | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;">Daten sichern</a></p>
   </footer>
 
   <script>
@@ -741,8 +782,6 @@
         lbl_nutrient_sub: "Wurde ein nährstoffreicher Untergrund verwendet?",
         lbl_regular_sub_fert: "Werden regelmäßig Bodendünger verwendet?",
         lbl_sub_vol: "Gesamtvolumen des Bodengrunds (L):",
-        lbl_wood: "Gesamtmenge an Wurzeln und Holz (kg):",
-        lbl_stones: "Gesamtmenge an Steinen und Felsen (kg):",
         sec_water_compare: "🧪 Wasserwerte-Vergleich",
         col_water_change: "Wasserwechsel",
         col_water_tank: "Aquarienwasser",
@@ -792,8 +831,6 @@
         lbl_nutrient_sub: "Was a nutrient-rich substrate used?",
         lbl_regular_sub_fert: "Are root fertilizers used regularly?",
         lbl_sub_vol: "Total substrate volume (L):",
-        lbl_wood: "Total amount of roots and wood (kg):",
-        lbl_stones: "Total amount of stones and rocks (kg):",
         sec_water_compare: "🧪 Water Parameter Comparison",
         col_water_change: "Water Change",
         col_water_tank: "Aquarium Water",
