@@ -274,9 +274,14 @@
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .cal-day:hover {
+      border-color: var(--accent);
     }
     .cal-day.empty { background: transparent; border: none; cursor: default; }
     .cal-day.has-entry { border-color: var(--accent); background: rgba(14, 165, 233, 0.15); }
+    .cal-day.today { font-weight: bold; color: var(--accent); border-color: var(--accent); }
     .entry-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 3px; }
     
     #historyDetailBox {
@@ -876,8 +881,9 @@
     function runAnalysis(event) {
       event.preventDefault();
       document.getElementById('resultSection').style.display = 'block';
-      let dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-      analysisDiary[dateKey] = "Analyse durchgeführt: Werte im normalen Bereich.";
+      let now = new Date();
+      let dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      analysisDiary[dateKey] = "Analyse durchgeführt: CO₂-Versorgung optimal, GH-Anstieg im Becken festgestellt, Nitrat-Wert bei 10 ppm.";
       renderCalendar();
     }
 
@@ -907,6 +913,7 @@
       grid.innerHTML = '';
       const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
       document.getElementById('calMonthYear').innerText = `${monthNames[currentMonth]} ${currentYear}`;
+      
       const daysOfWeek = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
       daysOfWeek.forEach(d => {
         let div = document.createElement('div');
@@ -914,19 +921,31 @@
         div.innerText = d;
         grid.appendChild(div);
       });
+
       let firstDayIndex = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
       let totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+      
       for (let i = 0; i < firstDayIndex; i++) {
         let div = document.createElement('div');
         div.className = 'cal-day empty';
         grid.appendChild(div);
       }
+
+      let realToday = new Date();
       for (let d = 1; d <= totalDays; d++) {
         let div = document.createElement('div');
-        div.className = 'cal-day';
         let dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        let hasEntry = analysisDiary[dateStr] ? '<div class="entry-dot"></div>' : '';
-        div.innerHTML = `<span>${d}</span>${hasEntry}`;
+        
+        let isToday = (d === realToday.getDate() && currentMonth === realToday.getMonth() && currentYear === realToday.getFullYear());
+        let hasEntry = analysisDiary[dateStr] ? true : false;
+
+        let classNames = ['cal-day'];
+        if (hasEntry) classNames.push('has-entry');
+        if (isToday) classNames.push('today');
+        div.className = classNames.join(' ');
+
+        let dotHtml = hasEntry ? '<div class="entry-dot"></div>' : '';
+        div.innerHTML = `<span>${d}</span>${dotHtml}`;
         div.onclick = () => showDayDetails(dateStr);
         grid.appendChild(div);
       }
