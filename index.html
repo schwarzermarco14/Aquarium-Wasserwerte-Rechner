@@ -429,7 +429,52 @@
       </div>
 
     </div>
+ <div class="card">
+        <h2>🌿 Pflanzen und Düngung</h2>
+        
+        <div class="form-group">
+          <label>Wie dicht ist das Aquarium bepflanzt?</label>
+          <select id="bepflanzungsdichte">
+            <option value="">-- Aus der Liste auswählen --</option>
+            <option value="sehr_wenig">Sehr wenige Pflanzen</option>
+            <option value="wenig">Wenige Pflanzen</option>
+            <option value="mittel">Mittlere Pflanzendichte</option>
+            <option value="dicht">Dicht bepflanzt</option>
+            <option value="sehr_dicht">Sehr dicht bepflanzt</option>
+          </select>
+        </div>
 
+        <div class="form-group">
+          <label style="margin-bottom: 8px; display: block;">Welche Dünger werden verwendet?</label>
+          
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="duenger_flüssig_c"> Flüssiger Kohlenstoffzusatz
+            </label>
+            <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="duenger_volldünger"> Volldünger (All-in-One)
+            </label>
+            <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="duenger_makro"> Makronährstoffdünger
+            </label>
+            <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="duenger_mikro"> Mikronährstoffdünger
+            </label>
+            <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="duenger_stickstoff"> Stickstoffdünger
+            </label>
+            <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="duenger_phosphat"> Phosphatdünger
+            </label>
+            <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="duenger_kalium"> Kaliumdünger
+            </label>
+            <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="duenger_eisen"> Eisendünger
+            </label>
+          </div>
+        </div>
+ </div>
     <!-- TAB 2: BODENGRUND & DEKO -->
     <div id="tab-duengung" class="tab-content">
       <div class="card">
