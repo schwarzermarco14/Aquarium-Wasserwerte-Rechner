@@ -282,7 +282,7 @@ transition: background 0.2s, border-color 0.2s;
 .cal-day.today { font-weight: bold; color: var(--accent); border-color: var(--accent); }
 .entry-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 3px; }
 
-/* MODAL / NEUES FENSTER STILE */
+/* MODAL STILE */
 .modal-overlay {
 display: none;
 position: fixed;
@@ -484,7 +484,6 @@ color: var(--text-muted);
 
 <div class="card">
 <h2>🌿 Pflanzen und Düngung</h2>
-
 <div class="form-group">
 <label>Wie dicht ist das Aquarium bepflanzt?</label>
 <select id="bepflanzungsdichte">
@@ -499,32 +498,15 @@ color: var(--text-muted);
 
 <div class="form-group" style="flex-direction: column; align-items: flex-start;">
 <label style="margin-bottom: 10px; display: block;">Welche Dünger werden verwendet?</label>
-
 <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-<input type="checkbox" id="duenger_flüssig_c" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Flüssiger Kohlenstoffzusatz
-</label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-<input type="checkbox" id="duenger_volldünger" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Volldünger (All-in-One)
-</label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-<input type="checkbox" id="duenger_makro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Makronährstoffdünger
-</label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-<input type="checkbox" id="duenger_mikro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Mikronährstoffdünger
-</label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-<input type="checkbox" id="duenger_stickstoff" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Stickstoffdünger
-</label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-<input type="checkbox" id="duenger_phosphat" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Phosphatdünger
-</label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-<input type="checkbox" id="duenger_kalium" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Kaliumdünger
-</label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-<input type="checkbox" id="duenger_eisen" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Eisendünger
-</label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_flüssig_c" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Flüssiger Kohlenstoffzusatz</label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_volldünger" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Volldünger (All-in-One)</label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_makro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Makronährstoffdünger</label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_mikro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Mikronährstoffdünger</label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_stickstoff" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Stickstoffdünger</label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_phosphat" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Phosphatdünger</label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_kalium" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Kaliumdünger</label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_eisen" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Eisendünger</label>
 </div>
 </div>
 </div>
@@ -630,20 +612,20 @@ color: var(--text-muted);
 </div>
 <div class="water-column">
 <h3 data-i18n="col_water_tank">Aquarienwasser</h3>
-<div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6,8"></div>
-<div class="water-field"><label>GH:</label><input type="text" value="12,0"></div>
-<div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4,0"></div>
-<div class="water-field"><label>NH₄ (ppm):</label><input type="text" value="0,0"></div>
-<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_akt" value="0,0"></div>
-<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10,0"></div>
-<div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0,1"></div>
-<div class="water-field"><label>K (ppm):</label><input type="text" value="5,0"></div>
-<div class="water-field"><label>Ca (ppm):</label><input type="text" value="25,0"></div>
-<div class="water-field"><label>Mg (ppm):</label><input type="text" value="5,0"></div>
-<div class="water-field"><label>Fe (ppm):</label><input type="text" value="0,05"></div>
-<div class="water-field"><label>Na (ppm):</label><input type="text" value="5,0"></div>
-<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" value="2,0"></div>
-<div class="water-field"><label>SO₄ (ppm):</label><input type="text" value="10,0"></div>
+<div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.8"></div>
+<div class="water-field"><label>GH:</label><input type="text" value="12.0"></div>
+<div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4.0"></div>
+<div class="water-field"><label>NH₄ (ppm):</label><input type="text" value="0.0"></div>
+<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_akt" value="0.0"></div>
+<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10.0"></div>
+<div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0.1"></div>
+<div class="water-field"><label>K (ppm):</label><input type="text" value="5.0"></div>
+<div class="water-field"><label>Ca (ppm):</label><input type="text" value="25.0"></div>
+<div class="water-field"><label>Mg (ppm):</label><input type="text" value="5.0"></div>
+<div class="water-field"><label>Fe (ppm):</label><input type="text" value="0.05"></div>
+<div class="water-field"><label>Na (ppm):</label><input type="text" value="5.0"></div>
+<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" value="2.0"></div>
+<div class="water-field"><label>SO₄ (ppm):</label><input type="text" value="10.0"></div>
 </div>
 </div>
 </div>
@@ -804,9 +786,8 @@ color: var(--text-muted);
 </footer>
 
 <script>
-let today = new Date();
-let currentMonth = today.getMonth();
-let currentYear = today.getFullYear();
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
 let analysisDiary = {};
 let activeModalDate = '';
 
@@ -968,9 +949,13 @@ renderCalendar();
 
 function renderCalendar() {
 const grid = document.getElementById('calendarGrid');
+if (!grid) return;
 grid.innerHTML = '';
 const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-document.getElementById('calMonthYear').innerText = `${monthNames[currentMonth]} ${currentYear}`;
+const monthYearEl = document.getElementById('calMonthYear');
+if (monthYearEl) {
+monthYearEl.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+}
 
 const daysOfWeek = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 daysOfWeek.forEach(d => {
@@ -1030,6 +1015,11 @@ delete analysisDiary[activeModalDate];
 closeModal();
 renderCalendar();
 }
+
+// Initialisiere den Kalender direkt beim Laden falls das Tab sichtbar ist
+window.addEventListener('DOMContentLoaded', () => {
+renderCalendar();
+});
 </script>
 </body>
 </html>
