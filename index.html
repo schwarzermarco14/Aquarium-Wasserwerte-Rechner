@@ -359,8 +359,8 @@ color: var(--text-muted);
 <!-- Header -->
 <div class="header">
 <div class="header-left">
-<h1><span data-i18n="title">Aquarium-Wasserwerte-Rechner (AWR)</span> 💧</h1>
-<p data-i18n="subtitle">Vollständige Aquarium-Analyse</p>
+<h1><span data-i18n="title">Calculadora de Parámetros de Agua (AWR)</span> 💧</h1>
+<p data-i18n="subtitle">Análisis Completo del Acuario</p>
 </div>
 <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
 <option value="de">🇩🇪 Deutsch</option>
@@ -382,12 +382,12 @@ color: var(--text-muted);
 
 <!-- TABS NAVIGATION -->
 <div class="tabs">
-<button class="tab-btn active" onclick="openTab(event, 'tab-becken')" data-i18n="tab_tech">Becken & Technik</button>
-<button class="tab-btn" onclick="openTab(event, 'tab-duengung')" data-i18n="tab_deco">Bodengrund & Deko</button>
-<button class="tab-btn" onclick="openTab(event, 'tab-wasser')" data-i18n="tab_water">Wasserwerte</button>
-<button class="tab-btn" onclick="openTab(event, 'tab-besatz')" data-i18n="tab_stock">Besatz & Futter</button>
-<button class="tab-btn" onclick="openTab(event, 'tab-symptome')" data-i18n="tab_symptoms">Symptome</button>
-<button class="tab-btn" onclick="openTab(event, 'tab-kalender')" data-i18n="tab_cal">📅 Kalender</button>
+<button class="tab-btn active" onclick="openTab(event, 'tab-becken')" data-i18n="tab_tech">Acuario y Técnica</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-duengung')" data-i18n="tab_deco">Sustrato y Decoración</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-wasser')" data-i18n="tab_water">Parámetros del Agua</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-besatz')" data-i18n="tab_stock">Población y Comida</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-symptome')" data-i18n="tab_symptoms">Síntomas</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-kalender')" data-i18n="tab_cal">📅 Calendario</button>
 </div>
 
 <form onsubmit="runAnalysis(event)">
@@ -395,124 +395,124 @@ color: var(--text-muted);
 <!-- TAB 1: BECKEN, FILTER, LICHT & PFLANZEN -->
 <div id="tab-becken" class="tab-content active">
 <div class="card">
-<h2 data-i18n="sec_tank_info">📐 Angaben zum Aquarium</h2>
-<div class="form-group"><label data-i18n="lbl_length">Aquarienlänge (cm):</label><input type="number" id="l" value="60" oninput="calcVol()"></div>
-<div class="form-group"><label data-i18n="lbl_width">Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
-<div class="form-group"><label data-i18n="lbl_height">Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
-<div class="form-group"><label data-i18n="lbl_vol">Aquarienvolumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
-<div class="form-group"><label data-i18n="lbl_runtime">Einrichtungszeit:</label><input type="text" id="inp_runtime" value="7 Wochen"></div>
+<h2 data-i18n="sec_tank_info">📐 Información del Acuario</h2>
+<div class="form-group"><label data-i18n="lbl_length">Longitud del acuario (cm):</label><input type="number" id="l" value="60" oninput="calcVol()"></div>
+<div class="form-group"><label data-i18n="lbl_width">Ancho del acuario (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
+<div class="form-group"><label data-i18n="lbl_height">Altura del acuario (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
+<div class="form-group"><label data-i18n="lbl_vol">Volumen del acuario (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
+<div class="form-group"><label data-i18n="lbl_runtime">Tiempo en funcionamiento:</label><input type="text" id="inp_runtime" value="7 semanas"></div>
 </div>
 
 <div class="card">
-<h2 data-i18n="sec_filter">🌀 Filterung & Heizung</h2>
+<h2 data-i18n="sec_filter">🌀 Filtración y Calefacción</h2>
 <div class="form-group">
-<label data-i18n="lbl_filtertype">Filtertyp:</label>
+<label data-i18n="lbl_filtertype">Tipo de filtro:</label>
 <select id="sel_filtertype">
-<option data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-<option value="Innenfilter" data-i18n="opt_infilt">Innenfilter</option>
-<option value="Rucksackfilter" data-i18n="opt_backpack">Rucksackfilter</option>
-<option value="Außenfilter" data-i18n="opt_outfilt" selected>Außenfilter</option>
-<option value="Filterbecken" data-i18n="opt_sump">Filterbecken (Sump)</option>
+<option data-i18n="opt_select">-- Seleccionar de la lista --</option>
+<option value="Innenfilter" data-i18n="opt_infilt">Filtro interior</option>
+<option value="Rucksackfilter" data-i18n="opt_backpack">Filtro de mochila</option>
+<option value="Außenfilter" data-i18n="opt_outfilt" selected>Filtro exterior</option>
+<option value="Filterbecken" data-i18n="opt_sump">Sump / Sump filtrante</option>
 </select>
 </div>
-<div class="form-group"><label data-i18n="lbl_flow">Filterdurchfluss (L/h):</label><input type="number" value="500"></div>
+<div class="form-group"><label data-i18n="lbl_flow">Caudal del filtro (L/h):</label><input type="number" value="500"></div>
 
 <div class="question-block">
-<label class="main-label" data-i18n="lbl_skimmer">Ist ein Oberflächenabsauger installiert?</label>
+<label class="main-label" data-i18n="lbl_skimmer">¿Hay un skimmer de superficie instalado?</label>
 <div class="radio-row">
-<label><input type="radio" name="skimmer" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="skimmer" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="skimmer" value="ja"> <span data-i18n="lbl_yes">Sí</span></label>
+<label><input type="radio" name="skimmer" value="nein" checked> <span data-i18n="lbl_no">No</span></label>
 </div>
 </div>
 
 <div class="question-block">
-<label class="main-label" data-i18n="lbl_uv">UV-Klärer:</label>
+<label class="main-label" data-i18n="lbl_uv">Esterilizador UV:</label>
 <div class="radio-row">
-<label><input type="radio" name="uv" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="uv" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="uv" value="ja"> <span data-i18n="lbl_yes">Sí</span></label>
+<label><input type="radio" name="uv" value="nein" checked> <span data-i18n="lbl_no">No</span></label>
 </div>
 </div>
 
 <div class="question-block">
-<label class="main-label" data-i18n="lbl_filtermedia">Welche Filtermedien werden verwendet?</label>
+<label class="main-label" data-i18n="lbl_filtermedia">¿Qué materiales filtrantes se utilizan?</label>
 <div class="media-grid">
-<label><input type="checkbox"> <span data-i18n="fm_ceramic">Keramische Filtermedien</span></label>
-<label><input type="checkbox" checked> <span data-i18n="fm_sponge">Filterschwamm</span></label>
-<label><input type="checkbox"> <span data-i18n="fm_clay">Blähton</span></label>
-<label><input type="checkbox"> <span data-i18n="fm_lava">Lavastein</span></label>
-<label><input type="checkbox"> <span data-i18n="fm_carbon">Aktivkohle</span></label>
-<label><input type="checkbox" checked> <span data-i18n="fm_floss">Filterwatte</span></label>
-<label><input type="checkbox"> <span data-i18n="fm_zeolite">Zeolith</span></label>
+<label><input type="checkbox"> <span data-i18n="fm_ceramic">Materiales filtrantes cerámicos</span></label>
+<label><input type="checkbox" checked> <span data-i18n="fm_sponge">Esponja filtrante</span></label>
+<label><input type="checkbox"> <span data-i18n="fm_clay">Arcilla expandida</span></label>
+<label><input type="checkbox"> <span data-i18n="fm_lava">Piedra de lava</span></label>
+<label><input type="checkbox"> <span data-i18n="fm_carbon">Carbón activo</span></label>
+<label><input type="checkbox" checked> <span data-i18n="fm_floss">Guata filtrante</span></label>
+<label><input type="checkbox"> <span data-i18n="fm_zeolite">Zeolita</span></label>
 </div>
 </div>
 
-<div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" placeholder="z. B. 2"></div>
+<div class="form-group"><label data-i18n="lbl_clean_interval">Intervalo de limpieza del filtro (semanas):</label><input type="text" placeholder="ej. 2"></div>
 
 <div class="question-block" style="margin-top: 15px;">
-<label class="main-label" data-i18n="lbl_heater">Ist im Aquarium ein Heizstab installiert?</label>
+<label class="main-label" data-i18n="lbl_heater">¿Hay un calentador instalado?</label>
 <div class="radio-row">
-<label><input type="radio" name="heater" value="ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="heater" value="nein"> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="heater" value="ja" checked> <span data-i18n="lbl_yes">Sí</span></label>
+<label><input type="radio" name="heater" value="nein"> <span data-i18n="lbl_no">No</span></label>
 </div>
 </div>
 
-<div class="form-group"><label data-i18n="lbl_temp">Wassertemperatur (°C):</label><input type="number" value="24" step="0.5"></div>
+<div class="form-group"><label data-i18n="lbl_temp">Temperatura del agua (°C):</label><input type="number" value="24" step="0.5"></div>
 </div>
 
 <div class="card">
 <h2 data-i18n="sec_co2">🫧 CO₂</h2>
 <div class="question-block">
-<label class="main-label" data-i18n="lbl_co2">Wird CO₂ zugeführt?</label>
+<label class="main-label" data-i18n="lbl_co2">¿Se suministra CO₂?</label>
 <div class="radio-row">
-<label><input type="radio" name="co2_zuafuhr" value="ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="co2_zuafuhr" value="nein"> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="co2_zuafuhr" value="ja" checked> <span data-i18n="lbl_yes">Sí</span></label>
+<label><input type="radio" name="co2_zuafuhr" value="nein"> <span data-i18n="lbl_no">No</span></label>
 </div>
 </div>
 </div>
 
 <div class="card">
-<h2 data-i18n="sec_light">💡 Beleuchtung</h2>
+<h2 data-i18n="sec_light">💡 Iluminación</h2>
 <div class="form-group">
-<label data-i18n="lbl_light_type">Beleuchtungsart:</label>
+<label data-i18n="lbl_light_type">Tipo de iluminación:</label>
 <select id="beleuchtungsart">
-<option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-<option value="t5_t8" data-i18n="opt_t5t8">T5-/T8-Leuchtstoffröhre</option>
+<option value="" data-i18n="opt_select">-- Seleccionar de la lista --</option>
+<option value="t5_t8" data-i18n="opt_t5t8">Tubo fluorescente T5/T8</option>
 <option value="led" data-i18n="opt_led">LED</option>
 <option value="hqi" data-i18n="opt_hqi">HQI</option>
 <option value="hql" data-i18n="opt_hql">HQL</option>
 </select>
 </div>
-<div class="form-group"><label data-i18n="lbl_light_kelvin">Farbtemperatur (K):</label><input type="number" id="farbtemperatur" value="6500"></div>
-<div class="form-group"><label data-i18n="lbl_light_watt">Leistung (W):</label><input type="number" id="leistung" value="30"></div>
-<div class="form-group"><label data-i18n="lbl_light_lum">Lichtstrom (lm):</label><input type="number" id="lichtstrom" value="2000"></div>
-<div class="form-group"><label data-i18n="lbl_light_duration">Tägliche Beleuchtungsdauer (h):</label><input type="number" id="beleuchtungsdauer" value="10"></div>
+<div class="form-group"><label data-i18n="lbl_light_kelvin">Temperatura de color (K):</label><input type="number" id="farbtemperatur" value="6500"></div>
+<div class="form-group"><label data-i18n="lbl_light_watt">Potencia (W):</label><input type="number" id="leistung" value="30"></div>
+<div class="form-group"><label data-i18n="lbl_light_lum">Flujo luminoso (lm):</label><input type="number" id="lichtstrom" value="2000"></div>
+<div class="form-group"><label data-i18n="lbl_light_duration">Duración diaria de la luz (h):</label><input type="number" id="beleuchtungsdauer" value="10"></div>
 </div>
 
 <div class="card">
-<h2 data-i18n="sec_plants">🌿 Pflanzen und Düngung</h2>
+<h2 data-i18n="sec_plants">🌿 Plantas y Fertilización</h2>
 <div class="form-group">
-<label data-i18n="lbl_plant_density">Wie dicht ist das Aquarium bepflanzt?</label>
+<label data-i18n="lbl_plant_density">¿Qué tan densamente plantado está el acuario?</label>
 <select id="bepflanzungsdichte">
-<option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-<option value="sehr_wenig" data-i18n="pd_very_few">Sehr wenige Pflanzen</option>
-<option value="wenig" data-i18n="pd_few">Wenige Pflanzen</option>
-<option value="mittel" data-i18n="pd_medium">Mittlere Pflanzendichte</option>
-<option value="dicht" data-i18n="pd_dense">Dicht bepflanzt</option>
-<option value="sehr_dicht" data-i18n="pd_very_dense">Sehr dicht bepflanzt</option>
+<option value="" data-i18n="opt_select">-- Seleccionar de la lista --</option>
+<option value="sehr_wenig" data-i18n="pd_very_few">Muy pocas plantas</option>
+<option value="wenig" data-i18n="pd_few">Pocas plantas</option>
+<option value="mittel" data-i18n="pd_medium">Densidad media de plantas</option>
+<option value="dicht" data-i18n="pd_dense">Densamente plantado</option>
+<option value="sehr_dicht" data-i18n="pd_very_dense">Muy densamente plantado</option>
 </select>
 </div>
 
 <div class="form-group" style="flex-direction: column; align-items: flex-start;">
-<label style="margin-bottom: 10px; display: block;" data-i18n="lbl_fert_types">Welche Dünger werden verwendet?</label>
+<label style="margin-bottom: 10px; display: block;" data-i18n="lbl_fert_types">¿Qué fertilizantes se utilizan?</label>
 <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_flüssig_c" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_liq_c">Flüssiger Kohlenstoffzusatz</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_volldünger" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_allinone">Volldünger (All-in-One)</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_makro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_macro">Makronährstoffdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_mikro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_micro">Mikronährstoffdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_stickstoff" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_nitro">Stickstoffdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_phosphat" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_phos">Phosphatdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_kalium" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_pot">Kaliumdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_iron" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_iron">Eisendünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_flüssig_c" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_liq_c">Carbono líquido adicional</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_volldünger" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_allinone">Abono completo (Todo en uno)</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_makro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_macro">Fertilizante de macronutrientes</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_mikro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_micro">Fertilizante de micronutrientes</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_stickstoff" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_nitro">Fertilizante de nitrógeno</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_phosphat" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_phos">Fertilizante de fosfato</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_kalium" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_pot">Fertilizante de potasio</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_iron" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_iron">Fertilizante de hierro</span></label>
 </div>
 </div>
 </div>
@@ -521,86 +521,86 @@ color: var(--text-muted);
 <!-- TAB 2: BODENGRUND & DEKO -->
 <div id="tab-duengung" class="tab-content">
 <div class="card">
-<h2 data-i18n="tab_deco">🪨 Bodengrund und Dekoration</h2>
+<h2 data-i18n="tab_deco">🪨 Sustrato y Decoración</h2>
 <div class="form-group">
-<label data-i18n="lbl_sub_type">Art des Bodengrunds:</label>
+<label data-i18n="lbl_sub_type">Tipo de sustrato:</label>
 <select id="bodenArt">
-<option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-<option value="quarzkies" data-i18n="sub_gravel" selected>Quarzkies</option>
-<option value="sand" data-i18n="sub_sand">Sand</option>
-<option value="soil" data-i18n="sub_soil">Soil (Aktiver Bodengrund)</option>
+<option value="" data-i18n="opt_select">-- Seleccionar de la lista --</option>
+<option value="quarzkies" data-i18n="sub_gravel" selected>Grava de cuarzo</option>
+<option value="sand" data-i18n="sub_sand">Arena</option>
+<option value="soil" data-i18n="sub_soil">Soil (Sustrato activo)</option>
 </select>
 </div>
 
 <div class="question-block">
-<label class="main-label" data-i18n="lbl_nutrient_sub">Wurde ein nährstoffreicher Untergrund verwendet?</label>
+<label class="main-label" data-i18n="lbl_nutrient_sub">¿Se usó un sustrato rico en nutrientes?</label>
 <div class="radio-row">
-<label><input type="radio" name="nutrient_sub" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="nutrient_sub" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="nutrient_sub" value="ja"> <span data-i18n="lbl_yes">Sí</span></label>
+<label><input type="radio" name="nutrient_sub" value="nein" checked> <span data-i18n="lbl_no">No</span></label>
 </div>
 </div>
 
 <div class="question-block" style="margin-top: 10px;">
-<label class="main-label" data-i18n="lbl_regular_sub_fert">Werden regelmäßig Bodendünger verwendet?</label>
+<label class="main-label" data-i18n="lbl_regular_sub_fert">¿Se usan fertilizantes de fondo regularmente?</label>
 <div class="radio-row">
-<label><input type="radio" name="regular_sub_fert" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="regular_sub_fert" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="regular_sub_fert" value="ja"> <span data-i18n="lbl_yes">Sí</span></label>
+<label><input type="radio" name="regular_sub_fert" value="nein" checked> <span data-i18n="lbl_no">No</span></label>
 </div>
 </div>
 
-<div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0"></div>
+<div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Volumen total de sustrato (L):</label><input type="number" id="bodenVolumen" value="9.0"></div>
 
-<h3 data-i18n="sec_stone">Steinauswahl (Kalk-Analyse)</h3>
+<h3 data-i18n="sec_stone">Selección de piedras (Análisis de cal)</h3>
 <div class="form-group">
-<label data-i18n="lbl_stone_type">Steinart:</label>
+<label data-i18n="lbl_stone_type">Tipo de piedra:</label>
 <select id="steinArt">
-<option value="" data-i18n="opt_nostone">-- Keine / Keine Angabe --</option>
-<option value="seiryu" data-i18n="st_seiryu">Seiryu Stone / Green Stone (Kalkhaltig)</option>
-<option value="dragon" data-i18n="st_dragon">Dragon Stone / Ohko Stone (Tonstein)</option>
-<option value="rokkaku" data-i18n="st_rokkaku">Rokkaku Stone (Kalkhaltig)</option>
-<option value="mini_landscape" data-i18n="st_mini">Mini-Landscape (Kalkhaltig)</option>
-<option value="schiefer" data-i18n="st_slate">Schiefer / Black Slate (Neutral)</option>
-<option value="lava" data-i18n="st_lava">Lavastein (Neutral, porös)</option>
-<option value="manten" data-i18n="st_manten">Manten Stone (Meist neutral)</option>
-<option value="ada_eyi" data-i18n="st_ada">ADA Eiyu / Ryuoh Stone (Härtet stark auf)</option>
-<option value="granit" data-i18n="st_granite">Granit (Neutral, inert)</option>
-<option value="marmor" data-i18n="st_marble">Marmor / Weissmarmor (Extrem kalkhaltig)</option>
-<option value="lochgestein" data-i18n="st_loch">Lochgestein (Stark kalkhaltig)</option>
-<option value="flusskiesel" data-i18n="st_river">Flusskiesel (Meist neutral)</option>
-<option value="zebra" data-i18n="st_zebra">Zebra Stone (Leicht kalkhaltig)</option>
-<option value="holzstein" data-i18n="st_woodstone">Holzstein (Meist neutral)</option>
+<option value="" data-i18n="opt_nostone">-- Ninguna / Sin especificar --</option>
+<option value="seiryu" data-i18n="st_seiryu">Seiryu Stone / Green Stone (Calcárea)</option>
+<option value="dragon" data-i18n="st_dragon">Dragon Stone / Ohko Stone (Arcillosa)</option>
+<option value="rokkaku" data-i18n="st_rokkaku">Rokkaku Stone (Calcárea)</option>
+<option value="mini_landscape" data-i18n="st_mini">Mini-Landscape (Calcárea)</option>
+<option value="schiefer" data-i18n="st_slate">Pizarra / Black Slate (Neutral)</option>
+<option value="lava" data-i18n="st_lava">Piedra de lava (Neutral, porosa)</option>
+<option value="manten" data-i18n="st_manten">Manten Stone (Principalmente neutral)</option>
+<option value="ada_eyi" data-i18n="st_ada">ADA Eiyu / Ryuoh Stone (Sube mucho el GH)</option>
+<option value="granit" data-i18n="st_granite">Granito (Neutral, inerte)</option>
+<option value="marmor" data-i18n="st_marble">Mármol / Mármol blanco (Muy calcárea)</option>
+<option value="lochgestein" data-i18n="st_loch">Lochgestein / Piedra agujereada (Calcárea)</option>
+<option value="flusskiesel" data-i18n="st_river">Guijarros de río (Principalmente neutral)</option>
+<option value="zebra" data-i18n="st_zebra">Zebra Stone (Ligeramente calcárea)</option>
+<option value="holzstein" data-i18n="st_woodstone">Madera petrificada (Principalmente neutral)</option>
 <option value="tiger" data-i18n="st_tiger">Tiger Stone (Neutral)</option>
 </select>
 </div>
-<div class="form-group"><label data-i18n="lbl_stone_qty">Menge an Steinen (kg):</label><input type="number" value="5" step="0.1"></div>
+<div class="form-group"><label data-i18n="lbl_stone_qty">Cantidad de piedras (kg):</label><input type="number" value="5" step="0.1"></div>
 
-<h3 data-i18n="sec_wood">Holzauswahl</h3>
+<h3 data-i18n="sec_wood">Selección de madera</h3>
 <div class="form-group">
-<label data-i18n="lbl_wood_type">Holzart:</label>
+<label data-i18n="lbl_wood_type">Tipo de madera:</label>
 <select id="holzArt">
-<option value="" data-i18n="opt_nowood">-- Kein Holz / Keine Angabe --</option>
-<option value="red_moor" data-i18n="wt_redmoor">Red Moor Wood (Gibt Tannine ab)</option>
-<option value="mangrove" data-i18n="wt_mangrove">Mangrovenholz (Säuert leicht an)</option>
-<option value="moorkien" data-i18n="wt_moor">Moorkienholz (Säuert stark an)</option>
-<option value="spider_wood" data-i18n="wt_spider">Spider Wood (Astig, hell)</option>
-<option value="drift" data-i18n="wt_drift">Treibholz (Leicht sauer)</option>
-<option value="savannenholz" data-i18n="wt_savannah">Savannenholz (Hart, glatt)</option>
-<option value="rondeletia" data-i18n="wt_ironwood">Eisenholz (Sehr hart und schwer)</option>
-<option value="jumbo" data-i18n="wt_jumbo">Jumbo-Wurzel (Großstückig)</option>
-<option value="korkenzieher" data-i18n="wt_cork">Korkenzieherhasel (Dekorativ)</option>
+<option value="" data-i18n="opt_nowood">-- Sin madera / Sin especificar --</option>
+<option value="red_moor" data-i18n="wt_redmoor">Red Moor Wood (Libera taninos)</option>
+<option value="mangrove" data-i18n="wt_mangrove">Madera de manglar (Acidifica ligeramente)</option>
+<option value="moorkien" data-i18n="wt_moor">Raíz de turbera (Acidifica fuertemente)</option>
+<option value="spider_wood" data-i18n="wt_spider">Spider Wood (Nudosa, clara)</option>
+<option value="drift" data-i18n="wt_drift">Madera flotante (Ligeramente ácida)</option>
+<option value="savannenholz" data-i18n="wt_savannah">Madera de sabana (Dura, lisa)</option>
+<option value="rondeletia" data-i18n="wt_ironwood">Madera de hierro (Muy dura y pesada)</option>
+<option value="jumbo" data-i18n="wt_jumbo">Raíz Jumbo (De gran tamaño)</option>
+<option value="korkenzieher" data-i18n="wt_cork">Avellano de bruja / Corcho (Decorativa)</option>
 </select>
 </div>
-<div class="form-group"><label data-i18n="lbl_wood_qty">Menge an Holz (kg):</label><input type="number" value="2" step="0.1"></div>
+<div class="form-group"><label data-i18n="lbl_wood_qty">Cantidad de madera (kg):</label><input type="number" value="2" step="0.1"></div>
 </div>
 </div>
 
 <!-- TAB 3: WASSERWERTE -->
 <div id="tab-wasser" class="tab-content">
 <div class="card">
-<h2 data-i18n="sec_water_compare">🧪 Wasserwerte-Vergleich</h2>
+<h2 data-i18n="sec_water_compare">🧪 Comparación de Parámetros del Agua</h2>
 <div class="water-grid">
 <div class="water-column">
-<h3 data-i18n="col_water_change">Wasserwechsel</h3>
+<h3 data-i18n="col_water_change">Agua de Cambio</h3>
 <div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" value="7.2"></div>
 <div class="water-field"><label>GH:</label><input type="text" id="w_gh_wechsel" value="10.0"></div>
 <div class="water-field"><label>KH:</label><input type="text" id="w_kh_wechsel" value="6.0"></div>
@@ -617,7 +617,7 @@ color: var(--text-muted);
 <div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_wechsel" value="0.0"></div>
 </div>
 <div class="water-column">
-<h3 data-i18n="col_water_tank">Aquarienwasser</h3>
+<h3 data-i18n="col_water_tank">Agua del Acuario</h3>
 <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.8"></div>
 <div class="water-field"><label>GH:</label><input type="text" id="w_gh_akt" value="12.0"></div>
 <div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4.0"></div>
@@ -640,36 +640,36 @@ color: var(--text-muted);
 <!-- TAB 4: BESATZ & FÜTTERUNG -->
 <div id="tab-besatz" class="tab-content">
 <div class="card">
-<h2 data-i18n="tab_stock">🐟 Tierbesatz & Fütterung</h2>
-<div class="form-group"><label data-i18n="lbl_fish_small">Kleine Fische (bis 3 cm):</label><input type="number" id="besatz_klein" value="10"></div>
-<div class="form-group"><label data-i18n="lbl_fish_medium">Mittelgroße Fische (3–8 cm):</label><input type="number" id="besatz_mittel" value="5"></div>
-<div class="form-group"><label data-i18n="lbl_fish_large">Große Fische (über 8 cm):</label><input type="number" id="besatz_gross" value="0"></div>
-<div class="form-group"><label data-i18n="lbl_fish_pleco">L-Welse / Harnischwelse:</label><input type="number" id="besatz_welse" value="1"></div>
-<div class="form-group"><label data-i18n="lbl_fish_algae">Algenfressende Fische:</label><input type="number" id="besatz_algen" value="2"></div>
-<div class="form-group"><label data-i18n="lbl_shrimp">Garnelen (Stk.):</label><input type="number" id="besatz_garnelen" value="15"></div>
-<div class="form-group"><label data-i18n="lbl_snails">Schnecken (Stk.):</label><input type="number" id="besatz_schnecken" value="10"></div>
+<h2 data-i18n="tab_stock">🐟 Población y Comida</h2>
+<div class="form-group"><label data-i18n="lbl_fish_small">Peces pequeños (hasta 3 cm):</label><input type="number" id="besatz_klein" value="10"></div>
+<div class="form-group"><label data-i18n="lbl_fish_medium">Peces medianos (3–8 cm):</label><input type="number" id="besatz_mittel" value="5"></div>
+<div class="form-group"><label data-i18n="lbl_fish_large">Peces grandes (más de 8 cm):</label><input type="number" id="besatz_gross" value="0"></div>
+<div class="form-group"><label data-i18n="lbl_fish_pleco">Peces L / Plecos (Raspadores intensivos):</label><input type="number" id="besatz_welse" value="1"></div>
+<div class="form-group"><label data-i18n="lbl_fish_algae">Peces comedores de algas (Crossocheilus, etc.):</label><input type="number" id="besatz_algen" value="2"></div>
+<div class="form-group"><label data-i18n="lbl_shrimp">Gambas (ud.):</label><input type="number" id="besatz_garnelen" value="15"></div>
+<div class="form-group"><label data-i18n="lbl_snails">Caracoles (ud.):</label><input type="number" id="besatz_schnecken" value="10"></div>
 
 <div class="question-block" style="margin-top: 15px;">
-<label class="main-label" data-i18n="lbl_feeding">Fütterung:</label>
+<label class="main-label" data-i18n="lbl_feeding">Alimentación:</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox"> <span data-i18n="fd_live">Lebendfutter</span></label>
-<label class="check-group"><input type="checkbox"> <span data-i18n="fd_frozen">Frostfutter</span></label>
-<label class="check-group"><input type="checkbox"> <span data-i18n="fd_flakes">Flockenfutter</span></label>
-<label class="check-group"><input type="checkbox" checked> <span data-i18n="fd_granule">Granulatfutter</span></label>
-<label class="check-group"><input type="checkbox" checked> <span data-i18n="fd_tabs">Wels-Tabs / Chips</span></label>
+<label class="check-group"><input type="checkbox"> <span data-i18n="fd_live">Alimento vivo</span></label>
+<label class="check-group"><input type="checkbox"> <span data-i18n="fd_frozen">Alimento congelado</span></label>
+<label class="check-group"><input type="checkbox"> <span data-i18n="fd_flakes">Comida en escamas</span></label>
+<label class="check-group"><input type="checkbox" checked> <span data-i18n="fd_granule">Comida en gránulos</span></label>
+<label class="check-group"><input type="checkbox" checked> <span data-i18n="fd_tabs">Pastillas / Chips para peces de fondo</span></label>
 </div>
 </div>
 
 <div class="form-group" style="margin-top: 12px;">
-<label data-i18n="lbl_feeding_freq">Fütterungshäufigkeit:</label>
+<label data-i18n="lbl_feeding_freq">Frecuencia de alimentación:</label>
 <select id="fuetterungs_haeufigkeit">
-<option data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-<option value="1x_taeglich" data-i18n="ff_1x_d">1 x täglich</option>
-<option value="2x_taeglich" data-i18n="ff_2x_d" selected>2 x täglich</option>
-<option value="mehr_als_2x_taeglich" data-i18n="ff_more_d">Mehr als 2 x täglich</option>
-<option value="1x_woechentlich" data-i18n="ff_1x_w">1 x wöchentlich</option>
-<option value="2x_woechentlich" data-i18n="ff_2x_w">2 x wöchentlich</option>
-<option value="mehr_als_2x_woechentlich" data-i18n="ff_more_w">Mehr als 2 x wöchentlich</option>
+<option data-i18n="opt_select">-- Seleccionar de la lista --</option>
+<option value="1x_taeglich" data-i18n="ff_1x_d">1 vez al día</option>
+<option value="2x_taeglich" data-i18n="ff_2x_d" selected>2 veces al día</option>
+<option value="mehr_als_2x_taeglich" data-i18n="ff_more_d">Más de 2 veces al día</option>
+<option value="1x_woechentlich" data-i18n="ff_1x_w">1 vez a la semana</option>
+<option value="2x_woechentlich" data-i18n="ff_2x_w">2 veces a la semana</option>
+<option value="mehr_als_2x_woechentlich" data-i18n="ff_more_w">Más de 2 veces a la semana</option>
 </select>
 </div>
 </div>
@@ -678,65 +678,65 @@ color: var(--text-muted);
 <!-- TAB 5: SYMPTOME -->
 <div id="tab-symptome" class="tab-content">
 <div class="card">
-<h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
+<h2 data-i18n="tab_symptoms">⚠️ Síntomas</h2>
 
 <div class="question-block">
-<label class="main-label" data-i18n="lbl_sym_algae">Welche Algen treten auf?</label>
+<label class="main-label" data-i18n="lbl_sym_algae">¿Qué algas aparecen?</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Fadenalgen"> <span data-i18n="alg_green_thread">Grüne Fadenalgen</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Punktalgen (GSA)"> <span data-i18n="alg_green_spot">Grüne Punktalgen (GSA)</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Cyanobakterien"> <span data-i18n="alg_cyano">Cyanobakterien</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Pinselalgen / Bartalgen (BBA)"> <span data-i18n="alg_brush">Pinselalgen / Bartalgen (BBA)</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Fadenalgen"> <span data-i18n="alg_green_thread">Algas verdes filamentosas</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Punktalgen (GSA)"> <span data-i18n="alg_green_spot">Algas verdes en punto (GSA)</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Cyanobakterien"> <span data-i18n="alg_cyano">Cianobacterias</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Pinselalgen / Bartalgen (BBA)"> <span data-i18n="alg_brush">Algas pincel / Algas barbudas (BBA)</span></label>
 <label class="check-group"><input type="checkbox" class="symptom-chk" value="Spirogyra"> <span data-i18n="alg_spirogyra">Spirogyra</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kieselalgen"> <span data-i18n="alg_diatoms">Kieselalgen</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüner Belag auf den Scheiben"> <span data-i18n="alg_glass">Grüner Belag auf den Scheiben</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Wasserblüte"> <span data-i18n="alg_bloom">Grüne Wasserblüte</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kieselalgen"> <span data-i18n="alg_diatoms">Diatomeas (Algas marrones)</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüner Belag auf den Scheiben"> <span data-i18n="alg_glass">Capa verde en los cristales</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Wasserblüte"> <span data-i18n="alg_bloom">Agua verde (Floración de algas)</span></label>
 </div>
 </div>
 
 <div class="question-block" style="margin-top: 15px;">
-<label class="main-label" data-i18n="lbl_sym_plants">Pflanzenprobleme:</label>
+<label class="main-label" data-i18n="lbl_sym_plants">Problemas con las plantas:</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kein Wachstum"> <span data-i18n="pl_no_growth">Kein Wachstum</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Verblassen / Farbverlust"> <span data-i18n="pl_fade">Verblassen / Farbverlust</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Löcher in den Blättern"> <span data-i18n="pl_holes">Löcher in den Blättern</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Blattzerfall / Pflanzenmelt"> <span data-i18n="pl_melt">Blattzerfall / Pflanzenmelt</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Stängelfäule"> <span data-i18n="pl_rot">Stängelfäule</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Vergilbende Blätter"> <span data-i18n="pl_yellow">Vergilbende Blätter</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kleine deformierte Blätter"> <span data-i18n="pl_deformed">Kleine, deformierte neue Blätter</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Abfallende untere Blätter"> <span data-i18n="pl_drop">Abfallende untere Blätter</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kein Wachstum"> <span data-i18n="pl_no_growth">Sin crecimiento</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Verblassen / Farbverlust"> <span data-i18n="pl_fade">Decoloración / Pérdida de color</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Löcher in den Blättern"> <span data-i18n="pl_holes">Agujeros en las hojas</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Blattzerfall / Pflanzenmelt"> <span data-i18n="pl_melt">Desintegración de hojas / Plant melt</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Stängelfäule"> <span data-i18n="pl_rot">Podredumbre de tallos</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Vergilbende Blätter"> <span data-i18n="pl_yellow">Hojas amarillentas</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kleine deformierte Blätter"> <span data-i18n="pl_deformed">Hojas nuevas pequeñas y deformadas</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Abfallende untere Blätter"> <span data-i18n="pl_drop">Pérdida de hojas inferiores</span></label>
 </div>
 </div>
 
 <div class="question-block" style="margin-top: 15px;">
-<label class="main-label" data-i18n="lbl_sym_fish">Fische und Wirbellose:</label>
+<label class="main-label" data-i18n="lbl_sym_fish">Peces e invertebrados:</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Schnappen nach Luft"> <span data-i18n="fi_air">Schnappen nach Luft an der Oberfläche</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Teilnahmslosigkeit"> <span data-i18n="fi_apathy">Teilnahmslosigkeit / Appetitlosigkeit</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Todesfälle"> <span data-i18n="fi_deaths">Todesfälle in den letzten Tagen</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weiße Punkte"> <span data-i18n="fi_spots">Weiße Punkte oder Beläge auf Fischen</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Ausgefranste Flossen"> <span data-i18n="fi_fins">Ausgefranste oder sich auflösende Flossen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Schnappen nach Luft"> <span data-i18n="fi_air">Boqueando en la superficie</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Teilnahmslosigkeit"> <span data-i18n="fi_apathy">Apatía / Falta de apetito</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Todesfälle"> <span data-i18n="fi_deaths">Muertes en los últimos días</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weiße Punkte"> <span data-i18n="fi_spots">Puntos blancos o capas en los peces</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Ausgefranste Flossen"> <span data-i18n="fi_fins">Aletas deshilachadas o disueltas</span></label>
 </div>
 </div>
 
 <div class="question-block" style="margin-top: 15px;">
-<label class="main-label" data-i18n="lbl_sym_water">Wasser und Erscheinungsbild:</label>
+<label class="main-label" data-i18n="lbl_sym_water">Agua y apariencia:</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Trübes Wasser"> <span data-i18n="wa_turbid">Trübes Wasser</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Gelbe Wasserfärbung"> <span data-i18n="wa_yellow">Gelbe oder teefarbene Wasserfärbung</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Mineralische Ablagerungen"> <span data-i18n="wa_deposits">Mineralische Ablagerungen auf Scheiben/Technik</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Unangenehmer Geruch"> <span data-i18n="wa_odor">Unangenehmer Geruch</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weißer Belag auf Holz"> <span data-i18n="wa_biofilm">Weißer Belag oder Biofilm auf Holz</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Trübes Wasser"> <span data-i18n="wa_turbid">Agua turbia</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Gelbe Wasserfärbung"> <span data-i18n="wa_yellow">Coloración amarilla o color té del agua</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Mineralische Ablagerungen"> <span data-i18n="wa_deposits">Depósitos minerales en cristales/técnica</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Unangenehmer Geruch"> <span data-i18n="wa_odor">Olor desagradable</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weißer Belag auf Holz"> <span data-i18n="wa_biofilm">Capa blanca o biopelícula en la madera</span></label>
 </div>
 </div>
 
-<button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
+<button type="submit" class="btn-red" data-i18n="btn_analyze">Analizar y guardar en el calendario</button>
 </div>
 
 <!-- ANALYSE ERGEBNISSE -->
 <div class="result-box" id="resultSection">
 <div class="card" id="resultCardContainer">
-<h2 data-i18n="res_title">📊 Analyseergebnis & Auswertung</h2>
+<h2 data-i18n="res_title">📊 Resultado del Análisis y Evaluación</h2>
 </div>
 </div>
 </div>
@@ -744,10 +744,10 @@ color: var(--text-muted);
 <!-- TAB 6: KALENDER -->
 <div id="tab-kalender" class="tab-content">
 <div class="card">
-<h2 data-i18n="tab_cal">📅 Aquarien-Tagebuch</h2>
+<h2 data-i18n="tab_cal">📅 Calendario</h2>
 <div class="calendar-nav">
 <button type="button" onclick="changeMonth(-1)">‹</button>
-<span id="calMonthYear">März 2026</span>
+<span id="calMonthYear">Marzo 2026</span>
 <button type="button" onclick="changeMonth(1)">›</button>
 </div>
 <div class="calendar-grid" id="calendarGrid"></div>
@@ -760,17 +760,17 @@ color: var(--text-muted);
 <div class="modal-overlay" id="dayModal">
 <div class="modal-content">
 <button class="modal-close" onclick="closeModal()">×</button>
-<h3 id="modalDateTitle" style="color:var(--accent); margin-bottom: 10px;">Datum</h3>
+<h3 id="modalDateTitle" style="color:var(--accent); margin-bottom: 10px;">Fecha</h3>
 <div class="modal-body">
-<p style="margin-bottom: 6px; color:var(--text-muted);" data-i18n="modal_subtitle">Vollständiger Analyse-Report:</p>
-<textarea id="modalEntryText" placeholder="Notizen oder gemessene Werte hier eintragen..."></textarea>
-<button type="button" class="modal-btn" onclick="saveDayEntry()" data-i18n="modal_save">Speichern</button>
+<p style="margin-bottom: 6px; color:var(--text-muted);" data-i18n="modal_subtitle">Informe completo de análisis:</p>
+<textarea id="modalEntryText" placeholder="Introduce aquí notas o valores medidos..."></textarea>
+<button type="button" class="modal-btn" onclick="saveDayEntry()" data-i18n="modal_save">Guardar</button>
 </div>
 </div>
 </div>
 
 <footer class="app-footer">
-<p><span data-i18n="footer_text">Aquarium-Wasserwerte-Rechner (AWR) v2.7</span> | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;" data-i18n="footer_save">Daten sichern</a></p>
+<p><span data-i18n="footer_text">Calculadora de Parámetros de Agua (AWR) v2.7</span> | <a href="#" onclick="alert('Datos guardados localmente'); return false;" data-i18n="footer_save">Guardar datos</a></p>
 </footer>
 
 <script>
@@ -946,7 +946,7 @@ modal_save: "Speichern",
 footer_text: "Aquarium-Wasserwerte-Rechner (AWR) v2.7",
 footer_save: "Daten sichern"
 },
-en: {
+nl: {
 main_title: "Aquarium Water Parameters Calculator (AWR) - Complete Analysis",
 title: "Aquarium Water Parameters Calculator (AWR)",
 subtitle: "Complete Aquarium Analysis",
@@ -1112,7 +1112,1501 @@ modal_save: "Save",
 footer_text: "Aquarium Water Parameters Calculator (AWR) v2.7",
 footer_save: "Save data"
 },
-es: {
+fr: {
+main_title: "Calculateur de paramètres d'eau d'aquarium (AWR) - Analyse complète",
+title: "Calculateur de paramètres d'eau (AWR)",
+subtitle: "Analyse complète de l'aquarium",
+tab_tech: "Bac & Technique",
+tab_deco: "Sol & Déco",
+tab_wasser: "Paramètres de l'eau",
+tab_stock: "Population & Nourriture",
+tab_symptoms: "Symptômes",
+tab_cal: "📅 Calendrier",
+sec_tank_info: "📐 Informations sur l'aquarium",
+lbl_length: "Longueur du bac (cm) :",
+lbl_width: "Largeur du bac (cm) :",
+lbl_height: "Hauteur du bac (cm) :",
+lbl_vol: "Volume du bac (L) :",
+lbl_runtime: "Temps de fonctionnement :",
+sec_filter: "🌀 Filtration & Chauffage",
+lbl_filtertype: "Type de filtre :",
+opt_select: "-- Sélectionner dans la liste --",
+opt_infilt: "Filtre intérieur",
+opt_backpack: "Filtre cascade",
+opt_outfilt: "Filtre externe",
+opt_sump: "Décantation / Sump",
+lbl_flow: "Débit du filtre (L/h) :",
+lbl_skimmer: "Un skimofiltre / skimmer de surface est-il installé ?",
+lbl_uv: "Stérilisateur UV :",
+lbl_yes: "Oui",
+lbl_no: "Non",
+lbl_filtermedia: "Quels masses filtrantes sont utilisées ?",
+fm_ceramic: "Supports céramiques",
+fm_sponge: "Mousse filtrante",
+fm_clay: "Argile expansée",
+fm_lava: "Roche de lave",
+fm_carbon: "Charbon actif",
+fm_floss: "Ouate filtrante",
+fm_zeolite: "Zéolite",
+lbl_clean_interval: "Intervalle de nettoyage du filtre (semaines) :",
+lbl_heater: "Un chauffage est-il installé ?",
+lbl_temp: "Température de l'eau (°C) :",
+sec_co2: "🫧 CO₂",
+lbl_co2: "Du CO₂ est-il injecté ?",
+sec_light: "💡 Éclairage",
+lbl_light_type: "Type d'éclairage :",
+opt_t5t8: "Tube fluorescent T5/T8",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Température de couleur (K) :",
+lbl_light_watt: "Puissance (W) :",
+lbl_light_lum: "Flux lumineux (lm) :",
+lbl_light_duration: "Durée d'éclairage quotidienne (h) :",
+sec_plants: "🌿 Plantes et Fertilisation",
+lbl_plant_density: "Quelle est la densité de plantation ?",
+pd_very_few: "Très peu de plantes",
+pd_few: "Peu de plantes",
+pd_medium: "Densité de plantes moyenne",
+pd_dense: "Bien planté",
+pd_very_dense: "Très dense",
+lbl_fert_types: "Quels engrais sont utilisés ?",
+ft_liq_c: "Carbone liquide",
+ft_allinone: "Engrais tout-en-un",
+ft_macro: "Engrais macronutriments",
+ft_micro: "Engrais micronutriments",
+ft_nitro: "Engrais azoté",
+ft_phos: "Engrais phosphaté",
+ft_pot: "Engrais potassique",
+ft_iron: "Engrais ferreux",
+lbl_sub_type: "Type de sol :",
+sub_gravel: "Gravier de quartz",
+sub_sand: "Sable",
+sub_soil: "Soil (Sol technique)",
+lbl_nutrient_sub: "Un sol nutritif a-t-il été utilisé sous le gravier ?",
+lbl_regular_sub_fert: "Utilisez-vous régulièrement des engrais racinaires ?",
+lbl_sub_vol: "Volume total de substrat (L) :",
+sec_stone: "Sélection de roches (Analyse calcaire)",
+lbl_stone_type: "Type de roche :",
+opt_nostone: "-- Aucune / Non spécifié --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcaire)",
+st_dragon: "Dragon Stone / Ohko Stone (Argileux)",
+st_rokkaku: "Rokkaku Stone (Calcaire)",
+st_mini: "Mini-Landscape (Calcaire)",
+st_slate: "Ardoise / Black Slate (Neutre)",
+st_lava: "Roche de lave (Neutre, poreuse)",
+st_manten: "Manten Stone (Généralement neutre)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Augmente fortement le GH)",
+st_granite: "Granit (Neutre, inerte)",
+st_marble: "Marbre / Marbre blanc (Extrêmement calcaire)",
+st_loch: "Lochgestein / Pierre percée (Très calcaire)",
+st_river: "Galets de rivière (Généralement neutres)",
+st_zebra: "Zebra Stone (Légèrement calcaire)",
+st_woodstone: "Pierre pétrifiée (Généralement neutre)",
+st_tiger: "Tiger Stone (Neutre)",
+lbl_stone_qty: "Quantité de roches (kg) :",
+sec_wood: "Sélection de bois",
+lbl_wood_type: "Type de bois :",
+opt_nowood: "-- Pas de bois / Non spécifié --",
+wt_redmoor: "Red Moor Wood (Libère des tanins)",
+wt_mangrove: "Bois de mangrove (Acidifie légèrement)",
+wt_moor: "Racine de tourbière (Acidifie fortement)",
+wt_spider: "Spider Wood (Noueux, clair)",
+wt_drift: "Bois flotté (Légèrement acide)",
+wt_savannah: "Bois de savane (Dur, lisse)",
+wt_ironwood: "Bois de fer (Très dur et lourd)",
+wt_jumbo: "Racine Jumbo (Grande taille)",
+wt_cork: "Noisetier tortueux / Liège (Décoratif)",
+lbl_wood_qty: "Quantité de bois (kg) :",
+sec_water_compare: "🧪 Comparaison des paramètres d'eau",
+col_water_change: "Eau de changement",
+col_water_tank: "Eau de l'aquarium",
+lbl_fish_small: "Petits poissons (jusqu'à 3 cm) :",
+lbl_fish_medium: "Poissons moyens (3–8 cm) :",
+lbl_fish_large: "Grands poissons (plus de 8 cm) :",
+lbl_fish_pleco: "L-Welse / Ancistrus / Plécos :",
+lbl_fish_algae: "Poissons mangeurs d'algues :",
+lbl_shrimp: "Crevettes (ex.) :",
+lbl_snails: "Escargots (ex.) :",
+lbl_feeding: "Alimentation :",
+fd_live: "Nourriture vivante",
+fd_frozen: "Nourriture congelée",
+fd_flakes: "Flocons",
+fd_granule: "Granulés",
+fd_tabs: "Pastilles pour poissons de fond",
+lbl_feeding_freq: "Fréquence de nourrissage :",
+ff_1x_d: "1 fois par jour",
+ff_2x_d: "2 fois par jour",
+ff_more_d: "Plus de 2 fois par jour",
+ff_1x_w: "1 fois par semaine",
+ff_2x_w: "2 fois par semaine",
+ff_more_w: "Plus de 2 fois par semaine",
+lbl_sym_algae: "Quelles algues apparaissent ?",
+alg_green_thread: "Algues filamenteuses vertes",
+alg_green_spot: "Algues en points verts (GSA)",
+alg_cyano: "Cyanobactéries",
+alg_brush: "Algues pinceaux / barbes (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatomées (Algues brunes)",
+alg_glass: "Film vert sur les vitres",
+alg_bloom: "Eau verte (Prolifération d'algues)",
+lbl_sym_plants: "Problèmes de plantes :",
+pl_no_growth: "Pas de croissance",
+pl_fade: "Décoloration / Perte de couleur",
+pl_holes: "Trous dans les feuilles",
+pl_melt: "Fonte des feuilles / Plant melt",
+pl_rot: "Pourriture des tiges",
+pl_yellow: "Feuilles jaunissantes",
+pl_deformed: "Petites feuilles neuves déformées",
+pl_drop: "Perte des feuilles inférieures",
+lbl_sym_fish: "Poissons et invertébrés :",
+fi_air: "Poisson qui gaspue à la surface",
+fi_apathy: "Apathie / Perte d'appétit",
+fi_deaths: "Morts ces derniers jours",
+fi_spots: "Points blancs ou voiles sur les poissons",
+fi_fins: "Nageoires effilochées ou qui se dissolvent",
+lbl_sym_water: "Eau et apparence :",
+wa_turbid: "Eau trouble",
+wa_yellow: "Coloration jaune ou couleur thé de l'eau",
+wa_deposits: "Dépôts minéraux sur les vitres/technique",
+wa_odor: "Odeur désagréable",
+wa_biofilm: "Dépôt blanc ou biofilm sur le bois",
+btn_analyze: "Analyser et enregistrer dans le calendrier",
+res_title: "📊 Résultat de l'analyse et évaluation",
+modal_subtitle: "Rapport d'analyse complet :",
+modal_save: "Enregistrer",
+footer_text: "Calculateur de paramètres d'eau (AWR) v2.7",
+footer_save: "Sauvegarder les données"
+},
+da: {
+main_title: "Aquarium Water Parameters Calculator (AWR) - Complete Analysis",
+title: "Aquarium Water Parameters Calculator (AWR)",
+subtitle: "Complete Aquarium Analysis",
+tab_tech: "Tank & Tech",
+tab_deco: "Substrate & Decor",
+tab_wasser: "Water Parameters",
+tab_stock: "Stocking & Feeding",
+tab_symptoms: "Symptoms",
+tab_cal: "📅 Calendar",
+sec_tank_info: "📐 Aquarium Information",
+lbl_length: "Tank length (cm):",
+lbl_width: "Tank width (cm):",
+lbl_height: "Tank height (cm):",
+lbl_vol: "Tank volume (L):",
+lbl_runtime: "Runtime:",
+sec_filter: "🌀 Filtration & Heating",
+lbl_filtertype: "Filter type:",
+opt_select: "-- Select from list --",
+opt_infilt: "Internal filter",
+opt_backpack: "Hang-on-back filter",
+opt_outfilt: "Canister filter",
+opt_sump: "Sump",
+lbl_flow: "Filter flow rate (L/h):",
+lbl_skimmer: "Is a surface skimmer installed?",
+lbl_uv: "UV Sterilizer:",
+lbl_yes: "Yes",
+lbl_no: "No",
+lbl_filtermedia: "What filter media are used?",
+fm_ceramic: "Ceramic filter media",
+fm_sponge: "Filter sponge",
+fm_clay: "Expanded clay",
+fm_lava: "Lava rock",
+fm_carbon: "Activated carbon",
+fm_floss: "Filter floss",
+fm_zeolite: "Zeolite",
+lbl_clean_interval: "Filter cleaning interval (weeks):",
+lbl_heater: "Is a heater installed?",
+lbl_temp: "Water temperature (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "Is CO₂ supplied?",
+sec_light: "💡 Lighting",
+lbl_light_type: "Lighting type:",
+opt_t5t8: "T5/T8 Fluorescent tube",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Color temperature (K):",
+lbl_light_watt: "Power (W):",
+lbl_light_lum: "Luminous flux (lm):",
+lbl_light_duration: "Daily light duration (h):",
+sec_plants: "🌿 Plants and Fertilization",
+lbl_plant_density: "How densely planted is the tank?",
+pd_very_few: "Very few plants",
+pd_few: "Few plants",
+pd_medium: "Medium plant density",
+pd_dense: "Densely planted",
+pd_very_dense: "Very densely planted",
+lbl_fert_types: "What fertilizers are used?",
+ft_liq_c: "Liquid carbon additive",
+ft_allinone: "All-in-one fertilizer",
+ft_macro: "Macronutrient fertilizer",
+ft_micro: "Micronutrient fertilizer",
+ft_nitro: "Nitrogen fertilizer",
+ft_phos: "Phosphate fertilizer",
+ft_pot: "Potassium fertilizer",
+ft_iron: "Iron fertilizer",
+lbl_sub_type: "Substrate type:",
+sub_gravel: "Quartz gravel",
+sub_sand: "Sand",
+sub_soil: "Active soil",
+lbl_nutrient_sub: "Was a nutrient-rich base layer used?",
+lbl_regular_sub_fert: "Are root fertilizers used regularly?",
+lbl_sub_vol: "Total substrate volume (L):",
+sec_stone: "Stone Selection (Lime Analysis)",
+lbl_stone_type: "Stone type:",
+opt_nostone: "-- None / Not specified --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcareous)",
+st_dragon: "Dragon Stone / Ohko Stone (Claystone)",
+st_rokkaku: "Rokkaku Stone (Calcareous)",
+st_mini: "Mini-Landscape (Calcareous)",
+st_slate: "Slate / Black Slate (Neutral)",
+st_lava: "Lava rock (Neutral, porous)",
+st_manten: "Manten Stone (Mostly neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Hardens water significantly)",
+st_granite: "Granite (Neutral, inert)",
+st_marble: "Marble / White marble (Extremely calcareous)",
+st_loch: "Lochstein / Honeycomb stone (Highly calcareous)",
+st_river: "River pebbles (Mostly neutral)",
+st_zebra: "Zebra Stone (Slightly calcareous)",
+st_woodstone: "Woodstone (Mostly neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Stone quantity (kg):",
+sec_wood: "Wood Selection",
+lbl_wood_type: "Wood type:",
+opt_nowood: "-- No wood / Not specified --",
+wt_redmoor: "Red Moor Wood (Leaches tannins)",
+wt_mangrove: "Mangrove wood (Slightly acidic)",
+wt_moor: "Bogwood (Strongly acidic)",
+wt_spider: "Spider Wood (Knotted, light)",
+wt_drift: "Driftwood (Slightly acidic)",
+wt_savannah: "Savannah wood (Hard, smooth)",
+wt_ironwood: "Ironwood (Very hard and heavy)",
+wt_jumbo: "Jumbo root (Large-sized)",
+wt_cork: "Corkscrew hazel (Decorative)",
+lbl_wood_qty: "Wood quantity (kg):",
+sec_water_compare: "🧪 Water Parameters Comparison",
+col_water_change: "Water Change",
+col_water_tank: "Tank Water",
+lbl_fish_small: "Small fish (up to 3 cm):",
+lbl_fish_medium: "Medium fish (3–8 cm):",
+lbl_fish_large: "Large fish (over 8 cm):",
+lbl_fish_pleco: "Plecos / L-numbers:",
+lbl_fish_algae: "Algae-eating fish:",
+lbl_shrimp: "Shrimp (pcs.):",
+lbl_snails: "Snails (pcs.):",
+lbl_feeding: "Feeding:",
+fd_live: "Live food",
+fd_frozen: "Frozen food",
+fd_flakes: "Flake food",
+fd_granule: "Granule food",
+fd_tabs: "Bottom feeder tabs / chips",
+lbl_feeding_freq: "Feeding frequency:",
+ff_1x_d: "1 x daily",
+ff_2x_d: "2 x daily",
+ff_more_d: "More than 2 x daily",
+ff_1x_w: "1 x weekly",
+ff_2x_w: "2 x weekly",
+ff_more_w: "More than 2 x weekly",
+lbl_sym_algae: "Which algae appear?",
+alg_green_thread: "Green thread algae",
+alg_green_spot: "Green spot algae (GSA)",
+alg_cyano: "Cyanobacteria",
+alg_brush: "Brush / Beard algae (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatoms (Brown algae)",
+alg_glass: "Green film on glass",
+alg_bloom: "Green water bloom",
+lbl_sym_plants: "Plant problems:",
+pl_no_growth: "No growth",
+pl_fade: "Fading / Loss of color",
+pl_holes: "Holes in leaves",
+pl_melt: "Leaf decay / Plant melt",
+pl_rot: "Stem rot",
+pl_yellow: "Yellowing leaves",
+pl_deformed: "Small, deformed new leaves",
+pl_drop: "Lower leaves dropping",
+lbl_sym_fish: "Fish and invertebrates:",
+fi_air: "Gasping for air at the surface",
+fi_apathy: "Apathy / Loss of appetite",
+fi_deaths: "Deaths in recent days",
+fi_spots: "White spots or coatings on fish",
+fi_fins: "Frayed or dissolving fins",
+lbl_sym_water: "Water and appearance:",
+wa_turbid: "Turbid water",
+wa_yellow: "Yellow or tea-colored water",
+wa_deposits: "Mineral deposits on glass/equipment",
+wa_odor: "Unpleasant odor",
+wa_biofilm: "White coating or biofilm on wood",
+btn_analyze: "Analyze & Save to Calendar",
+res_title: "📊 Analysis Result & Evaluation",
+modal_subtitle: "Complete analysis report:",
+modal_save: "Save",
+footer_text: "Aquarium Water Parameters Calculator (AWR) v2.7",
+footer_save: "Save data"
+},
+it: {
+main_title: "Calculadora de Parámetros de Agua de Acuario (AWR) - Análisis Completo",
+title: "Calculadora de Parámetros de Agua (AWR)",
+subtitle: "Análisis Completo del Acuario",
+tab_tech: "Acuario y Técnica",
+tab_deco: "Sustrato y Decoración",
+tab_wasser: "Parámetros del Agua",
+tab_stock: "Población y Comida",
+tab_symptoms: "Síntomas",
+tab_cal: "📅 Calendario",
+sec_tank_info: "📐 Información del Acuario",
+lbl_length: "Longitud del acuario (cm):",
+lbl_width: "Ancho del acuario (cm):",
+lbl_height: "Altura del acuario (cm):",
+lbl_vol: "Volumen del acuario (L):",
+lbl_runtime: "Tiempo en funcionamiento:",
+sec_filter: "🌀 Filtración y Calefacción",
+lbl_filtertype: "Tipo de filtro:",
+opt_select: "-- Seleccionar de la lista --",
+opt_infilt: "Filtro interior",
+opt_backpack: "Filtro de mochila",
+opt_outfilt: "Filtro exterior",
+opt_sump: "Sump / Sump filtrante",
+lbl_flow: "Caudal del filtro (L/h):",
+lbl_skimmer: "¿Hay un skimmer de superficie instalado?",
+lbl_uv: "Esterilizador UV:",
+lbl_yes: "Sí",
+lbl_no: "No",
+lbl_filtermedia: "¿Qué materiales filtrantes se utilizan?",
+fm_ceramic: "Materiales filtrantes cerámicos",
+fm_sponge: "Esponja filtrante",
+fm_clay: "Arcilla expandida",
+fm_lava: "Piedra de lava",
+fm_carbon: "Carbón activo",
+fm_floss: "Guata filtrante",
+fm_zeolite: "Zeolita",
+lbl_clean_interval: "Intervalo de limpieza del filtro (semanas):",
+lbl_heater: "¿Hay un calentador instalado?",
+lbl_temp: "Temperatura del agua (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "¿Se suministra CO₂?",
+sec_light: "💡 Iluminación",
+lbl_light_type: "Tipo de iluminación:",
+opt_t5t8: "Tubo fluorescente T5/T8",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Temperatura de color (K):",
+lbl_light_watt: "Potencia (W):",
+lbl_light_lum: "Flujo luminoso (lm):",
+lbl_light_duration: "Duración diaria de la luz (h):",
+sec_plants: "🌿 Plantas y Fertilización",
+lbl_plant_density: "¿Qué tan densamente plantado está el acuario?",
+pd_very_few: "Muy pocas plantas",
+pd_few: "Pocas plantas",
+pd_medium: "Densidad media de plantas",
+pd_dense: "Densamente plantado",
+pd_very_dense: "Muy densamente plantado",
+lbl_fert_types: "¿Qué fertilizantes se utilizan?",
+ft_liq_c: "Carbono líquido adicional",
+ft_allinone: "Abono completo (Todo en uno)",
+ft_macro: "Fertilizante de macronutrientes",
+ft_micro: "Fertilizante de micronutrientes",
+ft_nitro: "Fertilizante de nitrógeno",
+ft_phos: "Fertilizante de fosfato",
+ft_pot: "Fertilizante de potasio",
+ft_iron: "Fertilizante de hierro",
+lbl_sub_type: "Tipo de sustrato:",
+sub_gravel: "Grava de cuarzo",
+sub_sand: "Arena",
+sub_soil: "Soil (Sustrato activo)",
+lbl_nutrient_sub: "¿Se usó un sustrato rico en nutrientes?",
+lbl_regular_sub_fert: "¿Se usan fertilizantes de fondo regularmente?",
+lbl_sub_vol: "Volumen total de sustrato (L):",
+sec_stone: "Selección de piedras (Análisis de cal)",
+lbl_stone_type: "Tipo de piedra:",
+opt_nostone: "-- Ninguna / Sin especificar --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcárea)",
+st_dragon: "Dragon Stone / Ohko Stone (Arcillosa)",
+st_rokkaku: "Rokkaku Stone (Calcárea)",
+st_mini: "Mini-Landscape (Calcárea)",
+st_slate: "Pizarra / Black Slate (Neutral)",
+st_lava: "Piedra de lava (Neutral, porosa)",
+st_manten: "Manten Stone (Principalmente neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Sube mucho el GH)",
+st_granite: "Granito (Neutral, inerte)",
+st_marble: "Mármol / Mármol blanco (Muy calcárea)",
+st_loch: "Lochgestein / Piedra agujereada (Calcárea)",
+st_river: "Guijarros de río (Principalmente neutral)",
+st_zebra: "Zebra Stone (Ligeramente calcárea)",
+st_woodstone: "Madera petrificada (Principalmente neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Cantidad de piedras (kg):",
+sec_wood: "Selección de madera",
+lbl_wood_type: "Tipo de madera:",
+opt_nowood: "-- Sin madera / Sin especificar --",
+wt_redmoor: "Red Moor Wood (Libera taninos)",
+wt_mangrove: "Madera de manglar (Acidifica ligeramente)",
+wt_moor: "Raíz de turbera (Acidifica fuertemente)",
+wt_spider: "Spider Wood (Nudosa, clara)",
+wt_drift: "Madera flotante (Ligeramente ácida)",
+wt_savannah: "Madera de sabana (Dura, lisa)",
+wt_ironwood: "Madera de hierro (Muy dura y pesada)",
+wt_jumbo: "Raíz Jumbo (De gran tamaño)",
+wt_cork: "Avellano de bruja / Corcho (Decorativa)",
+lbl_wood_qty: "Cantidad de madera (kg):",
+sec_water_compare: "🧪 Comparación de Parámetros del Agua",
+col_water_change: "Agua de Cambio",
+col_water_tank: "Agua del Acuario",
+lbl_fish_small: "Peces pequeños (hasta 3 cm):",
+lbl_fish_medium: "Peces medianos (3–8 cm):",
+lbl_fish_large: "Peces grandes (más de 8 cm):",
+lbl_fish_pleco: "Peces L / Plecos (Raspadores intensivos):",
+lbl_fish_algae: "Peces comedores de algas (Crossocheilus, etc.):",
+lbl_shrimp: "Gambas (ud.):",
+lbl_snails: "Caracoles (ud.):",
+lbl_feeding: "Alimentación:",
+fd_live: "Alimento vivo",
+fd_frozen: "Alimento congelado",
+fd_flakes: "Comida en escamas",
+fd_granule: "Comida en gránulos",
+fd_tabs: "Pastillas / Chips para peces de fondo",
+lbl_feeding_freq: "Frecuencia de alimentación:",
+ff_1x_d: "1 vez al día",
+ff_2x_d: "2 veces al día",
+ff_more_d: "Más de 2 veces al día",
+ff_1x_w: "1 vez a la semana",
+ff_2x_w: "2 veces a la semana",
+ff_more_w: "Más de 2 veces a la semana",
+lbl_sym_algae: "¿Qué algas aparecen?",
+alg_green_thread: "Algas verdes filamentosas",
+alg_green_spot: "Algas verdes en punto (GSA)",
+alg_cyano: "Cianobacterias",
+alg_brush: "Algas pincel / Algas barbudas (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatomeas (Algas marrones)",
+alg_glass: "Capa verde en los cristales",
+alg_bloom: "Agua verde (Floración de algas)",
+lbl_sym_plants: "Problemas con las plantas:",
+pl_no_growth: "Sin crecimiento",
+pl_fade: "Decoloración / Pérdida de color",
+pl_holes: "Agujeros en las hojas",
+pl_melt: "Desintegración de hojas / Plant melt",
+pl_rot: "Podredumbre de tallos",
+pl_yellow: "Hojas amarillentas",
+pl_deformed: "Hojas nuevas pequeñas y deformadas",
+pl_drop: "Pérdida de hojas inferiores",
+lbl_sym_fish: "Peces e invertebrados:",
+fi_air: "Boqueando en la superficie",
+fi_apathy: "Apatía / Falta de apetito",
+fi_deaths: "Muertes en los últimos días",
+fi_spots: "Puntos blancos o capas en los peces",
+fi_fins: "Aletas deshilachadas o disueltas",
+lbl_sym_water: "Agua y apariencia:",
+wa_turbid: "Agua turbia",
+wa_yellow: "Coloración amarilla o color té del agua",
+wa_deposits: "Depósitos minerales en cristales/técnica",
+wa_odor: "Olor desagradable",
+wa_biofilm: "Capa blanca o biopelícula en la madera",
+btn_analyze: "Analizar y guardar en el calendario",
+res_title: "📊 Resultado del Análisis y Evaluación",
+modal_subtitle: "Informe completo de análisis:",
+modal_save: "Guardar",
+footer_text: "Calculadora de Parámetros de Agua (AWR) v2.7",
+footer_save: "Guardar datos"
+},
+pl: {
+main_title: "Calculadora de Parámetros de Agua de Acuario (AWR) - Análisis Completo",
+title: "Calculadora de Parámetros de Agua (AWR)",
+subtitle: "Análisis Completo del Acuario",
+tab_tech: "Acuario y Técnica",
+tab_deco: "Sustrato y Decoración",
+tab_wasser: "Parámetros del Agua",
+tab_stock: "Población y Comida",
+tab_symptoms: "Síntomas",
+tab_cal: "📅 Calendario",
+sec_tank_info: "📐 Información del Acuario",
+lbl_length: "Longitud del acuario (cm):",
+lbl_width: "Ancho del acuario (cm):",
+lbl_height: "Altura del acuario (cm):",
+lbl_vol: "Volumen del acuario (L):",
+lbl_runtime: "Tiempo en funcionamiento:",
+sec_filter: "🌀 Filtración y Calefacción",
+lbl_filtertype: "Tipo de filtro:",
+opt_select: "-- Seleccionar de la lista --",
+opt_infilt: "Filtro interior",
+opt_backpack: "Filtro de mochila",
+opt_outfilt: "Filtro exterior",
+opt_sump: "Sump / Sump filtrante",
+lbl_flow: "Caudal del filtro (L/h):",
+lbl_skimmer: "¿Hay un skimmer de superficie instalado?",
+lbl_uv: "Esterilizador UV:",
+lbl_yes: "Sí",
+lbl_no: "No",
+lbl_filtermedia: "¿Qué materiales filtrantes se utilizan?",
+fm_ceramic: "Materiales filtrantes cerámicos",
+fm_sponge: "Esponja filtrante",
+fm_clay: "Arcilla expandida",
+fm_lava: "Piedra de lava",
+fm_carbon: "Carbón activo",
+fm_floss: "Guata filtrante",
+fm_zeolite: "Zeolita",
+lbl_clean_interval: "Intervalo de limpieza del filtro (semanas):",
+lbl_heater: "¿Hay un calentador instalado?",
+lbl_temp: "Temperatura del agua (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "¿Se suministra CO₂?",
+sec_light: "💡 Iluminación",
+lbl_light_type: "Tipo de iluminación:",
+opt_t5t8: "Tubo fluorescente T5/T8",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Temperatura de color (K):",
+lbl_light_watt: "Potencia (W):",
+lbl_light_lum: "Flujo luminoso (lm):",
+lbl_light_duration: "Duración diaria de la luz (h):",
+sec_plants: "🌿 Plantas y Fertilización",
+lbl_plant_density: "¿Qué tan densamente plantado está el acuario?",
+pd_very_few: "Muy pocas plantas",
+pd_few: "Pocas plantas",
+pd_medium: "Densidad media de plantas",
+pd_dense: "Densamente plantado",
+pd_very_dense: "Muy densamente plantado",
+lbl_fert_types: "¿Qué fertilizantes se utilizan?",
+ft_liq_c: "Carbono líquido adicional",
+ft_allinone: "Abono completo (Todo en uno)",
+ft_macro: "Fertilizante de macronutrientes",
+ft_micro: "Fertilizante de micronutrientes",
+ft_nitro: "Fertilizante de nitrógeno",
+ft_phos: "Fertilizante de fosfato",
+ft_pot: "Fertilizante de potasio",
+ft_iron: "Fertilizante de hierro",
+lbl_sub_type: "Tipo de sustrato:",
+sub_gravel: "Grava de cuarzo",
+sub_sand: "Arena",
+sub_soil: "Soil (Sustrato activo)",
+lbl_nutrient_sub: "¿Se usó un sustrato rico en nutrientes?",
+lbl_regular_sub_fert: "¿Se usan fertilizantes de fondo regularmente?",
+lbl_sub_vol: "Volumen total de sustrato (L):",
+sec_stone: "Selección de piedras (Análisis de cal)",
+lbl_stone_type: "Tipo de piedra:",
+opt_nostone: "-- Ninguna / Sin especificar --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcárea)",
+st_dragon: "Dragon Stone / Ohko Stone (Arcillosa)",
+st_rokkaku: "Rokkaku Stone (Calcárea)",
+st_mini: "Mini-Landscape (Calcárea)",
+st_slate: "Pizarra / Black Slate (Neutral)",
+st_lava: "Piedra de lava (Neutral, porosa)",
+st_manten: "Manten Stone (Principalmente neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Sube mucho el GH)",
+st_granite: "Granito (Neutral, inerte)",
+st_marble: "Mármol / Mármol blanco (Muy calcárea)",
+st_loch: "Lochgestein / Piedra agujereada (Calcárea)",
+st_river: "Guijarros de río (Principalmente neutral)",
+st_zebra: "Zebra Stone (Ligeramente calcárea)",
+st_woodstone: "Madera petrificada (Principalmente neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Cantidad de piedras (kg):",
+sec_wood: "Selección de madera",
+lbl_wood_type: "Tipo de madera:",
+opt_nowood: "-- Sin madera / Sin especificar --",
+wt_redmoor: "Red Moor Wood (Libera taninos)",
+wt_mangrove: "Madera de manglar (Acidifica ligeramente)",
+wt_moor: "Raíz de turbera (Acidifica fuertemente)",
+wt_spider: "Spider Wood (Nudosa, clara)",
+wt_drift: "Madera flotante (Ligeramente ácida)",
+wt_savannah: "Madera de sabana (Dura, lisa)",
+wt_ironwood: "Madera de hierro (Muy dura y pesada)",
+wt_jumbo: "Raíz Jumbo (De gran tamaño)",
+wt_cork: "Avellano de bruja / Corcho (Decorativa)",
+lbl_wood_qty: "Cantidad de madera (kg):",
+sec_water_compare: "🧪 Comparación de Parámetros del Agua",
+col_water_change: "Agua de Cambio",
+col_water_tank: "Agua del Acuario",
+lbl_fish_small: "Peces pequeños (hasta 3 cm):",
+lbl_fish_medium: "Peces medianos (3–8 cm):",
+lbl_fish_large: "Peces grandes (más de 8 cm):",
+lbl_fish_pleco: "Peces L / Plecos (Raspadores intensivos):",
+lbl_fish_algae: "Peces comedores de algas (Crossocheilus, etc.):",
+lbl_shrimp: "Gambas (ud.):",
+lbl_snails: "Caracoles (ud.):",
+lbl_feeding: "Alimentación:",
+fd_live: "Alimento vivo",
+fd_frozen: "Alimento congelado",
+fd_flakes: "Comida en escamas",
+fd_granule: "Comida en gránulos",
+fd_tabs: "Pastillas / Chips para peces de fondo",
+lbl_feeding_freq: "Frecuencia de alimentación:",
+ff_1x_d: "1 vez al día",
+ff_2x_d: "2 veces al día",
+ff_more_d: "Más de 2 veces al día",
+ff_1x_w: "1 vez a la semana",
+ff_2x_w: "2 veces a la semana",
+ff_more_w: "Más de 2 veces a la semana",
+lbl_sym_algae: "¿Qué algas aparecen?",
+alg_green_thread: "Algas verdes filamentosas",
+alg_green_spot: "Algas verdes en punto (GSA)",
+alg_cyano: "Cianobacterias",
+alg_brush: "Algas pincel / Algas barbudas (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatomeas (Algas marrones)",
+alg_glass: "Capa verde en los cristales",
+alg_bloom: "Agua verde (Floración de algas)",
+lbl_sym_plants: "Problemas con las plantas:",
+pl_no_growth: "Sin crecimiento",
+pl_fade: "Decoloración / Pérdida de color",
+pl_holes: "Agujeros en las hojas",
+pl_melt: "Desintegración de hojas / Plant melt",
+pl_rot: "Podredumbre de tallos",
+pl_yellow: "Hojas amarillentas",
+pl_deformed: "Hojas nuevas pequeñas y deformadas",
+pl_drop: "Pérdida de hojas inferiores",
+lbl_sym_fish: "Peces e invertebrados:",
+fi_air: "Boqueando en la superficie",
+fi_apathy: "Apatía / Falta de apetito",
+fi_deaths: "Muertes en los últimos días",
+fi_spots: "Puntos blancos o capas en los peces",
+fi_fins: "Aletas deshilachadas o disueltas",
+lbl_sym_water: "Agua y apariencia:",
+wa_turbid: "Agua turbia",
+wa_yellow: "Coloración amarilla o color té del agua",
+wa_deposits: "Depósitos minerales en cristales/técnica",
+wa_odor: "Olor desagradable",
+wa_biofilm: "Capa blanca o biopelícula en la madera",
+btn_analyze: "Analizar y guardar en el calendario",
+res_title: "📊 Resultado del Análisis y Evaluación",
+modal_subtitle: "Informe completo de análisis:",
+modal_save: "Guardar",
+footer_text: "Calculadora de Parámetros de Agua (AWR) v2.7",
+footer_save: "Guardar datos"
+},
+sv: {
+main_title: "Calculadora de Parámetros de Agua de Acuario (AWR) - Análisis Completo",
+title: "Calculadora de Parámetros de Agua (AWR)",
+subtitle: "Análisis Completo del Acuario",
+tab_tech: "Acuario y Técnica",
+tab_deco: "Sustrato y Decoración",
+tab_wasser: "Parámetros del Agua",
+tab_stock: "Población y Comida",
+tab_symptoms: "Síntomas",
+tab_cal: "📅 Calendario",
+sec_tank_info: "📐 Información del Acuario",
+lbl_length: "Longitud del acuario (cm):",
+lbl_width: "Ancho del acuario (cm):",
+lbl_height: "Altura del acuario (cm):",
+lbl_vol: "Volumen del acuario (L):",
+lbl_runtime: "Tiempo en funcionamiento:",
+sec_filter: "🌀 Filtración y Calefacción",
+lbl_filtertype: "Tipo de filtro:",
+opt_select: "-- Seleccionar de la lista --",
+opt_infilt: "Filtro interior",
+opt_backpack: "Filtro de mochila",
+opt_outfilt: "Filtro exterior",
+opt_sump: "Sump / Sump filtrante",
+lbl_flow: "Caudal del filtro (L/h):",
+lbl_skimmer: "¿Hay un skimmer de superficie instalado?",
+lbl_uv: "Esterilizador UV:",
+lbl_yes: "Sí",
+lbl_no: "No",
+lbl_filtermedia: "¿Qué materiales filtrantes se utilizan?",
+fm_ceramic: "Materiales filtrantes cerámicos",
+fm_sponge: "Esponja filtrante",
+fm_clay: "Arcilla expandida",
+fm_lava: "Piedra de lava",
+fm_carbon: "Carbón activo",
+fm_floss: "Guata filtrante",
+fm_zeolite: "Zeolita",
+lbl_clean_interval: "Intervalo de limpieza del filtro (semanas):",
+lbl_heater: "¿Hay un calentador instalado?",
+lbl_temp: "Temperatura del agua (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "¿Se suministra CO₂?",
+sec_light: "💡 Iluminación",
+lbl_light_type: "Tipo de iluminación:",
+opt_t5t8: "Tubo fluorescente T5/T8",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Temperatura de color (K):",
+lbl_light_watt: "Potencia (W):",
+lbl_light_lum: "Flujo luminoso (lm):",
+lbl_light_duration: "Duración diaria de la luz (h):",
+sec_plants: "🌿 Plantas y Fertilización",
+lbl_plant_density: "¿Qué tan densamente plantado está el acuario?",
+pd_very_few: "Muy pocas plantas",
+pd_few: "Pocas plantas",
+pd_medium: "Densidad media de plantas",
+pd_dense: "Densamente plantado",
+pd_very_dense: "Muy densamente plantado",
+lbl_fert_types: "¿Qué fertilizantes se utilizan?",
+ft_liq_c: "Carbono líquido adicional",
+ft_allinone: "Abono completo (Todo en uno)",
+ft_macro: "Fertilizante de macronutrientes",
+ft_micro: "Fertilizante de micronutrientes",
+ft_nitro: "Fertilizante de nitrógeno",
+ft_phos: "Fertilizante de fosfato",
+ft_pot: "Fertilizante de potasio",
+ft_iron: "Fertilizante de hierro",
+lbl_sub_type: "Tipo de sustrato:",
+sub_gravel: "Grava de cuarzo",
+sub_sand: "Arena",
+sub_soil: "Soil (Sustrato activo)",
+lbl_nutrient_sub: "¿Se usó un sustrato rico en nutrientes?",
+lbl_regular_sub_fert: "¿Se usan fertilizantes de fondo regularmente?",
+lbl_sub_vol: "Volumen total de sustrato (L):",
+sec_stone: "Selección de piedras (Análisis de cal)",
+lbl_stone_type: "Tipo de piedra:",
+opt_nostone: "-- Ninguna / Sin especificar --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcárea)",
+st_dragon: "Dragon Stone / Ohko Stone (Arcillosa)",
+st_rokkaku: "Rokkaku Stone (Calcárea)",
+st_mini: "Mini-Landscape (Calcárea)",
+st_slate: "Pizarra / Black Slate (Neutral)",
+st_lava: "Piedra de lava (Neutral, porosa)",
+st_manten: "Manten Stone (Principalmente neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Sube mucho el GH)",
+st_granite: "Granito (Neutral, inerte)",
+st_marble: "Mármol / Mármol blanco (Muy calcárea)",
+st_loch: "Lochgestein / Piedra agujereada (Calcárea)",
+st_river: "Guijarros de río (Principalmente neutral)",
+st_zebra: "Zebra Stone (Ligeramente calcárea)",
+st_woodstone: "Madera petrificada (Principalmente neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Cantidad de piedras (kg):",
+sec_wood: "Selección de madera",
+lbl_wood_type: "Tipo de madera:",
+opt_nowood: "-- Sin madera / Sin especificar --",
+wt_redmoor: "Red Moor Wood (Libera taninos)",
+wt_mangrove: "Madera de manglar (Acidifica ligeramente)",
+wt_moor: "Raíz de turbera (Acidifica fuertemente)",
+wt_spider: "Spider Wood (Nudosa, clara)",
+wt_drift: "Madera flotante (Ligeramente ácida)",
+wt_savannah: "Madera de sabana (Dura, lisa)",
+wt_ironwood: "Madera de hierro (Muy dura y pesada)",
+wt_jumbo: "Raíz Jumbo (De gran tamaño)",
+wt_cork: "Avellano de bruja / Corcho (Decorativa)",
+lbl_wood_qty: "Cantidad de madera (kg):",
+sec_water_compare: "🧪 Comparación de Parámetros del Agua",
+col_water_change: "Agua de Cambio",
+col_water_tank: "Agua del Acuario",
+lbl_fish_small: "Peces pequeños (hasta 3 cm):",
+lbl_fish_medium: "Peces medianos (3–8 cm):",
+lbl_fish_large: "Peces grandes (más de 8 cm):",
+lbl_fish_pleco: "Peces L / Plecos (Raspadores intensivos):",
+lbl_fish_algae: "Peces comedores de algas (Crossocheilus, etc.):",
+lbl_shrimp: "Gambas (ud.):",
+lbl_snails: "Caracoles (ud.):",
+lbl_feeding: "Alimentación:",
+fd_live: "Alimento vivo",
+fd_frozen: "Alimento congelado",
+fd_flakes: "Comida en escamas",
+fd_granule: "Comida en gránulos",
+fd_tabs: "Pastillas / Chips para peces de fondo",
+lbl_feeding_freq: "Frecuencia de alimentación:",
+ff_1x_d: "1 vez al día",
+ff_2x_d: "2 veces al día",
+ff_more_d: "Más de 2 veces al día",
+ff_1x_w: "1 vez a la semana",
+ff_2x_w: "2 veces a la semana",
+ff_more_w: "Más de 2 veces a la semana",
+lbl_sym_algae: "¿Qué algas aparecen?",
+alg_green_thread: "Algas verdes filamentosas",
+alg_green_spot: "Algas verdes en punto (GSA)",
+alg_cyano: "Cianobacterias",
+alg_brush: "Algas pincel / Algas barbudas (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatomeas (Algas marrones)",
+alg_glass: "Capa verde en los cristales",
+alg_bloom: "Agua verde (Floración de algas)",
+lbl_sym_plants: "Problemas con las plantas:",
+pl_no_growth: "Sin crecimiento",
+pl_fade: "Decoloración / Pérdida de color",
+pl_holes: "Agujeros en las hojas",
+pl_melt: "Desintegración de hojas / Plant melt",
+pl_rot: "Podredumbre de tallos",
+pl_yellow: "Hojas amarillentas",
+pl_deformed: "Hojas nuevas pequeñas y deformadas",
+pl_drop: "Pérdida de hojas inferiores",
+lbl_sym_fish: "Peces e invertebrados:",
+fi_air: "Boqueando en la superficie",
+fi_apathy: "Apatía / Falta de apetito",
+fi_deaths: "Muertes en los últimos días",
+fi_spots: "Puntos blancos o capas en los peces",
+fi_fins: "Aletas deshilachadas o disueltas",
+lbl_sym_water: "Agua y apariencia:",
+wa_turbid: "Agua turbia",
+wa_yellow: "Coloración amarilla o color té del agua",
+wa_deposits: "Depósitos minerales en cristales/técnica",
+wa_odor: "Olor desagradable",
+wa_biofilm: "Capa blanca o biopelícula en la madera",
+btn_analyze: "Analizar y guardar en el calendario",
+res_title: "📊 Resultado del Análisis y Evaluación",
+modal_subtitle: "Informe completo de análisis:",
+modal_save: "Guardar",
+footer_text: "Calculadora de Parámetros de Agua (AWR) v2.7",
+footer_save: "Guardar datos"
+},
+cs: {
+main_title: "Calculadora de Parámetros de Agua de Acuario (AWR) - Análisis Completo",
+title: "Calculadora de Parámetros de Agua (AWR)",
+subtitle: "Análisis Completo del Acuario",
+tab_tech: "Acuario y Técnica",
+tab_deco: "Sustrato y Decoración",
+tab_wasser: "Parámetros del Agua",
+tab_stock: "Población y Comida",
+tab_symptoms: "Síntomas",
+tab_cal: "📅 Calendario",
+sec_tank_info: "📐 Información del Acuario",
+lbl_length: "Longitud del acuario (cm):",
+lbl_width: "Ancho del acuario (cm):",
+lbl_height: "Altura del acuario (cm):",
+lbl_vol: "Volumen del acuario (L):",
+lbl_runtime: "Tiempo en funcionamiento:",
+sec_filter: "🌀 Filtración y Calefacción",
+lbl_filtertype: "Tipo de filtro:",
+opt_select: "-- Seleccionar de la lista --",
+opt_infilt: "Filtro interior",
+opt_backpack: "Filtro de mochila",
+opt_outfilt: "Filtro exterior",
+opt_sump: "Sump / Sump filtrante",
+lbl_flow: "Caudal del filtro (L/h):",
+lbl_skimmer: "¿Hay un skimmer de superficie instalado?",
+lbl_uv: "Esterilizador UV:",
+lbl_yes: "Sí",
+lbl_no: "No",
+lbl_filtermedia: "¿Qué materiales filtrantes se utilizan?",
+fm_ceramic: "Materiales filtrantes cerámicos",
+fm_sponge: "Esponja filtrante",
+fm_clay: "Arcilla expandida",
+fm_lava: "Piedra de lava",
+fm_carbon: "Carbón activo",
+fm_floss: "Guata filtrante",
+fm_zeolite: "Zeolita",
+lbl_clean_interval: "Intervalo de limpieza del filtro (semanas):",
+lbl_heater: "¿Hay un calentador instalado?",
+lbl_temp: "Temperatura del agua (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "¿Se suministra CO₂?",
+sec_light: "💡 Iluminación",
+lbl_light_type: "Tipo de iluminación:",
+opt_t5t8: "Tubo fluorescente T5/T8",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Temperatura de color (K):",
+lbl_light_watt: "Potencia (W):",
+lbl_light_lum: "Flujo luminoso (lm):",
+lbl_light_duration: "Duración diaria de la luz (h):",
+sec_plants: "🌿 Plantas y Fertilización",
+lbl_plant_density: "¿Qué tan densamente plantado está el acuario?",
+pd_very_few: "Muy pocas plantas",
+pd_few: "Pocas plantas",
+pd_medium: "Densidad media de plantas",
+pd_dense: "Densamente plantado",
+pd_very_dense: "Muy densamente plantado",
+lbl_fert_types: "¿Qué fertilizantes se utilizan?",
+ft_liq_c: "Carbono líquido adicional",
+ft_allinone: "Abono completo (Todo en uno)",
+ft_macro: "Fertilizante de macronutrientes",
+ft_micro: "Fertilizante de micronutrientes",
+ft_nitro: "Fertilizante de nitrógeno",
+ft_phos: "Fertilizante de fosfato",
+ft_pot: "Fertilizante de potasio",
+ft_iron: "Fertilizante de hierro",
+lbl_sub_type: "Tipo de sustrato:",
+sub_gravel: "Grava de cuarzo",
+sub_sand: "Arena",
+sub_soil: "Soil (Sustrato activo)",
+lbl_nutrient_sub: "¿Se usó un sustrato rico en nutrientes?",
+lbl_regular_sub_fert: "¿Se usan fertilizantes de fondo regularmente?",
+lbl_sub_vol: "Volumen total de sustrato (L):",
+sec_stone: "Selección de piedras (Análisis de cal)",
+lbl_stone_type: "Tipo de piedra:",
+opt_nostone: "-- Ninguna / Sin especificar --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcárea)",
+st_dragon: "Dragon Stone / Ohko Stone (Arcillosa)",
+st_rokkaku: "Rokkaku Stone (Calcárea)",
+st_mini: "Mini-Landscape (Calcárea)",
+st_slate: "Pizarra / Black Slate (Neutral)",
+st_lava: "Piedra de lava (Neutral, porosa)",
+st_manten: "Manten Stone (Principalmente neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Sube mucho el GH)",
+st_granite: "Granito (Neutral, inerte)",
+st_marble: "Mármol / Mármol blanco (Muy calcárea)",
+st_loch: "Lochgestein / Piedra agujereada (Calcárea)",
+st_river: "Guijarros de río (Principalmente neutral)",
+st_zebra: "Zebra Stone (Ligeramente calcárea)",
+st_woodstone: "Madera petrificada (Principalmente neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Cantidad de piedras (kg):",
+sec_wood: "Selección de madera",
+lbl_wood_type: "Tipo de madera:",
+opt_nowood: "-- Sin madera / Sin especificar --",
+wt_redmoor: "Red Moor Wood (Libera taninos)",
+wt_mangrove: "Madera de manglar (Acidifica ligeramente)",
+wt_moor: "Raíz de turbera (Acidifica fuertemente)",
+wt_spider: "Spider Wood (Nudosa, clara)",
+wt_drift: "Madera flotante (Ligeramente ácida)",
+wt_savannah: "Madera de sabana (Dura, lisa)",
+wt_ironwood: "Madera de hierro (Muy dura y pesada)",
+wt_jumbo: "Raíz Jumbo (De gran tamaño)",
+wt_cork: "Avellano de bruja / Corcho (Decorativa)",
+lbl_wood_qty: "Cantidad de madera (kg):",
+sec_water_compare: "🧪 Comparación de Parámetros del Agua",
+col_water_change: "Agua de Cambio",
+col_water_tank: "Agua del Acuario",
+lbl_fish_small: "Peces pequeños (hasta 3 cm):",
+lbl_fish_medium: "Peces medianos (3–8 cm):",
+lbl_fish_large: "Peces grandes (más de 8 cm):",
+lbl_fish_pleco: "Peces L / Plecos (Raspadores intensivos):",
+lbl_fish_algae: "Peces comedores de algas (Crossocheilus, etc.):",
+lbl_shrimp: "Gambas (ud.):",
+lbl_snails: "Caracoles (ud.):",
+lbl_feeding: "Alimentación:",
+fd_live: "Alimento vivo",
+fd_frozen: "Alimento congelado",
+fd_flakes: "Comida en escamas",
+fd_granule: "Comida en gránulos",
+fd_tabs: "Pastillas / Chips para peces de fondo",
+lbl_feeding_freq: "Frecuencia de alimentación:",
+ff_1x_d: "1 vez al día",
+ff_2x_d: "2 veces al día",
+ff_more_d: "Más de 2 veces al día",
+ff_1x_w: "1 vez a la semana",
+ff_2x_w: "2 veces a la semana",
+ff_more_w: "Más de 2 veces a la semana",
+lbl_sym_algae: "¿Qué algas aparecen?",
+alg_green_thread: "Algas verdes filamentosas",
+alg_green_spot: "Algas verdes en punto (GSA)",
+alg_cyano: "Cianobacterias",
+alg_brush: "Algas pincel / Algas barbudas (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatomeas (Algas marrones)",
+alg_glass: "Capa verde en los cristales",
+alg_bloom: "Agua verde (Floración de algas)",
+lbl_sym_plants: "Problemas con las plantas:",
+pl_no_growth: "Sin crecimiento",
+pl_fade: "Decoloración / Pérdida de color",
+pl_holes: "Agujeros en las hojas",
+pl_melt: "Desintegración de hojas / Plant melt",
+pl_rot: "Podredumbre de tallos",
+pl_yellow: "Hojas amarillentas",
+pl_deformed: "Hojas nuevas pequeñas y deformadas",
+pl_drop: "Pérdida de hojas inferiores",
+lbl_sym_fish: "Peces e invertebrados:",
+fi_air: "Boqueando en la superficie",
+fi_apathy: "Apatía / Falta de apetito",
+fi_deaths: "Muertes en los últimos días",
+fi_spots: "Puntos blancos o capas en los peces",
+fi_fins: "Aletas deshilachadas o disueltas",
+lbl_sym_water: "Agua y apariencia:",
+wa_turbid: "Agua turbia",
+wa_yellow: "Coloración amarilla o color té del agua",
+wa_deposits: "Depósitos minerales en cristales/técnica",
+wa_odor: "Olor desagradable",
+wa_biofilm: "Capa blanca o biopelícula en la madera",
+btn_analyze: "Analizar y guardar en el calendario",
+res_title: "📊 Resultado del Análisis y Evaluación",
+modal_subtitle: "Informe completo de análisis:",
+modal_save: "Guardar",
+footer_text: "Calculadora de Parámetros de Agua (AWR) v2.7",
+footer_save: "Guardar datos"
+},
+hu: {
+main_title: "Calculadora de Parámetros de Agua de Acuario (AWR) - Análisis Completo",
+title: "Calculadora de Parámetros de Agua (AWR)",
+subtitle: "Análisis Completo del Acuario",
+tab_tech: "Acuario y Técnica",
+tab_deco: "Sustrato y Decoración",
+tab_wasser: "Parámetros del Agua",
+tab_stock: "Población y Comida",
+tab_symptoms: "Síntomas",
+tab_cal: "📅 Calendario",
+sec_tank_info: "📐 Información del Acuario",
+lbl_length: "Longitud del acuario (cm):",
+lbl_width: "Ancho del acuario (cm):",
+lbl_height: "Altura del acuario (cm):",
+lbl_vol: "Volumen del acuario (L):",
+lbl_runtime: "Tiempo en funcionamiento:",
+sec_filter: "🌀 Filtración y Calefacción",
+lbl_filtertype: "Tipo de filtro:",
+opt_select: "-- Seleccionar de la lista --",
+opt_infilt: "Filtro interior",
+opt_backpack: "Filtro de mochila",
+opt_outfilt: "Filtro exterior",
+opt_sump: "Sump / Sump filtrante",
+lbl_flow: "Caudal del filtro (L/h):",
+lbl_skimmer: "¿Hay un skimmer de superficie instalado?",
+lbl_uv: "Esterilizador UV:",
+lbl_yes: "Sí",
+lbl_no: "No",
+lbl_filtermedia: "¿Qué materiales filtrantes se utilizan?",
+fm_ceramic: "Materiales filtrantes cerámicos",
+fm_sponge: "Esponja filtrante",
+fm_clay: "Arcilla expandida",
+fm_lava: "Piedra de lava",
+fm_carbon: "Carbón activo",
+fm_floss: "Guata filtrante",
+fm_zeolite: "Zeolita",
+lbl_clean_interval: "Intervalo de limpieza del filtro (semanas):",
+lbl_heater: "¿Hay un calentador instalado?",
+lbl_temp: "Temperatura del agua (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "¿Se suministra CO₂?",
+sec_light: "💡 Iluminación",
+lbl_light_type: "Tipo de iluminación:",
+opt_t5t8: "Tubo fluorescente T5/T8",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Temperatura de color (K):",
+lbl_light_watt: "Potencia (W):",
+lbl_light_lum: "Flujo luminoso (lm):",
+lbl_light_duration: "Duración diaria de la luz (h):",
+sec_plants: "🌿 Plantas y Fertilización",
+lbl_plant_density: "¿Qué tan densamente plantado está el acuario?",
+pd_very_few: "Muy pocas plantas",
+pd_few: "Pocas plantas",
+pd_medium: "Densidad media de plantas",
+pd_dense: "Densamente plantado",
+pd_very_dense: "Muy densamente plantado",
+lbl_fert_types: "¿Qué fertilizantes se utilizan?",
+ft_liq_c: "Carbono líquido adicional",
+ft_allinone: "Abono completo (Todo en uno)",
+ft_macro: "Fertilizante de macronutrientes",
+ft_micro: "Fertilizante de micronutrientes",
+ft_nitro: "Fertilizante de nitrógeno",
+ft_phos: "Fertilizante de fosfato",
+ft_pot: "Fertilizante de potasio",
+ft_iron: "Fertilizante de hierro",
+lbl_sub_type: "Tipo de sustrato:",
+sub_gravel: "Grava de cuarzo",
+sub_sand: "Arena",
+sub_soil: "Soil (Sustrato activo)",
+lbl_nutrient_sub: "¿Se usó un sustrato rico en nutrientes?",
+lbl_regular_sub_fert: "¿Se usan fertilizantes de fondo regularmente?",
+lbl_sub_vol: "Volumen total de sustrato (L):",
+sec_stone: "Selección de piedras (Análisis de cal)",
+lbl_stone_type: "Tipo de piedra:",
+opt_nostone: "-- Ninguna / Sin especificar --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcárea)",
+st_dragon: "Dragon Stone / Ohko Stone (Arcillosa)",
+st_rokkaku: "Rokkaku Stone (Calcárea)",
+st_mini: "Mini-Landscape (Calcárea)",
+st_slate: "Pizarra / Black Slate (Neutral)",
+st_lava: "Piedra de lava (Neutral, porosa)",
+st_manten: "Manten Stone (Principalmente neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Sube mucho el GH)",
+st_granite: "Granito (Neutral, inerte)",
+st_marble: "Mármol / Mármol blanco (Muy calcárea)",
+st_loch: "Lochgestein / Piedra agujereada (Calcárea)",
+st_river: "Guijarros de río (Principalmente neutral)",
+st_zebra: "Zebra Stone (Ligeramente calcárea)",
+st_woodstone: "Madera petrificada (Principalmente neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Cantidad de piedras (kg):",
+sec_wood: "Selección de madera",
+lbl_wood_type: "Tipo de madera:",
+opt_nowood: "-- Sin madera / Sin especificar --",
+wt_redmoor: "Red Moor Wood (Libera taninos)",
+wt_mangrove: "Madera de manglar (Acidifica ligeramente)",
+wt_moor: "Raíz de turbera (Acidifica fuertemente)",
+wt_spider: "Spider Wood (Nudosa, clara)",
+wt_drift: "Madera flotante (Ligeramente ácida)",
+wt_savannah: "Madera de sabana (Dura, lisa)",
+wt_ironwood: "Madera de hierro (Muy dura y pesada)",
+wt_jumbo: "Raíz Jumbo (De gran tamaño)",
+wt_cork: "Avellano de bruja / Corcho (Decorativa)",
+lbl_wood_qty: "Cantidad de madera (kg):",
+sec_water_compare: "🧪 Comparación de Parámetros del Agua",
+col_water_change: "Agua de Cambio",
+col_water_tank: "Agua del Acuario",
+lbl_fish_small: "Peces pequeños (hasta 3 cm):",
+lbl_fish_medium: "Peces medianos (3–8 cm):",
+lbl_fish_large: "Peces grandes (más de 8 cm):",
+lbl_fish_pleco: "Peces L / Plecos (Raspadores intensivos):",
+lbl_fish_algae: "Peces comedores de algas (Crossocheilus, etc.):",
+lbl_shrimp: "Gambas (ud.):",
+lbl_snails: "Caracoles (ud.):",
+lbl_feeding: "Alimentación:",
+fd_live: "Alimento vivo",
+fd_frozen: "Alimento congelado",
+fd_flakes: "Comida en escamas",
+fd_granule: "Comida en gránulos",
+fd_tabs: "Pastillas / Chips para peces de fondo",
+lbl_feeding_freq: "Frecuencia de alimentación:",
+ff_1x_d: "1 vez al día",
+ff_2x_d: "2 veces al día",
+ff_more_d: "Más de 2 veces al día",
+ff_1x_w: "1 vez a la semana",
+ff_2x_w: "2 veces a la semana",
+ff_more_w: "Más de 2 veces a la semana",
+lbl_sym_algae: "¿Qué algas aparecen?",
+alg_green_thread: "Algas verdes filamentosas",
+alg_green_spot: "Algas verdes en punto (GSA)",
+alg_cyano: "Cianobacterias",
+alg_brush: "Algas pincel / Algas barbudas (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatomeas (Algas marrones)",
+alg_glass: "Capa verde en los cristales",
+alg_bloom: "Agua verde (Floración de algas)",
+lbl_sym_plants: "Problemas con las plantas:",
+pl_no_growth: "Sin crecimiento",
+pl_fade: "Decoloración / Pérdida de color",
+pl_holes: "Agujeros en las hojas",
+pl_melt: "Desintegración de hojas / Plant melt",
+pl_rot: "Podredumbre de tallos",
+pl_yellow: "Hojas amarillentas",
+pl_deformed: "Hojas nuevas pequeñas y deformadas",
+pl_drop: "Pérdida de hojas inferiores",
+lbl_sym_fish: "Peces e invertebrados:",
+fi_air: "Boqueando en la superficie",
+fi_apathy: "Apatía / Falta de apetito",
+fi_deaths: "Muertes en los últimos días",
+fi_spots: "Puntos blancos o capas en los peces",
+fi_fins: "Aletas deshilachadas o disueltas",
+lbl_sym_water: "Agua y apariencia:",
+wa_turbid: "Agua turbia",
+wa_yellow: "Coloración amarilla o color té del agua",
+wa_deposits: "Depósitos minerales en cristales/técnica",
+wa_odor: "Olor desagradable",
+wa_biofilm: "Capa blanca o biopelícula en la madera",
+btn_analyze: "Analizar y guardar en el calendario",
+res_title: "📊 Resultado del Análisis y Evaluación",
+modal_subtitle: "Informe completo de análisis:",
+modal_save: "Guardar",
+footer_text: "Calculadora de Parámetros de Agua (AWR) v2.7",
+footer_save: "Guardar datos"
+},
+el: {
+main_title: "Calculadora de Parámetros de Agua de Acuario (AWR) - Análisis Completo",
+title: "Calculadora de Parámetros de Agua (AWR)",
+subtitle: "Análisis Completo del Acuario",
+tab_tech: "Acuario y Técnica",
+tab_deco: "Sustrato y Decoración",
+tab_wasser: "Parámetros del Agua",
+tab_stock: "Población y Comida",
+tab_symptoms: "Síntomas",
+tab_cal: "📅 Calendario",
+sec_tank_info: "📐 Información del Acuario",
+lbl_length: "Longitud del acuario (cm):",
+lbl_width: "Ancho del acuario (cm):",
+lbl_height: "Altura del acuario (cm):",
+lbl_vol: "Volumen del acuario (L):",
+lbl_runtime: "Tiempo en funcionamiento:",
+sec_filter: "🌀 Filtración y Calefacción",
+lbl_filtertype: "Tipo de filtro:",
+opt_select: "-- Seleccionar de la lista --",
+opt_infilt: "Filtro interior",
+opt_backpack: "Filtro de mochila",
+opt_outfilt: "Filtro exterior",
+opt_sump: "Sump / Sump filtrante",
+lbl_flow: "Caudal del filtro (L/h):",
+lbl_skimmer: "¿Hay un skimmer de superficie instalado?",
+lbl_uv: "Esterilizador UV:",
+lbl_yes: "Sí",
+lbl_no: "No",
+lbl_filtermedia: "¿Qué materiales filtrantes se utilizan?",
+fm_ceramic: "Materiales filtrantes cerámicos",
+fm_sponge: "Esponja filtrante",
+fm_clay: "Arcilla expandida",
+fm_lava: "Piedra de lava",
+fm_carbon: "Carbón activo",
+fm_floss: "Guata filtrante",
+fm_zeolite: "Zeolita",
+lbl_clean_interval: "Intervalo de limpieza del filtro (semanas):",
+lbl_heater: "¿Hay un calentador instalado?",
+lbl_temp: "Temperatura del agua (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "¿Se suministra CO₂?",
+sec_light: "💡 Iluminación",
+lbl_light_type: "Tipo de iluminación:",
+opt_t5t8: "Tubo fluorescente T5/T8",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Temperatura de color (K):",
+lbl_light_watt: "Potencia (W):",
+lbl_light_lum: "Flujo luminoso (lm):",
+lbl_light_duration: "Duración diaria de la luz (h):",
+sec_plants: "🌿 Plantas y Fertilización",
+lbl_plant_density: "¿Qué tan densamente plantado está el acuario?",
+pd_very_few: "Muy pocas plantas",
+pd_few: "Pocas plantas",
+pd_medium: "Densidad media de plantas",
+pd_dense: "Densamente plantado",
+pd_very_dense: "Muy densamente plantado",
+lbl_fert_types: "¿Qué fertilizantes se utilizan?",
+ft_liq_c: "Carbono líquido adicional",
+ft_allinone: "Abono completo (Todo en uno)",
+ft_macro: "Fertilizante de macronutrientes",
+ft_micro: "Fertilizante de micronutrientes",
+ft_nitro: "Fertilizante de nitrógeno",
+ft_phos: "Fertilizante de fosfato",
+ft_pot: "Fertilizante de potasio",
+ft_iron: "Fertilizante de hierro",
+lbl_sub_type: "Tipo de sustrato:",
+sub_gravel: "Grava de cuarzo",
+sub_sand: "Arena",
+sub_soil: "Soil (Sustrato activo)",
+lbl_nutrient_sub: "¿Se usó un sustrato rico en nutrientes?",
+lbl_regular_sub_fert: "¿Se usan fertilizantes de fondo regularmente?",
+lbl_sub_vol: "Volumen total de sustrato (L):",
+sec_stone: "Selección de piedras (Análisis de cal)",
+lbl_stone_type: "Tipo de piedra:",
+opt_nostone: "-- Ninguna / Sin especificar --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcárea)",
+st_dragon: "Dragon Stone / Ohko Stone (Arcillosa)",
+st_rokkaku: "Rokkaku Stone (Calcárea)",
+st_mini: "Mini-Landscape (Calcárea)",
+st_slate: "Pizarra / Black Slate (Neutral)",
+st_lava: "Piedra de lava (Neutral, porosa)",
+st_manten: "Manten Stone (Principalmente neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Sube mucho el GH)",
+st_granite: "Granito (Neutral, inerte)",
+st_marble: "Mármol / Mármol blanco (Muy calcárea)",
+st_loch: "Lochgestein / Piedra agujereada (Calcárea)",
+st_river: "Guijarros de río (Principalmente neutral)",
+st_zebra: "Zebra Stone (Ligeramente calcárea)",
+st_woodstone: "Madera petrificada (Principalmente neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Cantidad de piedras (kg):",
+sec_wood: "Selección de madera",
+lbl_wood_type: "Tipo de madera:",
+opt_nowood: "-- Sin madera / Sin especificar --",
+wt_redmoor: "Red Moor Wood (Libera taninos)",
+wt_mangrove: "Madera de manglar (Acidifica ligeramente)",
+wt_moor: "Raíz de turbera (Acidifica fuertemente)",
+wt_spider: "Spider Wood (Nudosa, clara)",
+wt_drift: "Madera flotante (Ligeramente ácida)",
+wt_savannah: "Madera de sabana (Dura, lisa)",
+wt_ironwood: "Madera de hierro (Muy dura y pesada)",
+wt_jumbo: "Raíz Jumbo (De gran tamaño)",
+wt_cork: "Avellano de bruja / Corcho (Decorativa)",
+lbl_wood_qty: "Cantidad de madera (kg):",
+sec_water_compare: "🧪 Comparación de Parámetros del Agua",
+col_water_change: "Agua de Cambio",
+col_water_tank: "Agua del Acuario",
+lbl_fish_small: "Peces pequeños (hasta 3 cm):",
+lbl_fish_medium: "Peces medianos (3–8 cm):",
+lbl_fish_large: "Peces grandes (más de 8 cm):",
+lbl_fish_pleco: "Peces L / Plecos (Raspadores intensivos):",
+lbl_fish_algae: "Peces comedores de algas (Crossocheilus, etc.):",
+lbl_shrimp: "Gambas (ud.):",
+lbl_snails: "Caracoles (ud.):",
+lbl_feeding: "Alimentación:",
+fd_live: "Alimento vivo",
+fd_frozen: "Alimento congelado",
+fd_flakes: "Comida en escamas",
+fd_granule: "Comida en gránulos",
+fd_tabs: "Pastillas / Chips para peces de fondo",
+lbl_feeding_freq: "Frecuencia de alimentación:",
+ff_1x_d: "1 vez al día",
+ff_2x_d: "2 veces al día",
+ff_more_d: "Más de 2 veces al día",
+ff_1x_w: "1 vez a la semana",
+ff_2x_w: "2 veces a la semana",
+ff_more_w: "Más de 2 veces a la semana",
+lbl_sym_algae: "¿Qué algas aparecen?",
+alg_green_thread: "Algas verdes filamentosas",
+alg_green_spot: "Algas verdes en punto (GSA)",
+alg_cyano: "Cianobacterias",
+alg_brush: "Algas pincel / Algas barbudas (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatomeas (Algas marrones)",
+alg_glass: "Capa verde en los cristales",
+alg_bloom: "Agua verde (Floración de algas)",
+lbl_sym_plants: "Problemas con las plantas:",
+pl_no_growth: "Sin crecimiento",
+pl_fade: "Decoloración / Pérdida de color",
+pl_holes: "Agujeros en las hojas",
+pl_melt: "Desintegración de hojas / Plant melt",
+pl_rot: "Podredumbre de tallos",
+pl_yellow: "Hojas amarillentas",
+pl_deformed: "Hojas nuevas pequeñas y deformadas",
+pl_drop: "Pérdida de hojas inferiores",
+lbl_sym_fish: "Peces e invertebrados:",
+fi_air: "Boqueando en la superficie",
+fi_apathy: "Apatía / Falta de apetito",
+fi_deaths: "Muertes en los últimos días",
+fi_spots: "Puntos blancos o capas en los peces",
+fi_fins: "Aletas deshilachadas o disueltas",
+lbl_sym_water: "Agua y apariencia:",
+wa_turbid: "Agua turbia",
+wa_yellow: "Coloración amarilla o color té del agua",
+wa_deposits: "Depósitos minerales en cristales/técnica",
+wa_odor: "Olor desagradable",
+wa_biofilm: "Capa blanca o biopelícula en la madera",
+btn_analyze: "Analizar y guardar en el calendario",
+res_title: "📊 Resultado del Análisis y Evaluación",
+modal_subtitle: "Informe completo de análisis:",
+modal_save: "Guardar",
+footer_text: "Calculadora de Parámetros de Agua (AWR) v2.7",
+footer_save: "Guardar datos"
+},
+pt: {
+main_title: "Calculadora de Parámetros de Agua de Acuario (AWR) - Análisis Completo",
+title: "Calculadora de Parámetros de Agua (AWR)",
+subtitle: "Análisis Completo del Acuario",
+tab_tech: "Acuario y Técnica",
+tab_deco: "Sustrato y Decoración",
+tab_wasser: "Parámetros del Agua",
+tab_stock: "Población y Comida",
+tab_symptoms: "Síntomas",
+tab_cal: "📅 Calendario",
+sec_tank_info: "📐 Información del Acuario",
+lbl_length: "Longitud del acuario (cm):",
+lbl_width: "Ancho del acuario (cm):",
+lbl_height: "Altura del acuario (cm):",
+lbl_vol: "Volumen del acuario (L):",
+lbl_runtime: "Tiempo en funcionamiento:",
+sec_filter: "🌀 Filtración y Calefacción",
+lbl_filtertype: "Tipo de filtro:",
+opt_select: "-- Seleccionar de la lista --",
+opt_infilt: "Filtro interior",
+opt_backpack: "Filtro de mochila",
+opt_outfilt: "Filtro exterior",
+opt_sump: "Sump / Sump filtrante",
+lbl_flow: "Caudal del filtro (L/h):",
+lbl_skimmer: "¿Hay un skimmer de superficie instalado?",
+lbl_uv: "Esterilizador UV:",
+lbl_yes: "Sí",
+lbl_no: "No",
+lbl_filtermedia: "¿Qué materiales filtrantes se utilizan?",
+fm_ceramic: "Materiales filtrantes cerámicos",
+fm_sponge: "Esponja filtrante",
+fm_clay: "Arcilla expandida",
+fm_lava: "Piedra de lava",
+fm_carbon: "Carbón activo",
+fm_floss: "Guata filtrante",
+fm_zeolite: "Zeolita",
+lbl_clean_interval: "Intervalo de limpieza del filtro (semanas):",
+lbl_heater: "¿Hay un calentador instalado?",
+lbl_temp: "Temperatura del agua (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "¿Se suministra CO₂?",
+sec_light: "💡 Iluminación",
+lbl_light_type: "Tipo de iluminación:",
+opt_t5t8: "Tubo fluorescente T5/T8",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Temperatura de color (K):",
+lbl_light_watt: "Potencia (W):",
+lbl_light_lum: "Flujo luminoso (lm):",
+lbl_light_duration: "Duración diaria de la luz (h):",
+sec_plants: "🌿 Plantas y Fertilización",
+lbl_plant_density: "¿Qué tan densamente plantado está el acuario?",
+pd_very_few: "Muy pocas plantas",
+pd_few: "Pocas plantas",
+pd_medium: "Densidad media de plantas",
+pd_dense: "Densamente plantado",
+pd_very_dense: "Muy densamente plantado",
+lbl_fert_types: "¿Qué fertilizantes se utilizan?",
+ft_liq_c: "Carbono líquido adicional",
+ft_allinone: "Abono completo (Todo en uno)",
+ft_macro: "Fertilizante de macronutrientes",
+ft_micro: "Fertilizante de micronutrientes",
+ft_nitro: "Fertilizante de nitrógeno",
+ft_phos: "Fertilizante de fosfato",
+ft_pot: "Fertilizante de potasio",
+ft_iron: "Fertilizante de hierro",
+lbl_sub_type: "Tipo de sustrato:",
+sub_gravel: "Grava de cuarzo",
+sub_sand: "Arena",
+sub_soil: "Soil (Sustrato activo)",
+lbl_nutrient_sub: "¿Se usó un sustrato rico en nutrientes?",
+lbl_regular_sub_fert: "¿Se usan fertilizantes de fondo regularmente?",
+lbl_sub_vol: "Volumen total de sustrato (L):",
+sec_stone: "Selección de piedras (Análisis de cal)",
+lbl_stone_type: "Tipo de piedra:",
+opt_nostone: "-- Ninguna / Sin especificar --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcárea)",
+st_dragon: "Dragon Stone / Ohko Stone (Arcillosa)",
+st_rokkaku: "Rokkaku Stone (Calcárea)",
+st_mini: "Mini-Landscape (Calcárea)",
+st_slate: "Pizarra / Black Slate (Neutral)",
+st_lava: "Piedra de lava (Neutral, porosa)",
+st_manten: "Manten Stone (Principalmente neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Sube mucho el GH)",
+st_granite: "Granito (Neutral, inerte)",
+st_marble: "Mármol / Mármol blanco (Muy calcárea)",
+st_loch: "Lochgestein / Piedra agujereada (Calcárea)",
+st_river: "Guijarros de río (Principalmente neutral)",
+st_zebra: "Zebra Stone (Ligeramente calcárea)",
+st_woodstone: "Madera petrificada (Principalmente neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Cantidad de piedras (kg):",
+sec_wood: "Selección de madera",
+lbl_wood_type: "Tipo de madera:",
+opt_nowood: "-- Sin madera / Sin especificar --",
+wt_redmoor: "Red Moor Wood (Libera taninos)",
+wt_mangrove: "Madera de manglar (Acidifica ligeramente)",
+wt_moor: "Raíz de turbera (Acidifica fuertemente)",
+wt_spider: "Spider Wood (Nudosa, clara)",
+wt_drift: "Madera flotante (Ligeramente ácida)",
+wt_savannah: "Madera de sabana (Dura, lisa)",
+wt_ironwood: "Madera de hierro (Muy dura y pesada)",
+wt_jumbo: "Raíz Jumbo (De gran tamaño)",
+wt_cork: "Avellano de bruja / Corcho (Decorativa)",
+lbl_wood_qty: "Cantidad de madera (kg):",
+sec_water_compare: "🧪 Comparación de Parámetros del Agua",
+col_water_change: "Agua de Cambio",
+col_water_tank: "Agua del Acuario",
+lbl_fish_small: "Peces pequeños (hasta 3 cm):",
+lbl_fish_medium: "Peces medianos (3–8 cm):",
+lbl_fish_large: "Peces grandes (más de 8 cm):",
+lbl_fish_pleco: "Peces L / Plecos (Raspadores intensivos):",
+lbl_fish_algae: "Peces comedores de algas (Crossocheilus, etc.):",
+lbl_shrimp: "Gambas (ud.):",
+lbl_snails: "Caracoles (ud.):",
+lbl_feeding: "Alimentación:",
+fd_live: "Alimento vivo",
+fd_frozen: "Alimento congelado",
+fd_flakes: "Comida en escamas",
+fd_granule: "Comida en gránulos",
+fd_tabs: "Pastillas / Chips para peces de fondo",
+lbl_feeding_freq: "Frecuencia de alimentación:",
+ff_1x_d: "1 vez al día",
+ff_2x_d: "2 veces al día",
+ff_more_d: "Más de 2 veces al día",
+ff_1x_w: "1 vez a la semana",
+ff_2x_w: "2 veces a la semana",
+ff_more_w: "Más de 2 veces a la semana",
+lbl_sym_algae: "¿Qué algas aparecen?",
+alg_green_thread: "Algas verdes filamentosas",
+alg_green_spot: "Algas verdes en punto (GSA)",
+alg_cyano: "Cianobacterias",
+alg_brush: "Algas pincel / Algas barbudas (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatomeas (Algas marrones)",
+alg_glass: "Capa verde en los cristales",
+alg_bloom: "Agua verde (Floración de algas)",
+lbl_sym_plants: "Problemas con las plantas:",
+pl_no_growth: "Sin crecimiento",
+pl_fade: "Decoloración / Pérdida de color",
+pl_holes: "Agujeros en las hojas",
+pl_melt: "Desintegración de hojas / Plant melt",
+pl_rot: "Podredumbre de tallos",
+pl_yellow: "Hojas amarillentas",
+pl_deformed: "Hojas nuevas pequeñas y deformadas",
+pl_drop: "Pérdida de hojas inferiores",
+lbl_sym_fish: "Peces e invertebrados:",
+fi_air: "Boqueando en la superficie",
+fi_apathy: "Apatía / Falta de apetito",
+fi_deaths: "Muertes en los últimos días",
+fi_spots: "Puntos blancos o capas en los peces",
+fi_fins: "Aletas deshilachadas o disueltas",
+lbl_sym_water: "Agua y apariencia:",
+wa_turbid: "Agua turbia",
+wa_yellow: "Coloración amarilla o color té del agua",
+wa_deposits: "Depósitos minerales en cristales/técnica",
+wa_odor: "Olor desagradable",
+wa_biofilm: "Capa blanca o biopelícula en la madera",
+btn_analyze: "Analizar y guardar en el calendario",
+res_title: "📊 Resultado del Análisis y Evaluación",
+modal_subtitle: "Informe completo de análisis:",
+modal_save: "Guardar",
+footer_text: "Calculadora de Parámetros de Agua (AWR) v2.7",
+footer_save: "Guardar datos"
+},
+ru: {
 main_title: "Calculadora de Parámetros de Agua de Acuario (AWR) - Análisis Completo",
 title: "Calculadora de Parámetros de Agua (AWR)",
 subtitle: "Análisis Completo del Acuario",
@@ -1279,10 +2773,6 @@ footer_text: "Calculadora de Parámetros de Agua (AWR) v2.7",
 footer_save: "Guardar datos"
 }
 };
-
-['nl', 'fr', 'da', 'it', 'pl', 'sv', 'cs', 'hu', 'el', 'pt', 'ru'].forEach(l => {
-if(!translations[l]) translations[l] = translations['en'];
-});
 
 function changeLanguage(lang) {
 const t = translations[lang] || translations['de'];
