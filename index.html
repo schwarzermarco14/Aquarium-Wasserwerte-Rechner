@@ -33,20 +33,39 @@ align-items: center;
 padding: 10px 0 15px;
 border-bottom: 1px solid var(--border);
 margin-bottom: 15px;
+flex-wrap: wrap;
+gap: 10px;
 }
 .header-left { text-align: left; }
 .header h1 { font-size: 1.1rem; color: var(--accent); }
 .header p { font-size: 0.75rem; color: var(--text-muted); }
 
-.lang-selector {
+.tank-selector-container {
+display: flex;
+gap: 6px;
+align-items: center;
 background: #020617;
-border: 1px solid var(--border);
-color: var(--text);
 padding: 6px 10px;
-border-radius: 6px;
-font-size: 0.75rem;
+border: 1px solid var(--border);
+border-radius: 8px;
+}
+.tank-selector-container select {
+background: transparent;
+border: none;
+color: var(--text);
+font-size: 0.8rem;
 cursor: pointer;
-max-width: 140px;
+outline: none;
+}
+.tank-selector-container button {
+background: var(--accent);
+border: none;
+color: #0f172a;
+font-weight: bold;
+padding: 2px 6px;
+border-radius: 4px;
+cursor: pointer;
+font-size: 0.75rem;
 }
 
 .tabs {
@@ -363,9 +382,12 @@ line-height: 1.5;
 <h1><span data-i18n="title">Aquarium-Wasserwerte-Rechner (AWR)</span> 💧</h1>
 <p data-i18n="subtitle">Vollständige Aquarium-Analyse</p>
 </div>
-<select class="lang-selector" id="langSelect" style="display:none;">
-<option value="de" selected>🇩🇪 Deutsch</option>
+<div class="tank-selector-container">
+<select id="tankSelect" onchange="switchTank(this.value)">
 </select>
+<button type="button" onclick="createNewTank()" title="Neues Aquarium hinzufügen">+</button>
+<button type="button" onclick="renameCurrentTank()" title="Aktuelles Aquarium umbenennen">✏️</button>
+</div>
 </div>
 
 <!-- TABS NAVIGATION -->
@@ -384,18 +406,18 @@ line-height: 1.5;
 <div id="tab-becken" class="tab-content active">
 <div class="card">
 <h2 data-i18n="sec_tank_info">📐 Angaben zum Aquarium</h2>
-<div class="form-group"><label data-i18n="lbl_length">Aquarienlänge (cm):</label><input type="number" id="l" value="60" oninput="calcVol()"></div>
-<div class="form-group"><label data-i18n="lbl_width">Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
-<div class="form-group"><label data-i18n="lbl_height">Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
+<div class="form-group"><label data-i18n="lbl_length">Aquarienlänge (cm):</label><input type="number" id="l" value="60" oninput="calcVol(); saveDataAuto();"></div>
+<div class="form-group"><label data-i18n="lbl_width">Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol(); saveDataAuto();"></div>
+<div class="form-group"><label data-i18n="lbl_height">Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol(); saveDataAuto();"></div>
 <div class="form-group"><label data-i18n="lbl_vol">Aquarienvolumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
-<div class="form-group"><label data-i18n="lbl_runtime">Einrichtungszeit:</label><input type="text" id="inp_runtime" value="7 Wochen"></div>
+<div class="form-group"><label data-i18n="lbl_runtime">Einrichtungszeit:</label><input type="text" id="inp_runtime" value="7 Wochen" oninput="saveDataAuto()"></div>
 </div>
 
 <div class="card">
 <h2 data-i18n="sec_filter">🌀 Filterung & Heizung</h2>
 <div class="form-group">
 <label data-i18n="lbl_filtertype">Filtertyp:</label>
-<select id="sel_filtertype">
+<select id="sel_filtertype" onchange="saveDataAuto()">
 <option data-i18n="opt_select">-- Aus der Liste auswählen --</option>
 <option value="Innenfilter" data-i18n="opt_infilt">Innenfilter</option>
 <option value="Rucksackfilter" data-i18n="opt_backpack">Rucksackfilter</option>
@@ -403,48 +425,48 @@ line-height: 1.5;
 <option value="Filterbecken" data-i18n="opt_sump">Filterbecken (Sump)</option>
 </select>
 </div>
-<div class="form-group"><label data-i18n="lbl_flow">Filterdurchfluss (L/h):</label><input type="number" value="500"></div>
+<div class="form-group"><label data-i18n="lbl_flow">Filterdurchfluss (L/h):</label><input type="number" id="inp_flow" value="500" oninput="saveDataAuto()"></div>
 
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_skimmer">Ist ein Oberflächenabsauger installiert?</label>
 <div class="radio-row">
-<label><input type="radio" name="skimmer" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="skimmer" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="skimmer" value="ja" onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="skimmer" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
 
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_uv">UV-Klärer:</label>
 <div class="radio-row">
-<label><input type="radio" name="uv" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="uv" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="uv" value="ja" onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="uv" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
 
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_filtermedia">Welche Filtermedien werden verwendet?</label>
 <div class="media-grid">
-<label><input type="checkbox"> <span data-i18n="fm_ceramic">Keramische Filtermedien</span></label>
-<label><input type="checkbox" checked> <span data-i18n="fm_sponge">Filterschwamm</span></label>
-<label><input type="checkbox"> <span data-i18n="fm_clay">Blähton</span></label>
-<label><input type="checkbox"> <span data-i18n="fm_lava">Lavastein</span></label>
-<label><input type="checkbox"> <span data-i18n="fm_carbon">Aktivkohle</span></label>
-<label><input type="checkbox" checked> <span data-i18n="fm_floss">Filterwatte</span></label>
-<label><input type="checkbox"> <span data-i18n="fm_zeolite">Zeolith</span></label>
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_ceramic">Keramische Filtermedien</span></label>
+<label><input type="checkbox" class="fm-chk" checked onchange="saveDataAuto()"> <span data-i18n="fm_sponge">Filterschwamm</span></label>
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_clay">Blähton</span></label>
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_lava">Lavastein</span></label>
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_carbon">Aktivkohle</span></label>
+<label><input type="checkbox" class="fm-chk" checked onchange="saveDataAuto()"> <span data-i18n="fm_floss">Filterwatte</span></label>
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_zeolite">Zeolith</span></label>
 </div>
 </div>
 
-<div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" placeholder="z. B. 2"></div>
+<div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" id="inp_clean" placeholder="z. B. 2" oninput="saveDataAuto()"></div>
 
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_heater">Ist im Aquarium ein Heizstab installiert?</label>
 <div class="radio-row">
-<label><input type="radio" name="heater" value="ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="heater" value="nein"> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="heater" value="ja" checked onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="heater" value="nein" onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
 
-<div class="form-group"><label data-i18n="lbl_temp">Wassertemperatur (°C):</label><input type="number" value="24" step="0.5"></div>
+<div class="form-group"><label data-i18n="lbl_temp">Wassertemperatur (°C):</label><input type="number" id="inp_temp" value="24" step="0.5" oninput="saveDataAuto()"></div>
 </div>
 
 <div class="card">
@@ -452,8 +474,8 @@ line-height: 1.5;
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_co2">Wird CO₂ zugeführt?</label>
 <div class="radio-row">
-<label><input type="radio" name="co2_zuafuhr" value="ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="co2_zuafuhr" value="nein"> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="co2_zuafuhr" value="ja" checked onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="co2_zuafuhr" value="nein" onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
 </div>
@@ -462,7 +484,7 @@ line-height: 1.5;
 <h2 data-i18n="sec_light">💡 Beleuchtung</h2>
 <div class="form-group">
 <label data-i18n="lbl_light_type">Beleuchtungsart:</label>
-<select id="beleuchtungsart">
+<select id="beleuchtungsart" onchange="saveDataAuto()">
 <option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
 <option value="t5_t8" data-i18n="opt_t5t8">T5-/T8-Leuchtstoffröhre</option>
 <option value="led" data-i18n="opt_led">LED</option>
@@ -470,17 +492,17 @@ line-height: 1.5;
 <option value="hql" data-i18n="opt_hql">HQL</option>
 </select>
 </div>
-<div class="form-group"><label data-i18n="lbl_light_kelvin">Farbtemperatur (K):</label><input type="number" id="farbtemperatur" value="6500"></div>
-<div class="form-group"><label data-i18n="lbl_light_watt">Leistung (W):</label><input type="number" id="leistung" value="30"></div>
-<div class="form-group"><label data-i18n="lbl_light_lum">Lichtstrom (lm):</label><input type="number" id="lichtstrom" value="2000"></div>
-<div class="form-group"><label data-i18n="lbl_light_duration">Tägliche Beleuchtungsdauer (h):</label><input type="number" id="beleuchtungsdauer" value="10"></div>
+<div class="form-group"><label data-i18n="lbl_light_kelvin">Farbtemperatur (K):</label><input type="number" id="farbtemperatur" value="6500" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_light_watt">Leistung (W):</label><input type="number" id="leistung" value="30" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_light_lum">Lichtstrom (lm):</label><input type="number" id="lichtstrom" value="2000" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_light_duration">Tägliche Beleuchtungsdauer (h):</label><input type="number" id="beleuchtungsdauer" value="10" oninput="saveDataAuto()"></div>
 </div>
 
 <div class="card">
 <h2 data-i18n="sec_plants">🌿 Pflanzen und Düngung</h2>
 <div class="form-group">
 <label data-i18n="lbl_plant_density">Wie dicht ist das Aquarium bepflanzt?</label>
-<select id="bepflanzungsdichte">
+<select id="bepflanzungsdichte" onchange="saveDataAuto()">
 <option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
 <option value="sehr_wenig" data-i18n="pd_very_few">Sehr wenige Pflanzen</option>
 <option value="wenig" data-i18n="pd_few">Wenige Pflanzen</option>
@@ -493,14 +515,14 @@ line-height: 1.5;
 <div class="form-group" style="flex-direction: column; align-items: flex-start;">
 <label style="margin-bottom: 10px; display: block;" data-i18n="lbl_fert_types">Welche Dünger werden verwendet?</label>
 <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_flüssig_c" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_liq_c">Flüssiger Kohlenstoffzusatz</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_volldünger" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_allinone">Volldünger (All-in-One)</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_makro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_macro">Makronährstoffdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_mikro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_micro">Mikronährstoffdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_stickstoff" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_nitro">Stickstoffdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_phosphat" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_phos">Phosphatdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_kalium" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_pot">Kaliumdünger</span></label>
-<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_iron" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_iron">Eisendünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_flüssig_c" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_liq_c">Flüssiger Kohlenstoffzusatz</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_volldünger" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_allinone">Volldünger (All-in-One)</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_makro" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_macro">Makronährstoffdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_mikro" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_micro">Mikronährstoffdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_stickstoff" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_nitro">Stickstoffdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_phosphat" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_phos">Phosphatdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_kalium" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_pot">Kaliumdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_iron" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_iron">Eisendünger</span></label>
 </div>
 </div>
 </div>
@@ -512,7 +534,7 @@ line-height: 1.5;
 <h2 data-i18n="tab_deco">🪨 Bodengrund und Dekoration</h2>
 <div class="form-group">
 <label data-i18n="lbl_sub_type">Art des Bodengrunds:</label>
-<select id="bodenArt">
+<select id="bodenArt" onchange="saveDataAuto()">
 <option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
 <option value="quarzkies" data-i18n="sub_gravel" selected>Quarzkies</option>
 <option value="sand" data-i18n="sub_sand">Sand</option>
@@ -523,25 +545,25 @@ line-height: 1.5;
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_nutrient_sub">Wurde ein nährstoffreicher Untergrund verwendet?</label>
 <div class="radio-row">
-<label><input type="radio" name="nutrient_sub" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="nutrient_sub" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="nutrient_sub" value="ja" onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="nutrient_sub" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
 
 <div class="question-block" style="margin-top: 10px;">
 <label class="main-label" data-i18n="lbl_regular_sub_fert">Werden regelmäßig Bodendünger verwendet?</label>
 <div class="radio-row">
-<label><input type="radio" name="regular_sub_fert" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-<label><input type="radio" name="regular_sub_fert" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+<label><input type="radio" name="regular_sub_fert" value="ja" onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="regular_sub_fert" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
 
-<div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0"></div>
+<div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0" oninput="saveDataAuto()"></div>
 
 <h3 data-i18n="sec_stone">Steinauswahl (Kalk-Analyse)</h3>
 <div class="form-group">
 <label data-i18n="lbl_stone_type">Steinart:</label>
-<select id="steinArt">
+<select id="steinArt" onchange="saveDataAuto()">
 <option value="" data-i18n="opt_nostone">-- Keine / Keine Angabe --</option>
 <option value="seiryu" data-i18n="st_seiryu">Seiryu Stone / Green Stone (Kalkhaltig)</option>
 <option value="dragon" data-i18n="st_dragon">Dragon Stone / Ohko Stone (Tonstein)</option>
@@ -560,12 +582,12 @@ line-height: 1.5;
 <option value="tiger" data-i18n="st_tiger">Tiger Stone (Neutral)</option>
 </select>
 </div>
-<div class="form-group"><label data-i18n="lbl_stone_qty">Menge an Steinen (kg):</label><input type="number" value="5" step="0.1"></div>
+<div class="form-group"><label data-i18n="lbl_stone_qty">Menge an Steinen (kg):</label><input type="number" id="steinMenge" value="5" step="0.1" oninput="saveDataAuto()"></div>
 
 <h3 data-i18n="sec_wood">Holzauswahl</h3>
 <div class="form-group">
 <label data-i18n="lbl_wood_type">Holzart:</label>
-<select id="holzArt">
+<select id="holzArt" onchange="saveDataAuto()">
 <option value="" data-i18n="opt_nowood">-- Kein Holz / Keine Angabe --</option>
 <option value="red_moor" data-i18n="wt_redmoor">Red Moor Wood (Gibt Tannine ab)</option>
 <option value="mangrove" data-i18n="wt_mangrove">Mangrovenholz (Säuert leicht an)</option>
@@ -578,7 +600,7 @@ line-height: 1.5;
 <option value="korkenzieher" data-i18n="wt_cork">Korkenzieherhasel (Dekorativ)</option>
 </select>
 </div>
-<div class="form-group"><label data-i18n="lbl_wood_qty">Menge an Holz (kg):</label><input type="number" value="2" step="0.1"></div>
+<div class="form-group"><label data-i18n="lbl_wood_qty">Menge an Holz (kg):</label><input type="number" id="holzMenge" value="2" step="0.1" oninput="saveDataAuto()"></div>
 </div>
 </div>
 
@@ -589,37 +611,37 @@ line-height: 1.5;
 <div class="water-grid">
 <div class="water-column">
 <h3 data-i18n="col_water_change">Wasserwechsel</h3>
-<div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" value="7.2"></div>
-<div class="water-field"><label>GH:</label><input type="text" id="w_gh_wechsel" value="10.0"></div>
-<div class="water-field"><label>KH:</label><input type="text" id="w_kh_wechsel" value="6.0"></div>
-<div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_wechsel" value="0.0"></div>
-<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_wechsel" value="0.0"></div>
-<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_wechsel" value="0.0"></div>
-<div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_wechsel" value="0.0"></div>
-<div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_wechsel" value="0.0"></div>
-<div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_wechsel" value="0.0"></div>
-<div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_wechsel" value="0.0"></div>
-<div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_wechsel" value="0.0"></div>
-<div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_wechsel" value="0.0"></div>
-<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_wechsel" value="0.0"></div>
-<div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_wechsel" value="0.0"></div>
+<div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" value="7.2" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>GH:</label><input type="text" id="w_gh_wechsel" value="10.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>KH:</label><input type="text" id="w_kh_wechsel" value="6.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_wechsel" value="0.0" oninput="saveDataAuto()"></div>
 </div>
 <div class="water-column">
 <h3 data-i18n="col_water_tank">Aquarienwasser</h3>
-<div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.8"></div>
-<div class="water-field"><label>GH:</label><input type="text" id="w_gh_akt" value="12.0"></div>
-<div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4.0"></div>
-<div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_akt" value="0.0"></div>
-<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_akt" value="0.0"></div>
-<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10.0"></div>
-<div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_akt" value="0.1"></div>
-<div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_akt" value="5.0"></div>
-<div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_akt" value="25.0"></div>
-<div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_akt" value="5.0"></div>
-<div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_akt" value="0.05"></div>
-<div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_akt" value="5.0"></div>
-<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_akt" value="2.0"></div>
-<div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_akt" value="10.0"></div>
+<div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.8" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>GH:</label><input type="text" id="w_gh_akt" value="12.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_akt" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_akt" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_akt" value="0.1" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_akt" value="5.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_akt" value="25.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_akt" value="5.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_akt" value="0.05" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_akt" value="5.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_akt" value="2.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_akt" value="10.0" oninput="saveDataAuto()"></div>
 </div>
 </div>
 </div>
@@ -629,28 +651,28 @@ line-height: 1.5;
 <div id="tab-besatz" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_stock">🐟 Tierbesatz & Fütterung</h2>
-<div class="form-group"><label data-i18n="lbl_fish_small">Kleine Fische (bis 3 cm):</label><input type="number" id="besatz_klein" value="10"></div>
-<div class="form-group"><label data-i18n="lbl_fish_medium">Mittelgroße Fische (3–8 cm):</label><input type="number" id="besatz_mittel" value="5"></div>
-<div class="form-group"><label data-i18n="lbl_fish_large">Große Fische (über 8 cm):</label><input type="number" id="besatz_gross" value="0"></div>
-<div class="form-group"><label data-i18n="lbl_fish_pleco">L-Welse / Harnischwelse:</label><input type="number" id="besatz_welse" value="1"></div>
-<div class="form-group"><label data-i18n="lbl_fish_algae">Algenfressende Fische:</label><input type="number" id="besatz_algen" value="2"></div>
-<div class="form-group"><label data-i18n="lbl_shrimp">Garnelen (Stk.):</label><input type="number" id="besatz_garnelen" value="15"></div>
-<div class="form-group"><label data-i18n="lbl_snails">Schnecken (Stk.):</label><input type="number" id="besatz_schnecken" value="10"></div>
+<div class="form-group"><label data-i18n="lbl_fish_small">Kleine Fische (bis 3 cm):</label><input type="number" id="besatz_klein" value="10" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_fish_medium">Mittelgroße Fische (3–8 cm):</label><input type="number" id="besatz_mittel" value="5" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_fish_large">Große Fische (über 8 cm):</label><input type="number" id="besatz_gross" value="0" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_fish_pleco">L-Welse / Harnischwelse:</label><input type="number" id="besatz_welse" value="1" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_fish_algae">Algenfressende Fische:</label><input type="number" id="besatz_algen" value="2" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_shrimp">Garnelen (Stk.):</label><input type="number" id="besatz_garnelen" value="15" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_snails">Schnecken (Stk.):</label><input type="number" id="besatz_schnecken" value="10" oninput="saveDataAuto()"></div>
 
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_feeding">Fütterung:</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox"> <span data-i18n="fd_live">Lebendfutter</span></label>
-<label class="check-group"><input type="checkbox"> <span data-i18n="fd_frozen">Frostfutter</span></label>
-<label class="check-group"><input type="checkbox"> <span data-i18n="fd_flakes">Flockenfutter</span></label>
-<label class="check-group"><input type="checkbox" checked> <span data-i18n="fd_granule">Granulatfutter</span></label>
-<label class="check-group"><input type="checkbox" checked> <span data-i18n="fd_tabs">Wels-Tabs / Chips</span></label>
+<label class="check-group"><input type="checkbox" class="fd-chk" onchange="saveDataAuto()"> <span data-i18n="fd_live">Lebendfutter</span></label>
+<label class="check-group"><input type="checkbox" class="fd-chk" onchange="saveDataAuto()"> <span data-i18n="fd_frozen">Frostfutter</span></label>
+<label class="check-group"><input type="checkbox" class="fd-chk" onchange="saveDataAuto()"> <span data-i18n="fd_flakes">Flockenfutter</span></label>
+<label class="check-group"><input type="checkbox" class="fd-chk" checked onchange="saveDataAuto()"> <span data-i18n="fd_granule">Granulatfutter</span></label>
+<label class="check-group"><input type="checkbox" class="fd-chk" checked onchange="saveDataAuto()"> <span data-i18n="fd_tabs">Wels-Tabs / Chips</span></label>
 </div>
 </div>
 
 <div class="form-group" style="margin-top: 12px;">
 <label data-i18n="lbl_feeding_freq">Fütterungshäufigkeit:</label>
-<select id="fuetterungs_haeufigkeit">
+<select id="fuetterungs_haeufigkeit" onchange="saveDataAuto()">
 <option data-i18n="opt_select">-- Aus der Liste auswählen --</option>
 <option value="1x_taeglich" data-i18n="ff_1x_d">1 x täglich</option>
 <option value="2x_taeglich" data-i18n="ff_2x_d" selected>2 x täglich</option>
@@ -671,50 +693,50 @@ line-height: 1.5;
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_sym_algae">Welche Algen treten auf?</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Fadenalgen"> <span data-i18n="alg_green_thread">Grüne Fadenalgen</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Punktalgen (GSA)"> <span data-i18n="alg_green_spot">Grüne Punktalgen (GSA)</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Cyanobakterien"> <span data-i18n="alg_cyano">Cyanobakterien</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Pinselalgen / Bartalgen (BBA)"> <span data-i18n="alg_brush">Pinselalgen / Bartalgen (BBA)</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Spirogyra"> <span data-i18n="alg_spirogyra">Spirogyra</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kieselalgen"> <span data-i18n="alg_diatoms">Kieselalgen</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüner Belag auf den Scheiben"> <span data-i18n="alg_glass">Grüner Belag auf den Scheiben</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Wasserblüte"> <span data-i18n="alg_bloom">Grüne Wasserblüte</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Fadenalgen" onchange="saveDataAuto()"> <span data-i18n="alg_green_thread">Grüne Fadenalgen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Punktalgen (GSA)" onchange="saveDataAuto()"> <span data-i18n="alg_green_spot">Grüne Punktalgen (GSA)</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Cyanobakterien" onchange="saveDataAuto()"> <span data-i18n="alg_cyano">Cyanobakterien</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Pinselalgen / Bartalgen (BBA)" onchange="saveDataAuto()"> <span data-i18n="alg_brush">Pinselalgen / Bartalgen (BBA)</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Spirogyra" onchange="saveDataAuto()"> <span data-i18n="alg_spirogyra">Spirogyra</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kieselalgen" onchange="saveDataAuto()"> <span data-i18n="alg_diatoms">Kieselalgen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüner Belag auf den Scheiben" onchange="saveDataAuto()"> <span data-i18n="alg_glass">Grüner Belag auf den Scheiben</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Wasserblüte" onchange="saveDataAuto()"> <span data-i18n="alg_bloom">Grüne Wasserblüte</span></label>
 </div>
 </div>
 
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_sym_plants">Pflanzenprobleme:</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kein Wachstum"> <span data-i18n="pl_no_growth">Kein Wachstum</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Verblassen / Farbverlust"> <span data-i18n="pl_fade">Verblassen / Farbverlust</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Löcher in den Blättern"> <span data-i18n="pl_holes">Löcher in den Blättern</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Blattzerfall / Pflanzenmelt"> <span data-i18n="pl_melt">Blattzerfall / Pflanzenmelt</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Stängelfäule"> <span data-i18n="pl_rot">Stängelfäule</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Vergilbende Blätter"> <span data-i18n="pl_yellow">Vergilbende Blätter</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kleine deformierte Blätter"> <span data-i18n="pl_deformed">Kleine, deformierte neue Blätter</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Abfallende untere Blätter"> <span data-i18n="pl_drop">Abfallende untere Blätter</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kein Wachstum" onchange="saveDataAuto()"> <span data-i18n="pl_no_growth">Kein Wachstum</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Verblassen / Farbverlust" onchange="saveDataAuto()"> <span data-i18n="pl_fade">Verblassen / Farbverlust</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Löcher in den Blättern" onchange="saveDataAuto()"> <span data-i18n="pl_holes">Löcher in den Blättern</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Blattzerfall / Pflanzenmelt" onchange="saveDataAuto()"> <span data-i18n="pl_melt">Blattzerfall / Pflanzenmelt</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Stängelfäule" onchange="saveDataAuto()"> <span data-i18n="pl_rot">Stängelfäule</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Vergilbende Blätter" onchange="saveDataAuto()"> <span data-i18n="pl_yellow">Vergilbende Blätter</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kleine deformierte Blätter" onchange="saveDataAuto()"> <span data-i18n="pl_deformed">Kleine, deformierte neue Blätter</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Abfallende untere Blätter" onchange="saveDataAuto()"> <span data-i18n="pl_drop">Abfallende untere Blätter</span></label>
 </div>
 </div>
 
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_sym_fish">Fische und Wirbellose:</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Schnappen nach Luft"> <span data-i18n="fi_air">Schnappen nach Luft an der Oberfläche</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Teilnahmslosigkeit"> <span data-i18n="fi_apathy">Teilnahmslosigkeit / Appetitlosigkeit</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Todesfälle"> <span data-i18n="fi_deaths">Todesfälle in den letzten Tagen</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weiße Punkte"> <span data-i18n="fi_spots">Weiße Punkte oder Beläge auf Fischen</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Ausgefranste Flossen"> <span data-i18n="fi_fins">Ausgefranste oder sich auflösende Flossen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Schnappen nach Luft" onchange="saveDataAuto()"> <span data-i18n="fi_air">Schnappen nach Luft an der Oberfläche</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Teilnahmslosigkeit" onchange="saveDataAuto()"> <span data-i18n="fi_apathy">Teilnahmslosigkeit / Appetitlosigkeit</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Todesfälle" onchange="saveDataAuto()"> <span data-i18n="fi_deaths">Todesfälle in den letzten Tagen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weiße Punkte" onchange="saveDataAuto()"> <span data-i18n="fi_spots">Weiße Punkte oder Beläge auf Fischen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Ausgefranste Flossen" onchange="saveDataAuto()"> <span data-i18n="fi_fins">Ausgefranste oder sich auflösende Flossen</span></label>
 </div>
 </div>
 
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_sym_water">Wasser und Erscheinungsbild:</label>
 <div class="media-grid">
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Trübes Wasser"> <span data-i18n="wa_turbid">Trübes Wasser</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Gelbe Wasserfärbung"> <span data-i18n="wa_yellow">Gelbe oder teefarbene Wasserfärbung</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Mineralische Ablagerungen"> <span data-i18n="wa_deposits">Mineralische Ablagerungen auf Scheiben/Technik</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Unangenehmer Geruch"> <span data-i18n="wa_odor">Unangenehmer Geruch</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weißer Belag auf Holz"> <span data-i18n="wa_biofilm">Weißer Belag oder Biofilm auf Holz</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Trübes Wasser" onchange="saveDataAuto()"> <span data-i18n="wa_turbid">Trübes Wasser</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Gelbe Wasserfärbung" onchange="saveDataAuto()"> <span data-i18n="wa_yellow">Gelbe oder teefarbene Wasserfärbung</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Mineralische Ablagerungen" onchange="saveDataAuto()"> <span data-i18n="wa_deposits">Mineralische Ablagerungen auf Scheiben/Technik</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Unangenehmer Geruch" onchange="saveDataAuto()"> <span data-i18n="wa_odor">Unangenehmer Geruch</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weißer Belag auf Holz" onchange="saveDataAuto()"> <span data-i18n="wa_biofilm">Weißer Belag oder Biofilm auf Holz</span></label>
 </div>
 </div>
 
@@ -758,15 +780,23 @@ line-height: 1.5;
 </div>
 
 <footer class="app-footer">
-<p><span data-i18n="footer_text">Aquarium-Wasserwerte-Rechner (AWR) v2.7</span> | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;" data-i18n="footer_save">Daten sichern</a></p>
+<p><span data-i18n="footer_text">Aquarium-Wasserwerte-Rechner (AWR) v2.8</span> | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;" data-i18n="footer_save">Daten sichern</a></p>
 <p style="margin-top: 4px;">Bereitgestellt von <a href="https://aqua-enthusiasts.de" target="_blank">Aqua-Enthusiasts.de</a></p>
 </footer>
 
 <script>
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
-let analysisDiary = {};
 let activeModalDate = '';
+
+// Multi-Tank Data Structure Storage Management
+let allTanks = JSON.parse(localStorage.getItem('awr_all_tanks')) || {
+  "Hauptbecken (64L)": {
+    inputs: {},
+    diary: {}
+  }
+};
+let currentTankName = Object.keys(allTanks)[0];
 
 const translations = {
 de: {
@@ -932,22 +962,109 @@ btn_analyze: "Analysieren & im Kalender speichern",
 res_title: "📊 Analyseergebnis & Auswertung",
 modal_subtitle: "Vollständiger Analyse-Report:",
 modal_save: "Speichern",
-footer_text: "Aquarium-Wasserwerte-Rechner (AWR) v2.7",
+footer_text: "Aquarium-Wasserwerte-Rechner (AWR) v2.8",
 footer_save: "Daten sichern"
 }
 };
 
-function changeLanguage(lang) {
-const t = translations['de'];
-document.querySelectorAll('[data-i18n]').forEach(el => {
-const key = el.getAttribute('data-i18n');
-if (t[key]) {
-el.innerText = t[key];
+function updateTankSelector() {
+const select = document.getElementById('tankSelect');
+select.innerHTML = '';
+Object.keys(allTanks).forEach(name => {
+let opt = document.createElement('option');
+opt.value = name;
+opt.innerText = name;
+if(name === currentTankName) opt.selected = true;
+select.appendChild(opt);
+});
+}
+
+function createNewTank() {
+if(Object.keys(allTanks).length >= 10) {
+alert("Maximale Anzahl von 10 Aquarien erreicht.");
+return;
+}
+let newName = prompt("Name für das neue Aquarium eingeben:", `Aquarium ${Object.keys(allTanks).length + 1}`);
+if(!newName) return;
+if(allTanks[newName]) {
+alert("Ein Aquarium mit diesem Namen existiert bereits.");
+return;
+}
+allTanks[newName] = { inputs: {}, diary: {} };
+currentTankName = newName;
+updateTankSelector();
+loadTankData();
+calcVol();
+}
+
+function renameCurrentTank() {
+let newNameNeun = prompt("Neuen Namen für das Aquarium eingeben:", currentTankName);
+if(!newNameNeun || newNameNeun === currentTankName) return;
+if(allTanks[newNameNeun]) {
+alert("Ein Aquarium mit diesem Namen existiert bereits.");
+return;
+}
+allTanks[newNameNeun] = allTanks[currentTankName];
+delete allTanks[currentTankName];
+currentTankName = newNameNeun;
+updateTankSelector();
+saveDataAuto();
+}
+
+function switchTank(name) {
+currentTankName = name;
+loadTankData();
+calcVol();
+renderCalendar();
+document.getElementById('resultSection').style.display = 'none';
+}
+
+function saveDataAuto() {
+if(!allTanks[currentTankName]) allTanks[currentTankName] = {};
+let data = {};
+document.querySelectorAll('input, select').forEach(el => {
+if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText') {
+if(el.type === 'checkbox' || el.type === 'radio') {
+data[el.id || el.name + '_' + Math.random()] = el.checked;
+} else {
+data[el.id] = el.value;
+}
 }
 });
-if(document.getElementById('resultSection').style.display === 'block') {
-runAnalysis({ preventDefault: () => {} });
+// Auch Radio-Button Status speichern
+const radios = ['skimmer', 'uv', 'heater', 'co2_zuafuhr', 'nutrient_sub', 'regular_sub_fert'];
+radios.forEach(rName => {
+let checkedEl = document.querySelector(`input[name="${rName}"]:checked`);
+if(checkedEl) data['radio_' + rName] = checkedEl.value;
+});
+
+allTanks[currentTankName].inputs = data;
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 }
+
+function loadTankData() {
+let tankData = allTanks[currentTankName];
+if(!tankData || !tankData.inputs) return;
+let data = tankData.inputs;
+
+for(let id in data) {
+if(id.startsWith('radio_')) {
+let rName = id.replace('radio_', '');
+let targetVal = data[id];
+let radioEl = document.querySelector(`input[name="${rName}"][value="${targetVal}"]`);
+if(radioEl) radioEl.checked = true;
+} else {
+let el = document.getElementById(id);
+if(el) {
+if(el.type === 'checkbox') {
+el.checked = data[id];
+} else {
+el.value = data[id];
+}
+}
+}
+}
+renderCalendar();
 }
 
 function openTab(evt, tabId) {
@@ -969,13 +1086,11 @@ function runAnalysis(event) {
 event.preventDefault();
 document.getElementById('resultSection').style.display = 'block';
 
-const t = translations['de'];
-
 let wNames = ["pH", "GH", "KH", "NH₄", "NO₂", "NO₃", "PO₄", "K", "Ca", "Mg", "Fe", "Na", "SiO₂", "SO₄"];
 let idsChange = ["w_ph_wechsel", "w_gh_wechsel", "w_kh_wechsel", "w_nh4_wechsel", "w_no2_wechsel", "w_no3_wechsel", "w_po4_wechsel", "w_k_wechsel", "w_ca_wechsel", "w_mg_wechsel", "w_fe_wechsel", "w_na_wechsel", "w_sio2_wechsel", "w_so4_wechsel"];
 let idsAkt = ["w_ph_akt", "w_gh_akt", "w_kh_akt", "w_nh4_akt", "w_no2_akt", "w_no3_akt", "w_po4_akt", "w_k_akt", "w_ca_akt", "w_mg_akt", "w_fe_akt", "w_na_akt", "w_sio2_akt", "w_so4_akt"];
 
-let waterReport = "--- WASSERWERTE ---\n";
+let waterReport = `--- WASSERWERTE (${currentTankName}) ---\n`;
 for(let i = 0; i < wNames.length; i++) {
 let valChange = document.getElementById(idsChange[i]) ? document.getElementById(idsChange[i]).value : "0.0";
 let valAkt = document.getElementById(idsAkt[i]) ? document.getElementById(idsAkt[i]).value : "0.0";
@@ -1034,7 +1149,10 @@ document.getElementById('resultCardContainer').innerHTML = warningsHtml;
 let fullReport = waterReport + warningsTextReport;
 let now = new Date();
 let dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-analysisDiary[dateKey] = fullReport;
+
+if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+allTanks[currentTankName].diary[dateKey] = fullReport;
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 renderCalendar();
 }
 
@@ -1084,12 +1202,14 @@ grid.appendChild(div);
 }
 
 let realToday = new Date();
+let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+
 for (let d = 1; d <= totalDays; d++) {
 let div = document.createElement('div');
 let dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 
 let isToday = (d === realToday.getDate() && currentMonth === realToday.getMonth() && currentYear === realToday.getFullYear());
-let hasEntry = analysisDiary[dateStr] ? true : false;
+let hasEntry = diaryData[dateStr] ? true : false;
 
 let classNames = ['cal-day'];
 if (hasEntry) classNames.push('has-entry');
@@ -1105,8 +1225,9 @@ grid.appendChild(div);
 
 function openModal(dateStr) {
 activeModalDate = dateStr;
-document.getElementById('modalDateTitle').innerText = `Eintrag vom ${dateStr}`;
-document.getElementById('modalEntryText').value = analysisDiary[dateStr] || '';
+document.getElementById('modalDateTitle').innerText = `Eintrag vom ${dateStr} (${currentTankName})`;
+let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+document.getElementById('modalEntryText').value = diaryData[dateStr] || '';
 document.getElementById('dayModal').style.display = 'flex';
 }
 
@@ -1116,17 +1237,21 @@ document.getElementById('dayModal').style.display = 'none';
 
 function saveDayEntry() {
 let text = document.getElementById('modalEntryText').value.trim();
+if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
 if (text) {
-analysisDiary[activeModalDate] = text;
+allTanks[currentTankName].diary[activeModalDate] = text;
 } else {
-delete analysisDiary[activeModalDate];
+delete allTanks[currentTankName].diary[activeModalDate];
 }
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 closeModal();
 renderCalendar();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-changeLanguage('de');
+updateTankSelector();
+loadTankData();
+calcVol();
 renderCalendar();
 });
 </script>
