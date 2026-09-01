@@ -454,50 +454,35 @@
       </div>
     </div>
 
-    <!  <!-- TAB 3: WASSERWERTE -->
+    <!-- TAB 3: WASSERWERTE -->
     <div id="tab-wasser" class="tab-content">
       <div class="card">
         <h2 data-i18n="sec_water_compare">🧪 Wasserwerte-Vergleich</h2>
         <div class="water-grid">
-          
-          <!-- Spalte 1: Wasserwechsel -->
           <div class="water-column">
             <h3 data-i18n="col_water_change">Wasserwechsel</h3>
-            <div class="water-field"><label>pH:</label><input type="number" step="0.1" id="ww_ph" value="7.2"></div>
-            <div class="water-field"><label>GH:</label><input type="number" step="0.1" id="ww_gh" value="10.0"></div>
-            <div class="water-field"><label>KH:</label><input type="number" step="0.1" id="ww_kh" value="6.0"></div>
-            <div class="water-field"><label>NH₄ (ppm):</label><input type="number" step="0.01" id="ww_nh4" value="0.0"></div>
-            <div class="water-field"><label>NO₂ (ppm):</label><input type="number" step="0.01" id="ww_no2" value="0.0"></div>
-            <div class="water-field"><label>NO₃ (ppm):</label><input type="number" step="0.1" id="ww_no3" value="0.0"></div>
-            <div class="water-field"><label>PO₄ (ppm):</label><input type="number" step="0.01" id="ww_po4" value="0.0"></div>
-            <div class="water-field"><label>K (ppm):</label><input type="number" step="0.1" id="ww_k" value="0.0"></div>
-            <div class="water-field"><label>Ca (ppm):</label><input type="number" step="0.1" id="ww_ca" value="0.0"></div>
-            <div class="water-field"><label>Mg (ppm):</label><input type="number" step="0.1" id="ww_mg" value="0.0"></div>
-            <div class="water-field"><label>FE (ppm):</label><input type="number" step="0.01" id="ww_fe" value="0.0"></div>
-            <div class="water-field"><label>Na (ppm):</label><input type="number" step="0.1" id="ww_na" value="0.0"></div>
-            <div class="water-field"><label>SiO₂ (ppm):</label><input type="number" step="0.1" id="ww_sio2" value="0.0"></div>
-            <div class="water-field"><label>SO₄ (ppm):</label><input type="number" step="0.1" id="ww_so4" value="0.0"></div>
+            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" value="7.2"></div>
+            <div class="water-field"><label>GH:</label><input type="text" value="10.0"></div>
+            <div class="water-field"><label>KH:</label><input type="text" value="6.0"></div>
+            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>FE (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>K (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>Mg (ppm):</label><input type="text" value="0.0"></div>
           </div>
-
-          <!-- Spalte 2: Aquarienwasser -->
           <div class="water-column">
             <h3 data-i18n="col_water_tank">Aquarienwasser</h3>
-            <div class="water-field"><label>pH:</label><input type="number" step="0.1" id="aq_ph" value="6.8"></div>
-            <div class="water-field"><label>GH:</label><input type="number" step="0.1" id="aq_gh" value="12.0"></div>
-            <div class="water-field"><label>KH:</label><input type="number" step="0.1" id="aq_kh" value="4.0"></div>
-            <div class="water-field"><label>NH₄ (ppm):</label><input type="number" step="0.01" id="aq_nh4" value="0.01"></div>
-            <div class="water-field"><label>NO₂ (ppm):</label><input type="number" step="0.01" id="aq_no2" value="0.0"></div>
-            <div class="water-field"><label>NO₃ (ppm):</label><input type="number" step="0.1" id="aq_no3" value="10.0"></div>
-            <div class="water-field"><label>PO₄ (ppm):</label><input type="number" step="0.01" id="aq_po4" value="0.1"></div>
-            <div class="water-field"><label>K (ppm):</label><input type="number" step="0.1" id="aq_k" value="5.0"></div>
-            <div class="water-field"><label>Ca (ppm):</label><input type="number" step="0.1" id="aq_ca" value="20.0"></div>
-            <div class="water-field"><label>Mg (ppm):</label><input type="number" step="0.1" id="aq_mg" value="5.0"></div>
-            <div class="water-field"><label>FE (ppm):</label><input type="number" step="0.01" id="aq_fe" value="0.05"></div>
-            <div class="water-field"><label>Na (ppm):</label><input type="number" step="0.1" id="aq_na" value="2.0"></div>
-            <div class="water-field"><label>SiO₂ (ppm):</label><input type="number" step="0.1" id="aq_sio2" value="5.0"></div>
-            <div class="water-field"><label>SO₄ (ppm):</label><input type="number" step="0.1" id="aq_so4" value="10.0"></div>
+            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6,8"></div>
+            <div class="water-field"><label>GH:</label><input type="text" value="12,0"></div>
+            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4,0"></div>
+            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10,0"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" value="0,0"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0,1"></div>
+            <div class="water-field"><label>FE (ppm):</label><input type="text" value="0,05"></div>
+            <div class="water-field"><label>K (ppm):</label><input type="text" value="5,0"></div>
+            <div class="water-field"><label>Mg (ppm):</label><input type="text" value="5,0"></div>
           </div>
-
         </div>
       </div>
     </div>
@@ -533,7 +518,7 @@
       </div>
     </div>
 
-    <!<!-- TAB 5: SYMPTOME -->
+    <!-- TAB 5: SYMPTOME -->
     <div id="tab-symptome" class="tab-content">
       <div class="card">
         <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
@@ -541,60 +526,38 @@
         <div class="question-block">
           <label class="main-label">Welche Algen treten auf?</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox" id="sym_faden"> Fadenalgen</label>
-            <label class="check-group"><input type="checkbox" id="sym_pinsel"> Pinselalgen / Bartalgen (BBA)</label>
-            <label class="check-group"><input type="checkbox" id="sym_punkt"> Grüne Punktalgen (GSA)</label>
-            <label class="check-group"><input type="checkbox" id="sym_schwebe"> Schwebealgen (grünes Wasser)</label>
-            <label class="check-group"><input type="checkbox" id="sym_kiesel"> Kieselalgen (braune Beläge)</label>
-            <label class="check-group"><input type="checkbox" id="sym_cyano"> Blaualgen (Schmieralgen/Cyanos)</label>
-            <label class="check-group"><input type="checkbox" id="sym_spirogyra"> Spirogyra</label>
-            <label class="check-group"><input type="checkbox" id="sym_scheiben"> Grüner Belag auf den Scheiben</label>
+            <label class="check-group"><input type="checkbox"> Fadenalgen</label>
+            <label class="check-group"><input type="checkbox"> Pinselalgen</label>
+            <label class="check-group"><input type="checkbox"> Punktalgen</label>
+            <label class="check-group"><input type="checkbox"> Schwebealgen (grünes Wasser)</label>
+            <label class="check-group"><input type="checkbox"> Kieselalgen (braune Beläge)</label>
+            <label class="check-group"><input type="checkbox"> Blaualgen (Schmieralgen/Cyanos)</label>
           </div>
         </div>
 
         <div class="question-block" style="margin-top: 15px;">
           <label class="main-label">Pflanzenprobleme:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox" id="sym_gelb"> Gelbe Blätter (Chlorose)</label>
-            <label class="check-group"><input type="checkbox" id="sym_loecher"> Löcher in Blättern</label>
-            <label class="check-group"><input type="checkbox" id="sym_glasig"> Glasige Blätter</label>
-            <label class="check-group"><input type="checkbox" id="sym_kuemmerlich"> Kümmerlicher Wuchs</label>
-            <label class="check-group"><input type="checkbox" id="sym_abwerfen"> Abwerfen der Blätter</label>
-            <label class="check-group"><input type="checkbox" id="sym_wachstum"> Kein Wachstum</label>
-            <label class="check-group"><input type="checkbox" id="sym_verblassen"> Verblassen / Farbverlust</label>
-            <label class="check-group"><input type="checkbox" id="sym_blattzerfall"> Blattzerfall / Pflanzenmelt</label>
-            <label class="check-group"><input type="checkbox" id="sym_staengelfaeule"> Stängelfäule</label>
-            <label class="check-group"><input type="checkbox" id="sym_deformiert"> Deformierte neue Blätter</label>
-            <label class="check-group"><input type="checkbox" id="sym_untere"> Abfallende untere Blätter</label>
+            <label class="check-group"><input type="checkbox"> Gelbe Blätter (Chlorose)</label>
+            <label class="check-group"><input type="checkbox"> Löcher in Blättern</label>
+            <label class="check-group"><input type="checkbox"> Glasige Blätter</label>
+            <label class="check-group"><input type="checkbox"> Kümmerlicher Wuchs</label>
+            <label class="check-group"><input type="checkbox"> Abwerfen der Blätter</label>
           </div>
         </div>
 
         <div class="question-block" style="margin-top: 15px;">
           <label class="main-label">Fisch- & Tierverhalten:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox" id="sym_luft"> Schnappt an der Oberfläche nach Luft</label>
-            <label class="check-group"><input type="checkbox" id="sym_scheuern"> Scheuert sich an Gegenständen</label>
-            <label class="check-group"><input type="checkbox" id="sym_apathisch"> Apathisch / Fressunlust</label>
-            <label class="check-group"><input type="checkbox" id="sym_schreckhaft"> Schreckhaftigkeit</label>
-            <label class="check-group"><input type="checkbox" id="sym_todesfaelle"> Todesfälle in den letzten Tagen</label>
-            <label class="check-group"><input type="checkbox" id="sym_punkte"> Weiße Punkte / Weißpünktchenkrankheit</label>
-            <label class="check-group"><input type="checkbox" id="sym_flossen"> Ausgefranste oder aufgelöste Flossen</label>
+            <label class="check-group"><input type="checkbox"> Schnappt an der Oberfläche nach Luft</label>
+            <label class="check-group"><input type="checkbox"> Scheuert sich an Gegenständen</label>
+            <label class="check-group"><input type="checkbox"> Apathisch / Fressunlust</label>
+            <label class="check-group"><input type="checkbox"> Schreckhaftigkeit</label>
           </div>
         </div>
 
-        <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label">Wasser und Erscheinungsbild:</label>
-          <div class="media-grid">
-            <label class="check-group"><input type="checkbox" id="sym_trueb"> Trübes Wasser</label>
-            <label class="check-group"><input type="checkbox" id="sym_gerbstoffe"> Gelbe/teefarbene Wasserfärbung (Gerbstoffe)</label>
-            <label class="check-group"><input type="checkbox" id="sym_mineral"> Mineralische Ablagerungen</label>
-            <label class="check-group"><input type="checkbox" id="sym_geruch"> Unangenehmer Geruch</label>
-            <label class="check-group"><input type="checkbox" id="sym_biofilm"> Weißer Belag oder Biofilm auf Holz</label>
-          </div>
-        </div>
-
+        <button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
       </div>
-    </div>
 
       <!-- ANALYSE ERGEBNISSE -->
       <div class="result-box" id="resultSection">
@@ -1491,6 +1454,7 @@
   </script>
 </body>
 </html>
+
 
 
 
