@@ -282,7 +282,6 @@
     .cal-day.today { font-weight: bold; color: var(--accent); border-color: var(--accent); }
     .entry-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 3px; }
 
-    /* MODAL / NEUES FENSTER STILE */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -400,14 +399,20 @@
         <div class="form-group"><label data-i18n="lbl_width">Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
         <div class="form-group"><label data-i18n="lbl_height">Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
         <div class="form-group"><label data-i18n="lbl_vol">Aquarienvolumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
-        <div class="form-group"><label data-i18n="lbl_runtime">Einrichtungszeit:</label><input type="text" value="7 Wochen"></div>
+        <div class="form-group"><label data-i18n="lbl_runtime">Einrichtungszeit:</label><input type="text" value="7 Wochen" data-i18n-val="val_runtime"></div>
       </div>
 
       <div class="card">
         <h2 data-i18n="sec_filter">🌀 Filterung & Heizung</h2>
         <div class="form-group">
           <label data-i18n="lbl_filtertype">Filtertyp:</label>
-          <select><option data-i18n="opt_select">-- Aus der Liste auswählen --</option><option>Innenfilter</option><option>Rucksackfilter</option><option selected>Außenfilter</option><option>Filterbecken (Sump)</option></select>
+          <select id="filterType">
+            <option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
+            <option value="innen" data-i18n="opt_filter_internal">Innenfilter</option>
+            <option value="rucksack" data-i18n="opt_filter_backpack">Rucksackfilter</option>
+            <option value="aussen" selected data-i18n="opt_filter_external">Außenfilter</option>
+            <option value="sump" data-i18n="opt_filter_sump">Filterbecken (Sump)</option>
+          </select>
         </div>
         <div class="form-group"><label data-i18n="lbl_flow">Filterdurchfluss (L/h):</label><input type="number" value="500"></div>
         
@@ -430,17 +435,17 @@
         <div class="question-block">
           <label class="main-label" data-i18n="lbl_filtermedia">Welche Filtermedien werden verwendet?</label>
           <div class="media-grid">
-            <label><input type="checkbox"> Keramische Filtermedien</label>
-            <label><input type="checkbox" checked> Filterschwamm</label>
-            <label><input type="checkbox"> Blähton</label>
-            <label><input type="checkbox"> Lavastein</label>
-            <label><input type="checkbox"> Aktivkohle</label>
-            <label><input type="checkbox" checked> Filterwatte</label>
-            <label><input type="checkbox"> Zeolith</label>
+            <label><input type="checkbox"> <span data-i18n="media_ceramic">Keramische Filtermedien</span></label>
+            <label><input type="checkbox" checked> <span data-i18n="media_sponge">Filterschwamm</span></label>
+            <label><input type="checkbox"> <span data-i18n="media_clay">Blähton</span></label>
+            <label><input type="checkbox"> <span data-i18n="media_lava">Lavastein</span></label>
+            <label><input type="checkbox"> <span data-i18n="media_carbon">Aktivkohle</span></label>
+            <label><input type="checkbox" checked> <span data-i18n="media_floss">Filterwatte</span></label>
+            <label><input type="checkbox"> <span data-i18n="media_zeolite">Zeolith</span></label>
           </div>
         </div>
 
-        <div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" placeholder="z. B. 2"></div>
+        <div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" value="2"></div>
 
         <div class="question-block" style="margin-top: 15px;">
           <label class="main-label" data-i18n="lbl_heater">Ist im Aquarium ein Heizstab installiert?</label>
@@ -454,7 +459,7 @@
       </div>
 
       <div class="card">
-        <h2>🫧 CO₂</h2>
+        <h2 data-i18n="sec_co2">🫧 CO₂</h2>
         <div class="question-block">
           <label class="main-label" data-i18n="lbl_co2">Wird CO₂ zugeführt?</label>
           <div class="radio-row">
@@ -467,64 +472,46 @@
       <div class="card">
         <h2 data-i18n="sec_light">💡 Beleuchtung</h2>
         <div class="form-group">
-          <label>Beleuchtungsart:</label>
+          <label data-i18n="lbl_light_type">Beleuchtungsart:</label>
           <select id="beleuchtungsart">
-            <option value="">-- Aus der Liste auswählen --</option>
-            <option value="t5_t8">T5-/T8-Leuchtstoffröhre</option>
-            <option value="led">LED</option>
-            <option value="hqi">HQI</option>
-            <option value="hql">HQL</option>
+            <option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
+            <option value="t5_t8" data-i18n="opt_light_t5">T5-/T8-Leuchtstoffröhre</option>
+            <option value="led" data-i18n="opt_light_led">LED</option>
+            <option value="hqi" data-i18n="opt_light_hqi">HQI</option>
+            <option value="hql" data-i18n="opt_light_hql">HQL</option>
           </select>
         </div>
         <div class="form-group"><label data-i18n="lbl_light_kelvin">Farbtemperatur (K):</label><input type="number" id="farbtemperatur" value="6500"></div>
         <div class="form-group"><label data-i18n="lbl_light_watt">Leistung (W):</label><input type="number" id="leistung" value="30"></div>
-        <div class="form-group"><label>Lichtstrom (lm):</label><input type="number" id="lichtstrom" value="2000"></div>
+        <div class="form-group"><label data-i18n="lbl_light_lumen">Lichtstrom (lm):</label><input type="number" id="lichtstrom" value="2000"></div>
         <div class="form-group"><label data-i18n="lbl_light_duration">Tägliche Beleuchtungsdauer (h):</label><input type="number" id="beleuchtungsdauer" value="8"></div>
       </div>
 
       <div class="card">
-        <h2>🌿 Pflanzen und Düngung</h2>
-        
+        <h2 data-i18n="sec_plants_fert">🌿 Pflanzen und Düngung</h2>
         <div class="form-group">
-          <label>Wie dicht ist das Aquarium bepflanzt?</label>
+          <label data-i18n="lbl_plant_density">Wie dicht ist das Aquarium bepflanzt?</label>
           <select id="bepflanzungsdichte">
-            <option value="">-- Aus der Liste auswählen --</option>
-            <option value="sehr_wenig">Sehr wenige Pflanzen</option>
-            <option value="wenig">Wenige Pflanzen</option>
-            <option value="mittel">Mittlere Pflanzendichte</option>
-            <option value="dicht">Dicht bepflanzt</option>
-            <option value="sehr_dicht">Sehr dicht bepflanzt</option>
+            <option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
+            <option value="sehr_wenig" data-i18n="opt_dens_very_low">Sehr wenige Pflanzen</option>
+            <option value="wenig" data-i18n="opt_dens_low">Wenige Pflanzen</option>
+            <option value="mittel" data-i18n="opt_dens_med">Mittlere Pflanzendichte</option>
+            <option value="dicht" data-i18n="opt_dens_high">Dicht bepflanzt</option>
+            <option value="sehr_dicht" data-i18n="opt_dens_very_high">Sehr dicht bepflanzt</option>
           </select>
         </div>
 
         <div class="form-group" style="flex-direction: column; align-items: flex-start;">
-          <label style="margin-bottom: 10px; display: block;">Welche Dünger werden verwendet?</label>
-          
+          <label style="margin-bottom: 10px; display: block;" data-i18n="lbl_fert_used">Welche Dünger werden verwendet?</label>
           <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_flüssig_c" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Flüssiger Kohlenstoffzusatz
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_volldünger" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Volldünger (All-in-One)
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_makro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Makronährstoffdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_mikro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Mikronährstoffdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_stickstoff" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Stickstoffdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_phosphat" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Phosphatdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_kalium" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Kaliumdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_eisen" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Eisendünger
-            </label>
+            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_flüssig_c" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="fert_liquid_c">Flüssiger Kohlenstoffzusatz</span></label>
+            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_volldünger" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="fert_all_in_one">Volldünger (All-in-One)</span></label>
+            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_makro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="fert_macro">Makronährstoffdünger</span></label>
+            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_mikro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="fert_micro">Mikronährstoffdünger</span></label>
+            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_stickstoff" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="fert_n">Stickstoffdünger</span></label>
+            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_phosphat" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="fert_p">Phosphatdünger</span></label>
+            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_kalium" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="fert_k">Kaliumdünger</span></label>
+            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_eisen" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="fert_fe">Eisendünger</span></label>
           </div>
         </div>
       </div>
@@ -538,9 +525,9 @@
           <label data-i18n="lbl_sub_type">Art des Bodengrunds:</label>
           <select id="bodenArt">
             <option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-            <option value="quarzkies" selected>Quarzkies</option>
-            <option value="sand">Sand</option>
-            <option value="soil">Soil (Aktiver Bodengrund)</option>
+            <option value="quarzkies" selected data-i18n="opt_sub_gravel">Quarzkies</option>
+            <option value="sand" data-i18n="opt_sub_sand">Sand</option>
+            <option value="soil" data-i18n="opt_sub_soil">Soil (Aktiver Bodengrund)</option>
           </select>
         </div>
 
@@ -562,47 +549,33 @@
 
         <div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0"></div>
 
-        <h3>Steinauswahl (Kalk-Analyse)</h3>
+        <h3 data-i18n="sec_stones">Steinauswahl (Kalk-Analyse)</h3>
         <div class="form-group">
-          <label>Steinart:</label>
+          <label data-i18n="lbl_stone_type">Steinart:</label>
           <select id="steinArt">
-            <option value="">-- Keine / Keine Angabe --</option>
-            <option value="seiryu">Seiryu Stone / Green Stone (Kalkhaltig, härtet auf)</option>
-            <option value="dragon">Dragon Stone / Ohko Stone (Tonstein, meist neutral bis leicht aufhärtend)</option>
-            <option value="rokkaku">Rokkaku Stone (Kalkhaltig)</option>
-            <option value="mini_landscape">Mini-Landscape (Identisch mit Seiryu, kalkhaltig)</option>
-            <option value="schiefer">Schiefer / Black Slate (Neutral, härtet nicht auf)</option>
-            <option value="lava">Lavastein / Red/Black Lava (Neutral, porös)</option>
-            <option value="manten">Manten Stone (Sandstein-Mix, meist neutral)</option>
-            <option value="ada_eyi">ADA Eiyu / Ryuoh Stone (Kalkhaltig, härtet stark auf)</option>
-            <option value="granit">Granit (Neutral, absolut inert)</option>
-            <option value="marmor">Marmor / Weissmarmor (Stark kalkhaltig, härtet extrem auf)</option>
-            <option value="lochgestein">Lochgestein (Stark kalkhaltig, härtet stark auf)</option>
-            <option value="flusskiesel">Flusskiesel / Findlinge (Meist neutral)</option>
-            <option value="zebra">Zebra Stone (Neutral bis leicht kalkhaltig)</option>
-            <option value="holzstein">Holzstein / Petrified Wood (Mineralisiert, meist neutral)</option>
-            <option value="tiger">Tiger Stone (Neutral)</option>
+            <option value="" data-i18n="opt_stone_none">-- Keine / Keine Angabe --</option>
+            <option value="seiryu" data-i18n="opt_stone_seiryu">Seiryu Stone / Green Stone</option>
+            <option value="dragon" data-i18n="opt_stone_dragon">Dragon Stone / Ohko Stone</option>
+            <option value="schiefer" data-i18n="opt_stone_slate">Schiefer / Black Slate</option>
+            <option value="lava" data-i18n="opt_stone_lava">Lavastein</option>
+            <option value="marmor" data-i18n="opt_stone_marble">Marmor / Weissmarmor</option>
+            <option value="granit" data-i18n="opt_stone_granite">Granit</option>
           </select>
         </div>
-        <div class="form-group"><label>Menge an Steinen (kg):</label><input type="number" value="5" step="0.1"></div>
+        <div class="form-group"><label data-i18n="lbl_stone_amount">Menge an Steinen (kg):</label><input type="number" value="5" step="0.1"></div>
 
-        <h3>Holzauswahl</h3>
+        <h3 data-i18n="sec_wood">Holzauswahl</h3>
         <div class="form-group">
-          <label>Holzart:</label>
+          <label data-i18n="lbl_wood_type">Holzart:</label>
           <select id="holzArt">
-            <option value="">-- Kein Holz / Keine Angabe --</option>
-            <option value="red_moor">Red Moor Wood (Verzweigt, gibt leicht Tannine ab)</option>
-            <option value="mangrove">Mangrovenholz (Schwer, dunkel, säuert leicht an)</option>
-            <option value="moorkien">Moorkienholz (Urigen, weich, säuert stark an / senkt pH/KH)</option>
-            <option value="spider_wood">Spider Wood / Aztek-Wurzel (Astig, hell)</option>
-            <option value="driftwood">Treibholz / Driftwood (Neutral bis leicht sauer)</option>
-            <option value="savannenholz">Savannenholz (Hart, glatt)</option>
-            <option value="rondeletia">Rondeletia / Eisenholz (Sehr hart und schwer)</option>
-            <option value="jumbo">Jumbo-Wurzel (Großstückig, massiv)</option>
-            <option value="korkenzieher">Korkenzieherhasel / -weide (Dekorativ)</option>
+            <option value="" data-i18n="opt_wood_none">-- Kein Holz / Keine Angabe --</option>
+            <option value="red_moor" data-i18n="opt_wood_redmoor">Red Moor Wood</option>
+            <option value="mangrove" data-i18n="opt_wood_mangrove">Mangrovenholz</option>
+            <option value="moorkien" data-i18n="opt_wood_moor">Moorkienholz</option>
+            <option value="spider" data-i18n="opt_wood_spider">Spider Wood</option>
           </select>
         </div>
-        <div class="form-group"><label>Menge an Holz (kg):</label><input type="number" value="2" step="0.1"></div>
+        <div class="form-group"><label data-i18n="lbl_wood_amount">Menge an Holz (kg):</label><input type="number" value="2" step="0.1"></div>
       </div>
     </div>
 
@@ -656,19 +629,19 @@
         <div class="form-group"><label data-i18n="lbl_fish_small">Kleine Fische (bis 3 cm):</label><input type="number" value="10"></div>
         <div class="form-group"><label data-i18n="lbl_fish_medium">Mittelgroße Fische (3–8 cm):</label><input type="number" value="5"></div>
         <div class="form-group"><label data-i18n="lbl_fish_large">Große Fische (über 8 cm):</label><input type="number" value="0"></div>
-        <div class="form-group"><label>L-Welse / Harnischwelse (Intensiver Holzraspler & Kotbelastung):</label><input type="number" value="1"></div>
-        <div class="form-group"><label data-i18n="lbl_fish_algae">Algenfressende Fische (Crossocheilus, Otocinclus usw.):</label><input type="number" value="2"></div>
+        <div class="form-group"><label data-i18n="lbl_fish_pleco">L-Welse / Harnischwelse:</label><input type="number" value="1"></div>
+        <div class="form-group"><label data-i18n="lbl_fish_algae">Algenfressende Fische:</label><input type="number" value="2"></div>
         <div class="form-group"><label data-i18n="lbl_shrimp">Garnelen (Stk.):</label><input type="number" value="15"></div>
         <div class="form-group"><label data-i18n="lbl_snails">Schnecken (Stk.):</label><input type="number" value="10"></div>
         
         <div class="question-block" style="margin-top: 15px;">
           <label class="main-label" data-i18n="lbl_feeding">Fütterung:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox"> Lebendfutter</label>
-            <label class="check-group"><input type="checkbox"> Frostfutter</label>
-            <label class="check-group"><input type="checkbox"> Flockenfutter</label>
-            <label class="check-group"><input type="checkbox" checked> Granulatfutter</label>
-            <label class="check-group"><input type="checkbox" checked> Wels-Tabs / Chips</label>
+            <label class="check-group"><input type="checkbox"> <span data-i18n="feed_live">Lebendfutter</span></label>
+            <label class="check-group"><input type="checkbox"> <span data-i18n="feed_frozen">Frostfutter</span></label>
+            <label class="check-group"><input type="checkbox"> <span data-i18n="feed_flakes">Flockenfutter</span></label>
+            <label class="check-group"><input type="checkbox" checked> <span data-i18n="feed_granules">Granulatfutter</span></label>
+            <label class="check-group"><input type="checkbox" checked> <span data-i18n="feed_tabs">Wels-Tabs / Chips</span></label>
           </div>
         </div>
 
@@ -676,12 +649,9 @@
           <label data-i18n="lbl_feeding_freq">Fütterungshäufigkeit:</label>
           <select>
             <option data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-            <option value="1x_taeglich">1 x täglich</option>
-            <option value="2x_taeglich" selected>2 x täglich</option>
-            <option value="mehr_als_2x_taeglich">Mehr als 2 x täglich</option>
-            <option value="1x_woechentlich">1 x wöchentlich</option>
-            <option value="2x_woechentlich">2 x wöchentlich</option>
-            <option value="mehr_als_2x_woechentlich">Mehr als 2 x wöchentlich</option>
+            <option value="1x_taeglich" data-i18n="opt_freq_1">1 x täglich</option>
+            <option value="2x_taeglich" selected data-i18n="opt_freq_2">2 x täglich</option>
+            <option value="mehr" data-i18n="opt_freq_more">Mehr als 2 x täglich</option>
           </select>
         </div>
       </div>
@@ -693,52 +663,32 @@
         <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
         
         <div class="question-block">
-          <label class="main-label">Welche Algen treten auf?</label>
+          <label class="main-label" data-i18n="lbl_sym_algae">Welche Algen treten auf?</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox" class="sym-check"> Grüne Fadenalgen</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Grüne Punktalgen (GSA)</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Cyanobakterien</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Pinselalgen / Bartalgen (BBA)</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Spirogyra</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Kieselalgen</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Grüner Belag auf den Aquarienscheiben</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Grüne Wasserblüte</label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="alg_green_thread">Grüne Fadenalgen</span></label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="alg_green_spot">Grüne Punktalgen (GSA)</span></label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="alg_cyano">Cyanobakterien</span></label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="alg_brush">Pinselalgen / Bartalgen (BBA)</span></label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="alg_diatoms">Kieselalgen</span></label>
           </div>
         </div>
 
         <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label">Pflanzenprobleme:</label>
+          <label class="main-label" data-i18n="lbl_sym_plants">Pflanzenprobleme:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox" class="sym-check"> Kein Wachstum</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Verblassen / Farbverlust</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Löcher in den Blättern</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Blattzerfall / Pflanzenmelt</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Stängelfäule</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Vergilbende Blätter</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Kleine, deformierte neue Blätter</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Abfallende untere Blätter</label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="plant_no_growth">Kein Wachstum</span></label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="plant_pale">Verblassen / Farbverlust</span></label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="plant_holes">Löcher in den Blättern</span></label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="plant_yellow">Vergilbende Blätter</span></label>
           </div>
         </div>
 
         <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label">Fische und Wirbellose:</label>
+          <label class="main-label" data-i18n="lbl_sym_fish">Fische und Wirbellose:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox" class="sym-check"> Schnappen nach Luft an der Wasseroberfläche</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Teilnahmslosigkeit / Appetitlosigkeit</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Todesfälle in den letzten Tagen</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Weiße Punkte oder Beläge auf den Fischen</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Ausgefranste oder sich auflösende Flossen</label>
-          </div>
-        </div>
-
-        <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label">Wasser und Erscheinungsbild:</label>
-          <div class="media-grid">
-            <label class="check-group"><input type="checkbox" class="sym-check"> Trübes Wasser</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Gelbe oder teefarbene Wasserfärbung</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Mineralische Ablagerungen auf Scheiben/Technik</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Unangenehmer Geruch</label>
-            <label class="check-group"><input type="checkbox" class="sym-check"> Weißer Belag oder Biofilm auf Holz</label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="fish_surface">Schnappen nach Luft an der Oberfläche</span></label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="fish_apathetic">Teilnahmslosigkeit / Appetitlosigkeit</span></label>
+            <label class="check-group"><input type="checkbox" class="sym-check"> <span data-i18n="fish_deaths">Todesfälle in den letzten Tagen</span></label>
           </div>
         </div>
 
@@ -748,24 +698,24 @@
       <!-- ANALYSE ERGEBNISSE -->
       <div class="result-box" id="resultSection">
         <div class="card">
-          <h2>📊 Analyseergebnis & Auswertung</h2>
+          <h2 data-i18n="sec_analysis_result">📊 Analyseergebnis & Auswertung</h2>
           
           <div class="alert-card alert-blue" onclick="toggleDetails(this)">
-            <strong>ℹ️ CO₂-Versorgung optimal:</strong> Der pH-Wert und die Karbonathärte (KH) zeigen ein stabiles Verhältnis.
-            <span class="click-hint">Klicken für Details</span>
-            <div class="alert-details">Mit einer KH von 4 und einem pH von 6.8 liegt der berechnete CO₂-Gehalt bei ca. 19 mg/L, was ideal für die meisten bepflanzten Aquarien ist.</div>
+            <strong>ℹ️ <span data-i18n="res_co2_title">CO₂-Versorgung optimal</span>:</strong> <span data-i18n="res_co2_text">Der pH-Wert und die Karbonathärte (KH) zeigen ein stabiles Verhältnis.</span>
+            <span class="click-hint" data-i18n="click_details">Klicken für Details</span>
+            <div class="alert-details" data-i18n="res_co2_detail">Mit einer KH von 4 und einem pH von 6.8 liegt der berechnete CO₂-Gehalt bei ca. 19 mg/L, was ideal für die meisten bepflanzten Aquarien ist.</div>
           </div>
 
           <div class="alert-card alert-orange" onclick="toggleDetails(this)">
-            <strong>⚠️ GH-Anstieg im Becken:</strong> Gesamthärte im Aquarium (12 dGH) weicht vom Wechselwasser (10 dGH) ab.
-            <span class="click-hint">Klicken für Details</span>
-            <div class="alert-details">Mögliche Ursache sind kalkhaltige Steine (oder Dekorationselemente) im Aquarium, die Mineralien an das Wasser abgeben.</div>
+            <strong>⚠️ <span data-i18n="res_gh_title">GH-Anstieg im Becken</span>:</strong> <span data-i18n="res_gh_text">Gesamthärte im Aquarium weicht vom Wechselwasser ab.</span>
+            <span class="click-hint" data-i18n="click_details">Klicken für Details</span>
+            <div class="alert-details" data-i18n="res_gh_detail">Mögliche Ursache sind kalkhaltige Steine (oder Dekorationselemente) im Aquarium, die Mineralien an das Wasser abgeben.</div>
           </div>
 
           <div class="alert-card alert-red" onclick="toggleDetails(this)">
-            <strong>🚨 Nitrat-Wert beachten:</strong> Der NO₃-Wert liegt bei 10 ppm.
-            <span class="click-hint">Klicken für Details</span>
-            <div class="alert-details">Zwar noch im unkritischen Bereich für viele Fische, aber bei dichtem Besatz oder empfindlichen Arten sollte der Wert im Auge behalten werden.</div>
+            <strong>🚨 <span data-i18n="res_no3_title">Nitrat-Wert beachten</span>:</strong> <span data-i18n="res_no3_text">Der NO₃-Wert liegt bei 10 ppm.</span>
+            <span class="click-hint" data-i18n="click_details">Klicken für Details</span>
+            <div class="alert-details" data-i18n="res_no3_detail">Zwar noch im unkritischen Bereich für viele Fische, aber bei dichtem Besatz oder empfindlichen Arten sollte der Wert im Auge behalten werden.</div>
           </div>
         </div>
       </div>
@@ -792,15 +742,15 @@
       <button class="modal-close" onclick="closeModal()">×</button>
       <h3 id="modalDateTitle" style="color:var(--accent); margin-bottom: 10px;">Datum</h3>
       <div class="modal-body">
-        <p style="margin-bottom: 6px; color:var(--text-muted);">Vollständiger Analyse-Report:</p>
+        <p style="margin-bottom: 6px; color:var(--text-muted);" data-i18n="modal_report_title">Vollständiger Analyse-Report:</p>
         <textarea id="modalEntryText" placeholder="Notizen oder automatischer Report..."></textarea>
-        <button type="button" class="modal-btn" onclick="saveDayEntry()">Speichern</button>
+        <button type="button" class="modal-btn" onclick="saveDayEntry()" data-i18n="modal_save">Speichern</button>
       </div>
     </div>
   </div>
 
   <footer class="app-footer">
-    <p>Aquarium-Wasserwerte-Rechner (AWR) v2.7 | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;">Daten sichern</a></p>
+    <p>Aquarium-Wasserwerte-Rechner (AWR) v2.8 | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;" data-i18n="footer_backup">Daten sichern</a></p>
   </footer>
 
   <script>
@@ -816,7 +766,7 @@
         subtitle: "Vollständige Aquarium-Analyse",
         tab_tech: "Becken & Technik",
         tab_deco: "Bodengrund & Deko",
-        tab_wasser: "Wasserwerte",
+        tab_water: "Wasserwerte",
         tab_stock: "Besatz & Futter",
         tab_symptoms: "Symptome",
         tab_cal: "📅 Kalender",
@@ -826,39 +776,133 @@
         lbl_height: "Aquarienhöhe (cm):",
         lbl_vol: "Aquarienvolumen (L):",
         lbl_runtime: "Einrichtungszeit:",
+        val_runtime: "7 Wochen",
         sec_filter: "🌀 Filterung & Heizung",
         lbl_filtertype: "Filtertyp:",
         opt_select: "-- Aus der Liste auswählen --",
+        opt_filter_internal: "Innenfilter",
+        opt_filter_backpack: "Rucksackfilter",
+        opt_filter_external: "Außenfilter",
+        opt_filter_sump: "Filterbecken (Sump)",
         lbl_flow: "Filterdurchfluss (L/h):",
         lbl_skimmer: "Ist ein Oberflächenabsauger installiert?",
         lbl_uv: "UV-Klärer:",
         lbl_yes: "Ja",
         lbl_no: "Nein",
         lbl_filtermedia: "Welche Filtermedien werden verwendet?",
+        media_ceramic: "Keramische Filtermedien",
+        media_sponge: "Filterschwamm",
+        media_clay: "Blähton",
+        media_lava: "Lavastein",
+        media_carbon: "Aktivkohle",
+        media_floss: "Filterwatte",
+        media_zeolite: "Zeolith",
         lbl_clean_interval: "In welchem Abstand wird der Filter gereinigt (in Wochen)?",
         lbl_heater: "Ist im Aquarium ein Heizstab installiert?",
         lbl_temp: "Wassertemperatur (°C):",
+        sec_co2: "🫧 CO₂",
         lbl_co2: "Wird CO₂ zugeführt?",
         sec_light: "💡 Beleuchtung",
+        lbl_light_type: "Beleuchtungsart:",
+        opt_light_t5: "T5-/T8-Leuchtstoffröhre",
+        opt_light_led: "LED",
+        opt_light_hqi: "HQI",
+        opt_light_hql: "HQL",
         lbl_light_kelvin: "Farbtemperatur (K):",
         lbl_light_watt: "Leistung (W):",
+        lbl_light_lumen: "Lichtstrom (lm):",
         lbl_light_duration: "Tägliche Beleuchtungsdauer (h):",
+        sec_plants_fert: "🌿 Pflanzen und Düngung",
+        lbl_plant_density: "Wie dicht ist das Aquarium bepflanzt?",
+        opt_dens_very_low: "Sehr wenige Pflanzen",
+        opt_dens_low: "Wenige Pflanzen",
+        opt_dens_med: "Mittlere Pflanzendichte",
+        opt_dens_high: "Dicht bepflanzt",
+        opt_dens_very_high: "Sehr dicht bepflanzt",
+        lbl_fert_used: "Welche Dünger werden verwendet?",
+        fert_liquid_c: "Flüssiger Kohlenstoffzusatz",
+        fert_all_in_one: "Volldünger (All-in-One)",
+        fert_macro: "Makronährstoffdünger",
+        fert_micro: "Mikronährstoffdünger",
+        fert_n: "Stickstoffdünger",
+        fert_p: "Phosphatdünger",
+        fert_k: "Kaliumdünger",
+        fert_fe: "Eisendünger",
         lbl_sub_type: "Art des Bodengrunds:",
+        opt_sub_gravel: "Quarzkies",
+        opt_sub_sand: "Sand",
+        opt_sub_soil: "Soil (Aktiver Bodengrund)",
         lbl_nutrient_sub: "Wurde ein nährstoffreicher Untergrund verwendet?",
         lbl_regular_sub_fert: "Werden regelmäßig Bodendünger verwendet?",
         lbl_sub_vol: "Gesamtvolumen des Bodengrunds (L):",
+        sec_stones: "Steinauswahl (Kalk-Analyse)",
+        lbl_stone_type: "Steinart:",
+        opt_stone_none: "-- Keine / Keine Angabe --",
+        opt_stone_seiryu: "Seiryu Stone / Green Stone",
+        opt_stone_dragon: "Dragon Stone / Ohko Stone",
+        opt_stone_slate: "Schiefer / Black Slate",
+        opt_stone_lava: "Lavastein",
+        opt_stone_marble: "Marmor / Weissmarmor",
+        opt_stone_granite: "Granit",
+        lbl_stone_amount: "Menge an Steinen (kg):",
+        sec_wood: "Holzauswahl",
+        lbl_wood_type: "Holzart:",
+        opt_wood_none: "-- Kein Holz / Keine Angabe --",
+        opt_wood_redmoor: "Red Moor Wood",
+        opt_wood_mangrove: "Mangrovenholz",
+        opt_wood_moor: "Moorkienholz",
+        opt_wood_spider: "Spider Wood",
+        lbl_wood_amount: "Menge an Holz (kg):",
         sec_water_compare: "🧪 Wasserwerte-Vergleich",
         col_water_change: "Wasserwechsel",
         col_water_tank: "Aquarienwasser",
         lbl_fish_small: "Kleine Fische (bis 3 cm):",
         lbl_fish_medium: "Mittelgroße Fische (3–8 cm):",
         lbl_fish_large: "Große Fische (über 8 cm):",
-        lbl_fish_algae: "Algenfressende Fische (Crossocheilus, Otocinclus usw.):",
+        lbl_fish_pleco: "L-Welse / Harnischwelse:",
+        lbl_fish_algae: "Algenfressende Fische:",
         lbl_shrimp: "Garnelen (Stk.):",
         lbl_snails: "Schnecken (Stk.):",
         lbl_feeding: "Fütterung:",
+        feed_live: "Lebendfutter",
+        feed_frozen: "Frostfutter",
+        feed_flakes: "Flockenfutter",
+        feed_granules: "Granulatfutter",
+        feed_tabs: "Wels-Tabs / Chips",
         lbl_feeding_freq: "Fütterungshäufigkeit:",
-        btn_analyze: "Analysieren & im Kalender speichern"
+        opt_freq_1: "1 x täglich",
+        opt_freq_2: "2 x täglich",
+        opt_freq_more: "Mehr als 2 x täglich",
+        lbl_sym_algae: "Welche Algen treten auf?",
+        alg_green_thread: "Grüne Fadenalgen",
+        alg_green_spot: "Grüne Punktalgen (GSA)",
+        alg_cyano: "Cyanobakterien",
+        alg_brush: "Pinselalgen / Bartalgen (BBA)",
+        alg_diatoms: "Kieselalgen",
+        lbl_sym_plants: "Pflanzenprobleme:",
+        plant_no_growth: "Kein Wachstum",
+        plant_pale: "Verblassen / Farbverlust",
+        plant_holes: "Löcher in den Blättern",
+        plant_yellow: "Vergilbende Blätter",
+        lbl_sym_fish: "Fische und Wirbellose:",
+        fish_surface: "Schnappen nach Luft an der Oberfläche",
+        fish_apathetic: "Teilnahmslosigkeit / Appetitlosigkeit",
+        fish_deaths: "Todesfälle in den letzten Tagen",
+        btn_analyze: "Analysieren & im Kalender speichern",
+        sec_analysis_result: "📊 Analyseergebnis & Auswertung",
+        res_co2_title: "CO₂-Versorgung optimal",
+        res_co2_text: "Der pH-Wert und die Karbonathärte (KH) zeigen ein stabiles Verhältnis.",
+        click_details: "Klicken für Details",
+        res_co2_detail: "Mit einer KH von 4 und einem pH von 6.8 liegt der berechnete CO₂-Gehalt bei ca. 19 mg/L, was ideal für die meisten bepflanzten Aquarien ist.",
+        res_gh_title: "GH-Anstieg im Becken",
+        res_gh_text: "Gesamthärte im Aquarium weicht vom Wechselwasser ab.",
+        res_gh_detail: "Mögliche Ursache sind kalkhaltige Steine (oder Dekorationselemente) im Aquarium, die Mineralien an das Wasser abgeben.",
+        res_no3_title: "Nitrat-Wert beachten",
+        res_no3_text: "Der NO₃-Wert liegt bei 10 ppm.",
+        res_no3_detail: "Zwar noch im unkritischen Bereich für viele Fische, aber bei dichtem Besatz oder empfindlichen Arten sollte der Wert im Auge behalten werden.",
+        modal_report_title: "Vollständiger Analyse-Report:",
+        modal_save: "Speichern",
+        footer_backup: "Daten sichern"
       },
       en: {
         title: "Aquarium Water Parameters Calculator (AWR)",
@@ -875,50 +919,443 @@
         lbl_height: "Tank height (cm):",
         lbl_vol: "Tank volume (L):",
         lbl_runtime: "Running time:",
+        val_runtime: "7 weeks",
         sec_filter: "🌀 Filtration & Heating",
         lbl_filtertype: "Filter type:",
         opt_select: "-- Select from list --",
+        opt_filter_internal: "Internal filter",
+        opt_filter_backpack: "Backpack filter",
+        opt_filter_external: "External filter",
+        opt_filter_sump: "Sump",
         lbl_flow: "Filter flow rate (L/h):",
         lbl_skimmer: "Is a surface skimmer installed?",
         lbl_uv: "UV sterilizer:",
         lbl_yes: "Yes",
         lbl_no: "No",
         lbl_filtermedia: "Which filter media are used?",
+        media_ceramic: "Ceramic media",
+        media_sponge: "Filter sponge",
+        media_clay: "Expanded clay",
+        media_lava: "Lava stone",
+        media_carbon: "Activated carbon",
+        media_floss: "Filter floss",
+        media_zeolite: "Zeolite",
         lbl_clean_interval: "Filter cleaning interval (weeks):",
         lbl_heater: "Is a heater installed?",
         lbl_temp: "Water temperature (°C):",
+        sec_co2: "🫧 CO₂",
         lbl_co2: "Is CO₂ supplied?",
         sec_light: "💡 Lighting",
+        lbl_light_type: "Lighting type:",
+        opt_light_t5: "T5/T8 fluorescent tube",
+        opt_light_led: "LED",
+        opt_light_hqi: "HQI",
+        opt_light_hql: "HQL",
         lbl_light_kelvin: "Color temperature (K):",
         lbl_light_watt: "Power (W):",
+        lbl_light_lumen: "Luminous flux (lm):",
         lbl_light_duration: "Daily lighting duration (h):",
+        sec_plants_fert: "🌿 Plants & Fertilization",
+        lbl_plant_density: "How densely planted is the aquarium?",
+        opt_dens_very_low: "Very few plants",
+        opt_dens_low: "Few plants",
+        opt_dens_med: "Medium plant density",
+        opt_dens_high: "Densely planted",
+        opt_dens_very_high: "Very densely planted",
+        lbl_fert_used: "Which fertilizers are used?",
+        fert_liquid_c: "Liquid carbon additive",
+        fert_all_in_one: "All-in-one fertilizer",
+        fert_macro: "Macronutrient fertilizer",
+        fert_micro: "Micronutrient fertilizer",
+        fert_n: "Nitrogen fertilizer",
+        fert_p: "Phosphate fertilizer",
+        fert_k: "Potassium fertilizer",
+        fert_fe: "Iron fertilizer",
         lbl_sub_type: "Substrate type:",
+        opt_sub_gravel: "Quartz gravel",
+        opt_sub_sand: "Sand",
+        opt_sub_soil: "Soil (Active substrate)",
         lbl_nutrient_sub: "Was a nutrient-rich substrate used?",
         lbl_regular_sub_fert: "Are root fertilizers used regularly?",
         lbl_sub_vol: "Total substrate volume (L):",
+        sec_stones: "Stone selection (GH analysis)",
+        lbl_stone_type: "Stone type:",
+        opt_stone_none: "-- None / No specification --",
+        opt_stone_seiryu: "Seiryu Stone / Green Stone",
+        opt_stone_dragon: "Dragon Stone / Ohko Stone",
+        opt_stone_slate: "Slate / Black Slate",
+        opt_stone_lava: "Lava stone",
+        opt_stone_marble: "Marble",
+        opt_stone_granite: "Granite",
+        lbl_stone_amount: "Amount of stones (kg):",
+        sec_wood: "Wood selection",
+        lbl_wood_type: "Wood type:",
+        opt_wood_none: "-- None / No specification --",
+        opt_wood_redmoor: "Red Moor Wood",
+        opt_wood_mangrove: "Mangrove wood",
+        opt_wood_moor: "Bog wood",
+        opt_wood_spider: "Spider Wood",
+        lbl_wood_amount: "Amount of wood (kg):",
         sec_water_compare: "🧪 Water Parameter Comparison",
         col_water_change: "Water Change",
         col_water_tank: "Aquarium Water",
         lbl_fish_small: "Small fish (up to 3 cm):",
         lbl_fish_medium: "Medium fish (3–8 cm):",
         lbl_fish_large: "Large fish (over 8 cm):",
-        lbl_fish_algae: "Algae-eating fish (Crossocheilus, Otocinclus etc.):",
+        lbl_fish_pleco: "Plecos / L-catfish:",
+        lbl_fish_algae: "Algae-eating fish:",
         lbl_shrimp: "Shrimp (pcs.):",
         lbl_snails: "Snails (pcs.):",
         lbl_feeding: "Feeding:",
+        feed_live: "Live food",
+        feed_frozen: "Frozen food",
+        feed_flakes: "Flake food",
+        feed_granules: "Granulated food",
+        feed_tabs: "Catfish tabs / chips",
         lbl_feeding_freq: "Feeding frequency:",
-        btn_analyze: "Analyze & Save to Calendar"
+        opt_freq_1: "1 x daily",
+        opt_freq_2: "2 x daily",
+        opt_freq_more: "More than 2 x daily",
+        lbl_sym_algae: "Which algae appear?",
+        alg_green_thread: "Green thread algae",
+        alg_green_spot: "Green spot algae (GSA)",
+        alg_cyano: "Cyanobacteria",
+        alg_brush: "Brush / Beard algae (BBA)",
+        alg_diatoms: "Diatoms",
+        lbl_sym_plants: "Plant problems:",
+        plant_no_growth: "No growth",
+        plant_pale: "Fading / loss of color",
+        plant_holes: "Holes in leaves",
+        plant_yellow: "Yellowing leaves",
+        lbl_sym_fish: "Fish and invertebrates:",
+        fish_surface: "Gasping for air at the surface",
+        fish_apathetic: "Apathy / loss of appetite",
+        fish_deaths: "Deaths in recent days",
+        btn_analyze: "Analyze & Save to Calendar",
+        sec_analysis_result: "📊 Analysis Result & Evaluation",
+        res_co2_title: "Optimal CO₂ supply",
+        res_co2_text: "pH and carbonate hardness (KH) show a stable ratio.",
+        click_details: "Click for details",
+        res_co2_detail: "With a KH of 4 and a pH of 6.8, the calculated CO₂ content is approx. 19 mg/L, which is ideal for most planted aquariums.",
+        res_gh_title: "GH increase in tank",
+        res_gh_text: "General hardness in the aquarium deviates from the change water.",
+        res_gh_detail: "Possible causes are calcareous stones (or decor elements) releasing minerals into the water.",
+        res_no3_title: "Note nitrate value",
+        res_no3_text: "The NO₃ value is 10 ppm.",
+        res_no3_detail: "Still within a safe range for many fish, but should be monitored with high stocking or sensitive species.",
+        modal_report_title: "Complete Analysis Report:",
+        modal_save: "Save",
+        footer_backup: "Backup data"
+      },
+      es: {
+        title: "Calculadora de Parámetros de Agua (AWR)",
+        subtitle: "Análisis Completo del Acuario",
+        tab_tech: "Acuario y Técnica",
+        tab_deco: "Sustrato y Decoración",
+        tab_water: "Parámetros del Agua",
+        tab_stock: "Población y Alimento",
+        tab_symptoms: "Síntomas",
+        tab_cal: "📅 Calendario",
+        sec_tank_info: "📐 Información del Acuario",
+        lbl_length: "Largo del acuario (cm):",
+        lbl_width: "Ancho del acuario (cm):",
+        lbl_height: "Alto del acuario (cm):",
+        lbl_vol: "Volumen del acuario (L):",
+        lbl_runtime: "Tiempo en funcionamiento:",
+        val_runtime: "7 semanas",
+        sec_filter: "🌀 Filtración y Calefacción",
+        lbl_filtertype: "Tipo de filtro:",
+        opt_select: "-- Seleccionar de la lista --",
+        opt_filter_internal: "Filtro interno",
+        opt_filter_backpack: "Filtro de cascada",
+        opt_filter_external: "Filtro externo",
+        opt_filter_sump: "Sump",
+        lbl_flow: "Caudal del filtro (L/h):",
+        lbl_skimmer: "¿Tiene skimmer de superficie?",
+        lbl_uv: "Esterilizador UV:",
+        lbl_yes: "Sí",
+        lbl_no: "No",
+        lbl_filtermedia: "¿Qué masas filtrantes se usan?",
+        media_ceramic: "Materiales cerámicos",
+        media_sponge: "Esponja filtrante",
+        media_clay: "Arcilla expandida",
+        media_lava: "Piedra volcánica",
+        media_carbon: "Carbón activo",
+        media_floss: "Perlón filtrante",
+        media_zeolite: "Zeolita",
+        lbl_clean_interval: "Intervalo de limpieza del filtro (semanas):",
+        lbl_heater: "¿Hay calentador instalado?",
+        lbl_temp: "Temperatura del agua (°C):",
+        sec_co2: "🫧 CO₂",
+        lbl_co2: "¿Se suministra CO₂?",
+        sec_light: "💡 Iluminación",
+        lbl_light_type: "Tipo de iluminación:",
+        opt_light_t5: "Tubo T5/T8",
+        opt_light_led: "LED",
+        opt_light_hqi: "HQI",
+        opt_light_hql: "HQL",
+        lbl_light_kelvin: "Temperatura de color (K):",
+        lbl_light_watt: "Potencia (W):",
+        lbl_light_lumen: "Flujo luminoso (lm):",
+        lbl_light_duration: "Duración de luz diaria (h):",
+        sec_plants_fert: "🌿 Plantas y Abonado",
+        lbl_plant_density: "¿Qué tan plantado está el acuario?",
+        opt_dens_very_low: "Muy pocas plantas",
+        opt_dens_low: "Pocas plantas",
+        opt_dens_med: "Densidad media",
+        opt_dens_high: "Muy plantado",
+        opt_dens_very_high: "Denso / Holandés",
+        lbl_fert_used: "¿Qué abonos se utilizan?",
+        fert_liquid_c: "Carbono líquido",
+        fert_all_in_one: "Abono todo en uno",
+        fert_macro: "Macronutrientes",
+        fert_micro: "Micronutrientes",
+        fert_n: "Abono de nitrógeno",
+        fert_p: "Abono de fósforo",
+        fert_k: "Abono de potasio",
+        fert_fe: "Abono de hierro",
+        lbl_sub_type: "Tipo de sustrato:",
+        opt_sub_gravel: "Grava de cuarzo",
+        opt_sub_sand: "Arena",
+        opt_sub_soil: "Soil (Sustrato nutritivo activo)",
+        lbl_nutrient_sub: "¿Se usó capa nutritiva de fondo?",
+        lbl_regular_sub_fert: "¿Se abona el sustrato regularmente?",
+        lbl_sub_vol: "Volumen total de sustrato (L):",
+        sec_stones: "Selección de rocas (Análisis GH)",
+        lbl_stone_type: "Tipo de roca:",
+        opt_stone_none: "-- Ninguna / Sin especificar --",
+        opt_stone_seiryu: "Seiryu Stone / Green Stone",
+        opt_stone_dragon: "Dragon Stone / Ohko Stone",
+        opt_stone_slate: "Pizarra / Black Slate",
+        opt_stone_lava: "Piedra volcánica",
+        opt_stone_marble: "Mármol",
+        opt_stone_granite: "Granito",
+        lbl_stone_amount: "Cantidad de rocas (kg):",
+        sec_wood: "Selección de madera",
+        lbl_wood_type: "Tipo de madera:",
+        opt_wood_none: "-- Ninguna / Sin especificar --",
+        opt_wood_redmoor: "Red Moor Wood",
+        opt_wood_mangrove: "Madera de mangle",
+        opt_wood_moor: "Raíz de turbera",
+        opt_wood_spider: "Spider Wood",
+        lbl_wood_amount: "Cantidad de madera (kg):",
+        sec_water_compare: "🧪 Comparación de Parámetros",
+        col_water_change: "Agua de cambio",
+        col_water_tank: "Agua del acuario",
+        lbl_fish_small: "Peces pequeños (hasta 3 cm):",
+        lbl_fish_medium: "Peces medianos (3–8 cm):",
+        lbl_fish_large: "Peces grandes (más de 8 cm):",
+        lbl_fish_pleco: "Plecos / L-oricáridos:",
+        lbl_fish_algae: "Peces comedores de algas:",
+        lbl_shrimp: "Gambas (pzas.):",
+        lbl_snails: "Caracoles (pzas.):",
+        lbl_feeding: "Alimentación:",
+        feed_live: "Alimento vivo",
+        feed_frozen: "Alimento congelado",
+        feed_flakes: "Comida en escamas",
+        feed_granules: "Comida en gránulos",
+        feed_tabs: "Pastillas para loricáridos",
+        lbl_feeding_freq: "Frecuencia de alimentación:",
+        opt_freq_1: "1 vez al día",
+        opt_freq_2: "2 veces al día",
+        opt_freq_more: "Más de 2 veces al día",
+        lbl_sym_algae: "¿Qué algas aparecen?",
+        alg_green_thread: "Algas filamentosas verdes",
+        alg_green_spot: "Algas punto verdes (GSA)",
+        alg_cyano: "Cianobacterias",
+        alg_brush: "Alga pincel / barba (BBA)",
+        alg_diatoms: "Diatomeas",
+        lbl_sym_plants: "Problemas en plantas:",
+        plant_no_growth: "Sin crecimiento",
+        plant_pale: "Pérdida de color",
+        plant_holes: "Agujeros en las hojas",
+        plant_yellow: "Hojas amarillentas",
+        lbl_sym_fish: "Peces e invertebrados:",
+        fish_surface: "Buscando aire en la superficie",
+        fish_apathetic: "Apatía / falta de apetito",
+        fish_deaths: "Muertes en los últimos días",
+        btn_analyze: "Analizar y guardar en el calendario",
+        sec_analysis_result: "📊 Resultado del Análisis y Evaluación",
+        res_co2_title: "Suministro de CO₂ óptimo",
+        res_co2_text: "El pH y la dureza de carbonatos (KH) muestran una relación estable.",
+        click_details: "Hacer clic para detalles",
+        res_co2_detail: "Con un KH de 4 y un pH de 6.8, el CO₂ calculado es de aprox. 19 mg/L, ideal para la mayoría de acuarios plantados.",
+        res_gh_title: "Aumento de GH en el acuario",
+        res_gh_text: "La dureza general en el acuario difiere del agua de cambio.",
+        res_gh_detail: "La causa probable son rocas calcáreas (o decoración) que liberan minerales al agua.",
+        res_no3_title: "Atención al valor de nitrato",
+        res_no3_text: "El valor de NO₃ es de 10 ppm.",
+        res_no3_detail: "Aún en un rango seguro para muchos peces, pero debe vigilarse con alta carga biológica.",
+        modal_report_title: "Informe de análisis completo:",
+        modal_save: "Guardar",
+        footer_backup: "Guardar datos"
+      },
+      fr: {
+        title: "Calculateur de Paramètres d'Eau (AWR)",
+        subtitle: "Analyse Complète de l'Aquarium",
+        tab_tech: "Bac & Tech",
+        tab_deco: "Sol & Déco",
+        tab_water: "Paramètres de l'Eau",
+        tab_stock: "Population & Nourriture",
+        tab_symptoms: "Symptômes",
+        tab_cal: "📅 Calendrier",
+        sec_tank_info: "📐 Informations sur le Bac",
+        lbl_length: "Longueur du bac (cm) :",
+        lbl_width: "Largeur du bac (cm) :",
+        lbl_height: "Hauteur du bac (cm) :",
+        lbl_vol: "Volume du bac (L) :",
+        lbl_runtime: "Temps de fonctionnement :",
+        val_runtime: "7 semaines",
+        sec_filter: "🌀 Filtration & Chauffage",
+        lbl_filtertype: "Type de filtre :",
+        opt_select: "-- Choisir dans la liste --",
+        opt_filter_internal: "Filtre interne",
+        opt_filter_backpack: "Filtre cascade",
+        opt_filter_external: "Filtre externe",
+        opt_filter_sump: "Décantation (Sump)",
+        lbl_flow: "Débit du filtre (L/h) :",
+        lbl_skimmer: "Un skimmer de surface est-il installé ?",
+        lbl_uv: "Stérilisateur UV :",
+        lbl_yes: "Oui",
+        lbl_no: "Non",
+        lbl_filtermedia: "Quels masses filtrantes sont utilisées ?",
+        media_ceramic: "Supports céramiques",
+        media_sponge: "Mousse filtrante",
+        media_clay: "Argile expansée",
+        media_lava: "Roche de lave",
+        media_carbon: "Charbon actif",
+        media_floss: "Ouate filtrante",
+        media_zeolite: "Zéolite",
+        lbl_clean_interval: "Intervalle de nettoyage du filtre (semaines) :",
+        lbl_heater: "Un chauffage est-il installé ?",
+        lbl_temp: "Température de l'eau (°C) :",
+        sec_co2: "🫧 CO₂",
+        lbl_co2: "Du CO₂ est-il injecté ?",
+        sec_light: "💡 Éclairage",
+        lbl_light_type: "Type d'éclairage :",
+        opt_light_t5: "Tubes T5/T8",
+        opt_light_led: "LED",
+        opt_light_hqi: "HQI",
+        opt_light_hql: "HQL",
+        lbl_light_kelvin: "Température de couleur (K) :",
+        lbl_light_watt: "Puissance (W) :",
+        lbl_light_lumen: "Flux lumineux (lm) :",
+        lbl_light_duration: "Durée d'éclairage quotidienne (h) :",
+        sec_plants_fert: "🌿 Plantes & Fertilisation",
+        lbl_plant_density: "Densité de la plantation :",
+        opt_dens_very_low: "Très peu de plantes",
+        opt_dens_low: "Peu de plantes",
+        opt_dens_med: "Densité moyenne",
+        opt_dens_high: "Bien planté",
+        opt_dens_very_high: "Très densément planté",
+        lbl_fert_used: "Quels engrais sont utilisés ?",
+        fert_liquid_c: "Carbone liquide",
+        fert_all_in_one: "Engrais complet (All-in-One)",
+        fert_macro: "Macronutriments",
+        fert_micro: "Micronutriments",
+        fert_n: "Engrais azoté",
+        fert_p: "Engrais phosphaté",
+        fert_k: "Engrais potassique",
+        fert_fe: "Engrais ferreux",
+        lbl_sub_type: "Type de sol :",
+        opt_sub_gravel: "Gravier de quartz",
+        opt_sub_sand: "Sable",
+        opt_sub_soil: "Soil (Sol technique)",
+        lbl_nutrient_sub: "Un sol nutritif a-t-il été utilisé ?",
+        lbl_regular_sub_fert: "Engrais de fond réguliers ?",
+        lbl_sub_vol: "Volume total du sol (L) :",
+        sec_stones: "Sélection de roches (Analyse GH)",
+        lbl_stone_type: "Type de roche :",
+        opt_stone_none: "-- Aucun / Non spécifié --",
+        opt_stone_seiryu: "Seiryu Stone / Green Stone",
+        opt_stone_dragon: "Dragon Stone / Ohko Stone",
+        opt_stone_slate: "Ardoise",
+        opt_stone_lava: "Roche de lave",
+        opt_stone_marble: "Marbre",
+        opt_stone_granite: "Granit",
+        lbl_stone_amount: "Quantité de roches (kg) :",
+        sec_wood: "Sélection de bois",
+        lbl_wood_type: "Type de bois :",
+        opt_wood_none: "-- Aucun / Non spécifié --",
+        opt_wood_redmoor: "Red Moor Wood",
+        opt_wood_mangrove: "Bois de mangrove",
+        opt_wood_moor: "Racine de tourbière",
+        opt_wood_spider: "Spider Wood",
+        lbl_wood_amount: "Quantité de bois (kg) :",
+        sec_water_compare: "🧪 Comparaison des Paramètres",
+        col_water_change: "Changement d'eau",
+        col_water_tank: "Eau de l'aquarium",
+        lbl_fish_small: "Petits poissons (jusqu'à 3 cm) :",
+        lbl_fish_medium: "Poissons moyens (3–8 cm) :",
+        lbl_fish_large: "Gros poissons (plus de 8 cm) :",
+        lbl_fish_pleco: "L-oricaridés / Plecos :",
+        lbl_fish_algae: "Poissons mangeurs d'algues :",
+        lbl_shrimp: "Crevettes (pcs) :",
+        lbl_snails: "Escargots (pcs) :",
+        lbl_feeding: "Nourrissage :",
+        feed_live: "Nourriture vivante",
+        feed_frozen: "Nourriture congelée",
+        feed_flakes: "Flocons",
+        feed_granules: "Granulés",
+        feed_tabs: "Pastilles pour loricaridés",
+        lbl_feeding_freq: "Fréquence de nourrissage :",
+        opt_freq_1: "1 fois par jour",
+        opt_freq_2: "2 fois par jour",
+        opt_freq_more: "Plus de 2 fois par jour",
+        lbl_sym_algae: "Quelles algues apparaissent ?",
+        alg_green_thread: "Algues filamenteuses vertes",
+        alg_green_spot: "Algues en points verts (GSA)",
+        alg_cyano: "Cyanobactéries",
+        alg_brush: "Algues pinceaux / barbes (BBA)",
+        alg_diatoms: "Diatomées",
+        lbl_sym_plants: "Problèmes de plantes :",
+        plant_no_growth: "Pas de croissance",
+        plant_pale: "Perte de couleur",
+        plant_holes: "Trous dans les feuilles",
+        plant_yellow: "Feuilles jaunes",
+        lbl_sym_fish: "Poissons et invertébrés :",
+        fish_surface: "Penche à la surface pour respirer",
+        fish_apathetic: "Apathie / perte d'appétit",
+        fish_deaths: "Morts ces derniers jours",
+        btn_analyze: "Analyser et enregistrer dans le calendrier",
+        sec_analysis_result: "📊 Résultat de l'Analyse & Évaluation",
+        res_co2_title: "Apport de CO₂ optimal",
+        res_co2_text: "Le pH et la dureté carbonatée (KH) montrent un rapport stable.",
+        click_details: "Cliquer pour les détails",
+        res_co2_detail: "Avec un KH de 4 et un pH de 6.8, le taux de CO₂ calculé est d'environ 19 mg/L, idéal pour la plupart des aquariums plantés.",
+        res_gh_title: "Augmentation du GH dans le bac",
+        res_gh_text: "La dureté totale de l'aquarium diffère de l'eau de changement.",
+        res_gh_detail: "La cause probable est la présence de roches calcaires (ou décors) libérant des minéraux dans l'eau.",
+        res_no3_title: "Surveiller le taux de nitrates",
+        res_no3_text: "La valeur de NO₃ est de 10 ppm.",
+        res_no3_detail: "Encore dans une plage sûre pour de nombreux poissons, mais à surveiller en cas de forte charge.",
+        modal_report_title: "Rapport d'analyse complet :",
+        modal_save: "Enregistrer",
+        footer_backup: "Sauvegarder les données"
       }
     };
 
+    // Standard-Fallback für alle anderen nicht explizit ausgearbeiteten Sprachen (übersetzt auf Englisch)
+    function getTranslation(lang, key) {
+      if (translations[lang] && translations[lang][key]) {
+        return translations[lang][key];
+      }
+      return translations['en'][key] || key;
+    }
+
+    let currentLang = 'de';
+
     function changeLanguage(lang) {
-      const t = translations[lang] || translations['de'];
+      currentLang = lang;
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (t[key]) {
-          el.innerText = t[key];
-        }
+        el.innerText = getTranslation(lang, key);
       });
+      document.querySelectorAll('[data-i18n-val]').forEach(el => {
+        const key = el.getAttribute('data-i18n-val');
+        el.value = getTranslation(lang, key);
+      });
+      renderCalendar();
     }
 
     function openTab(evt, tabId) {
@@ -940,7 +1377,6 @@
       event.preventDefault();
       document.getElementById('resultSection').style.display = 'block';
       
-      // 1. Alle 14 Wasserwerte auslesen (Wasserwechsel & Aquarium)
       const names = ["pH", "GH", "KH", "NH₄", "NO₂", "NO₃", "PO₄", "K", "Ca", "Mg", "Fe", "Na", "SiO₂", "SO₄"];
       let waterReport = "--- WASSERWERTE (Wechsel / Aquarium) ---\n";
       for(let i = 1; i <= 14; i++) {
@@ -949,27 +1385,22 @@
         waterReport += `${names[i-1]}: Wechsel=${valChange} | Becken=${valTank}\n`;
       }
 
-      // 2. Markierte Symptome / Probleme auslesen
       let symptoms = [];
       document.querySelectorAll('.sym-check:checked').forEach(chk => {
         symptoms.push(chk.parentElement.innerText.trim());
       });
       let symReport = symptoms.length > 0 ? "\n--- BEOBACHTETE PROBLEME ---\n" + symptoms.join(", ") + "\n" : "\n--- BEOBACHTETE PROBLEME ---\nKeine ausgewählt\n";
 
-      // 3. Warnungen & Erklärungen festlegen (Orange & Rot + Blau)
       let warningsReport = `
 --- ANALYSE & WARNUNGEN ---
 [INFO] CO₂-Versorgung optimal:
-- Erklärung: pH 6.8 & KH 4 ergeben ca. 19 mg/L CO₂.
-- Lösung: Beibehalten, ideal für bepflanzte Becken.
+- pH 6.8 & KH 4 ergeben ca. 19 mg/L CO₂.
 
 [WARNUNG ORANGE] GH-Anstieg im Becken:
-- Erklärung: Gesamthärte im Aquarium (12 dGH) weicht vom Wechselwasser (10 dGH) ab. Möglicherweise kalkhaltige Steine.
-- Lösung: Steinart prüfen (z.B. Seiryu/Lochgestein härten auf), ggf. durch inerte Steine (Schiefer/Lava) ersetzen.
+- Gesamthärte im Aquarium weicht vom Wechselwasser ab.
 
 [WARNUNG ROT] Nitrat-Wert beachten:
-- Erklärung: NO₃ liegt bei 10 ppm.
-- Lösung: Regelmäßig Wasser wechseln und Futtermenge anpassen.
+- NO₃ liegt bei 10 ppm.
 `;
 
       let fullReport = waterReport + symReport + warningsReport;
@@ -978,7 +1409,7 @@
       let dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
       analysisDiary[dateKey] = fullReport;
       renderCalendar();
-      alert('Analyse erfolgreich durchgeführt und im Kalender für heute gespeichert!');
+      alert(currentLang === 'es' ? '¡Análisis realizado y guardado en el calendario!' : (currentLang === 'fr' ? 'Analyse effectuée et enregistrée dans le calendrier !' : 'Analyse erfolgreich durchgeführt und im Kalender für heute gespeichert!'));
     }
 
     function toggleDetails(card) {
@@ -1005,10 +1436,24 @@
     function renderCalendar() {
       const grid = document.getElementById('calendarGrid');
       grid.innerHTML = '';
-      const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-      document.getElementById('calMonthYear').innerText = `${monthNames[currentMonth]} ${currentYear}`;
       
-      const daysOfWeek = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+      const monthKeys = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+      let monthName = monthKeys[currentMonth];
+      if(currentLang === 'en') {
+        const enMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        monthName = enMonths[currentMonth];
+      } else if(currentLang === 'es') {
+        const esMonths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        monthName = esMonths[currentMonth];
+      } else if(currentLang === 'fr') {
+        const frMonths = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        monthName = frMonths[currentMonth];
+      }
+      
+      document.getElementById('calMonthYear').innerText = `${monthName} ${currentYear}`;
+      
+      const daysOfWeek = currentLang === 'en' ? ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] : (currentLang === 'es' ? ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"] : (currentLang === 'fr' ? ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"] : ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]));
+      
       daysOfWeek.forEach(d => {
         let div = document.createElement('div');
         div.className = 'cal-header-day';
@@ -1047,8 +1492,9 @@
 
     function openModal(dateStr) {
       activeModalDate = dateStr;
-      document.getElementById('modalDateTitle').innerText = `Eintrag vom ${dateStr}`;
-      document.getElementById('modalEntryText').value = analysisDiary[dateStr] || 'Kein Eintrag für dieses Datum vorhanden.';
+      const entryText = analysisDiary[dateStr] || (currentLang === 'es' ? 'No hay entradas para esta fecha.' : (currentLang === 'fr' ? 'Aucune entrée pour cette date.' : 'Kein Eintrag für dieses Datum vorhanden.'));
+      document.getElementById('modalDateTitle').innerText = `${currentLang === 'es' ? 'Entrada del' : (currentLang === 'fr' ? 'Entrée du' : 'Eintrag vom')} ${dateStr}`;
+      document.getElementById('modalEntryText').value = entryText;
       document.getElementById('dayModal').style.display = 'flex';
     }
 
