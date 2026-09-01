@@ -410,70 +410,13 @@
         </div>
       </div>
 
-            <div class="card">
+      <div class="card">
         <h2 data-i18n="sec_light">💡 Beleuchtung</h2>
-        <div class="form-group">
-          <label>Beleuchtungsart:</label>
-          <select id="beleuchtungsart">
-            <option value="">-- Aus der Liste auswählen --</option>
-            <option value="t5_t8">T5-/T8-Leuchtstoffröhre</option>
-            <option value="led">LED</option>
-            <option value="hqi">HQI</option>
-            <option value="hql">HQL</option>
-          </select>
-        </div>
-        <div class="form-group"><label data-i18n="lbl_light_kelvin">Farbtemperatur (K):</label><input type="number" id="farbtemperatur" value="6500"></div>
-        <div class="form-group"><label data-i18n="lbl_light_watt">Leistung (W):</label><input type="number" id="leistung" value="30"></div>
-        <div class="form-group"><label>Lichtstrom (lm):</label><input type="number" id="lichtstrom" value="2000"></div>
-        <div class="form-group"><label data-i18n="lbl_light_duration">Tägliche Beleuchtungsdauer (h):</label><input type="number" id="beleuchtungsdauer" value="8"></div>
+        <div class="form-group"><label data-i18n="lbl_light_kelvin">Farbtemperatur (K):</label><input type="text" value="6500"></div>
+        <div class="form-group"><label data-i18n="lbl_light_watt">Leistung (W):</label><input type="number" value="30"></div>
+        <div class="form-group"><label data-i18n="lbl_light_duration">Tägliche Beleuchtungsdauer (h):</label><input type="number" value="8"></div>
       </div>
-
-          <div class="card">
-        <h2>🌿 Pflanzen und Düngung</h2>
-        
-        <div class="form-group">
-          <label>Wie dicht ist das Aquarium bepflanzt?</label>
-          <select id="bepflanzungsdichte">
-            <option value="">-- Aus der Liste auswählen --</option>
-            <option value="sehr_wenig">Sehr wenige Pflanzen</option>
-            <option value="wenig">Wenige Pflanzen</option>
-            <option value="mittel">Mittlere Pflanzendichte</option>
-            <option value="dicht">Dicht bepflanzt</option>
-            <option value="sehr_dicht">Sehr dicht bepflanzt</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label style="margin-bottom: 10px; display: block;">Welche Dünger werden verwendet?</label>
-          
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_flüssig_c" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Flüssiger Kohlenstoffzusatz
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_volldünger" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Volldünger (All-in-One)
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_makro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Makronährstoffdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_mikro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Mikronährstoffdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_stickstoff" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Stickstoffdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_phosphat" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Phosphatdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_kalium" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Kaliumdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_eisen" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Eisendünger
-            </label>
-          </div>
-        </div>
-      </div>
+    </div>
 
     <!-- TAB 2: BODENGRUND & DEKO -->
     <div id="tab-duengung" class="tab-content">
@@ -1511,15 +1454,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
