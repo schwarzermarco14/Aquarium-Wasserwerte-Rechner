@@ -465,6 +465,11 @@
             <div class="water-field"><label>GH:</label><input type="text" value="10.0"></div>
             <div class="water-field"><label>KH:</label><input type="text" value="6.0"></div>
             <div class="water-field"><label>NO₃ (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>FE (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>K (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>Mg (ppm):</label><input type="text" value="0.0"></div>
           </div>
           <div class="water-column">
             <h3 data-i18n="col_water_tank">Aquarienwasser</h3>
@@ -472,6 +477,11 @@
             <div class="water-field"><label>GH:</label><input type="text" value="12,0"></div>
             <div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4,0"></div>
             <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10,0"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" value="0,0"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0,1"></div>
+            <div class="water-field"><label>FE (ppm):</label><input type="text" value="0,05"></div>
+            <div class="water-field"><label>K (ppm):</label><input type="text" value="5,0"></div>
+            <div class="water-field"><label>Mg (ppm):</label><input type="text" value="5,0"></div>
           </div>
         </div>
       </div>
@@ -512,6 +522,40 @@
     <div id="tab-symptome" class="tab-content">
       <div class="card">
         <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
+        
+        <div class="question-block">
+          <label class="main-label">Welche Algen treten auf?</label>
+          <div class="media-grid">
+            <label class="check-group"><input type="checkbox"> Fadenalgen</label>
+            <label class="check-group"><input type="checkbox"> Pinselalgen</label>
+            <label class="check-group"><input type="checkbox"> Punktalgen</label>
+            <label class="check-group"><input type="checkbox"> Schwebealgen (grünes Wasser)</label>
+            <label class="check-group"><input type="checkbox"> Kieselalgen (braune Beläge)</label>
+            <label class="check-group"><input type="checkbox"> Blaualgen (Schmieralgen/Cyanos)</label>
+          </div>
+        </div>
+
+        <div class="question-block" style="margin-top: 15px;">
+          <label class="main-label">Pflanzenprobleme:</label>
+          <div class="media-grid">
+            <label class="check-group"><input type="checkbox"> Gelbe Blätter (Chlorose)</label>
+            <label class="check-group"><input type="checkbox"> Löcher in Blättern</label>
+            <label class="check-group"><input type="checkbox"> Glasige Blätter</label>
+            <label class="check-group"><input type="checkbox"> Kümmerlicher Wuchs</label>
+            <label class="check-group"><input type="checkbox"> Abwerfen der Blätter</label>
+          </div>
+        </div>
+
+        <div class="question-block" style="margin-top: 15px;">
+          <label class="main-label">Fisch- & Tierverhalten:</label>
+          <div class="media-grid">
+            <label class="check-group"><input type="checkbox"> Schnappt an der Oberfläche nach Luft</label>
+            <label class="check-group"><input type="checkbox"> Scheuert sich an Gegenständen</label>
+            <label class="check-group"><input type="checkbox"> Apathisch / Fressunlust</label>
+            <label class="check-group"><input type="checkbox"> Schreckhaftigkeit</label>
+          </div>
+        </div>
+
         <button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
       </div>
 
@@ -1410,6 +1454,7 @@
   </script>
 </body>
 </html>
+
 
 
 
