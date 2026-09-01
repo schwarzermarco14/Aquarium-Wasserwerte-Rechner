@@ -239,11 +239,16 @@
       font-style: italic;
     }
 
-    .calendar-nav {
+    .calendar-toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
+    }
+    .calendar-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-weight: bold;
       font-size: 0.95rem;
     }
@@ -255,6 +260,22 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    .compare-toggle-btn {
+      background: #020617;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    .compare-toggle-btn.active {
+      background: var(--accent);
+      color: #0f172a;
+      border-color: var(--accent);
+      font-weight: bold;
+    }
+
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -277,16 +298,77 @@
     }
     .cal-day.empty { background: transparent; border: none; cursor: default; }
     .cal-day.has-entry { border-color: var(--accent); background: rgba(14, 165, 233, 0.15); }
+    .cal-day.selected-for-compare { border-color: #fbbf24 !important; background: rgba(251, 191, 36, 0.25) !important; }
     .entry-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 3px; }
     
-    #historyDetailBox {
+    /* MODAL POPUP STYLES */
+    .modal-overlay {
       display: none;
-      background: #020617;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .modal-container {
+      background: var(--card);
       border: 1px solid var(--accent);
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 12px;
+      width: 100%;
+      max-width: 750px;
+      max-height: 90vh;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .modal-header {
+      padding: 14px 16px;
+      background: #020617;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 { color: var(--accent); font-size: 1rem; margin: 0; }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .modal-body {
+      padding: 16px;
+      overflow-y: auto;
       font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .modal-section {
+      margin-bottom: 12px;
+      background: #020617;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .modal-section h4 { font-size: 0.8rem; color: var(--accent); margin-bottom: 6px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+
+    /* Vergleichstabellen im Modal */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 6px;
+    }
+    .compare-table th, .compare-table td {
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      text-align: left;
+    }
+    .compare-table th {
+      background: #1e293b;
+      color: var(--accent);
     }
 
     .app-footer {
@@ -347,57 +429,44 @@
         <div class="form-group"><label data-i18n="lbl_width">Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol()"></div>
         <div class="form-group"><label data-i18n="lbl_height">Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol()"></div>
         <div class="form-group"><label data-i18n="lbl_vol">Aquarienvolumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
-        <div class="form-group"><label data-i18n="lbl_runtime">Einrichtungszeit:</label><input type="text" value="7 Wochen"></div>
+        <div class="form-group"><label data-i18n="lbl_runtime">Einrichtungszeit:</label><input type="text" id="runtime" value="7 Wochen"></div>
       </div>
 
       <div class="card">
         <h2 data-i18n="sec_filter">🌀 Filterung & Heizung</h2>
         <div class="form-group">
           <label data-i18n="lbl_filtertype">Filtertyp:</label>
-          <select><option data-i18n="opt_select">-- Aus der Liste auswählen --</option><option>Innenfilter</option><option>Rucksackfilter</option><option selected>Außenfilter</option><option>Filterbecken (Sump)</option></select>
+          <select id="filterType"><option data-i18n="opt_select">-- Aus der Liste auswählen --</option><option>Innenfilter</option><option>Rucksackfilter</option><option selected>Außenfilter</option><option>Filterbecken (Sump)</option></select>
         </div>
-        <div class="form-group"><label data-i18n="lbl_flow">Filterdurchfluss (L/h):</label><input type="number" value="500"></div>
+        <div class="form-group"><label data-i18n="lbl_flow">Filterdurchfluss (L/h):</label><input type="number" id="filterFlow" value="500"></div>
         
         <div class="question-block">
           <label class="main-label" data-i18n="lbl_skimmer">Ist ein Oberflächenabsauger installiert?</label>
           <div class="radio-row">
-            <label><input type="radio" name="skimmer" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="skimmer" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+            <label><input type="radio" name="skimmer" value="Ja"> <span data-i18n="lbl_yes">Ja</span></label>
+            <label><input type="radio" name="skimmer" value="Nein" checked> <span data-i18n="lbl_no">Nein</span></label>
           </div>
         </div>
 
         <div class="question-block">
           <label class="main-label" data-i18n="lbl_uv">UV-Klärer:</label>
           <div class="radio-row">
-            <label><input type="radio" name="uv" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="uv" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
+            <label><input type="radio" name="uv" value="Ja"> <span data-i18n="lbl_yes">Ja</span></label>
+            <label><input type="radio" name="uv" value="Nein" checked> <span data-i18n="lbl_no">Nein</span></label>
           </div>
         </div>
 
-        <div class="question-block">
-          <label class="main-label" data-i18n="lbl_filtermedia">Welche Filtermedien werden verwendet?</label>
-          <div class="media-grid">
-            <label><input type="checkbox"> Keramische Filtermedien</label>
-            <label><input type="checkbox" checked> Filterschwamm</label>
-            <label><input type="checkbox"> Blähton</label>
-            <label><input type="checkbox"> Lavastein</label>
-            <label><input type="checkbox"> Aktivkohle</label>
-            <label><input type="checkbox" checked> Filterwatte</label>
-            <label><input type="checkbox"> Zeolith</label>
-          </div>
-        </div>
-
-        <div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" placeholder="z. B. 2"></div>
+        <div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" id="filterClean" value="2"></div>
 
         <div class="question-block" style="margin-top: 15px;">
           <label class="main-label" data-i18n="lbl_heater">Ist im Aquarium ein Heizstab installiert?</label>
           <div class="radio-row">
-            <label><input type="radio" name="heater" value="ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="heater" value="nein"> <span data-i18n="lbl_no">Nein</span></label>
+            <label><input type="radio" name="heater" value="Ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
+            <label><input type="radio" name="heater" value="Nein"> <span data-i18n="lbl_no">Nein</span></label>
           </div>
         </div>
 
-        <div class="form-group"><label data-i18n="lbl_temp">Wassertemperatur (°C):</label><input type="number" value="24" step="0.5"></div>
+        <div class="form-group"><label data-i18n="lbl_temp">Wassertemperatur (°C):</label><input type="number" id="wTemp" value="24" step="0.5"></div>
       </div>
 
       <div class="card">
@@ -405,8 +474,8 @@
         <div class="question-block">
           <label class="main-label" data-i18n="lbl_co2">Wird CO₂ zugeführt?</label>
           <div class="radio-row">
-            <label><input type="radio" name="co2_zuafuhr" value="ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="co2_zuafuhr" value="nein"> <span data-i18n="lbl_no">Nein</span></label>
+            <label><input type="radio" name="co2_zuafuhr" value="Ja" checked> <span data-i18n="lbl_yes">Ja</span></label>
+            <label><input type="radio" name="co2_zuafuhr" value="Nein"> <span data-i18n="lbl_no">Nein</span></label>
           </div>
         </div>
       </div>
@@ -417,63 +486,15 @@
           <label>Beleuchtungsart:</label>
           <select id="beleuchtungsart">
             <option value="">-- Aus der Liste auswählen --</option>
-            <option value="t5_t8">T5-/T8-Leuchtstoffröhre</option>
-            <option value="led">LED</option>
-            <option value="hqi">HQI</option>
-            <option value="hql">HQL</option>
+            <option value="T5/T8-Röhre">T5-/T8-Leuchtstoffröhre</option>
+            <option value="LED" selected>LED</option>
+            <option value="HQI">HQI</option>
+            <option value="HQL">HQL</option>
           </select>
         </div>
         <div class="form-group"><label data-i18n="lbl_light_kelvin">Farbtemperatur (K):</label><input type="number" id="farbtemperatur" value="6500"></div>
         <div class="form-group"><label data-i18n="lbl_light_watt">Leistung (W):</label><input type="number" id="leistung" value="30"></div>
-        <div class="form-group"><label>Lichtstrom (lm):</label><input type="number" id="lichtstrom" value="2000"></div>
         <div class="form-group"><label data-i18n="lbl_light_duration">Tägliche Beleuchtungsdauer (h):</label><input type="number" id="beleuchtungsdauer" value="8"></div>
-      </div>
-
-      <div class="card">
-        <h2>🌿 Pflanzen und Düngung</h2>
-        
-        <div class="form-group">
-          <label>Wie dicht ist das Aquarium bepflanzt?</label>
-          <select id="bepflanzungsdichte">
-            <option value="">-- Aus der Liste auswählen --</option>
-            <option value="sehr_wenig">Sehr wenige Pflanzen</option>
-            <option value="wenig">Wenige Pflanzen</option>
-            <option value="mittel">Mittlere Pflanzendichte</option>
-            <option value="dicht">Dicht bepflanzt</option>
-            <option value="sehr_dicht">Sehr dicht bepflanzt</option>
-          </select>
-        </div>
-
-        <div class="form-group" style="flex-direction: column; align-items: flex-start;">
-          <label style="margin-bottom: 10px; display: block;">Welche Dünger werden verwendet?</label>
-          
-          <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_flüssig_c" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Flüssiger Kohlenstoffzusatz
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_volldünger" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Volldünger (All-in-One)
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_makro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Makronährstoffdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_mikro" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Mikronährstoffdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_stickstoff" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Stickstoffdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_phosphat" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Phosphatdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_kalium" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Kaliumdünger
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;">
-              <input type="checkbox" id="duenger_eisen" style="width: 18px; height: 18px; accent-color: #38bdf8;"> Eisendünger
-            </label>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -484,72 +505,38 @@
         <div class="form-group">
           <label data-i18n="lbl_sub_type">Art des Bodengrunds:</label>
           <select id="bodenArt">
-            <option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-            <option value="quarzkies" selected>Quarzkies</option>
-            <option value="sand">Sand</option>
-            <option value="soil">Soil (Aktiver Bodengrund)</option>
+            <option value="">-- Aus der Liste auswählen --</option>
+            <option value="Quarzkies" selected>Quarzkies</option>
+            <option value="Sand">Sand</option>
+            <option value="Soil">Soil (Aktiver Bodengrund)</option>
           </select>
         </div>
 
-        <div class="question-block">
-          <label class="main-label" data-i18n="lbl_nutrient_sub">Wurde ein nährstoffreicher Untergrund verwendet?</label>
-          <div class="radio-row">
-            <label><input type="radio" name="nutrient_sub" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="nutrient_sub" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
-          </div>
-        </div>
-
-        <div class="question-block" style="margin-top: 10px;">
-          <label class="main-label" data-i18n="lbl_regular_sub_fert">Werden regelmäßig Bodendünger verwendet?</label>
-          <div class="radio-row">
-            <label><input type="radio" name="regular_sub_fert" value="ja"> <span data-i18n="lbl_yes">Ja</span></label>
-            <label><input type="radio" name="regular_sub_fert" value="nein" checked> <span data-i18n="lbl_no">Nein</span></label>
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0"></div>
+        <div class="form-group"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0"></div>
 
         <h3>Steinauswahl (Kalk-Analyse)</h3>
         <div class="form-group">
           <label>Steinart:</label>
           <select id="steinArt">
-            <option value="">-- Keine / Keine Angabe --</option>
-            <option value="seiryu">Seiryu Stone / Green Stone (Kalkhaltig, härtet auf)</option>
-            <option value="dragon">Dragon Stone / Ohko Stone (Tonstein, meist neutral bis leicht aufhärtend)</option>
-            <option value="rokkaku">Rokkaku Stone (Kalkhaltig)</option>
-            <option value="mini_landscape">Mini-Landscape (Identisch mit Seiryu, kalkhaltig)</option>
-            <option value="schiefer">Schiefer / Black Slate (Neutral, härtet nicht auf)</option>
-            <option value="lava">Lavastein / Red/Black Lava (Neutral, porös)</option>
-            <option value="manten">Manten Stone (Sandstein-Mix, meist neutral)</option>
-            <option value="ada_eyi">ADA Eiyu / Ryuoh Stone (Kalkhaltig, härtet stark auf)</option>
-            <option value="granit">Granit (Neutral, absolut inert)</option>
-            <option value="marmor">Marmor / Weissmarmor (Stark kalkhaltig, härtet extrem auf)</option>
-            <option value="lochgestein">Lochgestein (Stark kalkhaltig, härtet stark auf)</option>
-            <option value="flusskiesel">Flusskiesel / Findlinge (Meist neutral)</option>
-            <option value="zebra">Zebra Stone (Neutral bis leicht kalkhaltig)</option>
-            <option value="holzstein">Holzstein / Petrified Wood (Mineralisiert, meist neutral)</option>
-            <option value="tiger">Tiger Stone (Neutral)</option>
+            <option value="Keine">-- Keine / Keine Angabe --</option>
+            <option value="Seiryu Stone">Seiryu Stone / Green Stone</option>
+            <option value="Dragon Stone">Dragon Stone / Ohko Stone</option>
+            <option value="Schiefer">Schiefer / Black Slate</option>
+            <option value="Lavastein" selected>Lavastein</option>
+            <option value="Lochgestein">Lochgestein</option>
           </select>
         </div>
-        <div class="form-group"><label>Menge an Steinen (kg):</label><input type="number" value="5" step="0.1"></div>
 
         <h3>Holzauswahl</h3>
         <div class="form-group">
           <label>Holzart:</label>
           <select id="holzArt">
-            <option value="">-- Kein Holz / Keine Angabe --</option>
-            <option value="red_moor">Red Moor Wood (Verzweigt, gibt leicht Tannine ab)</option>
-            <option value="mangrove">Mangrovenholz (Schwer, dunkel, säuert leicht an)</option>
-            <option value="moorkien">Moorkienholz (Urigen, weich, säuert stark an / senkt pH/KH)</option>
-            <option value="spider_wood">Spider Wood / Aztek-Wurzel (Astig, hell)</option>
-            <option value="driftwood">Treibholz / Driftwood (Neutral bis leicht sauer)</option>
-            <option value="savannenholz">Savannenholz (Hart, glatt)</option>
-            <option value="rondeletia">Rondeletia / Eisenholz (Sehr hart und schwer)</option>
-            <option value="jumbo">Jumbo-Wurzel (Großstückig, massiv)</option>
-            <option value="korkenzieher">Korkenzieherhasel / -weide (Dekorativ)</option>
+            <option value="Kein Holz">-- Kein Holz / Keine Angabe --</option>
+            <option value="Red Moor Wood" selected>Red Moor Wood</option>
+            <option value="Mangrovenholz">Mangrovenholz</option>
+            <option value="Moorkienholz">Moorkienholz</option>
           </select>
         </div>
-        <div class="form-group"><label>Menge an Holz (kg):</label><input type="number" value="2" step="0.1"></div>
       </div>
     </div>
 
@@ -561,36 +548,19 @@
           <div class="water-column">
             <h3 data-i18n="col_water_change">Wasserwechsel</h3>
             <div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" value="7.2"></div>
-            <div class="water-field"><label>GH:</label><input type="text" value="10.0"></div>
-            <div class="water-field"><label>KH:</label><input type="text" value="6.0"></div>
-            <div class="water-field"><label>NH₄ (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>K (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>Ca (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>Mg (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>Fe (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>Na (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>SiO₂ (ppm):</label><input type="text" value="0.0"></div>
-            <div class="water-field"><label>SO₄ (ppm):</label><input type="text" value="0.0"></div>
+            <div class="water-field"><label>GH:</label><input type="text" id="w_gh_wechsel" value="10.0"></div>
+            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_wechsel" value="6.0"></div>
+            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_wechsel" value="0.0"></div>
           </div>
           <div class="water-column">
             <h3 data-i18n="col_water_tank">Aquarienwasser</h3>
-            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6,8"></div>
-            <div class="water-field"><label>GH:</label><input type="text" value="12,0"></div>
-            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4,0"></div>
-            <div class="water-field"><label>NH₄ (ppm):</label><input type="text" value="0,0"></div>
-            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_akt" value="0,0"></div>
-            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10,0"></div>
-            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" value="0,1"></div>
-            <div class="water-field"><label>K (ppm):</label><input type="text" value="5,0"></div>
-            <div class="water-field"><label>Ca (ppm):</label><input type="text" value="25,0"></div>
-            <div class="water-field"><label>Mg (ppm):</label><input type="text" value="5,0"></div>
-            <div class="water-field"><label>Fe (ppm):</label><input type="text" value="0,05"></div>
-            <div class="water-field"><label>Na (ppm):</label><input type="text" value="5,0"></div>
-            <div class="water-field"><label>SiO₂ (ppm):</label><input type="text" value="2,0"></div>
-            <div class="water-field"><label>SO₄ (ppm):</label><input type="text" value="10,0"></div>
+            <div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.8"></div>
+            <div class="water-field"><label>GH:</label><input type="text" id="w_gh_akt" value="12.0"></div>
+            <div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4.0"></div>
+            <div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_akt" value="0.0"></div>
+            <div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10.0"></div>
+            <div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_akt" value="0.1"></div>
+            <div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_akt" value="0.05"></div>
           </div>
         </div>
       </div>
@@ -600,36 +570,22 @@
     <div id="tab-besatz" class="tab-content">
       <div class="card">
         <h2 data-i18n="tab_stock">🐟 Tierbesatz & Fütterung</h2>
-        <div class="form-group"><label data-i18n="lbl_fish_small">Kleine Fische (bis 3 cm):</label><input type="number" value="10"></div>
-        <div class="form-group"><label data-i18n="lbl_fish_medium">Mittelgroße Fische (3–8 cm):</label><input type="number" value="5"></div>
-        <div class="form-group"><label data-i18n="lbl_fish_large">Große Fische (über 8 cm):</label><input type="number" value="0"></div>
-        <div class="form-group"><label>L-Welse / Harnischwelse (Intensiver Holzraspler & Kotbelastung):</label><input type="number" value="1"></div>
-        <div class="form-group"><label data-i18n="lbl_fish_algae">Algenfressende Fische (Crossocheilus, Otocinclus usw.):</label><input type="number" value="2"></div>
-        <div class="form-group"><label data-i18n="lbl_shrimp">Garnelen (Stk.):</label><input type="number" value="15"></div>
-        <div class="form-group"><label data-i18n="lbl_snails">Schnecken (Stk.):</label><input type="number" value="10"></div>
+        <div class="form-group"><label data-i18n="lbl_fish_small">Kleine Fische (bis 3 cm):</label><input type="number" id="f_small" value="10"></div>
+        <div class="form-group"><label data-i18n="lbl_fish_medium">Mittelgroße Fische (3–8 cm):</label><input type="number" id="f_med" value="5"></div>
+        <div class="form-group"><label data-i18n="lbl_fish_large">Große Fische (über 8 cm):</label><input type="number" id="f_large" value="0"></div>
+        <div class="form-group"><label>L-Welse / Harnischwelse:</label><input type="number" id="f_pleco" value="1"></div>
+        <div class="form-group"><label data-i18n="lbl_shrimp">Garnelen (Stk.):</label><input type="number" id="f_shrimp" value="15"></div>
+        <div class="form-group"><label data-i18n="lbl_snails">Schnecken (Stk.):</label><input type="number" id="f_snails" value="10"></div>
         
         <div class="question-block" style="margin-top: 15px;">
           <label class="main-label" data-i18n="lbl_feeding">Fütterung:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox"> Lebendfutter</label>
-            <label class="check-group"><input type="checkbox"> Frostfutter</label>
-            <label class="check-group"><input type="checkbox"> Flockenfutter</label>
-            <label class="check-group"><input type="checkbox" checked> Granulatfutter</label>
-            <label class="check-group"><input type="checkbox" checked> Wels-Tabs / Chips</label>
+            <label class="check-group"><input type="checkbox" class="feed-check" value="Lebendfutter"> Lebendfutter</label>
+            <label class="check-group"><input type="checkbox" class="feed-check" value="Frostfutter"> Frostfutter</label>
+            <label class="check-group"><input type="checkbox" class="feed-check" value="Flockenfutter"> Flockenfutter</label>
+            <label class="check-group"><input type="checkbox" class="feed-check" value="Granulatfutter" checked> Granulatfutter</label>
+            <label class="check-group"><input type="checkbox" class="feed-check" value="Wels-Tabs / Chips" checked> Wels-Tabs / Chips</label>
           </div>
-        </div>
-
-        <div class="form-group" style="margin-top: 12px;">
-          <label data-i18n="lbl_feeding_freq">Fütterungshäufigkeit:</label>
-          <select>
-            <option data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-            <option value="1x_taeglich">1 x täglich</option>
-            <option value="2x_taeglich" selected>2 x täglich</option>
-            <option value="mehr_als_2x_taeglich">Mehr als 2 x täglich</option>
-            <option value="1x_woechentlich">1 x wöchentlich</option>
-            <option value="2x_woechentlich">2 x wöchentlich</option>
-            <option value="mehr_als_2x_woechentlich">Mehr als 2 x wöchentlich</option>
-          </select>
         </div>
       </div>
     </div>
@@ -637,55 +593,37 @@
     <!-- TAB 5: SYMPTOME -->
     <div id="tab-symptome" class="tab-content">
       <div class="card">
-        <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
+        <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme & Symptome</h2>
         
         <div class="question-block">
           <label class="main-label">Welche Algen treten auf?</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox"> Grüne Fadenalgen</label>
-            <label class="check-group"><input type="checkbox"> Grüne Punktalgen (GSA)</label>
-            <label class="check-group"><input type="checkbox"> Cyanobakterien</label>
-            <label class="check-group"><input type="checkbox"> Pinselalgen / Bartalgen (BBA)</label>
-            <label class="check-group"><input type="checkbox"> Spirogyra</label>
-            <label class="check-group"><input type="checkbox"> Kieselalgen</label>
-            <label class="check-group"><input type="checkbox"> Grüner Belag auf den Aquarienscheiben</label>
-            <label class="check-group"><input type="checkbox"> Grüne Wasserblüte</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Grüne Fadenalgen"> Grüne Fadenalgen</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Grüne Punktalgen (GSA)"> Grüne Punktalgen (GSA)</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Cyanobakterien"> Cyanobakterien</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Pinselalgen / Bartalgen (BBA)"> Pinselalgen / Bartalgen (BBA)</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Kieselalgen"> Kieselalgen</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Grüner Belag auf Scheiben"> Grüner Belag auf Scheiben</label>
           </div>
         </div>
 
         <div class="question-block" style="margin-top: 15px;">
           <label class="main-label">Pflanzenprobleme:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox"> Kein Wachstum</label>
-            <label class="check-group"><input type="checkbox"> Verblassen / Farbverlust</label>
-            <label class="check-group"><input type="checkbox"> Löcher in den Blättern</label>
-            <label class="check-group"><input type="checkbox"> Blattzerfall / Pflanzenmelt</label>
-            <label class="check-group"><input type="checkbox"> Stängelfäule</label>
-            <label class="check-group"><input type="checkbox"> Vergilbende Blätter</label>
-            <label class="check-group"><input type="checkbox"> Kleine, deformierte neue Blätter</label>
-            <label class="check-group"><input type="checkbox"> Abfallende untere Blätter</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Kein Wachstum"> Kein Wachstum</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Verblassen / Farbverlust"> Verblassen / Farbverlust</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Löcher in den Blättern"> Löcher in den Blättern</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Vergilbende Blätter"> Vergilbende Blätter</label>
           </div>
         </div>
 
         <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label">Fische und Wirbellose:</label>
+          <label class="main-label">Fische und Wasser:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox"> Schnappen nach Luft an der Wasseroberfläche</label>
-            <label class="check-group"><input type="checkbox"> Teilnahmslosigkeit / Appetitlosigkeit</label>
-            <label class="check-group"><input type="checkbox"> Todesfälle in den letzten Tagen</label>
-            <label class="check-group"><input type="checkbox"> Weiße Punkte oder Beläge auf den Fischen</label>
-            <label class="check-group"><input type="checkbox"> Ausgefranste oder sich auflösende Flossen</label>
-          </div>
-        </div>
-
-        <div class="question-block" style="margin-top: 15px;">
-          <label class="main-label">Wasser und Erscheinungsbild:</label>
-          <div class="media-grid">
-            <label class="check-group"><input type="checkbox"> Trübes Wasser</label>
-            <label class="check-group"><input type="checkbox"> Gelbe oder teefarbene Wasserfärbung</label>
-            <label class="check-group"><input type="checkbox"> Mineralische Ablagerungen auf Scheiben/Technik</label>
-            <label class="check-group"><input type="checkbox"> Unangenehmer Geruch</label>
-            <label class="check-group"><input type="checkbox"> Weißer Belag oder Biofilm auf Holz</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Schnappen nach Luft"> Schnappen nach Luft</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Teilnahmslosigkeit"> Teilnahmslosigkeit</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Trübes Wasser"> Trübes Wasser</label>
+            <label class="check-group"><input type="checkbox" class="symp-check" value="Weißer Biofilm auf Holz"> Weißer Biofilm auf Holz</label>
           </div>
         </div>
 
@@ -700,19 +638,13 @@
           <div class="alert-card alert-blue" onclick="toggleDetails(this)">
             <strong>ℹ️ CO₂-Versorgung optimal:</strong> Der pH-Wert und die Karbonathärte (KH) zeigen ein stabiles Verhältnis.
             <span class="click-hint">Klicken für Details</span>
-            <div class="alert-details">Mit einer KH von 4 und einem pH von 6.8 liegt der berechnete CO₂-Gehalt bei ca. 19 mg/L, was ideal für die meisten bepflanzten Aquarien ist.</div>
+            <div class="alert-details">Mit einer KH von 4 und einem pH von 6.8 liegt der berechnete CO₂-Gehalt bei ca. 19 mg/L, was ideal ist.</div>
           </div>
 
           <div class="alert-card alert-orange" onclick="toggleDetails(this)">
             <strong>⚠️ GH-Anstieg im Becken:</strong> Gesamthärte im Aquarium (12 dGH) weicht vom Wechselwasser (10 dGH) ab.
             <span class="click-hint">Klicken für Details</span>
-            <div class="alert-details">Mögliche Ursache sind kalkhaltige Steine (oder Dekorationselemente) im Aquarium, die Mineralien an das Wasser abgeben.</div>
-          </div>
-
-          <div class="alert-card alert-red" onclick="toggleDetails(this)">
-            <strong>🚨 Nitrat-Wert beachten:</strong> Der NO₃-Wert liegt bei 10 ppm.
-            <span class="click-hint">Klicken für Details</span>
-            <div class="alert-details">Zwar noch im unkritischen Bereich für viele Fische, aber bei dichtem Besatz oder empfindlichen Arten sollte der Wert im Auge behalten werden.</div>
+            <div class="alert-details">Mögliche Ursache sind kalkhaltige Dekorelemente oder Steine im Aquarium.</div>
           </div>
         </div>
       </div>
@@ -722,23 +654,35 @@
     <div id="tab-kalender" class="tab-content">
       <div class="card">
         <h2 data-i18n="tab_cal">📅 Aquarien-Tagebuch</h2>
-        <div class="calendar-nav">
-          <button type="button" onclick="changeMonth(-1)">‹</button>
-          <span id="calMonthYear">März 2026</span>
-          <button type="button" onclick="changeMonth(1)">›</button>
+        <div class="calendar-toolbar">
+          <div class="calendar-nav">
+            <button type="button" onclick="changeMonth(-1)">‹</button>
+            <span id="calMonthYear">März 2026</span>
+            <button type="button" onclick="changeMonth(1)">›</button>
+          </div>
+          <button type="button" id="compareToggleBtn" class="compare-toggle-btn" onclick="toggleCompareMode()">🔀 Vergleichs-Modus</button>
         </div>
         <div class="calendar-grid" id="calendarGrid"></div>
-        <div id="historyDetailBox">
-          <h3 id="historyDateTitle" style="color:var(--accent); margin-bottom: 6px;">Eintrag vom</h3>
-          <p id="historyText">Keine Daten für diesen Tag vorhanden.</p>
-        </div>
       </div>
     </div>
 
   </form>
 
+  <!-- POPUP MODAL FÜR KALENDER-DETAILS & VERGLEICH -->
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="modalTitle">Tagebucheintrag</h3>
+        <button type="button" class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body" id="modalBodyContent">
+        <!-- Dynamischer Inhalt -->
+      </div>
+    </div>
+  </div>
+
   <footer class="app-footer">
-    <p>Aquarium-Wasserwerte-Rechner (AWR) v2.7 | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;">Daten sichern</a></p>
+    <p>Aquarium-Wasserwerte-Rechner (AWR) v2.9 | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;">Daten sichern</a></p>
   </footer>
 
   <script>
@@ -746,6 +690,10 @@
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
     let analysisDiary = {};
+    
+    // Status für Vergleichsmodus
+    let isCompareMode = false;
+    let compareSelectedDays = [];
 
     const translations = {
       de: {
@@ -771,7 +719,6 @@
         lbl_uv: "UV-Klärer:",
         lbl_yes: "Ja",
         lbl_no: "Nein",
-        lbl_filtermedia: "Welche Filtermedien werden verwendet?",
         lbl_clean_interval: "In welchem Abstand wird der Filter gereinigt (in Wochen)?",
         lbl_heater: "Ist im Aquarium ein Heizstab installiert?",
         lbl_temp: "Wassertemperatur (°C):",
@@ -781,8 +728,6 @@
         lbl_light_watt: "Leistung (W):",
         lbl_light_duration: "Tägliche Beleuchtungsdauer (h):",
         lbl_sub_type: "Art des Bodengrunds:",
-        lbl_nutrient_sub: "Wurde ein nährstoffreicher Untergrund verwendet?",
-        lbl_regular_sub_fert: "Werden regelmäßig Bodendünger verwendet?",
         lbl_sub_vol: "Gesamtvolumen des Bodengrunds (L):",
         sec_water_compare: "🧪 Wasserwerte-Vergleich",
         col_water_change: "Wasserwechsel",
@@ -790,11 +735,9 @@
         lbl_fish_small: "Kleine Fische (bis 3 cm):",
         lbl_fish_medium: "Mittelgroße Fische (3–8 cm):",
         lbl_fish_large: "Große Fische (über 8 cm):",
-        lbl_fish_algae: "Algenfressende Fische (Crossocheilus, Otocinclus usw.):",
         lbl_shrimp: "Garnelen (Stk.):",
         lbl_snails: "Schnecken (Stk.):",
         lbl_feeding: "Fütterung:",
-        lbl_feeding_freq: "Fütterungshäufigkeit:",
         btn_analyze: "Analysieren & im Kalender speichern"
       },
       en: {
@@ -820,7 +763,6 @@
         lbl_uv: "UV sterilizer:",
         lbl_yes: "Yes",
         lbl_no: "No",
-        lbl_filtermedia: "Which filter media are used?",
         lbl_clean_interval: "Filter cleaning interval (weeks):",
         lbl_heater: "Is a heater installed?",
         lbl_temp: "Water temperature (°C):",
@@ -830,8 +772,6 @@
         lbl_light_watt: "Power (W):",
         lbl_light_duration: "Daily lighting duration (h):",
         lbl_sub_type: "Substrate type:",
-        lbl_nutrient_sub: "Was a nutrient-rich substrate used?",
-        lbl_regular_sub_fert: "Are root fertilizers used regularly?",
         lbl_sub_vol: "Total substrate volume (L):",
         sec_water_compare: "🧪 Water Parameter Comparison",
         col_water_change: "Water Change",
@@ -839,11 +779,9 @@
         lbl_fish_small: "Small fish (up to 3 cm):",
         lbl_fish_medium: "Medium fish (3–8 cm):",
         lbl_fish_large: "Large fish (over 8 cm):",
-        lbl_fish_algae: "Algae-eating fish (Crossocheilus, Otocinclus etc.):",
         lbl_shrimp: "Shrimp (pcs.):",
         lbl_snails: "Snails (pcs.):",
         lbl_feeding: "Feeding:",
-        lbl_feeding_freq: "Feeding frequency:",
         btn_analyze: "Analyze & Save to Calendar"
       }
     };
@@ -852,9 +790,7 @@
       const t = translations[lang] || translations['de'];
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (t[key]) {
-          el.innerText = t[key];
-        }
+        if (t[key]) el.innerText = t[key];
       });
     }
 
@@ -876,28 +812,57 @@
     function runAnalysis(event) {
       event.preventDefault();
       document.getElementById('resultSection').style.display = 'block';
+
       let dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-      analysisDiary[dateKey] = "Analyse durchgeführt: Werte im normalen Bereich.";
+      
+      let symptoms = [];
+      document.querySelectorAll('.symp-check:checked').forEach(cb => symptoms.push(cb.value));
+
+      let feeding = [];
+      document.querySelectorAll('.feed-check:checked').forEach(cb => feeding.push(cb.value));
+
+      analysisDiary[dateKey] = {
+        volume: document.getElementById('volumen').value,
+        temp: document.getElementById('wTemp').value,
+        ph_akt: document.getElementById('w_ph_akt').value,
+        gh_akt: document.getElementById('w_gh_akt').value,
+        kh_akt: document.getElementById('w_kh_akt').value,
+        no3_akt: document.getElementById('w_no3_akt').value,
+        po4_akt: document.getElementById('w_po4_akt').value,
+        fe_akt: document.getElementById('w_fe_akt').value,
+        fish_small: document.getElementById('f_small').value,
+        fish_med: document.getElementById('f_med').value,
+        pleco: document.getElementById('f_pleco').value,
+        feeding: feeding.length > 0 ? feeding.join(', ') : 'Keine Angaben',
+        symptoms: symptoms.length > 0 ? symptoms : ['Keine Probleme gemeldet']
+      };
+
       renderCalendar();
+      alert("Analyse erfolgreich durchgeführt und im Kalender für heute gespeichert!");
     }
 
     function toggleDetails(card) {
       const details = card.querySelector('.alert-details');
-      if (details.style.display === 'block') {
-        details.style.display = 'none';
-      } else {
-        details.style.display = 'block';
-      }
+      details.style.display = details.style.display === 'block' ? 'none' : 'block';
     }
 
     function changeMonth(direction) {
       currentMonth += direction;
-      if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-      } else if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+      else if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      renderCalendar();
+    }
+
+    function toggleCompareMode() {
+      isCompareMode = !isCompareMode;
+      compareSelectedDays = [];
+      const btn = document.getElementById('compareToggleBtn');
+      if (isCompareMode) {
+        btn.classList.add('active');
+        btn.innerText = "❌ Vergleich beenden";
+      } else {
+        btn.classList.remove('active');
+        btn.innerText = "🔀 Vergleichs-Modus";
       }
       renderCalendar();
     }
@@ -927,18 +892,151 @@
         let dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
         let hasEntry = analysisDiary[dateStr] ? '<div class="entry-dot"></div>' : '';
         div.innerHTML = `<span>${d}</span>${hasEntry}`;
-        div.onclick = () => showDayDetails(dateStr);
+        
+        if(analysisDiary[dateStr]) {
+          div.classList.add('has-entry');
+        }
+
+        if (compareSelectedDays.includes(dateStr)) {
+          div.classList.add('selected-for-compare');
+        }
+
+        div.onclick = () => handleDayClick(dateStr);
         grid.appendChild(div);
       }
     }
 
-    function showDayDetails(dateStr) {
-      const box = document.getElementById('historyDetailBox');
-      const title = document.getElementById('historyDateTitle');
-      const text = document.getElementById('historyText');
-      box.style.display = 'block';
-      title.innerText = `Eintrag vom ${dateStr}`;
-      text.innerText = analysisDiary[dateStr] || "Keine Einträge für diesen Tag hinterlegt.";
+    function handleDayClick(dateStr) {
+      if (isCompareMode) {
+        if (compareSelectedDays.includes(dateStr)) {
+          compareSelectedDays = compareSelectedDays.filter(d => d !== dateStr);
+        } else {
+          if (compareSelectedDays.length >= 2) {
+            compareSelectedDays.shift(); // Älteste Auswahl entfernen, wenn schon 2 gewählt
+          }
+          compareSelectedDays.push(dateStr);
+        }
+        renderCalendar();
+
+        // Wenn genau 2 Tage ausgewählt wurden, automatisch den Vergleich öffnen
+        if (compareSelectedDays.length === 2) {
+          showComparisonModal(compareSelectedDays[0], compareSelectedDays[1]);
+        }
+      } else {
+        showSingleDayModal(dateStr);
+      }
+    }
+
+    function showSingleDayModal(dateStr) {
+      const modal = document.getElementById('historyModal');
+      const title = document.getElementById('modalTitle');
+      const body = document.getElementById('modalBodyContent');
+      
+      title.innerText = `Analyse-Bericht vom ${dateStr}`;
+      let data = analysisDiary[dateStr];
+
+      if (!data) {
+        body.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 20px;">Für diesen Tag ist kein Analyse-Eintrag vorhanden.</p>`;
+      } else {
+        let symList = data.symptoms.map(s => `• ${s}`).join('<br>');
+        body.innerHTML = `
+          <div class="modal-section">
+            <h4>💧 Wasserwerte (Aquarium)</h4>
+            <p><strong>pH:</strong> ${data.ph_akt} | <strong>GH:</strong> ${data.gh_akt} | <strong>KH:</strong> ${data.kh_akt}</p>
+            <p><strong>NO₃:</strong> ${data.no3_akt} ppm | <strong>PO₄:</strong> ${data.po4_akt} ppm | <strong>Fe:</strong> ${data.fe_akt} ppm</p>
+            <p><strong>Temperatur:</strong> ${data.temp} °C | <strong>Volumen:</strong> ${data.volume} L</p>
+          </div>
+          <div class="modal-section">
+            <h4>🐟 Besatz & Fütterung</h4>
+            <p><strong>Kleine Fische:</strong> ${data.fish_small} | <strong>Mittel:</strong> ${data.fish_med} | <strong>L-Welse:</strong> ${data.pleco}</p>
+            <p><strong>Futterarten:</strong> ${data.feeding}</p>
+          </div>
+          <div class="modal-section">
+            <h4>⚠️ Beobachtete Symptome & Probleme</h4>
+            <p style="color: #f87171;">${symList}</p>
+          </div>
+        `;
+      }
+      modal.style.display = 'flex';
+    }
+
+    function showComparisonModal(date1, date2) {
+      const modal = document.getElementById('historyModal');
+      const title = document.getElementById('modalTitle');
+      const body = document.getElementById('modalBodyContent');
+
+      title.innerText = `Vergleich: ${date1} vs. ${date2}`;
+      let d1 = analysisDiary[date1] || { volume:'-', temp:'-', ph_akt:'-', gh_akt:'-', kh_akt:'-', no3_akt:'-', po4_akt:'-', fe_akt:'-', fish_small:'-', fish_med:'-', pleco:'-', feeding:'-', symptoms:['Kein Eintrag'] };
+      let d2 = analysisDiary[date2] || { volume:'-', temp:'-', ph_akt:'-', gh_akt:'-', kh_akt:'-', no3_akt:'-', po4_akt:'-', fe_akt:'-', fish_small:'-', fish_med:'-', pleco:'-', feeding:'-', symptoms:['Kein Eintrag'] };
+
+      let sym1 = d1.symptoms.join(', ');
+      let sym2 = d2.symptoms.join(', ');
+
+      body.innerHTML = `
+        <div class="modal-section">
+          <h4>🧪 Wasserwerte-Direktvergleich</h4>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Messwert</th>
+                <th>${date1}</th>
+                <th>${date2}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>pH-Wert</strong></td><td>${d1.ph_akt}</td><td>${d2.ph_akt}</td></tr>
+              <tr><td><strong>GH (Gesamthärte)</strong></td><td>${d1.gh_akt}</td><td>${d2.gh_akt}</td></tr>
+              <tr><td><strong>KH (Karbonathärte)</strong></td><td>${d1.kh_akt}</td><td>${d2.kh_akt}</td></tr>
+              <tr><td><strong>Nitrat (NO₃)</strong></td><td>${d1.no3_akt} ppm</td><td>${d2.no3_akt} ppm</td></tr>
+              <tr><td><strong>Phosphat (PO₄)</strong></td><td>${d1.po4_akt} ppm</td><td>${d2.po4_akt} ppm</td></tr>
+              <tr><td><strong>Eisen (Fe)</strong></td><td>${d1.fe_akt} ppm</td><td>${d2.fe_akt} ppm</td></tr>
+              <tr><td><strong>Temperatur</strong></td><td>${d1.temp} °C</td><td>${d2.temp} °C</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal-section">
+          <h4>🐟 Besatz & Fütterung</h4>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Kategorie</th>
+                <th>${date1}</th>
+                <th>${date2}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Fische (klein / mittel)</strong></td><td>${d1.fish_small} / ${d1.fish_med}</td><td>${d2.fish_small} / ${d2.fish_med}</td></tr>
+              <tr><td><strong>L-Welse</strong></td><td>${d1.pleco}</td><td>${d2.pleco}</td></tr>
+              <tr><td><strong>Futterarten</strong></td><td>${d1.feeding}</td><td>${d2.feeding}</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal-section">
+          <h4>⚠️ Symptome</h4>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Beobachtungen</th>
+                <th>${date1}</th>
+                <th>${date2}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="color:#f87171;">${sym1}</td><td style="color:#f87171;">${sym2}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('historyModal').style.display = 'none';
+      // Optional: Setze Vergleichsauswahl zurück nach Schließen
+      compareSelectedDays = [];
+      renderCalendar();
     }
   </script>
 </body>
