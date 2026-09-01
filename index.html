@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-i18n="main_title">Calculadora de Parámetros de Agua de Acuario (AWR) - Análisis Completo</title>
+<title data-i18n="main_title">Aquarium-Wasserwerte-Rechner (AWR) - Vollständige Analyse</title>
 <style>
 :root {
 --bg: #0f172a;
@@ -40,7 +40,14 @@ gap: 10px;
 .header h1 { font-size: 1.1rem; color: var(--accent); }
 .header p { font-size: 0.75rem; color: var(--text-muted); }
 
-.tank-selector-container {
+.header-controls {
+display: flex;
+gap: 8px;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.tank-selector-container, .lang-selector-container {
 display: flex;
 gap: 6px;
 align-items: center;
@@ -49,7 +56,7 @@ padding: 6px 10px;
 border: 1px solid var(--border);
 border-radius: 8px;
 }
-.tank-selector-container select {
+.tank-selector-container select, .lang-selector-container select {
 background: transparent;
 border: none;
 color: var(--text);
@@ -382,11 +389,19 @@ line-height: 1.5;
 <h1><span data-i18n="title">Aquarium-Wasserwerte-Rechner (AWR)</span> 💧</h1>
 <p data-i18n="subtitle">Vollständige Aquarium-Analyse</p>
 </div>
+<div class="header-controls">
 <div class="tank-selector-container">
 <select id="tankSelect" onchange="switchTank(this.value)">
 </select>
 <button type="button" onclick="createNewTank()" title="Neues Aquarium hinzufügen">+</button>
 <button type="button" onclick="renameCurrentTank()" title="Aktuelles Aquarium umbenennen">✏️</button>
+</div>
+<div class="lang-selector-container">
+<select id="langSelect" onchange="switchLanguage(this.value)">
+<option value="de">DE</option>
+<option value="en">EN</option>
+</select>
+</div>
 </div>
 </div>
 
@@ -780,14 +795,15 @@ line-height: 1.5;
 </div>
 
 <footer class="app-footer">
-<p><span data-i18n="footer_text">Aquarium-Wasserwerte-Rechner (AWR) v2.8</span> | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;" data-i18n="footer_save">Daten sichern</a></p>
-<p style="margin-top: 4px;">Bereitgestellt von <a href="https://aqua-enthusiasts.de" target="_blank">Aqua-Enthusiasts.de</a></p>
+<p><span data-i18n="footer_text">Aquarium-Wasserwerte-Rechner (AWR) v2.9</span> | <a href="#" onclick="alert(currentLang==='en'?'Data saved locally':'Daten lokal gespeichert'); return false;" data-i18n="footer_save">Daten sichern</a></p>
+<p style="margin-top: 4px;"><span data-i18n="footer_provider">Bereitgestellt von</span> <a href="https://aqua-enthusiasts.de" target="_blank">Aqua-Enthusiasts.de</a></p>
 </footer>
 
 <script>
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 let activeModalDate = '';
+let currentLang = localStorage.getItem('awr_lang') || 'de';
 
 // Multi-Tank Data Structure Storage Management
 let allTanks = JSON.parse(localStorage.getItem('awr_all_tanks')) || {
@@ -962,8 +978,176 @@ btn_analyze: "Analysieren & im Kalender speichern",
 res_title: "📊 Analyseergebnis & Auswertung",
 modal_subtitle: "Vollständiger Analyse-Report:",
 modal_save: "Speichern",
-footer_text: "Aquarium-Wasserwerte-Rechner (AWR) v2.8",
-footer_save: "Daten sichern"
+footer_text: "Aquarium-Wasserwerte-Rechner (AWR) v2.9",
+footer_save: "Daten sichern",
+footer_provider: "Bereitgestellt von"
+},
+en: {
+main_title: "Aquarium Water Parameters Calculator (AWR) - Complete Analysis",
+title: "Aquarium Water Parameters Calculator (AWR)",
+subtitle: "Complete Aquarium Analysis",
+tab_tech: "Tank & Equipment",
+tab_deco: "Substrate & Decor",
+tab_water: "Water Parameters",
+tab_stock: "Stocking & Feeding",
+tab_symptoms: "Symptoms",
+tab_cal: "📅 Calendar",
+sec_tank_info: "📐 Tank Specifications",
+lbl_length: "Tank length (cm):",
+lbl_width: "Tank width (cm):",
+lbl_height: "Tank height (cm):",
+lbl_vol: "Tank volume (L):",
+lbl_runtime: "Running time:",
+sec_filter: "🌀 Filtration & Heating",
+lbl_filtertype: "Filter type:",
+opt_select: "-- Select from list --",
+opt_infilt: "Internal filter",
+opt_backpack: "Hang-on filter",
+opt_outfilt: "Canister filter",
+opt_sump: "Sump / Filter basin",
+lbl_flow: "Filter flow rate (L/h):",
+lbl_skimmer: "Is a surface skimmer installed?",
+lbl_uv: "UV sterilizer:",
+lbl_yes: "Yes",
+lbl_no: "No",
+lbl_filtermedia: "Which filter media are used?",
+fm_ceramic: "Ceramic rings",
+fm_sponge: "Filter sponge",
+fm_clay: "Expanded clay",
+fm_lava: "Lava rock",
+fm_carbon: "Activated carbon",
+fm_floss: "Filter floss",
+fm_zeolite: "Zeolite",
+lbl_clean_interval: "Filter cleaning interval (in weeks)?",
+lbl_heater: "Is a heater installed in the tank?",
+lbl_temp: "Water temperature (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "Is CO₂ injected?",
+sec_light: "💡 Lighting",
+lbl_light_type: "Lighting type:",
+opt_t5t8: "T5/T8 fluorescent tube",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Color temperature (K):",
+lbl_light_watt: "Power (W):",
+lbl_light_lum: "Luminous flux (lm):",
+lbl_light_duration: "Daily lighting duration (h):",
+sec_plants: "🌿 Plants and Fertilization",
+lbl_plant_density: "How densely is the tank planted?",
+pd_very_few: "Very few plants",
+pd_few: "Few plants",
+pd_medium: "Medium plant density",
+pd_dense: "Densely planted",
+pd_very_dense: "Very densely planted",
+lbl_fert_types: "Which fertilizers are used?",
+ft_liq_c: "Liquid carbon booster",
+ft_allinone: "All-in-one fertilizer",
+ft_macro: "Macronutrient fertilizer",
+ft_micro: "Micronutrient fertilizer",
+ft_nitro: "Nitrogen fertilizer",
+ft_phos: "Phosphate fertilizer",
+ft_pot: "Potassium fertilizer",
+ft_iron: "Iron fertilizer",
+lbl_sub_type: "Substrate type:",
+sub_gravel: "Quartz gravel",
+sub_sand: "Sand",
+sub_soil: "Active soil",
+lbl_nutrient_sub: "Was a nutrient-rich base layer used?",
+lbl_regular_sub_fert: "Are root fertilizers used regularly?",
+lbl_sub_vol: "Total substrate volume (L):",
+sec_stone: "Stone Selection (Hardness Analysis)",
+lbl_stone_type: "Stone type:",
+opt_nostone: "-- None / Not specified --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcareous)",
+st_dragon: "Dragon Stone / Ohko Stone (Clay stone)",
+st_rokkaku: "Rokkaku Stone (Calcareous)",
+st_mini: "Mini-Landscape (Calcareous)",
+st_slate: "Slate / Black Slate (Neutral)",
+st_lava: "Lava Rock (Neutral, porous)",
+st_manten: "Manten Stone (Mostly neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Hardens water significantly)",
+st_granite: "Granite (Neutral, inert)",
+st_marble: "Marble / White Marble (Extremely calcareous)",
+st_loch: "Lochstein / Honeycomb limestone (Highly calcareous)",
+st_river: "River pebbles (Mostly neutral)",
+st_zebra: "Zebra Stone (Slightly calcareous)",
+st_holzstein: "Wood stone (Mostly neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Stone quantity (kg):",
+sec_wood: "Wood Selection",
+lbl_wood_type: "Wood type:",
+opt_nowood: "-- No wood / Not specified --",
+wt_redmoor: "Red Moor Wood (Releases tannins)",
+wt_mangrove: "Mangrove wood (Acidifies slightly)",
+wt_moor: "Bog oak / Moorkien (Strongly acidic)",
+wt_spider: "Spider Wood (Branchy, light)",
+wt_drift: "Driftwood (Slightly acidic)",
+wt_savannah: "Savannah wood (Hard, smooth)",
+wt_rondeletia: "Ironwood (Very hard and heavy)",
+wt_jumbo: "Jumbo root (Large pieces)",
+wt_cork: "Corkscrew hazel (Decorative)",
+lbl_wood_qty: "Wood quantity (kg):",
+sec_water_compare: "🧪 Water Parameters Comparison",
+col_water_change: "Water Change",
+col_water_tank: "Tank Water",
+lbl_fish_small: "Small fish (up to 3 cm):",
+lbl_fish_medium: "Medium fish (3–8 cm):",
+lbl_fish_large: "Large fish (over 8 cm):",
+lbl_fish_pleco: "Plecos / L-numbers:",
+lbl_fish_algae: "Algae-eating fish:",
+lbl_shrimp: "Shrimp (pcs.):",
+lbl_snails: "Snails (pcs.):",
+lbl_feeding: "Feeding:",
+fd_live: "Live food",
+fd_frozen: "Frozen food",
+fd_flakes: "Flake food",
+fd_granule: "Granule food",
+fd_tabs: "Pleco tabs / Chips",
+lbl_feeding_freq: "Feeding frequency:",
+ff_1x_d: "1 x daily",
+ff_2x_d: "2 x daily",
+ff_more_d: "More than 2 x daily",
+ff_1x_w: "1 x weekly",
+ff_2x_w: "2 x weekly",
+ff_more_w: "More than 2 x weekly",
+lbl_sym_algae: "Which algae are present?",
+alg_green_thread: "Green thread algae",
+alg_green_spot: "Green spot algae (GSA)",
+alg_cyano: "Cyanobacteria (Blue-green algae)",
+alg_brush: "Brush / Beard algae (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatoms (Brown algae)",
+alg_glass: "Green film on glass",
+alg_bloom: "Green water bloom",
+lbl_sym_plants: "Plant issues:",
+pl_no_growth: "No growth",
+pl_fade: "Fading / Loss of color",
+pl_holes: "Holes in leaves",
+pl_melt: "Plant melt / Leaf decay",
+pl_rot: "Stem rot",
+pl_yellow: "Yellowing leaves",
+pl_deformed: "Small, deformed new leaves",
+pl_drop: "Dropping lower leaves",
+lbl_sym_fish: "Fish and Invertebrates:",
+fi_air: "Gasping for air at the surface",
+fi_apathy: "Apathy / Loss of appetite",
+fi_deaths: "Deaths in recent days",
+fi_spots: "White spots or coatings on fish",
+fi_fins: "Frayed or dissolving fins",
+lbl_sym_water: "Water and Appearance:",
+wa_turbid: "Turbid / Cloudy water",
+wa_yellow: "Yellow or tea-colored water tint",
+wa_deposits: "Mineral deposits on glass/equipment",
+wa_odor: "Unpleasant odor",
+wa_biofilm: "White coating or biofilm on wood",
+btn_analyze: "Analyze & Save to Calendar",
+res_title: "📊 Analysis Results & Evaluation",
+modal_subtitle: "Complete analysis report:",
+modal_save: "Save",
+footer_text: "Aquarium Water Parameters Calculator (AWR) v2.9",
+footer_save: "Save Data",
+footer_provider: "Provided by"
 }
 };
 
@@ -979,15 +1163,32 @@ select.appendChild(opt);
 });
 }
 
+function switchLanguage(lang) {
+currentLang = lang;
+localStorage.setItem('awr_lang', lang);
+document.getElementById('langSelect').value = lang;
+document.documentElement.lang = lang;
+
+// Übersetze alle Elemente mit data-i18n
+document.querySelectorAll('[data-i18n]').forEach(el => {
+let key = el.getAttribute('data-i18n');
+if(translations[lang] && translations[lang][key]) {
+el.innerText = translations[lang][key];
+}
+});
+renderCalendar();
+}
+
 function createNewTank() {
 if(Object.keys(allTanks).length >= 10) {
-alert("Maximale Anzahl von 10 Aquarien erreicht.");
+alert(currentLang === 'en' ? "Maximum limit of 10 aquariums reached." : "Maximale Anzahl von 10 Aquarien erreicht.");
 return;
 }
-let newName = prompt("Name für das neue Aquarium eingeben:", `Aquarium ${Object.keys(allTanks).length + 1}`);
+let promptText = currentLang === 'en' ? "Enter name for the new aquarium:" : "Name für das neue Aquarium eingeben:";
+let newName = prompt(promptText, `Aquarium ${Object.keys(allTanks).length + 1}`);
 if(!newName) return;
 if(allTanks[newName]) {
-alert("Ein Aquarium mit diesem Namen existiert bereits.");
+alert(currentLang === 'en' ? "An aquarium with this name already exists." : "Ein Aquarium mit diesem Namen existiert bereits.");
 return;
 }
 allTanks[newName] = { inputs: {}, diary: {} };
@@ -998,10 +1199,11 @@ calcVol();
 }
 
 function renameCurrentTank() {
-let newNameNeun = prompt("Neuen Namen für das Aquarium eingeben:", currentTankName);
+let promptText = currentLang === 'en' ? "Enter new name for the aquarium:" : "Neuen Namen für das Aquarium eingeben:";
+let newNameNeun = prompt(promptText, currentTankName);
 if(!newNameNeun || newNameNeun === currentTankName) return;
 if(allTanks[newNameNeun]) {
-alert("Ein Aquarium mit diesem Namen existiert bereits.");
+alert(currentLang === 'en' ? "An aquarium with this name already exists." : "Ein Aquarium mit diesem Namen existiert bereits.");
 return;
 }
 allTanks[newNameNeun] = allTanks[currentTankName];
@@ -1031,7 +1233,6 @@ data[el.id] = el.value;
 }
 }
 });
-// Auch Radio-Button Status speichern
 const radios = ['skimmer', 'uv', 'heater', 'co2_zuafuhr', 'nutrient_sub', 'regular_sub_fert'];
 radios.forEach(rName => {
 let checkedEl = document.querySelector(`input[name="${rName}"]:checked`);
@@ -1090,58 +1291,58 @@ let wNames = ["pH", "GH", "KH", "NH₄", "NO₂", "NO₃", "PO₄", "K", "Ca", "
 let idsChange = ["w_ph_wechsel", "w_gh_wechsel", "w_kh_wechsel", "w_nh4_wechsel", "w_no2_wechsel", "w_no3_wechsel", "w_po4_wechsel", "w_k_wechsel", "w_ca_wechsel", "w_mg_wechsel", "w_fe_wechsel", "w_na_wechsel", "w_sio2_wechsel", "w_so4_wechsel"];
 let idsAkt = ["w_ph_akt", "w_gh_akt", "w_kh_akt", "w_nh4_akt", "w_no2_akt", "w_no3_akt", "w_po4_akt", "w_k_akt", "w_ca_akt", "w_mg_akt", "w_fe_akt", "w_na_akt", "w_sio2_akt", "w_so4_akt"];
 
-let waterReport = `--- WASSERWERTE (${currentTankName}) ---\n`;
+let waterReport = `--- WATER PARAMETERS (${currentTankName}) ---\n`;
 for(let i = 0; i < wNames.length; i++) {
 let valChange = document.getElementById(idsChange[i]) ? document.getElementById(idsChange[i]).value : "0.0";
 let valAkt = document.getElementById(idsAkt[i]) ? document.getElementById(idsAkt[i]).value : "0.0";
-waterReport += `${wNames[i]}: Wechsel = ${valChange}, Aquarium = ${valAkt}\n`;
+waterReport += `${wNames[i]}: Change = ${valChange}, Tank = ${valAkt}\n`;
 }
 
-let warningsHtml = '<h2>📊 Analyseergebnis & Auswertung</h2>';
-let warningsTextReport = "\n--- WARNUNGEN & LÖSUNGEN ---\n";
+let warningsHtml = `<h2>${translations[currentLang].res_title}</h2>`;
+let warningsTextReport = "\n--- WARNINGS & SOLUTIONS ---\n";
 
 let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
 let ghChange = parseFloat(document.getElementById('w_gh_wechsel').value) || 0;
 if (ghAkt > ghChange + 1) {
-let title = "⚠️ GH-Anstieg im Becken: Gesamthärte im Aquarium weicht vom Wechselwasser ab.";
-let expl = "Kalkhaltige Steine oder Dekorationselemente im Aquarium geben kontinuierlich Mineralien an das Wasser ab.";
-let sol = "Kalkhaltige Steine entfernen und durch inerte Dekoration (Schiefer/Lava) ersetzen.";
+let title = currentLang === 'en' ? "⚠️ GH Increase: Total hardness in the tank differs from change water." : "⚠️ GH-Anstieg im Becken: Gesamthärte im Aquarium weicht vom Wechselwasser ab.";
+let expl = currentLang === 'en' ? "Calcareous stones or decorations continuously release minerals into the water." : "Kalkhaltige Steine oder Dekorationselemente im Aquarium geben kontinuierlich Mineralien an das Wasser ab.";
+let sol = currentLang === 'en' ? "Remove calcareous stones and replace with inert decor (slate/lava)." : "Kalkhaltige Steine entfernen und durch inerte Dekoration (Schiefer/Lava) ersetzen.";
 warningsHtml += `
 <div class="alert-card alert-orange" onclick="toggleDetails(this)">
 <strong>${title}</strong>
-<span class="click-hint">Klicken für Details</span>
-<div class="alert-details">- Erklärung: ${expl}<br>- Lösung: ${sol}</div>
+<span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
+<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
 </div>`;
-warningsTextReport += `[WARNUNG ORANGE] GH-Anstieg im Becken:\n- Erklärung: ${expl}\n- Lösung: ${sol}\n\n`;
+warningsTextReport += `[WARNING] GH Increase:\n- ${expl}\n- ${sol}\n\n`;
 }
 
 let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
 if (no3Akt >= 10) {
-let title = `🚨 Nitrat-Wert beachten: Der NO₃-Wert liegt bei ${no3Akt} ppm.`;
-let expl = "NO₃ liegt im erhöhten Bereich durch zu hohe Nährstoffzufuhr oder unzureichende Wasserwechsel.";
-let sol = "Regelmäßig Wasser wechseln und Futtermenge anpassen.";
+let title = currentLang === 'en' ? `🚨 High Nitrate: NO₃ level is at ${no3Akt} ppm.` : `🚨 Nitrat-Wert beachten: Der NO₃-Wert liegt bei ${no3Akt} ppm.`;
+let expl = currentLang === 'en' ? "NO₃ is elevated due to heavy feeding or insufficient water changes." : "NO₃ liegt im erhöhten Bereich durch zu hohe Nährstoffzufuhr oder unzureichende Wasserwechsel.";
+let sol = currentLang === 'en' ? "Perform regular water changes and adjust feeding amounts." : "Regelmäßig Wasser wechseln und Futtermenge anpassen.";
 warningsHtml += `
 <div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
-<span class="click-hint">Klicken für Details</span>
-<div class="alert-details">- Erklärung: ${expl}<br>- Lösung: ${sol}</div>
+<span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
+<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
 </div>`;
-warningsTextReport += `[WARNUNG ROT] Nitrat-Wert beachten:\n- Erklärung: ${expl}\n- Lösung: ${sol}\n\n`;
+warningsTextReport += `[WARNING] High Nitrate:\n- ${expl}\n- ${sol}\n\n`;
 }
 
 document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
 let algName = chk.value;
-let title = `🚨 Algen- / Problem-Warnung: ${algName} entdeckt`;
-let expl = `Das Symptom "${algName}" weist auf ein Ungleichgewicht im Aquarium hin.`;
-let sol = "Wöchentliche Wasserwechsel erhöhen und Nährstoffwerte testen.";
+let title = currentLang === 'en' ? `🚨 Issue Warning: ${algName} detected` : `🚨 Algen- / Problem-Warnung: ${algName} entdeckt`;
+let expl = currentLang === 'en' ? `The symptom "${algName}" indicates an imbalance in the aquarium.` : `Das Symptom "${algName}" weist auf ein Ungleichgewicht im Aquarium hin.`;
+let sol = currentLang === 'en' ? "Increase weekly water changes and test nutrient parameters." : "Wöchentliche Wasserwechsel erhöhen und Nährstoffwerte testen.";
 
 warningsHtml += `
 <div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
-<span class="click-hint">Klicken für Details</span>
-<div class="alert-details">- Erklärung: ${expl}<br>- Lösung: ${sol}</div>
+<span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
+<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
 </div>`;
-warningsTextReport += `[WARNUNG ROT] Problem (${algName}):\n- Erklärung: ${expl}\n- Lösung: ${sol}\n\n`;
+warningsTextReport += `[WARNING] Issue (${algName}):\n- ${expl}\n- ${sol}\n\n`;
 });
 
 document.getElementById('resultCardContainer').innerHTML = warningsHtml;
@@ -1177,14 +1378,16 @@ function renderCalendar() {
 const grid = document.getElementById('calendarGrid');
 if (!grid) return;
 grid.innerHTML = '';
-const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const monthNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
 
 const monthYearEl = document.getElementById('calMonthYear');
 if (monthYearEl) {
 monthYearEl.innerText = `${monthNames[currentMonth]} ${currentYear}`;
 }
 
-const daysOfWeek = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+const daysOfWeek = currentLang === 'en' ? ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] : ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 daysOfWeek.forEach(d => {
 let div = document.createElement('div');
 div.className = 'cal-header-day';
@@ -1225,7 +1428,8 @@ grid.appendChild(div);
 
 function openModal(dateStr) {
 activeModalDate = dateStr;
-document.getElementById('modalDateTitle').innerText = `Eintrag vom ${dateStr} (${currentTankName})`;
+let titlePrefix = currentLang === 'en' ? "Entry for" : "Eintrag vom";
+document.getElementById('modalDateTitle').innerText = `${titlePrefix} ${dateStr} (${currentTankName})`;
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
 document.getElementById('modalEntryText').value = diaryData[dateStr] || '';
 document.getElementById('dayModal').style.display = 'flex';
@@ -1250,6 +1454,7 @@ renderCalendar();
 
 window.addEventListener('DOMContentLoaded', () => {
 updateTankSelector();
+switchLanguage(currentLang);
 loadTankData();
 calcVol();
 renderCalendar();
