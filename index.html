@@ -822,7 +822,23 @@ lbl_shrimp: "Garnelen (Stk.):",
 lbl_snails: "Schnecken (Stk.):",
 lbl_feeding: "Fütterung:",
 lbl_feeding_freq: "Fütterungshäufigkeit:",
-btn_analyze: "Analysieren & im Kalender speichern"
+btn_analyze: "Analysieren & im Kalender speichern",
+details_click: "Klicken für Details",
+w_gh_title: (val) => "⚠️ GH-Anstieg im Becken: Gesamthärte im Aquarium weicht vom Wechselwasser ab.",
+w_gh_expl: "Kalkhaltige Steine oder Dekorationselemente im Aquarium geben kontinuierlich Mineralien an das Wasser ab.",
+w_gh_sol: "Kalkhaltige Steine entfernen und durch inerte Dekoration (Schiefer/Lava) ersetzen.",
+w_no3_title: (val) => "🚨 Nitrat-Wert beachten: Der NO₃-Wert liegt bei " + val + " ppm.",
+w_no3_expl: "NO₃ liegt im erhöhten Bereich durch zu hohe Nährstoffzufuhr oder unzureichende Wasserwechsel.",
+w_no3_sol: "Regelmäßig Wasser wechseln und Futtermenge anpassen.",
+w_light_title: (val) => "⚠️ Zu lange Beleuchtungsdauer: Beleuchtung steht auf " + val + " Stunden.",
+w_light_expl: "Eine zu lange Bestrahlung fördert massiv das Algenwachstum, da Pflanzen den Lichtüberschuss nicht mehr verarbeiten können.",
+w_light_sol: "Beleuchtungsdauer auf 7 bis 8 Stunden täglich reduzieren und ggf. eine Mittagspause einbauen.",
+w_feed_title: "⚠️ Zu viel Fütterung für den aktuellen Besatz.",
+w_feed_expl: "Es wird häufig gefüttert, was zu überschüssigen Nährstoffen (Nitrat/Phosphat) und starkem Algenwachstum führt.",
+w_feed_sol: "Fütterungsmenge reduzieren, Fastentage einlegen und Reste absaugen.",
+w_alg_title: (name) => "🚨 Algen- / Problem-Warnung: " + name + " entdeckt",
+w_alg_expl: (name) => "Das Symptom \"" + name + "\" weist auf ein Ungleichgewicht im Aquarium hin (oft Nährstoff-Imbalance, Lichtüberschuss oder mangelnde Beckenhygiene).",
+w_alg_sol: "Wöchentliche Wasserwechsel erhöhen, Nährstoffwerte (Nitrat/Phosphat) testen, CO₂-Gehalt stabilisieren und betroffene Blätter/Flächen mechanisch reinigen."
 },
 en: {
 title: "Aquarium Water Parameters Calculator (AWR)",
@@ -871,7 +887,23 @@ lbl_shrimp: "Shrimp (pcs.):",
 lbl_snails: "Snails (pcs.):",
 lbl_feeding: "Feeding:",
 lbl_feeding_freq: "Feeding frequency:",
-btn_analyze: "Analyze & Save to Calendar"
+btn_analyze: "Analyze & Save to Calendar",
+details_click: "Click for details",
+w_gh_title: (val) => "⚠️ GH increase in tank: General hardness differs from change water.",
+w_gh_expl: "Calcareous stones or decorations continuously release minerals into the water.",
+w_gh_sol: "Remove calcareous stones and replace with inert decor (slate/lava).",
+w_no3_title: (val) => "🚨 Nitrate warning: NO₃ level is at " + val + " ppm.",
+w_no3_expl: "NO₃ is elevated due to excessive nutrient input or insufficient water changes.",
+w_no3_sol: "Perform regular water changes and adjust feeding amounts.",
+w_light_title: (val) => "⚠️ Lighting duration too long: Lighting is set to " + val + " hours.",
+w_light_expl: "Excessive lighting massively promotes algae growth because plants cannot process the surplus light.",
+w_light_sol: "Reduce lighting duration to 7-8 hours daily and add a midday break if necessary.",
+w_feed_title: "⚠️ Too much feeding for current stock.",
+w_feed_expl: "Frequent feeding leads to excess nutrients (nitrate/phosphate) and heavy algae growth.",
+w_feed_sol: "Reduce feeding amount, introduce fasting days, and siphon out leftovers.",
+w_alg_title: (name) => "🚨 Algae / Problem Warning: " + name + " detected",
+w_alg_expl: (name) => "The symptom \"" + name + "\" indicates an imbalance in the aquarium (often nutrient imbalance, excess light, or poor maintenance).",
+w_alg_sol: "Increase weekly water changes, test nutrient levels, stabilize CO₂ levels, and clean affected surfaces."
 }
 };
 
@@ -883,6 +915,9 @@ if (t[key]) {
 el.innerText = t[key];
 }
 });
+if(document.getElementById('resultSection').style.display === 'block') {
+runAnalysis({ preventDefault: () => {} });
+}
 }
 
 function openTab(evt, tabId) {
@@ -904,6 +939,9 @@ function runAnalysis(event) {
 event.preventDefault();
 document.getElementById('resultSection').style.display = 'block';
 
+const currentLang = document.getElementById('langSelect').value;
+const t = translations[currentLang] || translations['de'];
+
 // 1. Alle 14 Wasserwerte auslesen
 let wNames = ["pH", "GH", "KH", "NH₄", "NO₂", "NO₃", "PO₄", "K", "Ca", "Mg", "Fe", "Na", "SiO₂", "SO₄"];
 let idsChange = ["w_ph_wechsel", "w_gh_wechsel", "w_kh_wechsel", "w_nh4_wechsel", "w_no2_wechsel", "w_no3_wechsel", "w_po4_wechsel", "w_k_wechsel", "w_ca_wechsel", "w_mg_wechsel", "w_fe_wechsel", "w_na_wechsel", "w_sio2_wechsel", "w_so4_wechsel"];
@@ -917,21 +955,21 @@ waterReport += `${wNames[i]}: Wechsel = ${valChange}, Aquarium = ${valAkt}\n`;
 }
 
 // 2. Dynamische Warnungen generieren (Werte, Beleuchtung, Fütterung, Algen-Symptome)
-let warningsHtml = '<h2>📊 Analyseergebnis & Auswertung</h2>';
+let warningsHtml = '<h2>📊 ' + (currentLang === 'en' ? 'Analysis Result & Evaluation' : 'Analyseergebnis & Auswertung') + '</h2>';
 let warningsTextReport = "\n--- WARNUNGEN & LÖSUNGEN ---\n";
 
 // A) Wasserwerte & Gh-Unterschied prüfen
 let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
 let ghChange = parseFloat(document.getElementById('w_gh_wechsel').value) || 0;
 if (ghAkt > ghChange + 1) {
-let title = "⚠️ GH-Anstieg im Becken: Gesamthärte im Aquarium weicht vom Wechselwasser ab.";
-let expl = "Kalkhaltige Steine oder Dekorationselemente im Aquarium geben kontinuierlich Mineralien an das Wasser ab.";
-let sol = "Kalkhaltige Steine entfernen und durch inerte Dekoration (Schiefer/Lava) ersetzen.";
+let title = t.w_gh_title ? t.w_gh_title(ghAkt) : "⚠️ GH-Anstieg im Becken";
+let expl = t.w_gh_expl;
+let sol = t.w_gh_sol;
 warningsHtml += `
 <div class="alert-card alert-orange" onclick="toggleDetails(this)">
 <strong>${title}</strong>
-<span class="click-hint">Klicken für Details</span>
-<div class="alert-details">- Erklärung: ${expl}<br>- Lösung: ${sol}</div>
+<span class="click-hint">${t.details_click || 'Klicken für Details'}</span>
+<div class="alert-details">- ${currentLang==='en'?'Explanation':'Erklärung'}: ${expl}<br>- ${currentLang==='en'?'Solution':'Lösung'}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNUNG ORANGE] GH-Anstieg im Becken:\n- Erklärung: ${expl}\n- Lösung: ${sol}\n\n`;
 }
@@ -939,29 +977,29 @@ warningsTextReport += `[WARNUNG ORANGE] GH-Anstieg im Becken:\n- Erklärung: ${e
 // B) Nitrat prüfen
 let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
 if (no3Akt >= 10) {
-let title = "🚨 Nitrat-Wert beachten: Der NO₃-Wert liegt bei " + no3Akt + " ppm.";
-let expl = "NO₃ liegt im erhöhten Bereich durch zu hohe Nährstoffzufuhr oder unzureichende Wasserwechsel.";
-let sol = "Regelmäßig Wasser wechseln und Futtermenge anpassen.";
+let title = t.w_no3_title ? t.w_no3_title(no3Akt) : "🚨 Nitrat-Wert beachten";
+let expl = t.w_no3_expl;
+let sol = t.w_no3_sol;
 warningsHtml += `
 <div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
-<span class="click-hint">Klicken für Details</span>
-<div class="alert-details">- Erklärung: ${expl}<br>- Lösung: ${sol}</div>
+<span class="click-hint">${t.details_click || 'Klicken für Details'}</span>
+<div class="alert-details">- ${currentLang==='en'?'Explanation':'Erklärung'}: ${expl}<br>- ${currentLang==='en'?'Solution':'Lösung'}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNUNG ROT] Nitrat-Wert beachten:\n- Erklärung: ${expl}\n- Lösung: ${sol}\n\n`;
 }
 
-// C) Beleuchtungsdauer prüfen (> 8 oder 9 Stunden kann bei manchen Becken zu lang sein, hier flexibel ab 9h)
+// C) Beleuchtungsdauer prüfen
 let lichtDauer = parseFloat(document.getElementById('beleuchtungsdauer').value) || 8;
 if (lichtDauer > 9) {
-let title = "⚠️ Zu lange Beleuchtungsdauer: Beleuchtung steht auf " + lichtDauer + " Stunden.";
-let expl = "Eine zu lange Bestrahlung fördert massiv das Algenwachstum, da Pflanzen den Lichtüberschuss nicht mehr verarbeiten können.";
-let sol = "Beleuchtungsdauer auf 7 bis 8 Stunden täglich reduzieren und ggf. eine Mittagspause einbauen.";
+let title = t.w_light_title ? t.w_light_title(lichtDauer) : "⚠️ Zu lange Beleuchtungsdauer";
+let expl = t.w_light_expl;
+let sol = t.w_light_sol;
 warningsHtml += `
 <div class="alert-card alert-orange" onclick="toggleDetails(this)">
 <strong>${title}</strong>
-<span class="click-hint">Klicken für Details</span>
-<div class="alert-details">- Erklärung: ${expl}<br>- Lösung: ${sol}</div>
+<span class="click-hint">${t.details_click || 'Klicken für Details'}</span>
+<div class="alert-details">- ${currentLang==='en'?'Explanation':'Erklärung'}: ${expl}<br>- ${currentLang==='en'?'Solution':'Lösung'}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNUNG ORANGE] Zu lange Beleuchtungsdauer (${lichtDauer}h):\n- Erklärung: ${expl}\n- Lösung: ${sol}\n\n`;
 }
@@ -973,14 +1011,14 @@ let fLarge = parseInt(document.getElementById('besatz_gross').value) || 0;
 let totalFish = fSmall + fMed + fLarge;
 let freq = document.getElementById('fuetterungs_haeufigkeit').value;
 if (totalFish > 10 && (freq === '2x_taeglich' || freq === 'mehr_als_2x_taeglich')) {
-let title = "⚠️ Zu viel Fütterung für den aktuellen Besatz.";
-let expl = "Es wird häufig gefüttert, was zu überschüssigen Nährstoffen (Nitrat/Phosphat) und starkem Algenwachstum führt.";
-let sol = "Fütterungsmenge reduzieren, Fastentage einlegen und Reste absaugen.";
+let title = t.w_feed_title;
+let expl = t.w_feed_expl;
+let sol = t.w_feed_sol;
 warningsHtml += `
 <div class="alert-card alert-orange" onclick="toggleDetails(this)">
 <strong>${title}</strong>
-<span class="click-hint">Klicken für Details</span>
-<div class="alert-details">- Erklärung: ${expl}<br>- Lösung: ${sol}</div>
+<span class="click-hint">${t.details_click || 'Klicken für Details'}</span>
+<div class="alert-details">- ${currentLang==='en'?'Explanation':'Erklärung'}: ${expl}<br>- ${currentLang==='en'?'Solution':'Lösung'}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNUNG ORANGE] Zu viel Fütterung für den Besatz:\n- Erklärung: ${expl}\n- Lösung: ${sol}\n\n`;
 }
@@ -988,15 +1026,15 @@ warningsTextReport += `[WARNUNG ORANGE] Zu viel Fütterung für den Besatz:\n- E
 // E) Ausgewählte Algen / Symptome prüfen
 document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
 let algName = chk.value;
-let title = `🚨 Algen- / Problem-Warnung: ${algName} entdeckt`;
-let expl = `Das Symptom "${algName}" weist auf ein Ungleichgewicht im Aquarium hin (oft Nährstoff-Imbalance, Lichtüberschuss oder mangelnde Beckenhygiene).`;
-let sol = `Wöchentliche Wasserwechsel erhöhen, Nährstoffwerte (Nitrat/Phosphat) testen, CO₂-Gehalt stabilisieren und betroffene Blätter/Flächen mechanisch reinigen.`;
+let title = t.w_alg_title ? t.w_alg_title(algName) : `🚨 Algen- / Problem-Warnung: ${algName} entdeckt`;
+let expl = t.w_alg_expl ? t.w_alg_expl(algName) : `Das Symptom "${algName}" weist auf ein Ungleichgewicht im Aquarium hin.`;
+let sol = t.w_alg_sol;
 
 warningsHtml += `
 <div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
-<span class="click-hint">Klicken für Details</span>
-<div class="alert-details">- Erklärung: ${expl}<br>- Lösung: ${sol}</div>
+<span class="click-hint">${t.details_click || 'Klicken für Details'}</span>
+<div class="alert-details">- ${currentLang==='en'?'Explanation':'Erklärung'}: ${expl}<br>- ${currentLang==='en'?'Solution':'Lösung'}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNUNG ROT] Algen-/Problem-Warnung (${algName}):\n- Erklärung: ${expl}\n- Lösung: ${sol}\n\n`;
 });
