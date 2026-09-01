@@ -276,22 +276,70 @@
       cursor: pointer;
       transition: background 0.2s, border-color 0.2s;
     }
-    .cal-day:hover {
-      border-color: var(--accent);
-    }
+    .cal-day:hover { border-color: var(--accent); }
     .cal-day.empty { background: transparent; border: none; cursor: default; }
     .cal-day.has-entry { border-color: var(--accent); background: rgba(14, 165, 233, 0.15); }
     .cal-day.today { font-weight: bold; color: var(--accent); border-color: var(--accent); }
     .entry-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 3px; }
-    
-    #historyDetailBox {
+
+    /* MODAL / NEUES FENSTER STILE */
+    .modal-overlay {
       display: none;
-      background: #020617;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(2, 6, 23, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+    .modal-content {
+      background: var(--card);
       border: 1px solid var(--accent);
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 12px;
+      width: 100%;
+      max-width: 450px;
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px; right: 15px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-body {
+      margin-top: 10px;
       font-size: 0.85rem;
+    }
+    .modal-body textarea {
+      width: 100%;
+      height: 80px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 6px;
+      padding: 8px;
+      margin-top: 8px;
+      font-family: inherit;
+      resize: vertical;
+    }
+    .modal-btn {
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      font-weight: bold;
+      border-radius: 6px;
+      margin-top: 12px;
+      cursor: pointer;
     }
 
     .app-footer {
@@ -733,14 +781,23 @@
           <button type="button" onclick="changeMonth(1)">›</button>
         </div>
         <div class="calendar-grid" id="calendarGrid"></div>
-        <div id="historyDetailBox">
-          <h3 id="historyDateTitle" style="color:var(--accent); margin-bottom: 6px;">Eintrag vom</h3>
-          <p id="historyText">Keine Daten für diesen Tag vorhanden.</p>
-        </div>
       </div>
     </div>
 
   </form>
+
+  <!-- POPUP / MODAL FÜR TAGESDETAILS -->
+  <div class="modal-overlay" id="dayModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <h3 id="modalDateTitle" style="color:var(--accent); margin-bottom: 10px;">Datum</h3>
+      <div class="modal-body">
+        <p style="margin-bottom: 6px; color:var(--text-muted);">Tagebucheintrag & Werte:</p>
+        <textarea id="modalEntryText" placeholder="Notizen, gemessene Werte oder Pflegeaktionen hier eintragen..."></textarea>
+        <button type="button" class="modal-btn" onclick="saveDayEntry()">Speichern</button>
+      </div>
+    </div>
+  </div>
 
   <footer class="app-footer">
     <p>Aquarium-Wasserwerte-Rechner (AWR) v2.7 | <a href="#" onclick="alert('Daten lokal gespeichert'); return false;">Daten sichern</a></p>
@@ -751,6 +808,7 @@
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
     let analysisDiary = {};
+    let activeModalDate = '';
 
     const translations = {
       de: {
@@ -758,7 +816,7 @@
         subtitle: "Vollständige Aquarium-Analyse",
         tab_tech: "Becken & Technik",
         tab_deco: "Bodengrund & Deko",
-        tab_water: "Wasserwerte",
+        tab_wasser: "Wasserwerte",
         tab_stock: "Besatz & Futter",
         tab_symptoms: "Symptome",
         tab_cal: "📅 Kalender",
@@ -946,18 +1004,31 @@
 
         let dotHtml = hasEntry ? '<div class="entry-dot"></div>' : '';
         div.innerHTML = `<span>${d}</span>${dotHtml}`;
-        div.onclick = () => showDayDetails(dateStr);
+        div.onclick = () => openModal(dateStr);
         grid.appendChild(div);
       }
     }
 
-    function showDayDetails(dateStr) {
-      const box = document.getElementById('historyDetailBox');
-      const title = document.getElementById('historyDateTitle');
-      const text = document.getElementById('historyText');
-      box.style.display = 'block';
-      title.innerText = `Eintrag vom ${dateStr}`;
-      text.innerText = analysisDiary[dateStr] || "Keine Einträge für diesen Tag hinterlegt.";
+    function openModal(dateStr) {
+      activeModalDate = dateStr;
+      document.getElementById('modalDateTitle').innerText = `Eintrag vom ${dateStr}`;
+      document.getElementById('modalEntryText').value = analysisDiary[dateStr] || '';
+      document.getElementById('dayModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('dayModal').style.display = 'none';
+    }
+
+    function saveDayEntry() {
+      let text = document.getElementById('modalEntryText').value.trim();
+      if (text) {
+        analysisDiary[activeModalDate] = text;
+      } else {
+        delete analysisDiary[activeModalDate];
+      }
+      closeModal();
+      renderCalendar();
     }
   </script>
 </body>
