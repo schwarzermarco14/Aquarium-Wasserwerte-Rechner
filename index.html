@@ -533,7 +533,7 @@
       </div>
     </div>
 
-    <!-- TAB 5: SYMPTOME -->
+    <!<!-- TAB 5: SYMPTOME -->
     <div id="tab-symptome" class="tab-content">
       <div class="card">
         <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
@@ -541,38 +541,60 @@
         <div class="question-block">
           <label class="main-label">Welche Algen treten auf?</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox"> Fadenalgen</label>
-            <label class="check-group"><input type="checkbox"> Pinselalgen</label>
-            <label class="check-group"><input type="checkbox"> Punktalgen</label>
-            <label class="check-group"><input type="checkbox"> Schwebealgen (grünes Wasser)</label>
-            <label class="check-group"><input type="checkbox"> Kieselalgen (braune Beläge)</label>
-            <label class="check-group"><input type="checkbox"> Blaualgen (Schmieralgen/Cyanos)</label>
+            <label class="check-group"><input type="checkbox" id="sym_faden"> Fadenalgen</label>
+            <label class="check-group"><input type="checkbox" id="sym_pinsel"> Pinselalgen / Bartalgen (BBA)</label>
+            <label class="check-group"><input type="checkbox" id="sym_punkt"> Grüne Punktalgen (GSA)</label>
+            <label class="check-group"><input type="checkbox" id="sym_schwebe"> Schwebealgen (grünes Wasser)</label>
+            <label class="check-group"><input type="checkbox" id="sym_kiesel"> Kieselalgen (braune Beläge)</label>
+            <label class="check-group"><input type="checkbox" id="sym_cyano"> Blaualgen (Schmieralgen/Cyanos)</label>
+            <label class="check-group"><input type="checkbox" id="sym_spirogyra"> Spirogyra</label>
+            <label class="check-group"><input type="checkbox" id="sym_scheiben"> Grüner Belag auf den Scheiben</label>
           </div>
         </div>
 
         <div class="question-block" style="margin-top: 15px;">
           <label class="main-label">Pflanzenprobleme:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox"> Gelbe Blätter (Chlorose)</label>
-            <label class="check-group"><input type="checkbox"> Löcher in Blättern</label>
-            <label class="check-group"><input type="checkbox"> Glasige Blätter</label>
-            <label class="check-group"><input type="checkbox"> Kümmerlicher Wuchs</label>
-            <label class="check-group"><input type="checkbox"> Abwerfen der Blätter</label>
+            <label class="check-group"><input type="checkbox" id="sym_gelb"> Gelbe Blätter (Chlorose)</label>
+            <label class="check-group"><input type="checkbox" id="sym_loecher"> Löcher in Blättern</label>
+            <label class="check-group"><input type="checkbox" id="sym_glasig"> Glasige Blätter</label>
+            <label class="check-group"><input type="checkbox" id="sym_kuemmerlich"> Kümmerlicher Wuchs</label>
+            <label class="check-group"><input type="checkbox" id="sym_abwerfen"> Abwerfen der Blätter</label>
+            <label class="check-group"><input type="checkbox" id="sym_wachstum"> Kein Wachstum</label>
+            <label class="check-group"><input type="checkbox" id="sym_verblassen"> Verblassen / Farbverlust</label>
+            <label class="check-group"><input type="checkbox" id="sym_blattzerfall"> Blattzerfall / Pflanzenmelt</label>
+            <label class="check-group"><input type="checkbox" id="sym_staengelfaeule"> Stängelfäule</label>
+            <label class="check-group"><input type="checkbox" id="sym_deformiert"> Deformierte neue Blätter</label>
+            <label class="check-group"><input type="checkbox" id="sym_untere"> Abfallende untere Blätter</label>
           </div>
         </div>
 
         <div class="question-block" style="margin-top: 15px;">
           <label class="main-label">Fisch- & Tierverhalten:</label>
           <div class="media-grid">
-            <label class="check-group"><input type="checkbox"> Schnappt an der Oberfläche nach Luft</label>
-            <label class="check-group"><input type="checkbox"> Scheuert sich an Gegenständen</label>
-            <label class="check-group"><input type="checkbox"> Apathisch / Fressunlust</label>
-            <label class="check-group"><input type="checkbox"> Schreckhaftigkeit</label>
+            <label class="check-group"><input type="checkbox" id="sym_luft"> Schnappt an der Oberfläche nach Luft</label>
+            <label class="check-group"><input type="checkbox" id="sym_scheuern"> Scheuert sich an Gegenständen</label>
+            <label class="check-group"><input type="checkbox" id="sym_apathisch"> Apathisch / Fressunlust</label>
+            <label class="check-group"><input type="checkbox" id="sym_schreckhaft"> Schreckhaftigkeit</label>
+            <label class="check-group"><input type="checkbox" id="sym_todesfaelle"> Todesfälle in den letzten Tagen</label>
+            <label class="check-group"><input type="checkbox" id="sym_punkte"> Weiße Punkte / Weißpünktchenkrankheit</label>
+            <label class="check-group"><input type="checkbox" id="sym_flossen"> Ausgefranste oder aufgelöste Flossen</label>
           </div>
         </div>
 
-        <button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
+        <div class="question-block" style="margin-top: 15px;">
+          <label class="main-label">Wasser und Erscheinungsbild:</label>
+          <div class="media-grid">
+            <label class="check-group"><input type="checkbox" id="sym_trueb"> Trübes Wasser</label>
+            <label class="check-group"><input type="checkbox" id="sym_gerbstoffe"> Gelbe/teefarbene Wasserfärbung (Gerbstoffe)</label>
+            <label class="check-group"><input type="checkbox" id="sym_mineral"> Mineralische Ablagerungen</label>
+            <label class="check-group"><input type="checkbox" id="sym_geruch"> Unangenehmer Geruch</label>
+            <label class="check-group"><input type="checkbox" id="sym_biofilm"> Weißer Belag oder Biofilm auf Holz</label>
+          </div>
+        </div>
+
       </div>
+    </div>
 
       <!-- ANALYSE ERGEBNISSE -->
       <div class="result-box" id="resultSection">
