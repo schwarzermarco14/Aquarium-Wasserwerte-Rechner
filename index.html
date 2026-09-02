@@ -230,6 +230,19 @@ margin-top: 15px;
 cursor: pointer;
 }
 
+.btn-accent {
+width: 100%;
+background: var(--accent);
+color: #0f172a;
+font-weight: bold;
+border: none;
+padding: 10px;
+border-radius: 8px;
+font-size: 0.9rem;
+margin-top: 10px;
+cursor: pointer;
+}
+
 .result-box {
 display: none;
 margin-top: 15px;
@@ -379,11 +392,26 @@ line-height: 1.5;
 }
 .app-footer a { color: var(--accent); text-decoration: none; }
 .app-footer a:hover { text-decoration: underline; }
+
+.comparison-table {
+width: 100%;
+margin-top: 10px;
+border-collapse: collapse;
+font-size: 0.8rem;
+}
+.comparison-table th, .comparison-table td {
+border: 1px solid var(--border);
+padding: 6px 8px;
+text-align: left;
+}
+.comparison-table th {
+background: #020617;
+color: var(--accent);
+}
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
 <div class="header-left">
 <h1><span data-i18n="title">Aquarium-Wasserwerte-Rechner (AWR)</span> 💧</h1>
@@ -405,7 +433,6 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TABS NAVIGATION -->
 <div class="tabs">
 <button class="tab-btn active" onclick="openTab(event, 'tab-becken')" data-i18n="tab_tech">Becken & Technik</button>
 <button class="tab-btn" onclick="openTab(event, 'tab-duengung')" data-i18n="tab_deco">Bodengrund & Deko</button>
@@ -417,7 +444,6 @@ line-height: 1.5;
 
 <form onsubmit="runAnalysis(event)">
 
-<!-- TAB 1: BECKEN, FILTER, LICHT & PFLANZEN -->
 <div id="tab-becken" class="tab-content active">
 <div class="card">
 <h2 data-i18n="sec_tank_info">📐 Angaben zum Aquarium</h2>
@@ -543,7 +569,6 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 2: BODENGRUND & DEKO -->
 <div id="tab-duengung" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_deco">🪨 Bodengrund und Dekoration</h2>
@@ -593,7 +618,7 @@ line-height: 1.5;
 <option value="lochgestein" data-i18n="st_loch">Lochgestein (Stark kalkhaltig)</option>
 <option value="flusskiesel" data-i18n="st_river">Flusskiesel (Meist neutral)</option>
 <option value="zebra" data-i18n="st_zebra">Zebra Stone (Leicht kalkhaltig)</option>
-<option value="holzstein" data-i18n="st_woodstone">Holzstein (Meist neutral)</option>
+<option value="holzstein" data-i18n="st_holzstein">Holzstein (Meist neutral)</option>
 <option value="tiger" data-i18n="st_tiger">Tiger Stone (Neutral)</option>
 </select>
 </div>
@@ -619,7 +644,6 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 3: WASSERWERTE -->
 <div id="tab-wasser" class="tab-content">
 <div class="card">
 <h2 data-i18n="sec_water_compare">🧪 Wasserwerte-Vergleich</h2>
@@ -660,9 +684,30 @@ line-height: 1.5;
 </div>
 </div>
 </div>
+
+<div class="card">
+<h2 data-i18n="sec_history_compare">📅 Tagebuch-Vergleich nach Datum</h2>
+<div class="form-group">
+<label data-i18n="lbl_date_1">Erstes Datum:</label>
+<select id="compareDate1" style="width: 140px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
+<option value="">-- Wähle Datum --</option>
+</select>
+</div>
+<div class="form-group">
+<label data-i18n="lbl_date_2">Zweites Datum:</label>
+<select id="compareDate2" style="width: 140px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
+<option value="">-- Wähle Datum --</option>
+</select>
+</div>
+<button type="button" class="btn-accent" onclick="compareDiaryDates()" data-i18n="btn_compare">Einträge vergleichen</button>
+
+<div id="comparisonResultBox" style="margin-top: 15px; display: none;">
+<h3 id="comparisonTitle" style="font-size: 0.9rem; color: var(--accent); margin-bottom: 8px;"></h3>
+<div id="comparisonContent" style="font-size: 0.85rem; line-height: 1.4; background: #020617; padding: 10px; border-radius: 6px; border: 1px solid var(--border); white-space: pre-wrap;"></div>
+</div>
+</div>
 </div>
 
-<!-- TAB 4: BESATZ & FÜTTERUNG -->
 <div id="tab-besatz" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_stock">🐟 Tierbesatz & Fütterung</h2>
@@ -700,7 +745,6 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 5: SYMPTOME -->
 <div id="tab-symptome" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
@@ -758,7 +802,6 @@ line-height: 1.5;
 <button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
 </div>
 
-<!-- ANALYSE ERGEBNISSE -->
 <div class="result-box" id="resultSection">
 <div class="card" id="resultCardContainer">
 <h2 data-i18n="res_title">📊 Analyseergebnis & Auswertung</h2>
@@ -766,7 +809,6 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 6: KALENDER -->
 <div id="tab-kalender" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_cal">📅 Aquarien-Tagebuch</h2>
@@ -781,7 +823,6 @@ line-height: 1.5;
 
 </form>
 
-<!-- POPUP / MODAL FÜR TAGESDETAILS -->
 <div class="modal-overlay" id="dayModal">
 <div class="modal-content">
 <button class="modal-close" onclick="closeModal()">×</button>
@@ -821,7 +862,7 @@ title: "Aquarium-Wasserwerte-Rechner (AWR)",
 subtitle: "Vollständige Aquarium-Analyse",
 tab_tech: "Becken & Technik",
 tab_deco: "Bodengrund & Deko",
-tab_wasser: "Wasserwerte",
+tab_water: "Wasserwerte",
 tab_stock: "Besatz & Futter",
 tab_symptoms: "Symptome",
 tab_cal: "📅 Kalender",
@@ -924,6 +965,10 @@ lbl_wood_qty: "Menge an Holz (kg):",
 sec_water_compare: "🧪 Wasserwerte-Vergleich",
 col_water_change: "Wasserwechsel",
 col_water_tank: "Aquarienwasser",
+sec_history_compare: "📅 Tagebuch-Vergleich nach Datum",
+lbl_date_1: "Erstes Datum:",
+lbl_date_2: "Zweites Datum:",
+btn_compare: "Einträge vergleichen",
 lbl_fish_small: "Kleine Fische (bis 3 cm):",
 lbl_fish_medium: "Mittelgroße Fische (3–8 cm):",
 lbl_fish_large: "Große Fische (über 8 cm):",
@@ -1091,6 +1136,10 @@ lbl_wood_qty: "Wood quantity (kg):",
 sec_water_compare: "🧪 Water Parameters Comparison",
 col_water_change: "Water Change",
 col_water_tank: "Tank Water",
+sec_history_compare: "📅 Diary Comparison by Date",
+lbl_date_1: "First Date:",
+lbl_date_2: "Second Date:",
+btn_compare: "Compare Entries",
 lbl_fish_small: "Small fish (up to 3 cm):",
 lbl_fish_medium: "Medium fish (3–8 cm):",
 lbl_fish_large: "Large fish (over 8 cm):",
@@ -1163,13 +1212,63 @@ select.appendChild(opt);
 });
 }
 
+function updateComparisonDropdowns() {
+const sel1 = document.getElementById('compareDate1');
+const sel2 = document.getElementById('compareDate2');
+if(!sel1 || !sel2) return;
+
+let val1 = sel1.value;
+let val2 = sel2.value;
+
+sel1.innerHTML = `<option value="">-- ${currentLang==='en'?'Select date':'Wähle Datum'} --</option>`;
+sel2.innerHTML = `<option value="">-- ${currentLang==='en'?'Select date':'Wähle Datum'} --</option>`;
+
+let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+let dates = Object.keys(diaryData).sort();
+
+dates.forEach(dateStr => {
+let opt1 = document.createElement('option');
+opt1.value = dateStr;
+opt1.innerText = dateStr;
+sel1.appendChild(opt1);
+
+let opt2 = document.createElement('option');
+opt2.value = dateStr;
+opt2.innerText = dateStr;
+sel2.appendChild(opt2);
+});
+
+if(val1) sel1.value = val1;
+if(val2) sel2.value = val2;
+}
+
+function compareDiaryDates() {
+const date1 = document.getElementById('compareDate1').value;
+const date2 = document.getElementById('compareDate2').value;
+const resBox = document.getElementById('comparisonResultBox');
+const titleEl = document.getElementById('comparisonTitle');
+const contentEl = document.getElementById('comparisonContent');
+
+if(!date1 || !date2) {
+alert(currentLang === 'en' ? "Please select both dates for comparison." : "Bitte wähle beide Daten für den Vergleich aus.");
+return;
+}
+
+let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+let text1 = diaryData[date1] || (currentLang === 'en' ? "No entry for this date." : "Kein Eintrag vorhanden.");
+let text2 = diaryData[date2] || (currentLang === 'en' ? "No entry for this date." : "Kein Eintrag vorhanden.");
+
+titleEl.innerText = `${currentLang==='en'?'Comparison':'Vergleich'}: ${date1} vs ${date2}`;
+contentEl.innerText = `--- [ ${date1} ] ---\n${text1}\n\n--- [ ${date2} ] ---\n${text2}`;
+resBox.style.display = 'block';
+}
+
 function switchLanguage(lang) {
 currentLang = lang;
 localStorage.setItem('awr_lang', lang);
 document.getElementById('langSelect').value = lang;
 document.documentElement.lang = lang;
 
-// Übersetze alle Elemente mit data-i18n
 document.querySelectorAll('[data-i18n]').forEach(el => {
 let key = el.getAttribute('data-i18n');
 if(translations[lang] && translations[lang][key]) {
@@ -1177,6 +1276,7 @@ el.innerText = translations[lang][key];
 }
 });
 renderCalendar();
+updateComparisonDropdowns();
 }
 
 function createNewTank() {
@@ -1218,14 +1318,16 @@ currentTankName = name;
 loadTankData();
 calcVol();
 renderCalendar();
+updateComparisonDropdowns();
 document.getElementById('resultSection').style.display = 'none';
+document.getElementById('comparisonResultBox').style.display = 'none';
 }
 
 function saveDataAuto() {
 if(!allTanks[currentTankName]) allTanks[currentTankName] = {};
 let data = {};
 document.querySelectorAll('input, select').forEach(el => {
-if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText') {
+if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText' && el.id !== 'compareDate1' && el.id !== 'compareDate2') {
 if(el.type === 'checkbox' || el.type === 'radio') {
 data[el.id || el.name + '_' + Math.random()] = el.checked;
 } else {
@@ -1266,6 +1368,7 @@ el.value = data[id];
 }
 }
 renderCalendar();
+updateComparisonDropdowns();
 }
 
 function openTab(evt, tabId) {
@@ -1274,6 +1377,7 @@ document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'
 document.getElementById(tabId).classList.add('active');
 evt.currentTarget.classList.add('active');
 if(tabId === 'tab-kalender') { renderCalendar(); }
+if(tabId === 'tab-wasser') { updateComparisonDropdowns(); }
 }
 
 function calcVol() {
@@ -1355,6 +1459,7 @@ if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
 allTanks[currentTankName].diary[dateKey] = fullReport;
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 renderCalendar();
+updateComparisonDropdowns();
 }
 
 function toggleDetails(card) {
@@ -1415,7 +1520,7 @@ let isToday = (d === realToday.getDate() && currentMonth === realToday.getMonth(
 let hasEntry = diaryData[dateStr] ? true : false;
 
 let classNames = ['cal-day'];
-if (hasEntry) classNames.push('has-entry');
+if (hasEntry) classNames.pathClass = classNames.push('has-entry');
 if (isToday) classNames.push('today');
 div.className = classNames.join(' ');
 
@@ -1450,6 +1555,7 @@ delete allTanks[currentTankName].diary[activeModalDate];
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 closeModal();
 renderCalendar();
+updateComparisonDropdowns();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -1458,6 +1564,7 @@ switchLanguage(currentLang);
 loadTankData();
 calcVol();
 renderCalendar();
+updateComparisonDropdowns();
 });
 </script>
 </body>
