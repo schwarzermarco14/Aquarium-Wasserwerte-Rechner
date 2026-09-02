@@ -392,26 +392,11 @@ line-height: 1.5;
 }
 .app-footer a { color: var(--accent); text-decoration: none; }
 .app-footer a:hover { text-decoration: underline; }
-
-.comparison-table {
-width: 100%;
-margin-top: 10px;
-border-collapse: collapse;
-font-size: 0.8rem;
-}
-.comparison-table th, .comparison-table td {
-border: 1px solid var(--border);
-padding: 6px 8px;
-text-align: left;
-}
-.comparison-table th {
-background: #020617;
-color: var(--accent);
-}
 </style>
 </head>
 <body>
 
+<!-- Header -->
 <div class="header">
 <div class="header-left">
 <h1><span data-i18n="title">Aquarium-Wasserwerte-Rechner (AWR)</span> 💧</h1>
@@ -433,6 +418,7 @@ color: var(--accent);
 </div>
 </div>
 
+<!-- TABS NAVIGATION -->
 <div class="tabs">
 <button class="tab-btn active" onclick="openTab(event, 'tab-becken')" data-i18n="tab_tech">Becken & Technik</button>
 <button class="tab-btn" onclick="openTab(event, 'tab-duengung')" data-i18n="tab_deco">Bodengrund & Deko</button>
@@ -444,6 +430,7 @@ color: var(--accent);
 
 <form onsubmit="runAnalysis(event)">
 
+<!-- TAB 1: BECKEN, FILTER, LICHT & PFLANZEN -->
 <div id="tab-becken" class="tab-content active">
 <div class="card">
 <h2 data-i18n="sec_tank_info">📐 Angaben zum Aquarium</h2>
@@ -569,6 +556,7 @@ color: var(--accent);
 </div>
 </div>
 
+<!-- TAB 2: BODENGRUND & DEKO -->
 <div id="tab-duengung" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_deco">🪨 Bodengrund und Dekoration</h2>
@@ -644,6 +632,7 @@ color: var(--accent);
 </div>
 </div>
 
+<!-- TAB 3: WASSERWERTE -->
 <div id="tab-wasser" class="tab-content">
 <div class="card">
 <h2 data-i18n="sec_water_compare">🧪 Wasserwerte-Vergleich</h2>
@@ -684,30 +673,9 @@ color: var(--accent);
 </div>
 </div>
 </div>
-
-<div class="card">
-<h2 data-i18n="sec_history_compare">📅 Tagebuch-Vergleich nach Datum</h2>
-<div class="form-group">
-<label data-i18n="lbl_date_1">Erstes Datum:</label>
-<select id="compareDate1" style="width: 140px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
-<option value="">-- Wähle Datum --</option>
-</select>
-</div>
-<div class="form-group">
-<label data-i18n="lbl_date_2">Zweites Datum:</label>
-<select id="compareDate2" style="width: 140px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
-<option value="">-- Wähle Datum --</option>
-</select>
-</div>
-<button type="button" class="btn-accent" onclick="compareDiaryDates()" data-i18n="btn_compare">Einträge vergleichen</button>
-
-<div id="comparisonResultBox" style="margin-top: 15px; display: none;">
-<h3 id="comparisonTitle" style="font-size: 0.9rem; color: var(--accent); margin-bottom: 8px;"></h3>
-<div id="comparisonContent" style="font-size: 0.85rem; line-height: 1.4; background: #020617; padding: 10px; border-radius: 6px; border: 1px solid var(--border); white-space: pre-wrap;"></div>
-</div>
-</div>
 </div>
 
+<!-- TAB 4: BESATZ & FÜTTERUNG -->
 <div id="tab-besatz" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_stock">🐟 Tierbesatz & Fütterung</h2>
@@ -745,6 +713,7 @@ color: var(--accent);
 </div>
 </div>
 
+<!-- TAB 5: SYMPTOME -->
 <div id="tab-symptome" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
@@ -802,6 +771,7 @@ color: var(--accent);
 <button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
 </div>
 
+<!-- ANALYSE ERGEBNISSE -->
 <div class="result-box" id="resultSection">
 <div class="card" id="resultCardContainer">
 <h2 data-i18n="res_title">📊 Analyseergebnis & Auswertung</h2>
@@ -809,6 +779,7 @@ color: var(--accent);
 </div>
 </div>
 
+<!-- TAB 6: KALENDER & TAGEBUCH-VERGLEICH -->
 <div id="tab-kalender" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_cal">📅 Aquarien-Tagebuch</h2>
@@ -819,10 +790,33 @@ color: var(--accent);
 </div>
 <div class="calendar-grid" id="calendarGrid"></div>
 </div>
+
+<div class="card">
+<h2 data-i18n="sec_history_compare">📅 Tagebuch-Vergleich nach Datum</h2>
+<div class="form-group">
+<label data-i18n="lbl_date_1">Erstes Datum:</label>
+<select id="compareDate1" style="width: 140px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
+<option value="">-- Wähle Datum --</option>
+</select>
+</div>
+<div class="form-group">
+<label data-i18n="lbl_date_2">Zweites Datum:</label>
+<select id="compareDate2" style="width: 140px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
+<option value="">-- Wähle Datum --</option>
+</select>
+</div>
+<button type="button" class="btn-accent" onclick="compareDiaryDates()" data-i18n="btn_compare">Einträge vergleichen</button>
+
+<div id="comparisonResultBox" style="margin-top: 15px; display: none;">
+<h3 id="comparisonTitle" style="font-size: 0.9rem; color: var(--accent); margin-bottom: 8px;"></h3>
+<div id="comparisonContent" style="font-size: 0.85rem; line-height: 1.4; background: #020617; padding: 10px; border-radius: 6px; border: 1px solid var(--border); white-space: pre-wrap;"></div>
+</div>
+</div>
 </div>
 
 </form>
 
+<!-- POPUP / MODAL FÜR TAGESDETAILS -->
 <div class="modal-overlay" id="dayModal">
 <div class="modal-content">
 <button class="modal-close" onclick="closeModal()">×</button>
@@ -846,7 +840,6 @@ let currentYear = new Date().getFullYear();
 let activeModalDate = '';
 let currentLang = localStorage.getItem('awr_lang') || 'de';
 
-// Multi-Tank Data Structure Storage Management
 let allTanks = JSON.parse(localStorage.getItem('awr_all_tanks')) || {
   "Hauptbecken (64L)": {
     inputs: {},
@@ -1376,8 +1369,10 @@ document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('act
 document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 document.getElementById(tabId).classList.add('active');
 evt.currentTarget.classList.add('active');
-if(tabId === 'tab-kalender') { renderCalendar(); }
-if(tabId === 'tab-wasser') { updateComparisonDropdowns(); }
+if(tabId === 'tab-kalender') { 
+  renderCalendar(); 
+  updateComparisonDropdowns();
+}
 }
 
 function calcVol() {
@@ -1520,7 +1515,7 @@ let isToday = (d === realToday.getDate() && currentMonth === realToday.getMonth(
 let hasEntry = diaryData[dateStr] ? true : false;
 
 let classNames = ['cal-day'];
-if (hasEntry) classNames.pathClass = classNames.push('has-entry');
+if (hasEntry) classNames.push('has-entry');
 if (isToday) classNames.push('today');
 div.className = classNames.join(' ');
 
