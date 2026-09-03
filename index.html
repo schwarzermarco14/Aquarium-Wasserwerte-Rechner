@@ -1402,9 +1402,9 @@ let warningsTextReport = "\n--- WARNINGS & SOLUTIONS ---\n";
 
 let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
 let ghChange = parseFloat(document.getElementById('w_gh_wechsel').value) || 0;
-let steinArt = document.getElementById('steinArt') ? document.getElementById('steinArt.value') || document.getElementById('steinArt').value : "";
+let steinArt = document.getElementById('steinArt') ? document.getElementById('steinArt').value : "";
 
-if (ghAkt > ghChange + 1 || steinArt === "mini_landscape" || steinArt === "seiryu" || steinArt === "lochgestein" || steinArt === "marmor") {
+if (ghAkt > ghChange + 1 || steinArt === "mini_landscape" || steinArt === "seiryu" || steinArt === "lochgestein" || steinArt === "marmor" || steinArt === "ada_eyi" || steinArt === "rokkaku") {
 let title = currentLang === 'en' ? "⚠️ GH Increase / Calcareous Hardscaping detected" : "⚠️ Wasser wird zu hart (Kalk im Becken)";
 let expl = currentLang === 'en' ? "Popular aquarium stones like 'Mini-Landscape' contain high amounts of calcium and continuously release minerals into the water, raising total and carbonate hardness." : "Im Becken befinden sich kalkhaltige Steine (oder das Leitungswasser ist sehr hart). Diese Steine geben ununterbrochen Mineralien ab, wodurch das Wasser mit der Zeit immer härter wird.";
 let sol = currentLang === 'en' ? "For beginners: Either remove the calcareous stones and replace them with inert decor (slate/lava), or use soft/osmose water for water changes to balance the hardening effect." : "Nimm die kalkhaltigen Steine heraus und ersetze sie durch neutrale Deko (wie Schiefer oder Lavastein). Mische beim nächsten Wasserwechsel normales Leitungswasser mit weichem Osmose- oder destillierten Wasser, um die Härte zu senken.";
@@ -1485,7 +1485,7 @@ expl = currentLang === 'en' ? "Normal biological biofilm accelerated by excessiv
 sol = currentLang === 'en' ? "Clean glass regularly using an algae magnet or scraper, and adjust lighting periods if algae growth is excessively fast." : "Putz die Scheiben einfach regelmäßig mit einem Scheibenmagneten oder einem Klingenreiniger. Steht das Aquarium evtl. in der prallen Sonne? Wenn ja, verstelle es oder schirme das Licht ab.";
 } else if (val === "Grüne Wasserblüte") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Green Water Bloom" : "🚨 Algen-Hilfe: Grüne Wasserblüte (milchig-grünes Wasser)";
-expl = currentLang === 'en' ? "Microscopic single-celled algae floating freely, caused by intense light peaks, ammonia spikes, or severe nutrient imbalances." : "Das Wasser sieht aus wie grüne Erbsensuppe. Winzige Schwebealgen schwimmen frei im Wasser, meist ausgelöst durch zu viel Licht oder ein Nährstoffungleichgewicht.";
+expl = currentLang === 'en' ? "Microscopic single-celled algae floating freely, caused by intense light peaks, ammonia spikes, or severe nutrient imbalances." : "Das Wasser aussieht wie grüne Erbsensuppe. Winzige Schwebealgen schwimmen frei im Wasser, meist ausgelöst durch zu viel Licht oder ein Nährstoffungleichgewicht.";
 sol = currentLang === 'en' ? "Deploy a UV-C clarifier, execute a 3-day complete blackout of the tank, and perform large subsequent water changes." : "Schalte das Licht komplett aus und decke das Aquarium für 3 Tage blickdicht ab (Dunkelkur). Mache danach einen großen Wasserwechsel von 50%. Ein UV-C-Klärer hilft ebenfalls sofort.";
 } else if (val === "Kein Wachstum") {
 title = currentLang === 'en' ? "⚠️ Plant Issue: No Growth" : "⚠️ Pflanzen-Hilfe: Pflanzen wachsen überhaupt nicht";
@@ -1549,7 +1549,7 @@ warningsHtml += `
 <div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
 <span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
-<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
+<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Ergänzung"}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNING] Issue (${val}):\n- ${expl}\n- ${sol}\n\n`;
 });
