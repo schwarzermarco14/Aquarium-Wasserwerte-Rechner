@@ -1528,8 +1528,7 @@ grid.appendChild(div);
 
 function openModal(dateStr) {
 activeModalDate = dateStr;
-let titlePrefix = currentLang === 'en' ? "Entry for" : "Eintrag vom";
-document.getElementById('modalDateTitle').innerText = `${titlePrefix} ${dateStr} (${currentTankName})`;
+document.getElementById('modalDateTitle').innerText = dateStr;
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
 document.getElementById('modalEntryText').value = diaryData[dateStr] || '';
 document.getElementById('dayModal').style.display = 'flex';
@@ -1540,12 +1539,12 @@ document.getElementById('dayModal').style.display = 'none';
 }
 
 function saveDayEntry() {
-let text = document.getElementById('modalEntryText').value.trim();
+let textVal = document.getElementById('modalEntryText').value;
 if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
-if (text) {
-allTanks[currentTankName].diary[activeModalDate] = text;
-} else {
+if(textVal.trim() === '') {
 delete allTanks[currentTankName].diary[activeModalDate];
+} else {
+allTanks[currentTankName].diary[activeModalDate] = textVal;
 }
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 closeModal();
@@ -1553,14 +1552,12 @@ renderCalendar();
 updateComparisonDropdowns();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.onload = function() {
 updateTankSelector();
-switchLanguage(currentLang);
 loadTankData();
 calcVol();
-renderCalendar();
-updateComparisonDropdowns();
-});
+switchLanguage(currentLang);
+};
 </script>
 </body>
 </html>
