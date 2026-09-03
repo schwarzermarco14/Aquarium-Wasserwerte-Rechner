@@ -761,7 +761,7 @@ line-height: 1.5;
 <label class="main-label" data-i18n="lbl_sym_water">Wasser und Erscheinungsbild:</label>
 <div class="media-grid">
 <label class="check-group"><input type="checkbox" class="symptom-chk" value="Trübes Wasser" onchange="saveDataAuto()"> <span data-i18n="wa_turbid">Trübes Wasser</span></label>
-<label class="check-group"><input type="checkbox" class="symptom-chk" value="Gelbe Wasserfärbung" onchange="saveDataAuto()"> <span data-i18n="wa_yellow">Gelbe oder teefarbene Wasserfärbung</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-xls" value="Gelbe Wasserfärbung" onchange="saveDataAuto()"> <span data-i18n="wa_yellow">Gelbe oder teefarbene Wasserfärbung</span></label>
 <label class="check-group"><input type="checkbox" class="symptom-chk" value="Mineralische Ablagerungen" onchange="saveDataAuto()"> <span data-i18n="wa_deposits">Mineralische Ablagerungen auf Scheiben/Technik</span></label>
 <label class="check-group"><input type="checkbox" class="symptom-chk" value="Unangenehmer Geruch" onchange="saveDataAuto()"> <span data-i18n="wa_odor">Unangenehmer Geruch</span></label>
 <label class="check-group"><input type="checkbox" class="symptom-chk" value="Weißer Belag auf Holz" onchange="saveDataAuto()"> <span data-i18n="wa_biofilm">Weißer Belag oder Biofilm auf Holz</span></label>
@@ -1180,7 +1180,7 @@ fi_fins: "Frayed or dissolving fins",
 lbl_sym_water: "Water and Appearance:",
 wa_turbid: "Turbid / Cloudy water",
 wa_yellow: "Yellow or tea-colored water tint",
-wa_deposits: "Mineral deposits on glass/equipment",
+wa_deposits: "Mineralische Ablagerungen auf Scheiben/Technik",
 wa_odor: "Unpleasant odor",
 wa_biofilm: "White coating or biofilm on wood",
 btn_analyze: "Analyze & Save to Calendar",
@@ -1429,11 +1429,34 @@ warningsHtml += `
 warningsTextReport += `[WARNING] High Nitrate:\n- ${expl}\n- ${sol}\n\n`;
 }
 
+// SPEZIFISCHE SYMPTOM-LOGIK HIER INTEGRIERT
 document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
-let algName = chk.value;
-let title = currentLang === 'en' ? `🚨 Issue Warning: ${algName} detected` : `🚨 Algen- / Problem-Warnung: ${algName} entdeckt`;
-let expl = currentLang === 'en' ? `The symptom "${algName}" indicates an imbalance in the aquarium.` : `Das Symptom "${algName}" weist auf ein Ungleichgewicht im Aquarium hin.`;
-let sol = currentLang === 'en' ? "Increase weekly water changes and test nutrient parameters." : "Wöchentliche Wasserwechsel erhöhen und Nährstoffwerte testen.";
+let val = chk.value;
+let title = "";
+let expl = "";
+let sol = "";
+
+if (val === "Spirogyra") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Spirogyra (Green Silk Algae)" : "🚨 Algen-Warnung: Spirogyra (Faden-/Wollalgen)";
+expl = currentLang === 'en' ? "Spirogyra thrives on high micronutrients (iron), organic waste, and unstable CO2/macro levels." : "Spirogyra wächst rasant bei zu viel Eisen/Mikronährstoffen, organischer Belastung und Ungleichgewichten im Makro-Bereich (N/P/K).";
+sol = currentLang === 'en' ? "Reduce micro-fertilizers, perform large water changes, manually remove clusters, and check filter cleanliness." : "Mikrodüngung reduzieren, große Wasserwechsel durchführen, manuell absammeln und Filter auf Mulm prüfen.";
+} else if (val === "Kieselalgen") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Diatoms (Brown Algae)" : "🚨 Algen-Warnung: Kieselalgen (Braunalgen)";
+expl = currentLang === 'en' ? "Diatoms typically occur in newly set up tanks due to high silicate (SiO2) levels and lower lighting." : "Treten meist in der Einlaufphase durch zu viel Silikat (Kieselsäure) im Leitungswasser oder unzureichende Beleuchtung auf.";
+sol = currentLang === 'en' ? "Increase lighting intensity/duration, use silicate-absorbing filter media (e.g. Zeolite/SilicaEx), and wait out the initial phase." : "Beleuchtungsdauer/-stärke erhöhen, Silikat-Adsorber (z.B. Zeolith) im Filter einsetzen und Geduld haben (verschwinden oft von selbst).";
+} else if (val === "Schnappen nach Luft") {
+title = currentLang === 'en' ? "🚨 Critical Warning: Fish gasping for air at surface" : "🚨 Kritische Warnung: Fische schnappen nach Luft";
+expl = currentLang === 'en' ? "Oxygen deficiency in the water, excessive CO2 injection, or high pollutant levels (Ammonia/Nitrite) blocking gill respiration." : "Akuter Sauerstoffmangel im Wasser, zu hohe CO2-Zufuhr oder toxische Ammoniak-/Nitritwerte blockieren die Sauerstoffaufnahme über die Kiemen.";
+sol = currentLang === 'en' ? "Increase surface movement immediately (adjust filter outflow or add an air pump), check temperature and test NH4/NO2." : "Sofort für starke Oberflächenströmung sorgen (Filterauslauf höher stellen, Ausströmerstein nutzen), CO2 stoppen, Wasserwerte (NH4/NO2) testen und evtl. großzügig Wasser wechseln.";
+} else if (val === "Todesfälle") {
+title = currentLang === 'en' ? "🚨 Critical Warning: Recent fish deaths" : "🚨 Kritische Warnung: Todesfälle im Becken";
+expl = currentLang === 'en' ? "Indicates severe water quality issues (toxic ammonia/nitrite spike), disease outbreak, or critical stress factors." : "Deutet auf akute Vergiftungen (z.B. Nitrit-/Ammoniak-Spitze), aggressive Krankheitserreger oder extremen Stress hin.";
+sol = currentLang === 'en' ? "Test water immediately for NH4 and NO2, perform a 50% water change, and observe surviving stock closely." : "Sofort Wassertests für NH4 und NO2 durchführen, mind. 50% Wasserwechsel machen und erkrankte Tiere ggf. in Quarantäne setzen.";
+} else {
+title = currentLang === 'en' ? `🚨 Issue Warning: ${val} detected` : `🚨 Problem-Warnung: ${val} entdeckt`;
+expl = currentLang === 'en' ? `The symptom "${val}" indicates an imbalance in the aquarium.` : `Das Symptom "${val}" weist auf ein Ungleichgewicht im Aquarium hin.`;
+sol = currentLang === 'en' ? "Increase weekly water changes and test nutrient parameters." : "Wöchentliche Wasserwechsel erhöhen und Nährstoffwerte testen.";
+}
 
 warningsHtml += `
 <div class="alert-card alert-red" onclick="toggleDetails(this)">
@@ -1441,7 +1464,7 @@ warningsHtml += `
 <span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
 <div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
 </div>`;
-warningsTextReport += `[WARNING] Issue (${algName}):\n- ${expl}\n- ${sol}\n\n`;
+warningsTextReport += `[WARNING] Issue (${val}):\n- ${expl}\n- ${sol}\n\n`;
 });
 
 document.getElementById('resultCardContainer').innerHTML = warningsHtml;
