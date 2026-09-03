@@ -1424,7 +1424,7 @@ let holzArt = document.getElementById('holzArt') ? document.getElementById('holz
 
 if (phAkt <= 6.0 || (phAkt <= 6.5 && khAkt <= 4.0 && holzArt !== "")) {
 let title = currentLang === 'en' ? "⚠️ Critical pH & Acid Drop Risk (Säuresturz)" : "⚠️ Kritischer pH-Wert & Gefahr eines Säuresturzes";
-let expl = currentLang === 'en' ? `The pH value is critically low (${phAkt}), combined with a low carbonate hardness (KH ${khAkt}) and acidic wood/processes. This poses a high risk of an unbuffered pH crash (acid drop).` : `Der pH-Wert liegt mit ${phAkt} im stark sauren Bereich. Bei einer Karbonathärte von ${khAkt} °dH und säuernden Faktoren (wie Holz) ist der Puffer sehr gering, wodurch akute Gefahr eines plötzlichen Säuresturzes (KH-Absturz) droht.`;
+let expl = currentLang === 'en' ? `The pH value is critically low (${phAkt}), combined with a low carbonate hardness (KH ${khAkt}) and acidic wood/processes. This poses a high risk of an unbuffered pH crash (acid drop).` : `Der pH-Wert liegt mit ${phAkt} im stark sauren Bereich. Leicht saures Treibholz sowie weitere säuernde Faktoren haben hierzu beigetragen. Bei einer Karbonathärte von ${khAkt} °dH und diesen Faktoren ist der Puffer sehr gering, wodurch akute Gefahr eines plötzlichen Säuresturzes (KH-Absturz) droht.`;
 let sol = currentLang === 'en' ? "Increase KH slightly using suitable mineral salts, perform regular water changes to secure buffering, and monitor pH/KH closely." : "Karbonathärte (KH) durch geeignete Maßnahmen (z. B. Wasserwechsel mit höherer KH oder Aufhärtung) stabilisieren, Holzzufuhr prüfen und den pH-Wert engmaschig überwachen.";
 warningsHtml += `
 <div class="alert-card alert-orange" onclick="toggleDetails(this)">
