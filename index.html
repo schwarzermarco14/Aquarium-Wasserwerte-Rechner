@@ -1417,7 +1417,6 @@ warningsHtml += `
 warningsTextReport += `[WARNING] GH Increase / Mini-Landscape:\n- ${expl}\n- ${sol}\n\n`;
 }
 
-// NEU: pH-WERT PRÜFUNG (z.B. pH <= 6.0 oder geringe KH mit säuerndem Holz)
 let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 7.0;
 let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 6.0;
 let holzArt = document.getElementById('holzArt') ? document.getElementById('holzArt').value : "";
@@ -1438,8 +1437,8 @@ warningsTextReport += `[WARNING] Critical pH / Acid Drop Risk:\n- ${expl}\n- ${s
 let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
 if (no3Akt >= 10) {
 let title = currentLang === 'en' ? `🚨 High Nitrate: NO₃ level is at ${no3Akt} ppm.` : `🚨 Nitrat-Wert beachten: Der NO₃-Wert liegt bei ${no3Akt} ppm.`;
-let expl = currentLang === 'en' ? "NO₃ is elevated due to heavy feeding or insufficient water changes." : "NO₃ liegt im erhöhten Bereich durch zu hohe Nährstoffzufuhr oder unzureichende Wasserwechsel.";
-let sol = currentLang === 'en' ? "Perform regular water changes and adjust feeding amounts." : "Regelmäßig Wasser wechseln und Futtermenge anpassen.";
+let expl = currentLang === 'en' ? "Nitrate is elevated due to intensive feeding, accumulation over time, or high input from source water." : "Der Nitratwert (NO₃) ist erhöht. Dies resultiert meist aus einer intensiven Fütterung, einer hohen organischen Belastung oder unzureichenden Intervallen beim Wasserwechsel.";
+let sol = currentLang === 'en' ? "Perform regular partial water changes, optimize the amount of food, and check tap water values." : "Regelmäßige und großzügigere Teilwasserwechsel durchführen, die Fütterungsmenge an den tatsächlichen Bedarf anpassen und die Nährstoffzufuhr kontrollieren.";
 warningsHtml += `
 <div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
@@ -1449,7 +1448,7 @@ warningsHtml += `
 warningsTextReport += `[WARNING] High Nitrate:\n- ${expl}\n- ${sol}\n\n`;
 }
 
-// SYMPTOM-LOGIK MIT SPEZIFISCHEN ERKLÄRUNGEN UND LÖSUNGEN
+// PROFESSIONELLE SYMPTOM-LOGIK MIT FACHLICH FUNDIERTEN TEXTEN
 document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
 let val = chk.value;
 let title = "";
@@ -1458,56 +1457,88 @@ let sol = "";
 
 if (val === "Grüne Fadenalgen") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Green Thread Algae" : "🚨 Algen-Warnung: Grüne Fadenalgen";
-expl = currentLang === 'en' ? "Often caused by excess micronutrients (iron) or unstable CO2 and macro-nutrient levels." : "Häufig ausgelöst durch zu viel Eisen/Mikronährstoffe oder Ungleichgewichte im Makro-Bereich (N-P-K) bei gleichzeitig zu viel Licht.";
-sol = currentLang === 'en' ? "Reduce micro-fertilizers, perform water changes, manually remove algae, and ensure stable CO2." : "Mikrodüngung reduzieren, große Wasserwechsel durchführen, Algen manuell aufwickeln und CO2-Zufuhr stabilisieren.";
+expl = currentLang === 'en' ? "Often caused by excess micronutrients (iron), an imbalance in macro-nutrients (N-P-K), or unstable CO₂ supply combined with high light intensity." : "Häufig ausgelöst durch zu viel Eisen/Spurenelemente, ein Ungleichgewicht im Makronährstoffverhältnis (Nitrat zu Phosphat) oder schwankende CO₂-Werte bei starker Beleuchtung.";
+sol = currentLang === 'en' ? "Reduce micro-fertilizers, perform large weekly water changes, remove algae mechanically, and ensure a stable CO₂ level of 20–30 mg/L." : "Mikrodüngung vorübergehend reduzieren, wöchentliche Wasserwechsel von 50% durchführen, Fadenalgen manuell (z.B. mit einer Bürste) aufwickeln und die CO₂-Zufuhr stabilisieren.";
 } else if (val === "Grüne Punktalgen (GSA)") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Green Spot Algae (GSA)" : "🚨 Algen-Warnung: Grüne Punktalgen (GSA)";
-expl = currentLang === 'en' ? "Typically linked to low phosphate (PO4) levels or long, intense lighting periods." : "Treten meist bei zu geringem Phosphatgehalt (PO4) im Wasser oder zu langer/intensiver Beleuchtung auf.";
-sol = currentLang === 'en' ? "Check and increase PO4 levels via fertilizer, scrape hard glass surfaces, and optimize lighting duration." : "Phosphatwerte (PO4) überprüfen und ggf. anheben, Scheiben mechanisch reinigen und Beleuchtungsdauer anpassen.";
+expl = currentLang === 'en' ? "Typically linked to a depleted or very low phosphate (PO₄) level in the water column or overly long lighting periods." : "Ein klassisches Indiz für einen Mangel an Phosphat (PO₄) im Wasser. Die Pflanzen stellen das Wachstum ein, und hartnäckige grüne Punkte bilden sich auf Scheiben und langsamen Blättern.";
+sol = currentLang === 'en' ? "Test and increase phosphate (PO₄) levels to 0.5–1.0 mg/L via dedicated fertilizer, scrape hard glass surfaces, and check lighting hours." : "Phosphat (PO₄) gezielt mit einem Einzelkomponentendünger auf ca. 0,5–1,0 mg/L anheben, Scheiben mechanisch mit einem Klingenreiniger säubern und Beleuchtungsdauer optimieren.";
 } else if (val === "Cyanobakterien") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Cyanobacteria (Blue-Green Algae)" : "🚨 Algen-Warnung: Cyanobakterien (Blaualgen)";
-expl = currentLang === 'en' ? "A bacterial mat often caused by high organic waste (mulm), dead spots in flow, or poor water circulation." : "Eigentlich Bakterienrasen, der durch organische Belastung (viel Mulm), schlechte Strömung (Sauerstoffmangel) oder ein Nährstoffungleichgewicht entsteht.";
-sol = currentLang === 'en' ? "Siphon out mats, improve water flow, reduce feeding, and perform targeted partial water changes." : "Blaualgen absaugen, Strömung im Becken verbessern, Futtermenge drosseln und Mulm aus dem Becken entfernen.";
+expl = currentLang === 'en' ? "Bacterial mats often triggered by high organic pollution (accumulated mulm), dead zones with poor water circulation, or low nitrate levels relative to phosphate." : "Streng genommen Bakterien und keine echten Algen. Sie entstehen oft durch organische Überlastung (viel Mulm/Futterreste), strömungsarme Ecken oder ein ungünstiges Nitrat-Phosphat-Verhältnis.";
+sol = currentLang === 'en' ? "Siphon out mats physically, improve water flow in dead zones, reduce organic load via filter maintenance, and perform targeted water changes." : "Blaualgen manuell absaugen, Strömungsverhältnisse im Aquarium verbessern, Mulmabsaugung intensivieren, Futtermenge anpassen und ggf. eine Dunkelkur einleiten.";
 } else if (val === "Pinselalgen / Bartalgen (BBA)") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Brush / Beard Algae (BBA)" : "🚨 Algen-Warnung: Pinselalgen / Bartalgen (BBA)";
-expl = currentLang === 'en' ? "Thrive on fluctuating CO2 levels and organic pollution in areas with high water flow." : "Entstehen meist durch schwankende CO2-Werte, organische Belastung oder zu starke Strömung an bestimmten Stellen.";
-sol = currentLang === 'en' ? "Stabilize CO2 supply, reduce organic load through filter maintenance, and spot-treat if necessary." : "CO2-Gehalt stabilisieren, organische Belastung senken (Filter reinigen, Wasserwechsel) und Strömung optimieren.";
+expl = currentLang === 'en' ? "Thrive on unstable CO₂ levels, organic waste accumulation, or locations with direct high water flow where nutrients accumulate." : "Rote Algen (Rhodophyten), die exzellent gedeihen, wenn der CO₂-Gehalt im Wasser stark schwankt oder eine hohe organische Belastung bei starker Strömung vorliegt.";
+sol = currentLang === 'en' ? "Stabilize CO₂ injection, reduce organic waste through rigorous filter checks and water changes, and spot-treat affected decor with Liquid Carbon." : "CO₂-Anlage auf absolute Konstanz prüfen, Filterhygiene optimieren, organische Belastung senken und befallene Deko-Objekte gezielt mit einem flüssigen Kohlenstoffprodukt behandeln.";
 } else if (val === "Spirogyra") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Spirogyra (Green Silk Algae)" : "🚨 Algen-Warnung: Faden-/Wollalgen (Spirogyra)";
-expl = currentLang === 'en' ? "Spirogyra thrives on high micronutrients (iron), organic waste, and unstable CO2/macro levels." : "Spirogyra wächst rasant bei zu viel Eisen/Mikronährstoffen, organischer Belastung und Ungleichgewichten im Makro-Bereich (N/P/K).";
-sol = currentLang === 'en' ? "Reduce micro-fertilizers, perform large water changes, manually remove clusters, and check filter cleanliness." : "Mikrodüngung reduzieren, große Wasserwechsel durchführen, manuell absammeln und Filter auf Mulm prüfen.";
+expl = currentLang === 'en' ? "Spirogyra forms cotton-like mats and grows rapidly under high micro-nutrient levels, heavy organic waste, and unstable macro parameters." : "Bilden watteartige, schleimige Nester und wachsen rasant bei zu hohen Eisenwerten, starker organischer Belastung sowie unausgewogenen Nährstoffverhältnissen.";
+sol = currentLang === 'en' ? "Reduce iron/micro-fertilizer dosage, perform generous water changes, remove mass manually, and clean the filter media." : "Eisendüngung reduzieren, große Wasserwechsel durchführen, die Algenmasse konsequent aufwickeln und den Filter auf zugesetzte Filtermedien prüfen.";
 } else if (val === "Kieselalgen") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Diatoms (Brown Algae)" : "🚨 Algen-Warnung: Kieselalgen (Braunalgen)";
-expl = currentLang === 'en' ? "Diatoms typically occur in newly set up tanks due to high silicate (SiO2) levels and lower lighting." : "Treten meist in der Einlaufphase durch zu viel Silikat (Kieselsäure) im Leitungswasser oder unzureichende Beleuchtung auf.";
-sol = currentLang === 'en' ? "Increase lighting intensity/duration, use silicate-absorbing filter media (e.g. Zeolite/SilicaEx), and wait out the initial phase." : "Beleuchtungsdauer/-stärke erhöhen, Silikat-Adsorber (z.B. Zeolith) im Filter einsetzen und Geduld haben (verschwinden oft von selbst).";
+expl = currentLang === 'en' ? "Diatoms feature brown, slimy layers frequently caused by high silicate (SiO₂) concentrations in source water combined with insufficient light." : "Verursacht durch einen hohen Silikatgehalt (Kieselsäure) im Leitungswasser, oft in Kombination mit zu schwacher Beleuchtung oder in der Startphase des Beckens.";
+sol = currentLang === 'en' ? "Increase lighting intensity/duration, use silicate-adsorbing filter media (e.g. Zeolite/SilicaEx), and maintain regular water changes." : "Beleuchtungsstärke erhöhen, Silikat-Adsorber im Filtersystem verwenden und regelmäßige Teilwasserwechsel mit silikatarmem Wasser (z.B. Osmose) durchführen.";
 } else if (val === "Grüner Belag auf den Scheiben") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Green Film on Glass" : "🚨 Algen-Warnung: Grüner Belag auf den Scheiben";
-expl = currentLang === 'en' ? "Natural biological process accelerated by excess light or high nutrient load." : "Völlig normaler biologischer Prozess, der durch starkes Licht, direkte Sonneneinstrahlung oder Nährstoffüberschüsse verstärkt wird.";
-sol = currentLang === 'en' ? "Clean glass regularly with an algae scraper and adjust lighting hours if growth is excessive." : "Regelmäßig mit einem Scheibenreiniger entfernen und ggf. Beleuchtungszeit verkürzen.";
+expl = currentLang === 'en' ? "Normal biological biofilm accelerated by excessive light exposure, direct sunlight, or elevated nutrient levels." : "Ein normaler biologischer Prozess, der durch zu viel direkte Lichteinstrahlung (Sonneneinfall) oder überschüssige Nährstoffe im Wasser beschleunigt wird.";
+sol = currentLang === 'en' ? "Clean glass regularly using an algae magnet or scraper, and adjust lighting periods if algae growth is excessively fast." : "Scheiben regelmäßig mit einem Klingenreiniger oder Magneten säubern, direkte Sonneneinstrahlung abschirmen und die Beleuchtungszeit bei Bedarf anpassen.";
 } else if (val === "Grüne Wasserblüte") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Green Water Bloom" : "🚨 Algen-Warnung: Grüne Wasserblüte";
-expl = currentLang === 'en' ? "Microscopic free-floating algae caused by an excess of light, ammonia spikes, or high nutrients." : "Freischwimmende Schwebealgen, ausgelöst durch zu viel direktes Licht, Ammoniakspitzen oder ein starkes Nährstoffungleichgewicht.";
-sol = currentLang === 'en' ? "Use a UV-C sterilizer, perform a blackout for 2-3 days, and do large water changes." : "Einsatz eines UV-C-Klärers, eine 2-3 tägige Dunkelkur und großzügige Wasserwechsel durchführen.";
+expl = currentLang === 'en' ? "Microscopic single-celled algae floating freely, caused by intense light peaks, ammonia spikes, or severe nutrient imbalances." : "Mikroskopisch kleine Schwebealgen, die das Wasser milchig-grün färben. Ursache sind oft Lichtspitzen, Ammoniakpitzen oder ein massives Nährstoffungleichgewicht.";
+sol = currentLang === 'en' ? "Deploy a UV-C clarifier, execute a 3-day complete blackout of the tank, and perform large subsequent water changes." : "Einsatz eines UV-C-Klärers zur Keim- und Algenvernichtung, eine dreitägige Dunkelkur (vollständige Abdunklung) durchführen und danach großzügig Wasser wechseln.";
+} else if (val === "Kein Wachstum") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: No Growth" : "⚠️ Pflanzenproblem: Kein Wachstum";
+expl = currentLang === 'en' ? "Indicates a limiting factor, most commonly a shortage of essential macro-nutrients (Nitrogen, Phosphate, Potassium) or insufficient CO₂." : "Die Pflanzen stagnieren in ihrer Entwicklung. Meist liegt ein Nährstoffmangel (oft Makronährstoffe wie NPK) oder unzureichende CO₂-Versorgung vor.";
+sol = currentLang === 'en' ? "Check macro-nutrient levels (NPK) and CO₂ supply, test lighting intensity, and ensure root nutrients are available for heavy root feeders." : "NPK-Werte sowie CO₂-Gehalt testen und gezielt anpassen, Beleuchtung und Bodengrundversorgung (Wurzeldünger) überprüfen.";
+} else if (val === "Verblassen / Farbverlust") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Fading / Loss of Color" : "⚠️ Pflanzenproblem: Verblassen / Farbverlust";
+expl = currentLang === 'en' ? "Typically points to a deficiency in Nitrogen (NO₃) or micro-nutrients/Iron (Fe), leading to impaired chlorophyll formation (chlorosis)." : "Deutet auf einen Mangel an Stickstoff (Nitrat) oder Eisen und Spurenelementen hin. Die Pflanze kann kein ausreichendes Chlorophyll mehr bilden (Chlorose).";
+sol = currentLang === 'en' ? "Test Nitrate and Iron levels in the water column, and apply a balanced liquid fertilizer or iron booster." : "Nitrat- und Eisengehalt im Wasser messen und einen ausgewogenen Volldünger oder gezielten Stickstoffdünger dosieren.";
+} else if (val === "Löcher in den Blättern") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Holes in Leaves" : "⚠️ Pflanzenproblem: Löcher in den Blättern";
+expl = currentLang === 'en' ? "Classic symptom of a severe Potassium (K) deficiency. Often begins with small dark necrotic spots that decay into holes." : "Ein klassisches und sehr zuverlässiges Anzeichen für einen akuten Kaliummangel (K). Oft beginnt es mit kleinen schwarzen Punkten, die zu Löchern zerfallen.";
+sol = currentLang === 'en' ? "Dose potassium sulfate or a specialized macro-fertilizer to raise potassium levels to 10–20 mg/L." : "Gezielt Kalium (z.B. über Kaliumsulfat oder Einzelkomponentendünger) auf einen Wert von 10 bis 20 mg/L aufdünnen.";
+} else if (val === "Blattzerfall / Pflanzenmelt") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Plant Melt / Leaf Decay" : "⚠️ Pflanzenproblem: Blattzerfall / Pflanzenmelt";
+expl = currentLang === 'en' ? "Often occurs after plant transition (emerge to submerge), sudden water parameter shifts, or severe shock." : "Tritt häufig nach dem Einsetzen neuer (emvers gezüchteter) Pflanzen auf, bei plötzlichen Wasserwertwechseln oder starkem Transport- und Umstellungsstress.";
+sol = currentLang === 'en' ? "Remove decaying plant matter immediately to protect water quality, ensure stable parameters, and allow plants time to adapt." : "Absterbende Pflanzenteile sofort absammeln, um eine Wasserbelastung zu verhindern, und für stabile Wasserwerte sowie gute Nährstoffversorgung sorgen.";
+} else if (val === "Stängelfäule") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Stem Rot" : "⚠️ Pflanzenproblem: Stängelfäule";
+expl = currentLang === 'en' ? "Stems rot near the substrate due to lack of light at the base, poor water circulation, or damaged tissue during planting." : "Stängel weichen am Boden auf und knicken ab. Ursachen sind oft zu dichte Pflanzgruppen (Lichtmangel unten), beschädigte Stängel beim Stecken oder mangelhafte Nährstoffzufuhr.";
+sol = currentLang === 'en' ? "Cut healthy top shoots and replant them, remove rotten lower stems, and improve spacing and lighting penetration." : "Gesunde Triebspitzen abschneiden und neu einsetzen, verfaulte untere Stängelreste entsorgen und den Pflanzabstand für mehr Lichtzirkulation vergrößern.";
+} else if (val === "Vergilbende Blätter") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Yellowing Leaves" : "⚠️ Pflanzenproblem: Vergilbende Blätter";
+expl = currentLang === 'en' ? "Indicates mobile nutrient deficiencies (such as Nitrogen or Magnesium) where older leaves turn yellow as nutrients are translocated." : "Weist auf einen Mangel an mobilen Nährstoffen (wie Stickstoff oder Magnesium) hin, bei dem ältere Blätter vergilben, da die Pflanze Nährstoffe abzieht.";
+sol = currentLang === 'en' ? "Check macro-nutrients and general hardness (Magnesium/Calcium ratio), and ensure regular liquid fertilization." : "Makronährstoffversorgung prüfen, Gesamthärte sowie das Calcium-Magnesium-Verhältnis im Wasser kontrollieren und Volldünger dosieren.";
+} else if (val === "Kleine deformierte Blätter") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Small, Deformed New Leaves" : "⚠️ Pflanzenproblem: Kleine, deformierte neue Blätter";
+expl = currentLang === 'en' ? "Points to micronutrient deficiencies (like Calcium, Boron, or Iron) affecting new meristematic tissue growth." : "Deutet auf Mängel bei Spurenelementen oder Calcium hin, wodurch neu gebildete Triebspitzen und Blätter verkrüppelt oder unvollständig wachsen.";
+sol = currentLang === 'en' ? "Check trace element supply and ensure overall mineral balance in the water column." : "Versorgung mit Spurenelementen und Mineralien (GH/Spurenelemente) überprüfen und ggf. einen hochwertigen Volldünger verwenden.";
+} else if (val === "Abfallende untere Blätter") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Dropping Lower Leaves" : "⚠️ Pflanzenproblem: Abfallende untere Blätter";
+expl = currentLang === 'en' ? "Often caused by shading from dense upper canopy growth or general nutrient redistribution by the plant." : "Häufige Ursache ist Lichtmangel im unteren Bereich durch dichten Wuchs oben, oder die Pflanze wirft ältere Blätter ab, um Energie in die Triebspitzen zu lenken.";
+sol = currentLang === 'en' ? "Prune and thin out overgrown stems to allow light penetration to lower regions, and check overall fertilization." : "Pflanzenbestand gezielt auslichten und zurückschneiden, damit wieder Licht an die unteren Blattetagen gelangt; Nährstoffversorgung prüfen.";
 } else if (val === "Schnappen nach Luft") {
 title = currentLang === 'en' ? "🚨 Critical Warning: Fish gasping for air at surface" : "🚨 Kritische Warnung: Fische schnappen nach Luft";
-expl = currentLang === 'en' ? "Oxygen deficiency in the water, excessive CO2 injection, or high pollutant levels (Ammonia/Nitrite) blocking gill respiration." : "Akuter Sauerstoffmangel im Wasser, zu hohe CO2-Zufuhr oder toxische Ammoniak-/Nitritwerte blockieren die Sauerstoffaufnahme über die Kiemen.";
-sol = currentLang === 'en' ? "Increase surface movement immediately (adjust filter outflow or add an air pump), check temperature and test NH4/NO2." : "Sofort für starke Oberflächenströmung sorgen (Filterauslauf höher stellen, Ausströmerstein nutzen), CO2 stoppen, Wasserwerte (NH4/NO2) testen und evtl. großzügig Wasser wechseln.";
+expl = currentLang === 'en' ? "Severe oxygen depletion, excessive CO₂ injection, or high toxic pollutant levels (Ammonia/Nitrite) blocking gill function." : "Akuter Sauerstoffmangel im Wasser, eine Fehlfunktion bzw. Überdosierung der CO₂-Anlage oder giftige Stickstoffverbindungen (Ammoniak/Nitrit), die die Kiemen schädigen.";
+sol = currentLang === 'en' ? "Increase surface agitation immediately via filter outflow or air pump, stop CO₂ injection, test NH₄/NO₂, and perform a large water change." : "Sofort für starke Oberflächenströmung sorgen (Auslauf anheben, Ausströmerstein nutzen), CO₂-Zufuhr stoppen, Ammoniak und Nitrit testen und sofort 50% Wasser wechseln.";
 } else if (val === "Teilnahmslosigkeit") {
 title = currentLang === 'en' ? "⚠️ Health Warning: Apathy / Loss of appetite" : "⚠️ Gesundheits-Warnung: Teilnahmslosigkeit / Appetitlosigkeit";
-expl = currentLang === 'en' ? "Indicates chronic stress, poor water quality, incorrect temperature, or early stages of disease." : "Deutet auf chronischen Stress, schlechte Wasserqualität, falsche Temperatur oder den Beginn einer Erkrankung hin.";
-sol = currentLang === 'en' ? "Check water parameters (especially NH4, NO2, pH), test temperature, and ensure a calm environment." : "Wasserwerte (besonders NH4, NO2, pH) und Temperatur überprüfen, Futterqualität prüfen und Tiere beobachten.";
+expl = currentLang === 'en' ? "Indicates chronic stress, poor water parameters, incorrect temperature, or early stages of a bacterial/parasitic infection." : "Deutet auf anhaltenden Stress, suboptimale Wasserwerte, falsche Temperatur oder den beginnenden Ausbruch einer Erkrankung hin.";
+sol = currentLang === 'en' ? "Test all core water parameters (NH₄, NO₂, pH, temperature) and observe animals closely for further symptoms." : "Kern-Wasserwerte (NH₄, NO₂ und pH) sowie Temperatur prüfen, Futterqualität kontrollieren und Tiere unter Beobachtung stellen.";
 } else if (val === "Todesfälle") {
 title = currentLang === 'en' ? "🚨 Critical Warning: Recent fish deaths" : "🚨 Kritische Warnung: Todesfälle im Becken";
-expl = currentLang === 'en' ? "Indicates severe water quality issues (toxic ammonia/nitrite spike), disease outbreak, or critical stress factors." : "Deutet auf akute Vergiftungen (z.B. Nitrit-/Ammoniak-Spitze), aggressive Krankheitserreger oder extremen Stress hin.";
-sol = currentLang === 'en' ? "Test water immediately for NH4 and NO2, perform a 50% water change, and observe surviving stock closely." : "Sofort Wassertests für NH4 und NO2 durchführen, mind. 50% Wasserwechsel machen und erkrankte Tiere ggf. in Quarantäne setzen.";
+expl = currentLang === 'en' ? "Points to acute poisoning (Ammonia/Nitrite spike), aggressive pathogen outbreaks, or severe environmental shock." : "Weist auf akute Vergiftungen (Ammoniak- oder Nitritspitze), aggressive Krankheitserreger oder extremen Umweltschock hin.";
+sol = currentLang === 'en' ? "Test water for NH₄ and NO₂ immediately, perform a 50% water change, and isolate sick or weakened specimens." : "Sofort Wassertests für NH₄ und Nitrit durchführen, einen großzügigen Teilwasserwechsel von mindestens 50% machen und betroffene Tiere isolieren.";
 } else if (val === "Weiße Punkte") {
-title = currentLang === 'en' ? "🚨 Disease Warning: White Spots (Ichthyophthirius multifiliis)" : "🚨 Krankheits-Warnung: Weiße Punkte (Ichtho / Pünktchenkrankheit)";
-expl = currentLang === 'en' ? "Parasitic infection ('Ich') triggered by stress, temperature fluctuations, or newly introduced fish." : "Parasitäre Infektion (Weißpünktchenkrankheit), die oft durch Stress, Temperaturschwankungen oder neue Fische ausgelöst wird.";
-sol = currentLang === 'en' ? "Apply appropriate anti-parasite medication (Ich-treatment), slightly raise temperature, and improve water hygiene." : "Mit speziellem Malachitgrünoxalat-Präparat (Ichtho-Medikament) behandeln, Temperatur leicht erhöhen und Wasserwechsel durchführen.";
+title = currentLang === 'en' ? "🚨 Disease Warning: White Spots (Ichthyophthirius)" : "🚨 Krankheits-Warnung: Weiße Punkte (Pünktchenkrankheit)";
+expl = currentLang === 'en' ? "Parasitic infection ('Ich') triggered by environmental stress, temperature fluctuations, or introduction of new fish." : "Klassische Pünktchenkrankheit (Ichtho), ausgelöst durch Parasiten. Tritt oft nach Stresssituationen, Temperaturschwankungen oder durch Zukäufe auf.";
+sol = currentLang === 'en' ? "Treat with dedicated anti-parasite medication following instructions, gently raise temperature, and ensure good aeration." : "Mit einem speziellen Antiparasitikum (Malachitgrünoxalat-Präparat) nach Packungsanweisung behandeln, Temperatur leicht erhöhen und gut belüften.";
 } else if (val === "Ausgefranste Flossen") {
 title = currentLang === 'en' ? "⚠️ Health Warning: Frayed or dissolving fins" : "⚠️ Gesundheits-Warnung: Ausgefranste oder sich auflösende Flossen";
-expl = currentLang === 'en' ? "Often bacterial fin rot caused by poor water hygiene, high organic load, or mechanical fin nipping." : "Meist bakterielle Flossenfäule, begünstigt durch schlechte Wasserhygiene, hohe Keimbelastung oder mechanische Verletzungen/Raufereien.";
-sol = currentLang === 'en' ? "Improve water quality immediately with frequent large water changes, reduce germs, and check tank mates." : "Sofort Wasserhygiene durch große Wasserwechsel verbessern, Keimbelastung senken und aggressive Mitbewohner isolieren.";
+expl = currentLang === 'en' ? "Bacterial fin rot often caused by poor water hygiene, high germ load in the aquarium, or mechanical fin nipping." : "Bakterielle Flossenfäule, die meist durch mangelhafte Wasserhygiene, zu hohe Keimbelastung im Filter oder Raufereien zwischen Fischen begünstigt wird.";
+sol = currentLang === 'en' ? "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates." : "Wasserhygiene durch konsequente, große Wasserwechsel sofort verbessern, Keimbelastung senken und aggressive Mitbewohner ausschließen.";
 } else {
 title = currentLang === 'en' ? `🚨 Issue Warning: ${val} detected` : `🚨 Problem-Warnung: ${val} entdeckt`;
 expl = currentLang === 'en' ? `The symptom "${val}" indicates an imbalance in the aquarium.` : `Das Symptom "${val}" weist auf ein Ungleichgewicht im Aquarium hin.`;
