@@ -1429,14 +1429,30 @@ warningsHtml += `
 warningsTextReport += `[WARNING] High Nitrate:\n- ${expl}\n- ${sol}\n\n`;
 }
 
-// SPEZIFISCHE SYMPTOM-LOGIK HIER INTEGRIERT
+// SYMPTOM-LOGIK MIT SPEZIFISCHEN ERKLÄRUNGEN UND LÖSUNGEN
 document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
 let val = chk.value;
 let title = "";
 let expl = "";
 let sol = "";
 
-if (val === "Spirogyra") {
+if (val === "Grüne Fadenalgen") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Green Thread Algae" : "🚨 Algen-Warnung: Grüne Fadenalgen";
+expl = currentLang === 'en' ? "Often caused by excess micronutrients (iron) or unstable CO2 and macro-nutrient levels." : "Häufig ausgelöst durch zu viel Eisen/Mikronährstoffe oder Ungleichgewichte im Makro-Bereich (N-P-K) bei gleichzeitig zu viel Licht.";
+sol = currentLang === 'en' ? "Reduce micro-fertilizers, perform water changes, manually remove algae, and ensure stable CO2." : "Mikrodüngung reduzieren, große Wasserwechsel durchführen, Algen manuell aufwickeln und CO2-Zufuhr stabilisieren.";
+} else if (val === "Grüne Punktalgen (GSA)") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Green Spot Algae (GSA)" : "🚨 Algen-Warnung: Grüne Punktalgen (GSA)";
+expl = currentLang === 'en' ? "Typically linked to low phosphate (PO4) levels or long, intense lighting periods." : "Treten meist bei zu geringem Phosphatgehalt (PO4) im Wasser oder zu langer/intensiver Beleuchtung auf.";
+sol = currentLang === 'en' ? "Check and increase PO4 levels via fertilizer, scrape hard glass surfaces, and optimize lighting duration." : "Phosphatwerte (PO4) überprüfen und ggf. anheben, Scheiben mechanisch reinigen und Beleuchtungsdauer anpassen.";
+} else if (val === "Cyanobakterien") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Cyanobacteria (Blue-Green Algae)" : "🚨 Algen-Warnung: Cyanobakterien (Blaualgen)";
+expl = currentLang === 'en' ? "A bacterial mat often caused by high organic waste (mulm), dead spots in flow, or poor water circulation." : "Eigentlich Bakterienrasen, der durch organische Belastung (viel Mulm), schlechte Strömung (Sauerstoffmangel) oder ein Nährstoffungleichgewicht entsteht.";
+sol = currentLang === 'en' ? "Siphon out mats, improve water flow, reduce feeding, and perform targeted partial water changes." : "Blaualgen absaugen, Strömung im Becken verbessern, Futtermenge drosseln und Mulm aus dem Becken entfernen.";
+} else if (val === "Pinselalgen / Bartalgen (BBA)") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Brush / Beard Algae (BBA)" : "🚨 Algen-Warnung: Pinselalgen / Bartalgen (BBA)";
+expl = currentLang === 'en' ? "Thrive on fluctuating CO2 levels and organic pollution in areas with high water flow." : "Entstehen meist durch schwankende CO2-Werte, organische Belastung oder zu starke Strömung an bestimmten Stellen.";
+sol = currentLang === 'en' ? "Stabilize CO2 supply, reduce organic load through filter maintenance, and spot-treat if necessary." : "CO2-Gehalt stabilisieren, organische Belastung senken (Filter reinigen, Wasserwechsel) und Strömung optimieren.";
+} else if (val === "Spirogyra") {
 title = currentLang === 'en' ? "🚨 Algae Warning: Spirogyra (Green Silk Algae)" : "🚨 Algen-Warnung: Spirogyra (Faden-/Wollalgen)";
 expl = currentLang === 'en' ? "Spirogyra thrives on high micronutrients (iron), organic waste, and unstable CO2/macro levels." : "Spirogyra wächst rasant bei zu viel Eisen/Mikronährstoffen, organischer Belastung und Ungleichgewichten im Makro-Bereich (N/P/K).";
 sol = currentLang === 'en' ? "Reduce micro-fertilizers, perform large water changes, manually remove clusters, and check filter cleanliness." : "Mikrodüngung reduzieren, große Wasserwechsel durchführen, manuell absammeln und Filter auf Mulm prüfen.";
@@ -1444,14 +1460,34 @@ sol = currentLang === 'en' ? "Reduce micro-fertilizers, perform large water chan
 title = currentLang === 'en' ? "🚨 Algae Warning: Diatoms (Brown Algae)" : "🚨 Algen-Warnung: Kieselalgen (Braunalgen)";
 expl = currentLang === 'en' ? "Diatoms typically occur in newly set up tanks due to high silicate (SiO2) levels and lower lighting." : "Treten meist in der Einlaufphase durch zu viel Silikat (Kieselsäure) im Leitungswasser oder unzureichende Beleuchtung auf.";
 sol = currentLang === 'en' ? "Increase lighting intensity/duration, use silicate-absorbing filter media (e.g. Zeolite/SilicaEx), and wait out the initial phase." : "Beleuchtungsdauer/-stärke erhöhen, Silikat-Adsorber (z.B. Zeolith) im Filter einsetzen und Geduld haben (verschwinden oft von selbst).";
+} else if (val === "Grüner Belag auf den Scheiben") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Green Film on Glass" : "🚨 Algen-Warnung: Grüner Belag auf den Scheiben";
+expl = currentLang === 'en' ? "Natural biological process accelerated by excess light or high nutrient load." : "Völlig normaler biologischer Prozess, der durch starkes Licht, direkte Sonneneinstrahlung oder Nährstoffüberschüsse verstärkt wird.";
+sol = currentLang === 'en' ? "Clean glass regularly with an algae scraper and adjust lighting hours if growth is excessive." : "Regelmäßig mit einem Scheibenreiniger entfernen und ggf. Beleuchtungszeit verkürzen.";
+} else if (val === "Grüne Wasserblüte") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Green Water Bloom" : "🚨 Algen-Warnung: Grüne Wasserblüte";
+expl = currentLang === 'en' ? "Microscopic free-floating algae caused by an excess of light, ammonia spikes, or high nutrients." : "Freischwimmende Schwebealgen, ausgelöst durch zu viel direktes Licht, Ammoniakspitzen oder ein starkes Nährstoffungleichgewicht.";
+sol = currentLang === 'en' ? "Use a UV-C sterilizer, perform a blackout for 2-3 days, and do large water changes." : "Einsatz eines UV-C-Klärers, eine 2-3 tägige Dunkelkur und großzügige Wasserwechsel durchführen.";
 } else if (val === "Schnappen nach Luft") {
 title = currentLang === 'en' ? "🚨 Critical Warning: Fish gasping for air at surface" : "🚨 Kritische Warnung: Fische schnappen nach Luft";
 expl = currentLang === 'en' ? "Oxygen deficiency in the water, excessive CO2 injection, or high pollutant levels (Ammonia/Nitrite) blocking gill respiration." : "Akuter Sauerstoffmangel im Wasser, zu hohe CO2-Zufuhr oder toxische Ammoniak-/Nitritwerte blockieren die Sauerstoffaufnahme über die Kiemen.";
 sol = currentLang === 'en' ? "Increase surface movement immediately (adjust filter outflow or add an air pump), check temperature and test NH4/NO2." : "Sofort für starke Oberflächenströmung sorgen (Filterauslauf höher stellen, Ausströmerstein nutzen), CO2 stoppen, Wasserwerte (NH4/NO2) testen und evtl. großzügig Wasser wechseln.";
+} else if (val === "Teilnahmslosigkeit") {
+title = currentLang === 'en' ? "⚠️ Health Warning: Apathy / Loss of appetite" : "⚠️ Gesundheits-Warnung: Teilnahmslosigkeit / Appetitlosigkeit";
+expl = currentLang === 'en' ? "Indicates chronic stress, poor water quality, incorrect temperature, or early stages of disease." : "Deutet auf chronischen Stress, schlechte Wasserqualität, falsche Temperatur oder den Beginn einer Erkrankung hin.";
+sol = currentLang === 'en' ? "Check water parameters (especially NH4, NO2, pH), test temperature, and ensure a calm environment." : "Wasserwerte (besonders NH4, NO2, pH) und Temperatur überprüfen, Futterqualität prüfen und Tiere beobachten.";
 } else if (val === "Todesfälle") {
 title = currentLang === 'en' ? "🚨 Critical Warning: Recent fish deaths" : "🚨 Kritische Warnung: Todesfälle im Becken";
 expl = currentLang === 'en' ? "Indicates severe water quality issues (toxic ammonia/nitrite spike), disease outbreak, or critical stress factors." : "Deutet auf akute Vergiftungen (z.B. Nitrit-/Ammoniak-Spitze), aggressive Krankheitserreger oder extremen Stress hin.";
 sol = currentLang === 'en' ? "Test water immediately for NH4 and NO2, perform a 50% water change, and observe surviving stock closely." : "Sofort Wassertests für NH4 und NO2 durchführen, mind. 50% Wasserwechsel machen und erkrankte Tiere ggf. in Quarantäne setzen.";
+} else if (val === "Weiße Punkte") {
+title = currentLang === 'en' ? "🚨 Disease Warning: White Spots (Ichthyophthirius multifiliis)" : "🚨 Krankheits-Warnung: Weiße Punkte (Ichtho / Pünktchenkrankheit)";
+expl = currentLang === 'en' ? "Parasitic infection ('Ich') triggered by stress, temperature fluctuations, or newly introduced fish." : "Parasitäre Infektion (Weißpünktchenkrankheit), die oft durch Stress, Temperaturschwankungen oder neue Fische ausgelöst wird.";
+sol = currentLang === 'en' ? "Apply appropriate anti-parasite medication (Ich-treatment), slightly raise temperature, and improve water hygiene." : "Mit speziellem Malachitgrünoxalat-Präparat (Ichtho-Medikament) behandeln, Temperatur leicht erhöhen und Wasserwechsel durchführen.";
+} else if (val === "Ausgefranste Flossen") {
+title = currentLang === 'en' ? "⚠️ Health Warning: Frayed or dissolving fins" : "⚠️ Gesundheits-Warnung: Ausgefranste oder sich auflösende Flossen";
+expl = currentLang === 'en' ? "Often bacterial fin rot caused by poor water hygiene, high organic load, or mechanical fin nipping." : "Meist bakterielle Flossenfäule, begünstigt durch schlechte Wasserhygiene, hohe Keimbelastung oder mechanische Verletzungen/Raufereien.";
+sol = currentLang === 'en' ? "Improve water quality immediately with frequent large water changes, reduce germs, and check tank mates." : "Sofort Wasserhygiene durch große Wasserwechsel verbessern, Keimbelastung senken und aggressive Mitbewohner isolieren.";
 } else {
 title = currentLang === 'en' ? `🚨 Issue Warning: ${val} detected` : `🚨 Problem-Warnung: ${val} entdeckt`;
 expl = currentLang === 'en' ? `The symptom "${val}" indicates an imbalance in the aquarium.` : `Das Symptom "${val}" weist auf ein Ungleichgewicht im Aquarium hin.`;
