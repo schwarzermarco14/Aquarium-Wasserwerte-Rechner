@@ -1169,7 +1169,7 @@ pl_holes: "Holes in leaves",
 pl_melt: "Plant melt / Leaf decay",
 pl_rot: "Stem rot",
 pl_yellow: "Yellowing leaves",
-pl_deformed: "Small, deformed new leaves",
+pl_deformed: "Small, deformierte neue Blätter",
 pl_drop: "Dropping lower leaves",
 lbl_sym_fish: "Fish and Invertebrates:",
 fi_air: "Gasping for air at the surface",
@@ -1402,17 +1402,19 @@ let warningsTextReport = "\n--- WARNINGS & SOLUTIONS ---\n";
 
 let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
 let ghChange = parseFloat(document.getElementById('w_gh_wechsel').value) || 0;
-if (ghAkt > ghChange + 1) {
-let title = currentLang === 'en' ? "⚠️ GH Increase: Total hardness in the tank differs from change water." : "⚠️ GH-Anstieg im Becken: Gesamthärte im Aquarium weicht vom Wechselwasser ab.";
-let expl = currentLang === 'en' ? "Calcareous stones or decorations continuously release minerals into the water." : "Kalkhaltige Steine oder Dekorationselemente im Aquarium geben kontinuierlich Mineralien an das Wasser ab.";
-let sol = currentLang === 'en' ? "Remove calcareous stones and replace with inert decor (slate/lava)." : "Kalkhaltige Steine entfernen und durch inerte Dekoration (Schiefer/Lava) ersetzen.";
+let steinArt = document.getElementById('steinArt') ? document.getElementById('steinArt').value : "";
+
+if (ghAkt > ghChange + 1 || steinArt === "mini_landscape" || steinArt === "seiryu" || steinArt === "lochgestein" || steinArt === "marmor") {
+let title = currentLang === 'en' ? "⚠️ GH Increase / Calcareous Hardscaping detected" : "⚠️ GH-Anstieg & Kalkhaltige Steine (z.B. Mini-Landschaft)";
+let expl = currentLang === 'en' ? "Popular aquarium stones like 'Mini-Landscape' contain high amounts of calcium and continuously release minerals into the water, raising total and carbonate hardness." : "Besonders für Anfänger oft unklar: Die beliebte 'Mini-Landschaft' (sowie Seiryu- oder Lochgesteine) ist stark kalkhaltig und gibt kontinuierlich Mineralien an das Wasser ab, wodurch die Gesamthärte (GH) und Karbonathärte (KH) stark steigen.";
+let sol = currentLang === 'en' ? "For beginners: Either remove the calcareous stones and replace them with inert decor (slate/lava), or use soft/osmose water for water changes to balance the hardening effect." : "Lösung für Anfänger: Entweder die kalkhaltigen Steine (wie die Mini-Landschaft) komplett herausnehmen und durch inerte Deko (Schiefer/Lava) ersetzen – oder als Alternative beim Wasserwechsel konsequent mit sehr weichem Osmose-/Destillierten Wasser verschneiden, um den Härteanstieg auszugleichen.";
 warningsHtml += `
 <div class="alert-card alert-orange" onclick="toggleDetails(this)">
 <strong>${title}</strong>
 <span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
 <div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
 </div>`;
-warningsTextReport += `[WARNING] GH Increase:\n- ${expl}\n- ${sol}\n\n`;
+warningsTextReport += `[WARNING] GH Increase / Mini-Landscape:\n- ${expl}\n- ${sol}\n\n`;
 }
 
 let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
@@ -1453,7 +1455,7 @@ title = currentLang === 'en' ? "🚨 Algae Warning: Brush / Beard Algae (BBA)" :
 expl = currentLang === 'en' ? "Thrive on fluctuating CO2 levels and organic pollution in areas with high water flow." : "Entstehen meist durch schwankende CO2-Werte, organische Belastung oder zu starke Strömung an bestimmten Stellen.";
 sol = currentLang === 'en' ? "Stabilize CO2 supply, reduce organic load through filter maintenance, and spot-treat if necessary." : "CO2-Gehalt stabilisieren, organische Belastung senken (Filter reinigen, Wasserwechsel) und Strömung optimieren.";
 } else if (val === "Spirogyra") {
-title = currentLang === 'en' ? "🚨 Algae Warning: Spirogyra (Green Silk Algae)" : "🚨 Algen-Warnung: Spirogyra (Faden-/Wollalgen)";
+title = currentLang === 'en' ? "🚨 Algae Warning: Spirogyra (Green Silk Algae)" : "🚨 Algen-Warnung: Faden-/Wollalgen (Spirogyra)";
 expl = currentLang === 'en' ? "Spirogyra thrives on high micronutrients (iron), organic waste, and unstable CO2/macro levels." : "Spirogyra wächst rasant bei zu viel Eisen/Mikronährstoffen, organischer Belastung und Ungleichgewichten im Makro-Bereich (N/P/K).";
 sol = currentLang === 'en' ? "Reduce micro-fertilizers, perform large water changes, manually remove clusters, and check filter cleanliness." : "Mikrodüngung reduzieren, große Wasserwechsel durchführen, manuell absammeln und Filter auf Mulm prüfen.";
 } else if (val === "Kieselalgen") {
