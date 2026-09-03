@@ -656,7 +656,7 @@ line-height: 1.5;
 </div>
 <div class="water-column">
 <h3 data-i18n="col_water_tank">Aquarienwasser</h3>
-<div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.8" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.0" oninput="saveDataAuto()"></div>
 <div class="water-field"><label>GH:</label><input type="text" id="w_gh_akt" value="12.0" oninput="saveDataAuto()"></div>
 <div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4.0" oninput="saveDataAuto()"></div>
 <div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_akt" value="0.0" oninput="saveDataAuto()"></div>
@@ -1415,6 +1415,24 @@ warningsHtml += `
 <div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNING] GH Increase / Mini-Landscape:\n- ${expl}\n- ${sol}\n\n`;
+}
+
+// NEU: pH-WERT PRÜFUNG (z.B. pH <= 6.0 oder geringe KH mit säuerndem Holz)
+let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 7.0;
+let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 6.0;
+let holzArt = document.getElementById('holzArt') ? document.getElementById('holzArt').value : "";
+
+if (phAkt <= 6.0 || (phAkt <= 6.5 && khAkt <= 4.0 && holzArt !== "")) {
+let title = currentLang === 'en' ? "⚠️ Critical pH & Acid Drop Risk (Säuresturz)" : "⚠️ Kritischer pH-Wert & Gefahr eines Säuresturzes";
+let expl = currentLang === 'en' ? `The pH value is critically low (${phAkt}), combined with a low carbonate hardness (KH ${khAkt}) and acidic wood/processes. This poses a high risk of an unbuffered pH crash (acid drop).` : `Der pH-Wert liegt mit ${phAkt} im stark sauren Bereich. Bei einer Karbonathärte von ${khAkt} °dH und säuernden Faktoren (wie Holz) ist der Puffer sehr gering, wodurch akute Gefahr eines plötzlichen Säuresturzes (KH-Absturz) droht.`;
+let sol = currentLang === 'en' ? "Increase KH slightly using suitable mineral salts, perform regular water changes to secure buffering, and monitor pH/KH closely." : "Karbonathärte (KH) durch geeignete Maßnahmen (z. B. Wasserwechsel mit höherer KH oder Aufhärtung) stabilisieren, Holzzufuhr prüfen und den pH-Wert engmaschig überwachen.";
+warningsHtml += `
+<div class="alert-card alert-orange" onclick="toggleDetails(this)">
+<strong>${title}</strong>
+<span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
+<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
+</div>`;
+warningsTextReport += `[WARNING] Critical pH / Acid Drop Risk:\n- ${expl}\n- ${sol}\n\n`;
 }
 
 let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
