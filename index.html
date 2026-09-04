@@ -1671,17 +1671,17 @@ let title = t.warn_ph_title;
 let expl = t.warn_ph_expl;
 let sol = t.warn_ph_sol;
 warningsHtml += `
-<div class="alert-card alert-orange" onclick="toggleDetails(this)">
+<div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
 <span class="click-hint">${t.click_details}</span>
 <div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
 </div>`;
-warningsTextReport += `[WARNING] Critical pH / Acid Drop Risk:\n- ${expl}\n- ${sol}\n\n`;
+warningsTextReport += `[WARNING] Low pH / Acid Crash Risk:\n- ${expl}\n- ${sol}\n\n`;
 }
 
 let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
-if (no3Akt >= 10) {
-let title = `${t.warn_no3_title} (${no3Akt} ${currentLang==='en'?'ppm':'mg/L'})`;
+if (no3Akt > 30) {
+let title = t.warn_no3_title;
 let expl = t.warn_no3_expl;
 let sol = t.warn_no3_sol;
 warningsHtml += `
@@ -1695,88 +1695,54 @@ warningsTextReport += `[WARNING] High Nitrate:\n- ${expl}\n- ${sol}\n\n`;
 
 document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
 let val = chk.value;
-let title = "";
-let expl = "";
-let sol = "";
-
-if (val === "Grüne Fadenalgen") {
-title = t.alg_green_thread_t; expl = t.alg_green_thread_e; sol = t.alg_green_thread_s;
-} else if (val === "Grüne Punktalgen (GSA)") {
-title = t.alg_green_spot_t; expl = t.alg_green_spot_e; sol = t.alg_green_spot_s;
-} else if (val === "Cyanobakterien") {
-title = t.alg_cyano_t; expl = t.alg_cyano_e; sol = t.alg_cyano_s;
-} else if (val === "Pinselalgen / Bartalgen (BBA)") {
-title = t.alg_brush_t; expl = t.alg_brush_e; sol = t.alg_brush_s;
-} else if (val === "Spirogyra") {
-title = t.alg_spirogyra_t; expl = t.alg_spirogyra_e; sol = t.alg_spirogyra_s;
-} else if (val === "Kieselalgen") {
-title = t.alg_diatoms_t; expl = t.alg_diatoms_e; sol = t.alg_diatoms_s;
-} else if (val === "Grüner Belag auf den Scheiben") {
-title = t.alg_glass_t; expl = t.alg_glass_e; sol = t.alg_glass_s;
-} else if (val === "Grüne Wasserblüte") {
-title = t.alg_bloom_t; expl = t.alg_bloom_e; sol = t.alg_bloom_s;
-} else if (val === "Kein Wachstum") {
-title = t.pl_no_growth_t; expl = t.pl_no_growth_e; sol = t.pl_no_growth_s;
-} else if (val === "Verblassen / Farbverlust") {
-title = t.pl_fade_t; expl = t.pl_fade_e; sol = t.pl_fade_s;
-} else if (val === "Löcher in den Blättern") {
-title = t.pl_holes_t; expl = t.pl_holes_e; sol = t.pl_holes_s;
-} else if (val === "Blattzerfall / Pflanzenmelt") {
-title = t.pl_melt_t; expl = t.pl_melt_e; sol = t.pl_melt_s;
-} else if (val === "Stängelfäule") {
-title = t.pl_rot_t; expl = t.pl_rot_e; sol = t.pl_rot_s;
-} else if (val === "Vergilbende Blätter") {
-title = t.pl_yellow_t; expl = t.pl_yellow_e; sol = t.pl_yellow_s;
-} else if (val === "Kleine deformierte Blätter") {
-title = t.pl_deformed_t; expl = t.pl_deformed_e; sol = t.pl_deformed_s;
-} else if (val === "Abfallende untere Blätter") {
-title = t.pl_drop_t; expl = t.pl_drop_e; sol = t.pl_drop_s;
-} else if (val === "Schnappen nach Luft") {
-title = t.fi_air_t; expl = t.fi_air_e; sol = t.fi_air_s;
-} else if (val === "Teilnahmslosigkeit") {
-title = t.fi_apathy_t; expl = t.fi_apathy_e; sol = t.fi_apathy_s;
-} else if (val === "Todesfälle") {
-title = t.fi_deaths_t; expl = t.fi_deaths_e; sol = t.fi_deaths_s;
-} else if (val === "Weiße Punkte") {
-title = t.fi_spots_t; expl = t.fi_spots_e; sol = t.fi_spots_s;
-} else if (val === "Ausgefranste Flossen") {
-title = t.fi_fins_t; expl = t.fi_fins_e; sol = t.fi_fins_s;
-} else if (val === "Trübes Wasser") {
-title = t.wa_turbid_t; expl = t.wa_turbid_e; sol = t.wa_turbid_s;
-} else if (val === "Gelbe Wasserfärbung") {
-title = t.wa_yellow_t; expl = t.wa_yellow_e; sol = t.wa_yellow_s;
-} else if (val === "Mineralische Ablagerungen") {
-title = t.wa_deposits_t; expl = t.wa_deposits_e; sol = t.wa_deposits_s;
-} else if (val === "Unangenehmer Geruch") {
-title = t.wa_odor_t; expl = t.wa_odor_e; sol = t.wa_odor_s;
-} else if (val === "Weißer Belag auf Holz") {
-title = t.wa_biofilm_t; expl = t.wa_biofilm_e; sol = t.wa_biofilm_s;
-}
-
-if (title !== "") {
+let keyMap = {
+"Grüne Fadenalgen": "alg_green_thread",
+"Grüne Punktalgen (GSA)": "alg_green_spot",
+"Cyanobakterien": "alg_cyano",
+"Pinselalgen / Bartalgen (BBA)": "alg_brush",
+"Spirogyra": "alg_spirogyra",
+"Kieselalgen": "alg_diatoms",
+"Grüner Belag auf den Scheiben": "alg_glass",
+"Grüne Wasserblüte": "alg_bloom",
+"Kein Wachstum": "pl_no_growth",
+"Verblassen / Farbverlust": "pl_fade",
+"Löcher in den Blättern": "pl_holes",
+"Blattzerfall / Pflanzenmelt": "pl_melt",
+"Stängelfäule": "pl_rot",
+"Vergilbende Blätter": "pl_yellow",
+"Kleine deformierte Blätter": "pl_deformed",
+"Abfallende untere Blätter": "pl_drop",
+"Schnappen nach Luft": "fi_air",
+"Teilnahmslosigkeit": "fi_apathy",
+"Todesfälle": "fi_deaths",
+"Weiße Punkte": "fi_spots",
+"Ausgefranste Flossen": "fi_fins",
+"Trübes Wasser": "wa_turbid",
+"Gelbe Wasserfärbung": "wa_yellow",
+"Mineralische Ablagerungen": "wa_deposits",
+"Unangenehmer Geruch": "wa_odor",
+"Weißer Belag auf Holz": "wa_biofilm"
+};
+let prefix = keyMap[val];
+if (prefix && t[prefix + "_t"]) {
+let cardClass = (prefix.startsWith("fi_") || prefix === "alg_cyano" || prefix === "alg_bloom") ? "alert-red" : "alert-orange";
 warningsHtml += `
-<div class="alert-card alert-red" onclick="toggleDetails(this)">
-<strong>${title}</strong>
+<div class="alert-card ${cardClass}" onclick="toggleDetails(this)">
+<strong>${t[prefix + "_t"]}</strong>
 <span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
+<div class="alert-details">- ${t.expl_label}: ${t[prefix + "_e"]}<br>- ${t.sol_label}: ${t[prefix + "_s"]}</div>
 </div>`;
-warningsTextReport += `[SYMPTOM: ${val}]\n- ${expl}\n- ${sol}\n\n`;
+warningsTextReport += `[SYMPTOM: ${val}]\n- ${t[prefix + "_e"]}\n- ${t[prefix + "_s"]}\n\n`;
 }
 });
 
 document.getElementById('resultCardContainer').innerHTML = warningsHtml;
 
-let today = new Date();
-let todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+let now = new Date();
+let todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+let fullReport = waterReport + warningsTextReport;
 
-if (!allTanks[currentTankName]) {
-allTanks[currentTankName] = { inputs: {}, diary: {} };
-}
-if (!allTanks[currentTankName].diary) {
-allTanks[currentTankName].diary = {};
-}
-
-let fullReport = `${waterReport}\n${warningsTextReport}`;
+if (!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
 allTanks[currentTankName].diary[todayStr] = fullReport;
 
 saveInputsToCurrentTank();
@@ -1786,30 +1752,28 @@ updateComparisonDropdowns();
 
 function renderCalendar() {
 const grid = document.getElementById('calendarGrid');
-const monthYearLabel = document.getElementById('calMonthYear');
-if (!grid || !monthYearLabel) return;
-
+if (!grid) return;
 grid.innerHTML = '';
 
-const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const monthNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
+let months = currentLang === 'en' ? 
+["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] :
+["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 
-monthYearLabel.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+let daysHeader = currentLang === 'en' ?
+["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] :
+["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
-const dayHeadersDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-const dayHeadersEn = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const dayHeaders = currentLang === 'en' ? dayHeadersEn : dayHeadersDe;
+document.getElementById('calMonthYear').innerText = `${months[currentMonth]} ${currentYear}`;
 
-dayHeaders.forEach(dh => {
-let hDiv = document.createElement('div');
-hDiv.className = 'cal-header-day';
-hDiv.innerText = dh;
-grid.appendChild(hDiv);
+daysHeader.forEach(d => {
+let dh = document.createElement('div');
+dh.className = 'cal-header-day';
+dh.innerText = d;
+grid.appendChild(dh);
 });
 
 let firstDay = new Date(currentYear, currentMonth, 1).getDay();
-let startingDay = (firstDay === 0) ? 6 : firstDay - 1; 
+let startingDay = firstDay === 0 ? 6 : firstDay - 1;
 let daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
 for (let i = 0; i < startingDay; i++) {
@@ -1819,28 +1783,25 @@ grid.appendChild(emptyCell);
 }
 
 let today = new Date();
-let isCurrentMonth = today.getFullYear() === currentYear && today.getMonth() === currentMonth;
-
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
 
 for (let day = 1; day <= daysInMonth; day++) {
-let dayCell = document.createElement('div');
-dayCell.className = 'cal-day';
-
+let cell = document.createElement('div');
+cell.className = 'cal-day';
 let dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-if (isCurrentMonth && day === today.getDate()) {
-dayCell.classList.add('today');
+if (today.getFullYear() === currentYear && today.getMonth() === currentMonth && today.getDate() === day) {
+cell.classList.add('today');
 }
 
-if (diaryData[dateStr]) {
-dayCell.classList.add('has-entry');
+let hasEntry = diaryData[dateStr] && diaryData[dateStr].trim() !== '';
+if (hasEntry) {
+cell.classList.add('has-entry');
 }
 
-dayCell.innerHTML = `<span>${day}</span>${diaryData[dateStr] ? '<div class="entry-dot"></div>' : ''}`;
-dayCell.onclick = () => openDayModal(dateStr);
-
-grid.appendChild(dayCell);
+cell.innerHTML = `<span>${day}</span>${hasEntry ? '<div class="entry-dot"></div>' : ''}`;
+cell.onclick = () => openDayModal(dateStr);
+grid.appendChild(cell);
 }
 }
 
@@ -1871,32 +1832,20 @@ document.getElementById('dayModal').style.display = 'none';
 function saveDayEntry() {
 if (!activeModalDate) return;
 let text = document.getElementById('modalEntryText').value;
-
-if (!allTanks[currentTankName]) {
-allTanks[currentTankName] = { inputs: {}, diary: {} };
-}
-if (!allTanks[currentTankName].diary) {
-allTanks[currentTankName].diary = {};
-}
-
-if (text.trim() === '') {
-delete allTanks[currentTankName].diary[activeModalDate];
-} else {
+if (!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
 allTanks[currentTankName].diary[activeModalDate] = text;
-}
-
-localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
-closeModal();
+saveInputsToCurrentTank();
 renderCalendar();
 updateComparisonDropdowns();
+closeModal();
 }
 
-window.onload = function() {
+window.addEventListener('DOMContentLoaded', () => {
 updateTankSelector();
 loadTankData();
 switchLanguage(currentLang);
 calcVol();
-};
+});
 </script>
 </body>
 </html>
