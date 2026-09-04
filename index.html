@@ -1673,36 +1673,30 @@ title = t.fi_deaths_t; expl = t.fi_deaths_e; sol = t.fi_deaths_s;
 title = t.fi_spots_t; expl = t.fi_spots_e; sol = t.fi_spots_s;
 } else if (val === "Ausgefranste Flossen") {
 title = t.fi_fins_t; expl = t.fi_fins_e; sol = t.fi_fins_s;
-} else {
-title = `⚠️ ${val}`;
-expl = currentLang==='en'?'Symptom detected. Check parameters.':'Symptom festgestellt. Bitte Werte prüfen.';
-sol = currentLang==='en'?'Optimize care and water parameters.':'Pflege und Wasserwerte optimieren.';
 }
 
+if(title) {
+let alertClass = (val === "Schnappen nach Luft" || val === "Todesfälle" || val === "Grüne Wasserblüte") ? "alert-red" : "alert-orange";
 warningsHtml += `
-<div class="alert-card alert-orange" onclick="toggleDetails(this)">
+<div class="alert-card ${alertClass}" onclick="toggleDetails(this)">
 <strong>${title}</strong>
 <span class="click-hint">${t.click_details}</span>
 <div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
 </div>`;
 warningsTextReport += `[SYMPTOM] ${val}:\n- ${expl}\n- ${sol}\n\n`;
-});
-
-if(warningsHtml === `<h2>${translations[currentLang].res_title}</h2>`) {
-let successMsg = currentLang==='en' ? "All measured values and parameters look very balanced! No acute warnings or severe symptom risks detected." : "Alle gemessenen Werte und Parameter sehen sehr ausgeglichen aus! Keine akuten Warnungen oder schweren Symptom-Risiken erkannt.";
-warningsHtml += `
-<div class="alert-card alert-blue">
-<strong>${currentLang==='en'?'🟢 Everything in the green zone!':'🟢 Alles im grünen Bereich!'}</strong>
-<p style="margin-top: 6px; font-size: 0.8rem;">${successMsg}</p>
-</div>`;
-warningsTextReport += "[STATUS] All parameters stable.\n";
 }
+});
 
 document.getElementById('resultCardContainer').innerHTML = warningsHtml;
 
 let todayStr = new Date().toISOString().split('T')[0];
-if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+if(!allTanks[currentTankName].diary) {
+allTanks[currentTankName].diary = {};
+}
 allTanks[currentTankName].diary[todayStr] = waterReport + warningsTextReport;
+
+collectInputsToStorage();
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 renderCalendar();
 updateComparisonDropdowns();
 }
@@ -1714,6 +1708,24 @@ details.style.display = (details.style.display === 'block') ? 'none' : 'block';
 }
 }
 
+function collectInputsToStorage() {
+if(!allTanks[currentTankName]) allTanks[currentTankName] = { inputs: {}, diary: {} };
+let inputs = {};
+document.querySelectorAll('input, select').forEach(el => {
+if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'compareDate1' && el.id !== 'compareDate2') {
+if(el.type === 'checkbox') {
+inputs[el.id] = el.checked;
+} else {
+inputs[el.id] = el.value;
+}
+}
+});
+document.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+inputs['radio_' + el.name] = el.value;
+});
+allTanks[currentTankName].inputs = inputs;
+}
+
 function renderCalendar() {
 const grid = document.getElementById('calendarGrid');
 const monthYearLabel = document.getElementById('calMonthYear');
@@ -1721,44 +1733,43 @@ if(!grid || !monthYearLabel) return;
 
 grid.innerHTML = '';
 
-const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const dayNamesShort = currentLang === 'en' ? ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] : ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+let firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+firstDayIndex = (firstDayIndex === 0) ? 6 : firstDayIndex - 1; // Start Montag
 
-let mNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
+let totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+let monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+let monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let mNames = (currentLang === 'en') ? monthNamesEn : monthNamesDe;
 monthYearLabel.innerText = `${mNames[currentMonth]} ${currentYear}`;
 
-dayNamesShort.forEach(d => {
-let headerDiv = document.createElement('div');
-headerDiv.className = 'cal-header-day';
-headerDiv.innerText = d;
-grid.appendChild(headerDiv);
+let dayNamesDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+let dayNamesEn = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+let dNames = (currentLang === 'en') ? dayNamesEn : dayNamesDe;
+
+dNames.forEach(d => {
+let dHeader = document.createElement('div');
+dHeader.className = 'cal-header-day';
+dHeader.innerText = d;
+grid.appendChild(dHeader);
 });
 
-let firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
-let adjustedFirstDay = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
-let totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
-let today = new Date();
-
-for(let i = 0; i < adjustedFirstDay; i++) {
+for(let i = 0; i < firstDayIndex; i++) {
 let emptyCell = document.createElement('div');
 emptyCell.className = 'cal-day empty';
 grid.appendChild(emptyCell);
 }
 
+let today = new Date();
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
 
 for(let day = 1; day <= totalDays; day++) {
 let dayCell = document.createElement('div');
 dayCell.className = 'cal-day';
 
-let mm = String(currentMonth + 1).padStart(2, '0');
-let dd = String(day).padStart(2, '0');
-let dateStr = `${currentYear}-${mm}-${dd}`;
-
-let dayNumSpan = document.createElement('span');
-dayNumSpan.innerText = day;
-dayCell.appendChild(dayNumSpan);
+let mStr = String(currentMonth + 1).padStart(2, '0');
+let dStr = String(day).padStart(2, '0');
+let dateStr = `${currentYear}-${mStr}-${dStr}`;
 
 if(currentYear === today.getFullYear() && currentMonth === today.getMonth() && day === today.getDate()) {
 dayCell.classList.add('today');
@@ -1766,15 +1777,10 @@ dayCell.classList.add('today');
 
 if(diaryData[dateStr]) {
 dayCell.classList.add('has-entry');
-let dot = document.createElement('div');
-dot.className = 'entry-dot';
-dayCell.appendChild(dot);
 }
 
-dayCell.onclick = function() {
-openDayModal(dateStr);
-};
-
+dayCell.innerHTML = `<span>${day}</span>${diaryData[dateStr] ? '<div class="entry-dot"></div>' : ''}`;
+dayCell.onclick = () => openModal(dateStr);
 grid.appendChild(dayCell);
 }
 }
@@ -1791,16 +1797,12 @@ currentYear--;
 renderCalendar();
 }
 
-function openDayModal(dateStr) {
+function openModal(dateStr) {
 activeModalDate = dateStr;
-const modal = document.getElementById('dayModal');
-const titleEl = document.getElementById('modalDateTitle');
-const textarea = document.getElementById('modalEntryText');
-
-titleEl.innerText = `${currentLang==='en'?'Entry for':'Eintrag am'} ${dateStr}`;
+document.getElementById('modalDateTitle').innerText = `${currentLang==='en'?'Diary Entry for':'Tagebucheintrag für'} ${dateStr}`;
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-textarea.value = diaryData[dateStr] || '';
-modal.style.display = 'flex';
+document.getElementById('modalEntryText').value = diaryData[dateStr] || '';
+document.getElementById('dayModal').style.display = 'flex';
 }
 
 function closeModal() {
@@ -1808,13 +1810,16 @@ document.getElementById('dayModal').style.display = 'none';
 }
 
 function saveDayEntry() {
-const textarea = document.getElementById('modalEntryText');
-if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
-if(textarea.value.trim() === "") {
+let textVal = document.getElementById('modalEntryText').value;
+if(!allTanks[currentTankName].diary) {
+allTanks[currentTankName].diary = {};
+}
+if(textVal.trim() === "") {
 delete allTanks[currentTankName].diary[activeModalDate];
 } else {
-allTanks[currentTankName].diary[activeModalDate] = textarea.value;
+allTanks[currentTankName].diary[activeModalDate] = textVal;
 }
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 closeModal();
 renderCalendar();
 updateComparisonDropdowns();
