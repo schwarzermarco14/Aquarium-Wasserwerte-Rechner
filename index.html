@@ -1117,7 +1117,27 @@ fi_spots_s: "Kauf dir im Zoohandel ein spezielles Mittel gegen die Pünktchenkra
 
 fi_fins_t: "⚠️ Fisch-Gesundheit: Flossen fransen aus oder lösen sich auf",
 fi_fins_e: "Die Flossen der Fische sehen ausgefranst aus oder werden kürzer. Das ist die sogenannte Flossenfäule, ausgelöst durch schlechte Wasserhygiene oder Bakterien.",
-fi_fins_s: "Verbessere sofort die Wasserhygiene durch mehrere großzügige Wasserwechsel (wöchentlich 50%). Achte darauf, dass sich die Fische untereinander nicht jagen."
+fi_fins_s: "Verbessere sofort die Wasserhygiene durch mehrere großzügige Wasserwechsel (wöchentlich 50%). Achte darauf, dass sich die Fische untereinander nicht jagen.",
+
+wa_turbid_t: "⚠️ Wasser-Hilfe: Trübes Wasser",
+wa_turbid_e: "Trübes, milchiges oder staubiges Wasser entsteht oft durch Bakterienblüten in neuen Becken oder feine Schmutzpartikel.",
+wa_turbid_s: "Setze feine Filterwatte in den Filter ein und reduziere vorübergehend die Fütterung. Bei Bakterienblüten hilft Abwarten und gute Belüftung.",
+
+wa_yellow_t: "⚠️ Wasser-Hilfe: Gelbe oder teefarbene Wasserfärbung",
+wa_yellow_e: "Gelbliches Wasser entsteht meist durch Huminstoffe aus Wurzeln/Holz oder organische Abbauprodukte.",
+wa_yellow_s: "Regelmäßige Wasserwechsel reduzieren die Färbung. Alternativ kann kurzzeitig Aktivkohle im Filter eingesetzt werden.",
+
+wa_deposits_t: "⚠️ Wasser-Hilfe: Mineralische Ablagerungen auf Scheiben/Technik",
+wa_deposits_e: "Weiße, harte Ränder an den Scheiben entstehen durch verdunstendes Wasser und hohe Karbonat-/Gesamthärte.",
+wa_deposits_s: "Ablagerungen vorsichtig mit Klingenreiniger oder Zitronensäure (außerhalb des Beckens) entfernen. Füllwasser eventuell mit Osmosewasser weicher einstellen.",
+
+wa_odor_t: "🚨 Wasser-Hilfe: Unangenehmer Geruch",
+wa_odor_e: "Muffiger oder fauliger Geruch deutet auf gammelnden Bodengrund, tote Tiere oder überlastete Filterung hin.",
+wa_odor_s: "Führe sofort einen 50%igen Wasserwechsel durch, sauge Mulm ab, kontrolliere den Besatz und reinige bei Bedarf vorsichtig den Filter.",
+
+wa_biofilm_t: "⚠️ Wasser-Hilfe: Weißer Belag oder Biofilm auf Holz",
+wa_biofilm_e: "Ein weißer, glibberiger Belag auf frischen Wurzeln ist ein harmloser Bakterienrasen, der organische Reststoffe verwertet.",
+wa_biofilm_s: "Kein Handlungsbedarf – Schnecken und Garnelen fressen diesen Belag sehr gerne. Er verschwindet nach einigen Wochen von selbst."
 },
 
 en: {
@@ -1221,7 +1241,7 @@ wt_mangrove: "Mangrove wood (Acidifies slightly)",
 wt_moor: "Bog oak / Moorkien (Strongly acidic)",
 wt_spider: "Spider Wood (Branchy, light)",
 wt_drift: "Driftwood (Slightly acidic)",
-wt_savannah: "Savannah wood (Hard, smooth)",
+wt_savannah: "Savannah wood (Hart, smooth)",
 wt_rondeletia: "Ironwood (Very hard and heavy)",
 wt_jumbo: "Jumbo root (Large pieces)",
 wt_cork: "Corkscrew hazel (Decorative)",
@@ -1388,7 +1408,27 @@ fi_spots_s: "Treat with dedicated anti-parasite medication following instruction
 
 fi_fins_t: "⚠️ Health Warning: Frayed or dissolving fins",
 fi_fins_e: "Bacterial fin rot often caused by poor water hygiene, high germ load in the aquarium, or mechanical fin nipping.",
-fi_fins_s: "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates."
+fi_fins_s: "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates.",
+
+wa_turbid_t: "⚠️ Water Issue: Turbid / Cloudy water",
+wa_turbid_e: "Cloudy or milky water is often caused by bacterial blooms in new setups or fine suspended particles.",
+wa_turbid_s: "Add fine filter floss to your filter and reduce feeding temporarily. For bacterial blooms, patience and good aeration are key.",
+
+wa_yellow_t: "⚠️ Water Issue: Yellow or tea-colored water tint",
+wa_yellow_e: "Yellowish water is usually caused by humic substances released by driftwood or decaying organic waste.",
+wa_yellow_s: "Regular partial water changes will clear the water. Activated carbon can also be used temporarily in the filter.",
+
+wa_deposits_t: "⚠️ Water Issue: Mineral deposits on glass/equipment",
+wa_deposits_e: "White hard crusts at the waterline are caused by evaporating water and high general/carbonate hardness.",
+wa_deposits_s: "Scrape off deposits carefully with a razor scraper or citric acid (outside the tank). Consider softening refill water with RO water.",
+
+wa_odor_t: "🚨 Water Issue: Unpleasant odor",
+wa_odor_e: "Musty or foul odors indicate rotting substrate, dead animals, or an overloaded filtration system.",
+wa_odor_s: "Perform an immediate 50% water change, siphon out organic debris, check stocking levels, and carefully rinse filter media if clogged.",
+
+wa_biofilm_t: "⚠️ Water Issue: White coating or biofilm on wood",
+wa_biofilm_e: "White, jelly-like coating on new driftwood is a harmless bacterial biofilm feeding on residual organic compounds.",
+wa_biofilm_s: "No action needed – snails and shrimp love eating this biofilm. It will disappear naturally after a few weeks."
 }
 };
 
@@ -1558,6 +1598,34 @@ const h = parseFloat(document.getElementById('h').value) || 0;
 document.getElementById('volumen').value = ((l * b * h) / 1000).toFixed(1);
 }
 
+function toggleDetails(element) {
+const details = element.querySelector('.alert-details');
+if (details) {
+details.style.display = (details.style.display === 'block') ? 'none' : 'block';
+}
+}
+
+function saveInputsToCurrentTank() {
+if (!allTanks[currentTankName]) {
+allTanks[currentTankName] = { inputs: {}, diary: {} };
+}
+let inputs = {};
+document.querySelectorAll('input, select, textarea').forEach(el => {
+if (el.id) {
+if (el.type === 'checkbox') {
+inputs[el.id] = el.checked;
+} else if (el.type !== 'radio') {
+inputs[el.id] = el.value;
+}
+}
+if (el.type === 'radio' && el.checked) {
+inputs['radio_' + el.name] = el.value;
+}
+});
+allTanks[currentTankName].inputs = inputs;
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+}
+
 function runAnalysis(event) {
 event.preventDefault();
 document.getElementById('resultSection').style.display = 'block';
@@ -1673,133 +1741,124 @@ title = t.fi_deaths_t; expl = t.fi_deaths_e; sol = t.fi_deaths_s;
 title = t.fi_spots_t; expl = t.fi_spots_e; sol = t.fi_spots_s;
 } else if (val === "Ausgefranste Flossen") {
 title = t.fi_fins_t; expl = t.fi_fins_e; sol = t.fi_fins_s;
+} else if (val === "Trübes Wasser") {
+title = t.wa_turbid_t; expl = t.wa_turbid_e; sol = t.wa_turbid_s;
+} else if (val === "Gelbe Wasserfärbung") {
+title = t.wa_yellow_t; expl = t.wa_yellow_e; sol = t.wa_yellow_s;
+} else if (val === "Mineralische Ablagerungen") {
+title = t.wa_deposits_t; expl = t.wa_deposits_e; sol = t.wa_deposits_s;
+} else if (val === "Unangenehmer Geruch") {
+title = t.wa_odor_t; expl = t.wa_odor_e; sol = t.wa_odor_s;
+} else if (val === "Weißer Belag auf Holz") {
+title = t.wa_biofilm_t; expl = t.wa_biofilm_e; sol = t.wa_biofilm_s;
 }
 
-if(title) {
-let alertClass = (val === "Schnappen nach Luft" || val === "Todesfälle" || val === "Grüne Wasserblüte") ? "alert-red" : "alert-orange";
+if (title !== "") {
 warningsHtml += `
-<div class="alert-card ${alertClass}" onclick="toggleDetails(this)">
+<div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
 <span class="click-hint">${t.click_details}</span>
 <div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
 </div>`;
-warningsTextReport += `[SYMPTOM] ${val}:\n- ${expl}\n- ${sol}\n\n`;
+warningsTextReport += `[SYMPTOM: ${val}]\n- ${expl}\n- ${sol}\n\n`;
 }
 });
 
 document.getElementById('resultCardContainer').innerHTML = warningsHtml;
 
-let todayStr = new Date().toISOString().split('T')[0];
-if(!allTanks[currentTankName].diary) {
+let today = new Date();
+let todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+if (!allTanks[currentTankName]) {
+allTanks[currentTankName] = { inputs: {}, diary: {} };
+}
+if (!allTanks[currentTankName].diary) {
 allTanks[currentTankName].diary = {};
 }
-allTanks[currentTankName].diary[todayStr] = waterReport + warningsTextReport;
 
-collectInputsToStorage();
-localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+let fullReport = `${waterReport}\n${warningsTextReport}`;
+allTanks[currentTankName].diary[todayStr] = fullReport;
+
+saveInputsToCurrentTank();
 renderCalendar();
 updateComparisonDropdowns();
-}
-
-function toggleDetails(cardEl) {
-let details = cardEl.querySelector('.alert-details');
-if(details) {
-details.style.display = (details.style.display === 'block') ? 'none' : 'block';
-}
-}
-
-function collectInputsToStorage() {
-if(!allTanks[currentTankName]) allTanks[currentTankName] = { inputs: {}, diary: {} };
-let inputs = {};
-document.querySelectorAll('input, select').forEach(el => {
-if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'compareDate1' && el.id !== 'compareDate2') {
-if(el.type === 'checkbox') {
-inputs[el.id] = el.checked;
-} else {
-inputs[el.id] = el.value;
-}
-}
-});
-document.querySelectorAll('input[type="radio"]:checked').forEach(el => {
-inputs['radio_' + el.name] = el.value;
-});
-allTanks[currentTankName].inputs = inputs;
 }
 
 function renderCalendar() {
 const grid = document.getElementById('calendarGrid');
 const monthYearLabel = document.getElementById('calMonthYear');
-if(!grid || !monthYearLabel) return;
+if (!grid || !monthYearLabel) return;
 
 grid.innerHTML = '';
 
-let firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
-firstDayIndex = (firstDayIndex === 0) ? 6 : firstDayIndex - 1; // Start Montag
+const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const monthNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
 
-let totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+monthYearLabel.innerText = `${monthNames[currentMonth]} ${currentYear}`;
 
-let monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-let monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-let mNames = (currentLang === 'en') ? monthNamesEn : monthNamesDe;
-monthYearLabel.innerText = `${mNames[currentMonth]} ${currentYear}`;
+const dayHeadersDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+const dayHeadersEn = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const dayHeaders = currentLang === 'en' ? dayHeadersEn : dayHeadersDe;
 
-let dayNamesDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-let dayNamesEn = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-let dNames = (currentLang === 'en') ? dayNamesEn : dayNamesDe;
-
-dNames.forEach(d => {
-let dHeader = document.createElement('div');
-dHeader.className = 'cal-header-day';
-dHeader.innerText = d;
-grid.appendChild(dHeader);
+dayHeaders.forEach(dh => {
+let hDiv = document.createElement('div');
+hDiv.className = 'cal-header-day';
+hDiv.innerText = dh;
+grid.appendChild(hDiv);
 });
 
-for(let i = 0; i < firstDayIndex; i++) {
+let firstDay = new Date(currentYear, currentMonth, 1).getDay();
+let startingDay = (firstDay === 0) ? 6 : firstDay - 1; 
+let daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+for (let i = 0; i < startingDay; i++) {
 let emptyCell = document.createElement('div');
 emptyCell.className = 'cal-day empty';
 grid.appendChild(emptyCell);
 }
 
 let today = new Date();
+let isCurrentMonth = today.getFullYear() === currentYear && today.getMonth() === currentMonth;
+
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
 
-for(let day = 1; day <= totalDays; day++) {
+for (let day = 1; day <= daysInMonth; day++) {
 let dayCell = document.createElement('div');
 dayCell.className = 'cal-day';
 
-let mStr = String(currentMonth + 1).padStart(2, '0');
-let dStr = String(day).padStart(2, '0');
-let dateStr = `${currentYear}-${mStr}-${dStr}`;
+let dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-if(currentYear === today.getFullYear() && currentMonth === today.getMonth() && day === today.getDate()) {
+if (isCurrentMonth && day === today.getDate()) {
 dayCell.classList.add('today');
 }
 
-if(diaryData[dateStr]) {
+if (diaryData[dateStr]) {
 dayCell.classList.add('has-entry');
 }
 
 dayCell.innerHTML = `<span>${day}</span>${diaryData[dateStr] ? '<div class="entry-dot"></div>' : ''}`;
-dayCell.onclick = () => openModal(dateStr);
+dayCell.onclick = () => openDayModal(dateStr);
+
 grid.appendChild(dayCell);
 }
 }
 
-function changeMonth(direction) {
-currentMonth += direction;
-if(currentMonth > 11) {
-currentMonth = 0;
-currentYear++;
-} else if(currentMonth < 0) {
+function changeMonth(delta) {
+currentMonth += delta;
+if (currentMonth < 0) {
 currentMonth = 11;
 currentYear--;
+} else if (currentMonth > 11) {
+currentMonth = 0;
+currentYear++;
 }
 renderCalendar();
 }
 
-function openModal(dateStr) {
+function openDayModal(dateStr) {
 activeModalDate = dateStr;
-document.getElementById('modalDateTitle').innerText = `${currentLang==='en'?'Diary Entry for':'Tagebucheintrag für'} ${dateStr}`;
+document.getElementById('modalDateTitle').innerText = dateStr;
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
 document.getElementById('modalEntryText').value = diaryData[dateStr] || '';
 document.getElementById('dayModal').style.display = 'flex';
@@ -1810,15 +1869,22 @@ document.getElementById('dayModal').style.display = 'none';
 }
 
 function saveDayEntry() {
-let textVal = document.getElementById('modalEntryText').value;
-if(!allTanks[currentTankName].diary) {
+if (!activeModalDate) return;
+let text = document.getElementById('modalEntryText').value;
+
+if (!allTanks[currentTankName]) {
+allTanks[currentTankName] = { inputs: {}, diary: {} };
+}
+if (!allTanks[currentTankName].diary) {
 allTanks[currentTankName].diary = {};
 }
-if(textVal.trim() === "") {
+
+if (text.trim() === '') {
 delete allTanks[currentTankName].diary[activeModalDate];
 } else {
-allTanks[currentTankName].diary[activeModalDate] = textVal;
+allTanks[currentTankName].diary[activeModalDate] = text;
 }
+
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 closeModal();
 renderCalendar();
@@ -1828,8 +1894,8 @@ updateComparisonDropdowns();
 window.onload = function() {
 updateTankSelector();
 loadTankData();
-calcVol();
 switchLanguage(currentLang);
+calcVol();
 };
 </script>
 </body>
