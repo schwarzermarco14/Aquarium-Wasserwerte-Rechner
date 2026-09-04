@@ -953,7 +953,7 @@ wt_drift: "Treibholz (Leicht sauer)",
 wt_savannah: "Savannenholz (Hart, glatt)",
 wt_rondeletia: "Eisenholz (Sehr hart und schwer)",
 wt_jumbo: "Jumbo-Wurzel (Großstückig)",
-wt_korkenzieher: "Korkenzieherhasel (Dekorativ)",
+wt_cork: "Korkenzieherhasel (Dekorativ)",
 lbl_wood_qty: "Menge an Holz (kg):",
 sec_water_compare: "🧪 Wasserwerte-Vergleich",
 col_water_change: "Wasserwechsel",
@@ -1020,11 +1020,10 @@ footer_text: "Aquarium-Wasserwerte-Rechner (AWR) v2.9",
 footer_save: "Daten sichern",
 footer_provider: "Bereitgestellt von",
 click_details: "Klicken für Details",
-lbl_explanation: "Erklärung",
-lbl_solution: "Lösung",
-lbl_supplement: "Ergänzung",
+expl_label: "Erklärung",
+sol_label: "Lösung",
 
-// NEU: Übersetzungen für Warnungen, Erklärungen und Lösungen
+/* NEUE WARN-ÜBERSETZUNGEN */
 warn_gh_title: "⚠️ Wasser wird zu hart (Kalk im Becken)",
 warn_gh_expl: "Im Becken befinden sich kalkhaltige Steine (oder das Leitungswasser ist sehr hart). Diese Steine geben ununterbrochen Mineralien ab, wodurch das Wasser mit der Zeit immer härter wird.",
 warn_gh_sol: "Nimm die kalkhaltigen Steine heraus und ersetze sie durch neutrale Deko (wie Schiefer oder Lavastein). Mische beim nächsten Wasserwechsel normales Leitungswasser mit weichem Osmose- oder destillierten Wasser, um die Härte zu senken.",
@@ -1037,94 +1036,91 @@ warn_no3_title: "🚨 Nitrat-Wert zu hoch",
 warn_no3_expl: "Es ist zu viel Nitrat im Wasser. Das passiert meistens durch zu viel Futter, zu seltenes Wasserwechseln oder weil bereits das Leitungswasser stark mit Nitrat belastet ist.",
 warn_no3_sol: "Mache ab sofort wöchentlich einen großen Wasserwechsel von 50%. Füttere deine Fische nur noch so viel, wie sie in 1-2 Minuten komplett auffressen können, ohne dass Reste auf den Boden sinken.",
 
-alg_green_thread_title: "🚨 Algen-Hilfe: Grüne Fadenalgen (grüne Haare)",
-alg_green_thread_expl: "Diese langen, haarigen Algen entstehen meistens, wenn zu viel Eisen/Dünger im Wasser ist, das Licht zu lange brennt oder die CO₂-Zufuhr ungleichmäßig läuft.",
-alg_green_thread_sol: "Drehe die Düngung für die nächsten 2 Wochen um die Hälfte herunter. Wickle die Algen einfach mit einer kleinen Bürste oder einer Zahnbürste auf und mache wöchentlich 50% Wasserwechsel.",
+alg_green_thread_t: "🚨 Algen-Hilfe: Grüne Fadenalgen (grüne Haare)",
+alg_green_thread_e: "Diese langen, haarigen Algen entstehen meistens, wenn zu viel Eisen/Dünger im Wasser ist, das Licht zu lange brennt oder die CO₂-Zufuhr ungleichmäßig läuft.",
+alg_green_thread_s: "Drehe die Düngung für die nächsten 2 Wochen um die Hälfte herunter. Wickle die Algen einfach mit einer kleinen Bürste oder einer Zahnbürste auf und mache wöchentlich 50% Wasserwechsel.",
 
-alg_green_spot_title: "🚨 Algen-Hilfe: Grüne Punktalgen (harte Punkte auf Scheiben)",
-alg_green_spot_expl: "Harte, kleine grüne Punkte an den Glasscheiben oder Blättern zeigen an, dass deinen Pflanzen ein bestimmter Nährstoff (Phosphat) fehlt.",
-alg_green_spot_sol: "Kratze die Punkte vorsichtig mit einem Klingenschaber von der Scheibe. Dünge etwas Phosphat nach und verkürze die Beleuchtungszeit am Tag um 1 Stunde.",
+alg_green_spot_t: "🚨 Algen-Hilfe: Grüne Punktalgen (harte Punkte auf Scheiben)",
+alg_green_spot_e: "Harte, kleine grüne Punkte an den Glasscheiben oder Blättern zeigen an, dass deinen Pflanzen ein bestimmter Nährstoff (Phosphat) fehlt.",
+alg_green_spot_s: "Kratze die Punkte vorsichtig mit einem Klingenschaber von der Scheibe. Dünge etwas Phosphat nach und verkürze die Beleuchtungszeit am Tag um 1 Stunde.",
 
-alg_cyano_title: "🚨 Algen-Hilfe: Cyanobakterien (Blaualgen - schmierig & stinkend)",
-alg_cyano_expl: "Das sind eigentlich Bakterien, die einen bläulich-grünen, schmierigen Teppich bilden und oft muffig riechen. Ursache ist meistens alter Schmutz (Mulm) am Boden oder Ecken mit zu wenig Wasserströmung.",
-alg_cyano_sol: "Sauge den schmierigen Belag mit einem Schlauch ab. Reinige den Bodengrund gründlicher vom Mulm und sorge dafür, dass das Wasser im Aquarium überall gut zirkulieren kann.",
+alg_cyano_t: "🚨 Algen-Hilfe: Cyanobakterien (Blaualgen - schmierig & stinkend)",
+alg_cyano_e: "Das sind eigentlich Bakterien, die einen bläulich-grünen, schmierigen Teppich bilden und oft muffig riechen. Ursache ist meistens alter Schmutz (Mulm) am Boden oder Ecken mit zu wenig Wasserströmung.",
+alg_cyano_s: "Sauge den schmierigen Belag mit einem Schlauch ab. Reinige den Bodengrund gründlicher vom Mulm und sorge dafür, dass das Wasser im Aquarium überall gut zirkulieren kann.",
 
-alg_brush_title: "🚨 Algen-Hilfe: Pinselalgen / Bartalgen (büschelartig, dunkel)",
-alg_brush_expl: "Dunkle, buschige Algen, die sich gerne an Filtereinläufen oder stark angeströmten Pflanzenblättern festsetzen. Sie lieben schwankende CO₂-Werte und viel Schmutz im Wasser.",
-alg_brush_sol: "Prüfe deine CO₂-Anlage, damit sie gleichmäßig läuft. Sauge Schmutzreste konsequent ab und spritze betroffene Steine oder Wurzeln außerhalb des Wassers mit etwas flüssigem Kohlenstoff ein.",
+alg_brush_t: "🚨 Algen-Hilfe: Pinselalgen / Bartalgen (büschelartig, dunkel)",
+alg_brush_e: "Dunkle, buschige Algen, die sich gerne an Filtereinläufen oder stark angeströmten Pflanzenblättern festsetzen. Sie lieben schwankende CO₂-Werte und viel Schmutz im Wasser.",
+alg_brush_s: "Prüfe deine CO₂-Anlage, damit sie gleichmäßig läuft. Sauge Schmutzreste konsequent ab und spritze betroffene Steine oder Wurzeln außerhalb des Wassers mit etwas flüssigem Kohlenstoff ein.",
 
-alg_spirogyra_title: "🚨 Algen-Hilfe: Wollige Fadenalgen (Spirogyra)",
-alg_spirogyra_expl: "Diese Algen bilden helle, watteartige Nester, die sich extrem schnell vermehren. Sie wachsen besonders gut, wenn zu viel Eisendünger und gleichzeitig Schmutz im Becken ist.",
-alg_spirogyra_sol: "Stoppe vorerst jeglichen Eisendünger. Wickle die Watte-Nester manuell heraus und reinige deinen Filter, falls sich dort alter Schmutz angesammelt hat.",
+alg_spirogyra_t: "🚨 Algen-Hilfe: Wollige Fadenalgen (Spirogyra)",
+alg_spirogyra_e: "Diese Algen bilden helle, watteartige Nester, die sich extrem schnell vermehren. Sie wachsen besonders gut, wenn zu viel Eisendünger und gleichzeitig Schmutz im Becken ist.",
+alg_spirogyra_s: "Stoppe vorerst jeglichen Eisendünger. Wickle die Watte-Nester manuell heraus und reinige deinen Filter, falls sich dort alter Schmutz angesammelt hat.",
 
-alg_diatoms_title: "🚨 Algen-Hilfe: Kieselalgen (brauner Belag)",
-alg_diatoms_expl: "Ein brauner, schmieriger Belag, der sich in der Einlaufphase eines neuen Aquariums fast immer zeigt. Schuld daran ist oft Kieselsäure im Leitungswasser.",
-alg_diatoms_sol: "Keine Panik, das ist bei neuen Becken normal und verschwindet nach ein paar Wochen von selbst. Du kannst den Belag einfach abwischen und Geduld haben.",
+alg_diatoms_t: "🚨 Algen-Hilfe: Kieselalgen (brauner Belag)",
+alg_diatoms_e: "Ein brauner, schmieriger Belag, der sich in der Einlaufphase eines neuen Aquariums fast immer zeigt. Schuld daran ist oft Kieselsäure im Leitungswasser.",
+alg_diatoms_s: "Keine Panik, das ist bei neuen Becken normal und verschwindet nach ein paar Wochen von selbst. Du kannst den Belag einfach abwischen und Geduld haben.",
 
-alg_glass_title: "🚨 Algen-Hilfe: Grüner Belag auf den Glasscheiben",
-alg_glass_expl: "Ein leichter grüner Film auf den Scheiben ist völlig normal. Er entsteht durch Licht und Nährstoffe im Wasser.",
-alg_glass_sol: "Putz die Scheiben einfach regelmäßig mit einem Scheibenmagneten oder einem Klingenreiniger. Steht das Aquarium evtl. in der prallen Sonne? Wenn ja, verstelle es oder schirme das Licht ab.",
+alg_glass_t: "🚨 Algen-Hilfe: Grüner Belag auf den Glasscheiben",
+alg_glass_e: "Ein leichter grüner Film auf den Scheiben ist völlig normal. Er entsteht durch Licht und Nährstoffe im Wasser.",
+alg_glass_s: "Putz die Scheiben einfach regelmäßig mit einem Scheibenmagneten oder einem Klingenreiniger. Steht das Aquarium evtl. in der prallen Sonne? Wenn ja, verstelle es oder schirme das Licht ab.",
 
-alg_bloom_title: "🚨 Algen-Hilfe: Grüne Wasserblüte (milchig-grünes Wasser)",
-alg_bloom_expl: "Das Wasser aussieht wie grüne Erbsensuppe. Winzige Schwebealgen schwimmen frei im Wasser, meist ausgelöst durch zu viel Licht oder ein Nährstoffungleichgewicht.",
-alg_bloom_sol: "Schalte das Licht komplett aus und decke das Aquarium für 3 Tage blickdicht ab (Dunkelkur). Mache danach einen großen Wasserwechsel von 50%. Ein UV-C-Klärer hilft ebenfalls sofort.",
+alg_bloom_t: "🚨 Algen-Hilfe: Grüne Wasserblüte (milchig-grünes Wasser)",
+alg_bloom_e: "Das Wasser aussieht wie grüne Erbsensuppe. Winzige Schwebealgen schwimmen frei im Wasser, meist ausgelöst durch zu viel Licht oder ein Nährstoffungleichgewicht.",
+alg_bloom_s: "Schalte das Licht komplett aus und decke das Aquarium für 3 Tage blickdicht ab (Dunkelkur). Mache danach einen großen Wasserwechsel von 50%. Ein UV-C-Klärer hilft ebenfalls sofort.",
 
-pl_no_growth_title: "⚠️ Pflanzen-Hilfe: Pflanzen wachsen überhaupt nicht",
-pl_no_growth_expl: "Deine Pflanzen stehen einfach still und wachsen nicht weiter. Das liegt meist daran, dass ihnen ein wichtiger Hauptnährstoff (wie NPK) oder CO₂ fehlt.",
-pl_no_growth_sol: "Besorge dir einen guten Volldünger und prüfe, ob deine Pflanzen genug Licht bekommen. Wenn es wurzelzehrende Pflanzen sind, stecke ihnen Düngestäbchen oder Düngekugeln an die Wurzeln.",
+pl_no_growth_t: "⚠️ Pflanzen-Hilfe: Pflanzen wachsen überhaupt nicht",
+pl_no_growth_e: "Deine Pflanzen stehen einfach still und wachsen nicht weiter. Das liegt meist daran, dass ihnen ein wichtiger Hauptnährstoff (wie NPK) oder CO₂ fehlt.",
+pl_no_growth_s: "Besorge dir einen guten Volldünger und prüfe, ob deine Pflanzen genug Licht bekommen. Wenn es wurzelzehrende Pflanzen sind, stecke ihnen Düngestäbchen oder Düngekugeln an die Wurzeln.",
 
-pl_fade_title: "⚠️ Pflanzen-Hilfe: Blätter werden blass und bleichen aus",
-pl_fade_expl: "Die Blätter verlieren ihre grüne Farbe und werden blass. Meistens fehlt den Pflanzen Eisen oder Stickstoff, wodurch sie kein Blattgrün mehr bilden können.",
-pl_fade_sol: "Dosiere einen eisenhaltigen Flüssigdünger nach Anleitung ins Wasser, damit die Pflanzen ihre kräftige grüne Farbe zurückbekommen.",
+pl_fade_t: "⚠️ Pflanzen-Hilfe: Blätter werden blass und bleichen aus",
+pl_fade_e: "Die Blätter verlieren ihre grüne Farbe und werden blass. Meistens fehlt den Pflanzen Eisen oder Stickstoff, wodurch sie kein Blattgrün mehr bilden können.",
+pl_fade_s: "Dosiere einen eisenhaltigen Flüssigdünger nach Anleitung ins Wasser, damit die Pflanzen ihre kräftige grüne Farbe zurückbekommen.",
 
-pl_holes_title: "⚠️ Pflanzen-Hilfe: Löcher in den Blättern",
-pl_holes_expl: "Wenn Blätter erst kleine dunkle Flecken bekommen und diese zu Löchern zerfallen, liegt das fast immer an einem Mangel des Nährstoffs Kalium.",
-pl_holes_sol: "Kaufe einen reinen Kaliumdünger im Fachhandel und dünge diesen nach Packungsanweisung zu, um die Löcher bei neuen Blättern zu stoppen.",
+pl_holes_t: "⚠️ Pflanzen-Hilfe: Löcher in den Blättern",
+pl_holes_e: "Wenn Blätter erst kleine dunkle Flecken bekommen und diese zu Löchern zerfallen, liegt das fast immer an einem Mangel des Nährstoffs Kalium.",
+pl_holes_s: "Kaufe einen reinen Kaliumdünger im Fachhandel und dünge diesen nach Packungsanweisung zu, um die Löcher bei neuen Blättern zu stoppen.",
 
-pl_melt_title: "⚠️ Pflanzen-Hilfe: Blätter zerfallen und lösen sich auf",
-pl_melt_expl: "Das passiert sehr oft kurz nach dem Neukauf von Pflanzen, wenn sie sich erst an das Unterwasser-Klima gewöhnen müssen oder durch die Umstellung gestresst sind.",
-pl_melt_sol: "Zupfe matschige und zerfallene Blätter sofort ab, damit sie nicht das Wasser vergiften. Hab etwas Geduld – meist treiben die Pflanzen danach gesund neu aus.",
+pl_melt_t: "⚠️ Pflanzen-Hilfe: Blätter zerfallen und lösen sich auf",
+pl_melt_e: "Das passiert sehr oft kurz nach dem Neukauf von Pflanzen, wenn sie sich erst an das Unterwasser-Klima gewöhnen müssen oder durch die Umstellung gestresst sind.",
+pl_melt_s: "Zupfe matschige und zerfallene Blätter sofort ab, damit sie nicht das Wasser vergiften. Hab etwas Geduld – meist treiben die Pflanzen danach gesund neu aus.",
 
-pl_rot_title: "⚠️ Pflanzen-Hilfe: Stängelfäule (Stängel knicken ab)",
-pl_rot_expl: "Die Pflanzenstängel werden unten am Boden weich, faulen und knicken um. Oft stehen die Pflanzen zu dicht, sodass kein Licht mehr nach unten kommt.",
-pl_rot_sol: "Schneide die oberen, gesunden Teile der Pflanze ab und stecke sie neu in den Boden. Wirf die verfaulten unteren Stücke weg. Setze die Pflanzen in Zukunft mit etwas mehr Abstand zueinander.",
+pl_rot_t: "⚠️ Pflanzen-Hilfe: Stängelfäule (Stängel knicken ab)",
+pl_rot_e: "Die Pflanzenstängel werden unten am Boden weich, faulen und knicken um. Oft stehen die Pflanzen zu dicht, sodass kein Licht mehr nach unten kommt.",
+pl_rot_s: "Schneide die oberen, gesunden Teile der Pflanze ab und stecke sie neu in den Boden. Wirf die verfaulten unteren Stücke weg. Setze die Pflanzen in Zukunft mit etwas mehr Abstand zueinander.",
 
-pl_yellow_title: "⚠️ Pflanzen-Hilfe: Blätter werden gelb",
-pl_yellow_expl: "Vor allem ältere Blätter werden gelb und sterben ab. Die Pflanze zieht die letzten Nährstoffe aus den alten Blättern heraus, um neue Spitzen zu versorgen.",
-pl_yellow_sol: "Füge regelmäßigen Volldünger hinzu und achte darauf, dass deine Fische genug gefüttert werden, damit über den Fischkot natürlicher Stickstoff entsteht.",
+pl_yellow_t: "⚠️ Pflanzen-Hilfe: Blätter werden gelb",
+pl_yellow_e: "Vor allem ältere Blätter werden gelb und sterben ab. Die Pflanze zieht die letzten Nährstoffe aus den alten Blättern heraus, um neue Spitzen zu versorgen.",
+pl_yellow_s: "Füge regelmäßigen Volldünger hinzu und achte darauf, dass deine Fische genug gefüttert werden, damit über den Fischkot natürlicher Stickstoff entsteht.",
 
-pl_deformed_title: "⚠️ Pflanzen-Hilfe: Neue Blätter wachsen krüppelig nach",
-pl_deformed_expl: "Die ganz frisch nachwachsenden Blätter oben an der Triebspitze sehen klein, verdreht oder deformiert aus. Es fehlt an Spurenelementen oder Mineralien.",
-pl_deformed_sol: "Verwende einen hochwertigen Spurenelemente- bzw. Volldünger, der alle wichtigen Mineralien abdeckt.",
+pl_deformed_t: "⚠️ Pflanzen-Hilfe: Neue Blätter wachsen krüppelig nach",
+pl_deformed_e: "Die ganz frisch nachwachsenden Blätter oben an der Triebspitze sehen klein, verdreht oder deformiert aus. Es fehlt an Spurenelementen oder Mineralien.",
+pl_deformed_s: "Verwende einen hochwertigen Spurenelemente- bzw. Volldünger, der alle wichtigen Mineralien abdeckt.",
 
-pl_drop_title: "⚠️ Pflanzen-Hilfe: Untere Blätter fallen ab",
-pl_drop_expl: "Oft bekommen die unteren Blätter einfach zu wenig Licht ab, weil die Pflanze oben bereits so dicht und buschig geworden ist.",
-pl_drop_sol: "Schneide den Busch etwas zurück oder dünne ihn aus, damit wieder Licht bis nach unten auf den Boden scheinen kann.",
+pl_drop_t: "⚠️ Pflanzen-Hilfe: Untere Blätter fallen ab",
+pl_drop_e: "Oft bekommen die unteren Blätter einfach zu wenig Licht ab, weil die Pflanze oben bereits so dicht und buschig geworden ist.",
+pl_drop_s: "Schneide den Busch etwas zurück oder dünne ihn aus, damit wieder Licht bis nach unten auf den Boden scheinen kann.",
 
-fi_air_title: "🚨 AKTION NÖTIG: Fische hängen an der Wasseroberfläche und schnappen Luft!",
-fi_air_expl: "Achtung, akuter Notfall! Deine Fische bekommen zu wenig Sauerstoff oder das Wasser ist durch Schadstoffe belastet, sodass sie ersticken könnten.",
-fi_air_sol: "1. Schalte sofort eine eventuelle CO₂-Anlage aus! 2. Richte den Filterauslauf so aus, dass die Wasseroberfläche stark sprudelt (Sauerstoff). 3. Mache sofort einen 50%igen Wasserwechsel!",
+fi_air_t: "🚨 AKTION NÖTIG: Fische hängen an der Wasseroberfläche und schnappen Luft!",
+fi_air_e: "Achtung, akuter Notfall! Deine Fische bekommen zu wenig Sauerstoff oder das Wasser ist durch Schadstoffe belastet, sodass sie ersticken könnten.",
+fi_air_s: "1. Schalte sofort eine eventuelle CO₂-Anlage aus! 2. Richte den Filterauslauf so aus, dass die Wasseroberfläche stark sprudelt (Sauerstoff). 3. Mache sofort einen 50%igen Wasserwechsel!",
 
-fi_apathy_title: "⚠️ Fisch-Gesundheit: Fische sind träge und fressen nicht",
-fi_apathy_expl: "Die Fische hängen nur herum, verstecken sich oder zeigen keinen Appetit. Das ist ein Zeichen von Stress, falscher Temperatur oder beginnender Krankheit.",
-fi_apathy_sol: "Teste sofort die Wassertemperatur und die Werte für Nitrit und pH. Füttere sparsam abwechslungsreiches Futter und beobachte, ob Flecken oder Pünktchen auftreten.",
+fi_apathy_t: "⚠️ Fisch-Gesundheit: Fische sind träge und fressen nicht",
+fi_apathy_e: "Die Fische hängen nur herum, verstecken sich oder zeigen keinen Appetit. Das ist ein Zeichen von Stress, falscher Temperatur oder beginnender Krankheit.",
+fi_apathy_s: "Teste sofort die Wassertemperatur und die Werte für Nitrit und pH. Füttere sparsam abwechslungsreiches Futter und beobachte, ob Flecken oder Pünktchen auftreten.",
 
-fi_deaths_title: "🚨 ALARM: Todesfälle im Aquarium!",
-fi_deaths_expl: "Wenn in den letzten Tagen Fische gestorben sind, liegt meist eine akute Wasservergiftung (z.B. durch giftiges Ammoniak oder Nitrit) vor.",
-fi_deaths_sol: "Teste sofort das Wasser auf Nitrit (NO₂). Mache ohne zu zögern einen großen Wasserwechsel von 50%. Nimm tote Fische sofort aus dem Becken heraus.",
+fi_deaths_t: "🚨 ALARM: Todesfälle im Aquarium!",
+fi_deaths_e: "Wenn in den letzten Tagen Fische gestorben sind, liegt meist eine akute Wasservergiftung (z.B. durch giftiges Ammoniak oder Nitrit) vor.",
+fi_deaths_s: "Teste sofort das Wasser auf Nitrit (NO₂). Mache ohne zu zögern einen großen Wasserwechsel von 50%. Nimm tote Fische sofort aus dem Becken heraus.",
 
-fi_spots_title: "🚨 Krankheits-Alarm: Weiße Pünktchenkrankheit (Ichtho)",
-fi_spots_expl: "Die Fische sehen aus, als wären sie mit Grießkörnern bestreut. Das ist die bekannte Pünktchenkrankheit, ausgelöst durch Parasiten nach Stress.",
-fi_spots_sol: "Kauf dir im Zoohandel ein spezielles Mittel gegen die Pünktchenkrankheit und wende es nach Packungsanweisung an. Erhöhe die Belüftung im Aquarium.",
+fi_spots_t: "🚨 Krankheits-Alarm: Weiße Pünktchenkrankheit (Ichtho)",
+fi_spots_e: "Die Fische sehen aus, als wären sie mit Grießkörnern bestreut. Das ist die bekannte Pünktchenkrankheit, ausgelöst durch Parasiten nach Stress.",
+fi_spots_s: "Kauf dir im Zoohandel ein spezielles Mittel gegen die Pünktchenkrankheit und wende es nach Packungsanweisung an. Erhöhe die Belüftung im Aquarium.",
 
-fi_fins_title: "⚠️ Fisch-Gesundheit: Flossen fransen aus oder lösen sich auf",
-fi_fins_expl: "Die Flossen der Fische sehen ausgefranst aus oder werden kürzer. Das ist die sogenannte Flossenfäule, ausgelöst durch schlechte Wasserhygiene oder Bakterien.",
-fi_fins_sol: "Verbessere sofort die Wasserhygiene durch mehrere großzügige Wasserwechsel (wöchentlich 50%). Achte darauf, dass sich die Fische untereinander nicht jagen.",
-
-gen_issue_title: "⚠️ Hinweis zum Problem",
-gen_issue_expl: "Das beobachtete Problem zeigt an, dass im Aquarium etwas nicht optimal läuft.",
-gen_issue_sol: "Mache zur Sicherheit einen Teilwasserwechsel von 50% und überprüfe deine Wasserwerte mit einem Testkoffer."
+fi_fins_t: "⚠️ Fisch-Gesundheit: Flossen fransen aus oder lösen sich auf",
+fi_fins_e: "Die Flossen der Fische sehen ausgefranst aus oder werden kürzer. Das ist die sogenannte Flossenfäule, ausgelöst durch schlechte Wasserhygiene oder Bakterien.",
+fi_fins_s: "Verbessere sofort die Wasserhygiene durch mehrere großzügige Wasserwechsel (wöchentlich 50%). Achte darauf, dass sich die Fische untereinander nicht jagen."
 },
+
 en: {
 main_title: "Aquarium Water Parameters Calculator (AWR) – The Ultimate Analysis Tool",
 title: "Aquarium Water Parameters Calculator (AWR)",
@@ -1296,11 +1292,10 @@ footer_text: "Aquarium Water Parameters Calculator (AWR) v2.9",
 footer_save: "Save Data",
 footer_provider: "Provided by",
 click_details: "Click for details",
-lbl_explanation: "Explanation",
-lbl_solution: "Solution",
-lbl_supplement: "Supplement",
+expl_label: "Explanation",
+sol_label: "Solution",
 
-// NEW: English translations for warnings, explanations, and solutions
+/* ENGLISCHE WARN-ÜBERSETZUNGEN */
 warn_gh_title: "⚠️ GH Increase / Calcareous Hardscaping detected",
 warn_gh_expl: "Popular aquarium stones like 'Mini-Landscape' contain high amounts of calcium and continuously release minerals into the water, raising total and carbonate hardness.",
 warn_gh_sol: "For beginners: Either remove the calcareous stones and replace them with inert decor (slate/lava), or use soft/osmose water for water changes to balance the hardening effect.",
@@ -1313,93 +1308,89 @@ warn_no3_title: "🚨 High Nitrate",
 warn_no3_expl: "Nitrate is elevated due to intensive feeding, accumulation over time, or high input from source water.",
 warn_no3_sol: "Perform regular partial water changes, optimize the amount of food, and check tap water values.",
 
-alg_green_thread_title: "🚨 Algae Warning: Green Thread Algae",
-alg_green_thread_expl: "Often caused by excess micronutrients (iron), an imbalance in macro-nutrients (N-P-K), or unstable CO₂ supply combined with high light intensity.",
-alg_green_thread_sol: "Reduce micro-fertilizers, perform large weekly water changes, remove algae mechanically, and ensure a stable CO₂ level of 20–30 mg/L.",
+alg_green_thread_t: "🚨 Algae Warning: Green Thread Algae",
+alg_green_thread_e: "Often caused by excess micronutrients (iron), an imbalance in macro-nutrients (N-P-K), or unstable CO₂ supply combined with high light intensity.",
+alg_green_thread_s: "Reduce micro-fertilizers, perform large weekly water changes, remove algae mechanically, and ensure a stable CO₂ level of 20–30 mg/L.",
 
-alg_green_spot_title: "🚨 Algae Warning: Green Spot Algae (GSA)",
-alg_green_spot_expl: "Typically linked to a depleted or very low phosphate (PO₄) level in the water column or overly long lighting periods.",
-alg_green_spot_sol: "Test and increase phosphate (PO₄) levels to 0.5–1.0 mg/L via dedicated fertilizer, scrape hard glass surfaces, and check lighting hours.",
+alg_green_spot_t: "🚨 Algae Warning: Green Spot Algae (GSA)",
+alg_green_spot_e: "Typically linked to a depleted or very low phosphate (PO₄) level in the water column or overly long lighting periods.",
+alg_green_spot_s: "Test and increase phosphate (PO₄) levels to 0.5–1.0 mg/L via dedicated fertilizer, scrape hard glass surfaces, and check lighting hours.",
 
-alg_cyano_title: "🚨 Algae Warning: Cyanobacteria (Blue-Green Algae)",
-alg_cyano_expl: "Bacterial mats often triggered by high organic pollution (accumulated mulm), dead zones with poor water circulation, or low nitrate levels relative to phosphate.",
-alg_cyano_sol: "Siphon out mats physically, improve water flow in dead zones, reduce organic load via filter maintenance, and perform targeted water changes.",
+alg_cyano_t: "🚨 Algae Warning: Cyanobacteria (Blue-Green Algae)",
+alg_cyano_e: "Bacterial mats often triggered by high organic pollution (accumulated mulm), dead zones with poor water circulation, or low nitrate levels relative to phosphate.",
+alg_cyano_s: "Siphon out mats physically, improve water flow in dead zones, reduce organic load via filter maintenance, and perform targeted water changes.",
 
-alg_brush_title: "🚨 Algae Warning: Brush / Beard Algae (BBA)",
-alg_brush_expl: "Thrive on unstable CO₂ levels, organic waste accumulation, or locations with direct high water flow where nutrients accumulate.",
-alg_brush_sol: "Stabilize CO₂ injection, reduce organic waste through rigorous filter checks and water changes, and spot-treat affected decor with Liquid Carbon.",
+alg_brush_t: "🚨 Algae Warning: Brush / Beard Algae (BBA)",
+alg_brush_e: "Thrive on unstable CO₂ levels, organic waste accumulation, or locations with direct high water flow where nutrients accumulate.",
+alg_brush_s: "Stabilize CO₂ injection, reduce organic waste through rigorous filter checks and water changes, and spot-treat affected decor with Liquid Carbon.",
 
-alg_spirogyra_title: "🚨 Algae Warning: Spirogyra (Green Silk Algae)",
-alg_spirogyra_expl: "Spirogyra forms cotton-like mats and grows rapidly under high micro-nutrient levels, heavy organic waste, and unstable macro parameters.",
-alg_spirogyra_sol: "Reduce iron/micro-fertilizer dosage, perform generous water changes, remove mass manually, and clean the filter media.",
+alg_spirogyra_t: "🚨 Algae Warning: Spirogyra (Green Silk Algae)",
+alg_spirogyra_e: "Spirogyra forms cotton-like mats and grows rapidly under high micro-nutrient levels, heavy organic waste, and unstable macro parameters.",
+alg_spirogyra_s: "Reduce iron/micro-fertilizer dosage, perform generous water changes, remove mass manually, and clean the filter media.",
 
-alg_diatoms_title: "🚨 Algae Warning: Diatoms (Brown Algae)",
-alg_diatoms_expl: "Diatoms feature brown, slimy layers frequently caused by high silicate (SiO₂) concentrations in source water combined with insufficient light.",
-alg_diatoms_sol: "Increase lighting intensity/duration, use silicate-adsorbing filter media (e.g. Zeolite/SilicaEx), and maintain regular water changes.",
+alg_diatoms_t: "🚨 Algae Warning: Diatoms (Brown Algae)",
+alg_diatoms_e: "Diatoms feature brown, slimy layers frequently caused by high silicate (SiO₂) concentrations in source water combined with insufficient light.",
+alg_diatoms_s: "Increase lighting intensity/duration, use silicate-adsorbing filter media (e.g. Zeolite/SilicaEx), and maintain regular water changes.",
 
-alg_glass_title: "🚨 Algae Warning: Green Film on Glass",
-alg_glass_expl: "Normal biological biofilm accelerated by excessive light exposure, direct sunlight, or elevated nutrient levels.",
-alg_glass_sol: "Clean glass regularly using an algae magnet or scraper, and adjust lighting periods if algae growth is excessively fast.",
+alg_glass_t: "🚨 Algae Warning: Green Film on Glass",
+alg_glass_e: "Normal biological biofilm accelerated by excessive light exposure, direct sunlight, or elevated nutrient levels.",
+alg_glass_s: "Clean glass regularly using an algae magnet or scraper, and adjust lighting periods if algae growth is excessively fast.",
 
-alg_bloom_title: "🚨 Algae Warning: Green Water Bloom",
-alg_bloom_expl: "Microscopic single-celled algae floating freely, caused by intense light peaks, ammonia spikes, or severe nutrient imbalances.",
-alg_bloom_sol: "Deploy a UV-C clarifier, execute a 3-day complete blackout of the tank, and perform large subsequent water changes.",
+alg_bloom_t: "🚨 Algae Warning: Green Water Bloom",
+alg_bloom_e: "Microscopic single-celled algae floating freely, caused by intense light peaks, ammonia spikes, or severe nutrient imbalances.",
+alg_bloom_s: "Deploy a UV-C clarifier, execute a 3-day complete blackout of the tank, and perform large subsequent water changes.",
 
-pl_no_growth_title: "⚠️ Plant Issue: No Growth",
-pl_no_growth_expl: "Indicates a limiting factor, most commonly a shortage of essential macro-nutrients (Nitrogen, Phosphate, Potassium) or insufficient CO₂.",
-pl_no_growth_sol: "Check macro-nutrient levels (NPK) and CO₂ supply, test lighting intensity, and ensure root nutrients are available for heavy root feeders.",
+pl_no_growth_t: "⚠️ Plant Issue: No Growth",
+pl_no_growth_e: "Indicates a limiting factor, most commonly a shortage of essential macro-nutrients (Nitrogen, Phosphate, Potassium) or insufficient CO₂.",
+pl_no_growth_s: "Check macro-nutrient levels (NPK) and CO₂ supply, test lighting intensity, and ensure root nutrients are available for heavy root feeders.",
 
-pl_fade_title: "⚠️ Plant Issue: Fading / Loss of Color",
-pl_fade_expl: "Typically points to a deficiency in Nitrogen (NO₃) or micro-nutrients/Iron (Fe), leading to impaired chlorophyll formation (chlorosis).",
-pl_fade_sol: "Test Nitrate and Iron levels in the water column, and apply a balanced liquid fertilizer or iron booster.",
+pl_fade_t: "⚠️ Plant Issue: Fading / Loss of Color",
+pl_fade_e: "Typically points to a deficiency in Nitrogen (NO₃) or micro-nutrients/Iron (Fe), leading to impaired chlorophyll formation (chlorosis).",
+pl_fade_s: "Test Nitrate and Iron levels in the water column, and apply a balanced liquid fertilizer or iron booster.",
 
-pl_holes_title: "⚠️ Plant Issue: Holes in Leaves",
-pl_holes_expl: "Classic symptom of a severe Potassium (K) deficiency. Often begins with small dark necrotic spots that decay into holes.",
-pl_holes_sol: "Dose potassium sulfate or a specialized macro-fertilizer to raise potassium levels to 10–20 mg/L.",
+pl_holes_t: "⚠️ Plant Issue: Holes in Leaves",
+pl_holes_e: "Classic symptom of a severe Potassium (K) deficiency. Often begins with small dark necrotic spots that decay into holes.",
+pl_holes_s: "Dose potassium sulfate or a specialized macro-fertilizer to raise potassium levels to 10–20 mg/L.",
 
-pl_melt_title: "⚠️ Plant Issue: Plant Melt / Leaf Decay",
-pl_melt_expl: "Often occurs after plant transition (emerge to submerge), sudden water parameter shifts, or severe shock.",
-pl_melt_sol: "Remove decaying plant matter immediately to protect water quality, ensure stable parameters, and allow plants time to adapt.",
+pl_melt_t: "⚠️ Plant Issue: Plant Melt / Leaf Decay",
+pl_melt_e: "Often occurs after plant transition (emerge to submerge), sudden water parameter shifts, or severe shock.",
+pl_melt_s: "Remove decaying plant matter immediately to protect water quality, ensure stable parameters, and allow plants time to adapt.",
 
-pl_rot_title: "⚠️ Plant Issue: Stem Rot",
-pl_rot_expl: "Stems rot near the substrate due to lack of light at the base, poor water circulation, or damaged tissue during planting.",
-pl_rot_sol: "Cut healthy top shoots and replant them, remove rotten lower stems, and improve spacing and lighting penetration.",
+pl_rot_t: "⚠️ Plant Issue: Stem Rot",
+pl_rot_e: "Stems rot near the substrate due to lack of light at the base, poor water circulation, or damaged tissue during planting.",
+pl_rot_s: "Cut healthy top shoots and replant them, remove rotten lower stems, and improve spacing and lighting penetration.",
 
-pl_yellow_title: "⚠️ Plant Issue: Yellowing Leaves",
-pl_yellow_expl: "Indicates mobile nutrient deficiencies (such as Nitrogen or Magnesium) where older leaves turn yellow as nutrients are translocated.",
-pl_yellow_sol: "Check macro-nutrients and general hardness (Magnesium/Calcium ratio), and ensure regular liquid fertilization.",
+pl_yellow_t: "⚠️ Plant Issue: Yellowing Leaves",
+pl_yellow_e: "Indicates mobile nutrient deficiencies (such as Nitrogen or Magnesium) where older leaves turn yellow as nutrients are translocated.",
+pl_yellow_s: "Check macro-nutrients and general hardness (Magnesium/Calcium ratio), and ensure regular liquid fertilization.",
 
-pl_deformed_title: "⚠️ Plant Issue: Small, Deformed New Leaves",
-pl_deformed_expl: "Points to micronutrient deficiencies (like Calcium, Boron, or Iron) affecting new meristematic tissue growth.",
-pl_deformed_sol: "Check trace element supply and ensure overall mineral balance in the water column.",
+pl_deformed_t: "⚠️ Plant Issue: Small, Deformed New Leaves",
+pl_deformed_e: "Points to micronutrient deficiencies (like Calcium, Boron, or Iron) affecting new meristematic tissue growth.",
+pl_deformed_s: "Check trace element supply and ensure overall mineral balance in the water column.",
 
-pl_drop_title: "⚠️ Plant Issue: Dropping Lower Leaves",
-pl_drop_expl: "Often caused by shading from dense upper canopy growth or general nutrient redistribution by the plant.",
-pl_drop_sol: "Prune and thin out overgrown stems to allow light penetration to lower regions, and check overall fertilization.",
+pl_drop_t: "⚠️ Plant Issue: Dropping Lower Leaves",
+pl_drop_e: "Often caused by shading from dense upper canopy growth or general nutrient redistribution by the plant.",
+pl_drop_s: "Prune and thin out overgrown stems to allow light penetration to lower regions, and check overall fertilization.",
 
-fi_air_title: "🚨 Critical Warning: Fish gasping for air at surface",
-fi_air_expl: "Severe oxygen depletion, excessive CO₂ injection, or high toxic pollutant levels (Ammonia/Nitrite) blocking gill function.",
-fi_air_sol: "Increase surface agitation immediately via filter outflow or air pump, stop CO₂ injection, test NH₄/NO₂, and perform a large water change.",
+fi_air_t: "🚨 Critical Warning: Fish gasping for air at surface",
+fi_air_e: "Severe oxygen depletion, excessive CO₂ injection, or high toxic pollutant levels (Ammonia/Nitrite) blocking gill function.",
+fi_air_s: "Increase surface agitation immediately via filter outflow or air pump, stop CO₂ injection, test NH₄/NO₂, and perform a large water change.",
 
-fi_apathy_title: "⚠️ Health Warning: Apathy / Loss of appetite",
-fi_apathy_expl: "Indicates chronic stress, poor water parameters, incorrect temperature, or early stages of a bacterial/parasitic infection.",
-fi_apathy_sol: "Test all core water parameters (NH₄, NO₂, pH, temperature) and observe animals closely for further symptoms.",
+fi_apathy_t: "⚠️ Health Warning: Apathy / Loss of appetite",
+fi_apathy_e: "Indicates chronic stress, poor water parameters, incorrect temperature, or early stages of a bacterial/parasitic infection.",
+fi_apathy_s: "Test all core water parameters (NH₄, NO₂, pH, temperature) and observe animals closely for further symptoms.",
 
-fi_deaths_title: "🚨 Critical Warning: Recent fish deaths",
-fi_deaths_expl: "Points to acute poisoning (Ammonia/Nitrite spike), aggressive pathogen outbreaks, or severe environmental shock.",
-fi_deaths_sol: "Test water for NH₄ and NO₂ immediately, perform a 50% water change, and isolate sick or weakened specimens.",
+fi_deaths_t: "🚨 Critical Warning: Recent fish deaths",
+fi_deaths_e: "Points to acute poisoning (Ammonia/Nitrite spike), aggressive pathogen outbreaks, or severe environmental shock.",
+fi_deaths_s: "Test water for NH₄ and NO₂ immediately, perform a 50% water change, and isolate sick or weakened specimens.",
 
-fi_spots_title: "🚨 Disease Warning: White Spots (Ichthyophthirius)",
-fi_spots_expl: "Parasitic infection ('Ich') triggered by environmental stress, temperature fluctuations, or introduction of new fish.",
-fi_spots_sol: "Treat with dedicated anti-parasite medication following instructions, gently raise temperature, and ensure good aeration.",
+fi_spots_t: "🚨 Disease Warning: White Spots (Ichthyophthirius)",
+fi_spots_e: "Parasitic infection ('Ich') triggered by environmental stress, temperature fluctuations, or introduction of new fish.",
+fi_spots_s: "Treat with dedicated anti-parasite medication following instructions, gently raise temperature, and ensure good aeration.",
 
-fi_fins_title: "⚠️ Health Warning: Frayed or dissolving fins",
-fi_fins_expl: "Bacterial fin rot often caused by poor water hygiene, high germ load in the aquarium, or mechanical fin nipping.",
-fi_fins_sol: "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates.",
-
-gen_issue_title: "🚨 Issue Warning",
-gen_issue_expl: "The observed symptom indicates an imbalance in the aquarium.",
-gen_issue_sol: "Increase weekly water changes and test nutrient parameters."
+fi_fins_t: "⚠️ Health Warning: Frayed or dissolving fins",
+fi_fins_e: "Bacterial fin rot often caused by poor water hygiene, high germ load in the aquarium, or mechanical fin nipping.",
+fi_fins_s: "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates."
 }
 };
 
@@ -1623,7 +1614,7 @@ warningsHtml += `
 <div class="alert-card alert-orange" onclick="toggleDetails(this)">
 <strong>${title}</strong>
 <span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.lbl_explanation}: ${expl}<br>- ${t.lbl_solution}: ${sol}</div>
+<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNING] GH Increase / Mini-Landscape:\n- ${expl}\n- ${sol}\n\n`;
 }
@@ -1640,26 +1631,26 @@ warningsHtml += `
 <div class="alert-card alert-orange" onclick="toggleDetails(this)">
 <strong>${title}</strong>
 <span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.lbl_explanation}: ${expl}<br>- ${t.lbl_solution}: ${sol}</div>
+<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNING] Critical pH / Acid Drop Risk:\n- ${expl}\n- ${sol}\n\n`;
 }
 
 let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
 if (no3Akt >= 10) {
-let title = `${t.warn_no3_title} (${no3Akt} mg/L)`;
+let title = `${t.warn_no3_title} (${no3Akt} ${currentLang==='en'?'ppm':'mg/L'})`;
 let expl = t.warn_no3_expl;
 let sol = t.warn_no3_sol;
 warningsHtml += `
 <div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
 <span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.lbl_explanation}: ${expl}<br>- ${t.lbl_solution}: ${sol}</div>
+<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNING] High Nitrate:\n- ${expl}\n- ${sol}\n\n`;
 }
 
-// PROFESSIONELLE SYMPTOM-LOGIK MIT MULTILINGUALEN TEXTEN
+// PROFESSIONELLE SYMPTOM-LOGIK MIT DYNAMISCHEN ÜBERSETZUNGEN
 document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
 let val = chk.value;
 let title = "";
@@ -1667,100 +1658,58 @@ let expl = "";
 let sol = "";
 
 if (val === "Grüne Fadenalgen") {
-title = t.alg_green_thread_title;
-expl = t.alg_green_thread_expl;
-sol = t.alg_green_thread_sol;
+title = t.alg_green_thread_t; expl = t.alg_green_thread_e; sol = t.alg_green_thread_s;
 } else if (val === "Grüne Punktalgen (GSA)") {
-title = t.alg_green_spot_title;
-expl = t.alg_green_spot_expl;
-sol = t.alg_green_spot_sol;
+title = t.alg_green_spot_t; expl = t.alg_green_spot_e; sol = t.alg_green_spot_s;
 } else if (val === "Cyanobakterien") {
-title = t.alg_cyano_title;
-expl = t.alg_cyano_expl;
-sol = t.alg_cyano_sol;
+title = t.alg_cyano_t; expl = t.alg_cyano_e; sol = t.alg_cyano_s;
 } else if (val === "Pinselalgen / Bartalgen (BBA)") {
-title = t.alg_brush_title;
-expl = t.alg_brush_expl;
-sol = t.alg_brush_sol;
+title = t.alg_brush_t; expl = t.alg_brush_e; sol = t.alg_brush_s;
 } else if (val === "Spirogyra") {
-title = t.alg_spirogyra_title;
-expl = t.alg_spirogyra_expl;
-sol = t.alg_spirogyra_sol;
+title = t.alg_spirogyra_t; expl = t.alg_spirogyra_e; sol = t.alg_spirogyra_s;
 } else if (val === "Kieselalgen") {
-title = t.alg_diatoms_title;
-expl = t.alg_diatoms_expl;
-sol = t.alg_diatoms_sol;
+title = t.alg_diatoms_t; expl = t.alg_diatoms_e; sol = t.alg_diatoms_s;
 } else if (val === "Grüner Belag auf den Scheiben") {
-title = t.alg_glass_title;
-expl = t.alg_glass_expl;
-sol = t.alg_glass_sol;
+title = t.alg_glass_t; expl = t.alg_glass_e; sol = t.alg_glass_s;
 } else if (val === "Grüne Wasserblüte") {
-title = t.alg_bloom_title;
-expl = t.alg_bloom_expl;
-sol = t.alg_bloom_sol;
+title = t.alg_bloom_t; expl = t.alg_bloom_e; sol = t.alg_bloom_s;
 } else if (val === "Kein Wachstum") {
-title = t.pl_no_growth_title;
-expl = t.pl_no_growth_expl;
-sol = t.pl_no_growth_sol;
+title = t.pl_no_growth_t; expl = t.pl_no_growth_e; sol = t.pl_no_growth_s;
 } else if (val === "Verblassen / Farbverlust") {
-title = t.pl_fade_title;
-expl = t.pl_fade_expl;
-sol = t.pl_fade_sol;
+title = t.pl_fade_t; expl = t.pl_fade_e; sol = t.pl_fade_s;
 } else if (val === "Löcher in den Blättern") {
-title = t.pl_holes_title;
-expl = t.pl_holes_expl;
-sol = t.pl_holes_sol;
+title = t.pl_holes_t; expl = t.pl_holes_e; sol = t.pl_holes_s;
 } else if (val === "Blattzerfall / Pflanzenmelt") {
-title = t.pl_melt_title;
-expl = t.pl_melt_expl;
-sol = t.pl_melt_sol;
+title = t.pl_melt_t; expl = t.pl_melt_e; sol = t.pl_melt_s;
 } else if (val === "Stängelfäule") {
-title = t.pl_rot_title;
-expl = t.pl_rot_expl;
-sol = t.pl_rot_sol;
+title = t.pl_rot_t; expl = t.pl_rot_e; sol = t.pl_rot_s;
 } else if (val === "Vergilbende Blätter") {
-title = t.pl_yellow_title;
-expl = t.pl_yellow_expl;
-sol = t.pl_yellow_sol;
+title = t.pl_yellow_t; expl = t.pl_yellow_e; sol = t.pl_yellow_s;
 } else if (val === "Kleine deformierte Blätter") {
-title = t.pl_deformed_title;
-expl = t.pl_deformed_expl;
-sol = t.pl_deformed_sol;
+title = t.pl_deformed_t; expl = t.pl_deformed_e; sol = t.pl_deformed_s;
 } else if (val === "Abfallende untere Blätter") {
-title = t.pl_drop_title;
-expl = t.pl_drop_expl;
-sol = t.pl_drop_sol;
+title = t.pl_drop_t; expl = t.pl_drop_e; sol = t.pl_drop_s;
 } else if (val === "Schnappen nach Luft") {
-title = t.fi_air_title;
-expl = t.fi_air_expl;
-sol = t.fi_air_sol;
+title = t.fi_air_t; expl = t.fi_air_e; sol = t.fi_air_s;
 } else if (val === "Teilnahmslosigkeit") {
-title = t.fi_apathy_title;
-expl = t.fi_apathy_expl;
-sol = t.fi_apathy_sol;
+title = t.fi_apathy_t; expl = t.fi_apathy_e; sol = t.fi_apathy_s;
 } else if (val === "Todesfälle") {
-title = t.fi_deaths_title;
-expl = t.fi_deaths_expl;
-sol = t.fi_deaths_sol;
+title = t.fi_deaths_t; expl = t.fi_deaths_e; sol = t.fi_deaths_s;
 } else if (val === "Weiße Punkte") {
-title = t.fi_spots_title;
-expl = t.fi_spots_expl;
-sol = t.fi_spots_sol;
+title = t.fi_spots_t; expl = t.fi_spots_e; sol = t.fi_spots_s;
 } else if (val === "Ausgefranste Flossen") {
-title = t.fi_fins_title;
-expl = t.fi_fins_expl;
-sol = t.fi_fins_sol;
+title = t.fi_fins_t; expl = t.fi_fins_e; sol = t.fi_fins_s;
 } else {
-title = `${t.gen_issue_title}: ${val}`;
-expl = t.gen_issue_expl;
-sol = t.gen_issue_sol;
+title = currentLang === 'en' ? `🚨 Issue Warning: ${val} detected` : `⚠️ Hinweis zum Problem: ${val}`;
+expl = currentLang === 'en' ? `The symptom "${val}" indicates an imbalance in the aquarium.` : `Das beobachtete Problem "${val}" zeigt an, dass im Aquarium etwas nicht optimal läuft.`;
+sol = currentLang === 'en' ? "Increase weekly water changes and test nutrient parameters." : "Mache zur Sicherheit einen Teilwasserwechsel von 50% und überprüfe deine Wasserwerte mit einem Testkoffer.";
 }
 
 warningsHtml += `
 <div class="alert-card alert-red" onclick="toggleDetails(this)">
 <strong>${title}</strong>
 <span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.lbl_explanation}: ${expl}<br>- ${t.lbl_supplement}: ${sol}</div>
+<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNING] Issue (${val}):\n- ${expl}\n- ${sol}\n\n`;
 });
