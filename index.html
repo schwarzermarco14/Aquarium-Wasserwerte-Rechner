@@ -369,17 +369,6 @@ margin-top: 8px;
 font-family: inherit;
 resize: vertical;
 }
-.modal-btn {
-background: var(--accent);
-color: #0f172a;
-border: none;
-padding: 10px;
-width: 100%;
-font-weight: bold;
-border-radius: 6px;
-margin-top: 12px;
-cursor: pointer;
-}
 
 .app-footer {
 text-align: center;
@@ -768,7 +757,7 @@ line-height: 1.5;
 </div>
 </div>
 
-<button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
+<button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren</button>
 </div>
 
 <!-- ANALYSE ERGEBNISSE -->
@@ -823,8 +812,7 @@ line-height: 1.5;
 <h3 id="modalDateTitle" style="color:var(--accent); margin-bottom: 10px;">Datum</h3>
 <div class="modal-body">
 <p style="margin-bottom: 6px; color:var(--text-muted);" data-i18n="modal_subtitle">Vollständiger Analyse-Report:</p>
-<textarea id="modalEntryText" placeholder="Notizen oder gemessene Werte hier eintragen..."></textarea>
-<button type="button" class="modal-btn" onclick="saveDayEntry()" data-i18n="modal_save">Speichern</button>
+<textarea id="modalEntryText" placeholder="Notizen oder gemessene Werte hier eintragen..." oninput="autoSaveDayEntry()"></textarea>
 </div>
 </div>
 </div>
@@ -1012,10 +1000,9 @@ wa_yellow: "Gelbe oder teefarbene Wasserfärbung",
 wa_deposits: "Mineralische Ablagerungen auf Scheiben/Technik",
 wa_odor: "Unangenehmer Geruch",
 wa_biofilm: "Weißer Belag oder Biofilm auf Holz",
-btn_analyze: "Analysieren & im Kalender speichern",
+btn_analyze: "Analysieren",
 res_title: "📊 Analyseergebnis & Auswertung",
 modal_subtitle: "Vollständiger Analyse-Report:",
-modal_save: "Speichern",
 footer_text: "Aquarium-Wasserwerte-Rechner (AWR) v2.9",
 footer_provider: "Bereitgestellt von",
 click_details: "Klicken für Details",
@@ -1303,10 +1290,9 @@ wa_yellow: "Yellow or tea-colored water tint",
 wa_deposits: "Mineral deposits on glass/equipment",
 wa_odor: "Unpleasant odor",
 wa_biofilm: "White coating or biofilm on wood",
-btn_analyze: "Analyze & Save to Calendar",
+btn_analyze: "Analyze",
 res_title: "📊 Analysis Results & Evaluation",
 modal_subtitle: "Complete analysis report:",
-modal_save: "Save",
 footer_text: "Aquarium Water Parameters Calculator (AWR) v2.9",
 footer_provider: "Provided by",
 click_details: "Click for details",
@@ -1628,6 +1614,10 @@ localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 
 function runAnalysis(event) {
 event.preventDefault();
+
+// Vorher alle Formulardaten/Eingaben speichern
+saveInputsToCurrentTank();
+
 document.getElementById('resultSection').style.display = 'block';
 
 let wNames = ["pH", "GH", "KH", "NH₄", "NO₂", "NO₃", "PO₄", "K", "Ca", "Mg", "Fe", "Na", "SiO₂", "SO₄"];
@@ -1829,7 +1819,7 @@ function closeModal() {
 document.getElementById('dayModal').style.display = 'none';
 }
 
-function saveDayEntry() {
+function autoSaveDayEntry() {
 if (!activeModalDate) return;
 let text = document.getElementById('modalEntryText').value;
 if (!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
@@ -1837,7 +1827,6 @@ allTanks[currentTankName].diary[activeModalDate] = text;
 saveInputsToCurrentTank();
 renderCalendar();
 updateComparisonDropdowns();
-closeModal();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
