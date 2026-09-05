@@ -788,25 +788,25 @@ line-height: 1.5;
 <h2 data-i18n="tab_charts">📈 Wasserwerte-Verlauf (Diagramme)</h2>
 <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch.</p>
 
-<!-- KLASSISCHES DROP-DOWN MENÜ WIEDERHERGESTELLT -->
-<div class="form-group" style="margin-bottom: 15px;">
-<label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold;">Parameter auswählen:</label>
-<select id="chartParamSelect" onchange="updateWaterChart()" style="width: 180px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
-<option value="w_ph_akt" selected>pH (Aquarienwasser)</option>
-<option value="w_gh_akt">GH (°dH)</option>
-<option value="w_kh_akt">KH (°dH)</option>
-<option value="w_nh4_akt">NH₄ (ppm)</option>
-<option value="w_no2_akt">NO₂ (ppm)</option>
-<option value="w_no3_akt">NO₃ (ppm)</option>
-<option value="w_po4_akt">PO₄ (ppm)</option>
-<option value="w_k_akt">K (ppm)</option>
-<option value="w_ca_akt">Ca (ppm)</option>
-<option value="w_mg_akt">Mg (ppm)</option>
-<option value="w_fe_akt">Fe (ppm)</option>
-<option value="w_na_akt">Na (ppm)</option>
-<option value="w_sio2_akt">SiO₂ (ppm)</option>
-<option value="w_so4_akt">SO₄ (ppm)</option>
-</select>
+<!-- MEHRFACH-AUSWAHL ÜBER CHECKBOXEN ERSETZT -->
+<div class="form-group" style="flex-direction: column; align-items: flex-start; margin-bottom: 15px;">
+<label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold; margin-bottom: 8px;">Parameter auswählen (mehrere möglich):</label>
+<div class="media-grid" id="chartParamSelect" style="width: 100%;">
+<label class="check-group"><input type="checkbox" value="w_ph_akt" checked onchange="updateWaterChart()"> pH (Aquarienwasser)</label>
+<label class="check-group"><input type="checkbox" value="w_gh_akt" onchange="updateWaterChart()"> GH (°dH)</label>
+<label class="check-group"><input type="checkbox" value="w_kh_akt" onchange="updateWaterChart()"> KH (°dH)</label>
+<label class="check-group"><input type="checkbox" value="w_nh4_akt" onchange="updateWaterChart()"> NH₄ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_no2_akt" onchange="updateWaterChart()"> NO₂ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_no3_akt" onchange="updateWaterChart()"> NO₃ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_po4_akt" onchange="updateWaterChart()"> PO₄ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_k_akt" onchange="updateWaterChart()"> K (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_ca_akt" onchange="updateWaterChart()"> Ca (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_mg_akt" onchange="updateWaterChart()"> Mg (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_fe_akt" onchange="updateWaterChart()"> Fe (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_na_akt" onchange="updateWaterChart()"> Na (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_sio2_akt" onchange="updateWaterChart()"> SiO₂ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_so4_akt" onchange="updateWaterChart()"> SO₄ (ppm)</label>
+</div>
 </div>
 
 <div style="position: relative; height: 260px; width: 100%; margin-bottom: 20px;">
@@ -898,7 +898,7 @@ tab_symptoms: "Symptome",
 tab_charts: "📈 Diagramme",
 tab_cal: "📅 Kalender",
 charts_desc: "Verlauf deiner gemessenen Aquarienwerte aus dem Analyse-Protokoll:",
-lbl_select_param: "Parameter im Diagramm:",
+lbl_select_param: "Parameter im Diagramm (mehrere möglich):",
 sec_tank_info: "📐 Angaben zum Aquarium",
 lbl_length: "Aquarienlänge (cm):",
 lbl_width: "Aquarienbreite (cm):",
@@ -1183,7 +1183,7 @@ tab_symptoms: "Symptoms",
 tab_charts: "📈 Charts",
 tab_cal: "📅 Calendar",
 charts_desc: "Timeline tracking of your measured aquarium parameters from the analysis log:",
-lbl_select_param: "Select parameter in chart:",
+lbl_select_param: "Select parameters in chart (multiple allowed):",
 sec_tank_info: "📐 Tank Specifications",
 lbl_length: "Tank length (cm):",
 lbl_width: "Tank width (cm):",
@@ -1760,24 +1760,45 @@ const ctx = canvas.getContext('2d');
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
 let dates = Object.keys(diaryData).sort();
 
-const paramSelect = document.getElementById('chartParamSelect');
-let paramId = paramSelect ? paramSelect.value : 'w_ph_akt';
-let paramLabel = paramSelect ? paramSelect.options[paramSelect.selectedIndex].text : 'pH';
+const container = document.getElementById('chartParamSelect');
+const checkboxes = container ? container.querySelectorAll('input[type="checkbox"]:checked') : [];
 
 let labels = [];
+if(dates.length === 0) {
+labels = ["Start", "Heute"];
+} else {
+labels = dates;
+}
+
+let datasets = [];
+const colors = ['#0ea5e9', '#f43f5e', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#3b82f6', '#eab308', '#6366f1', '#14b8a6', '#f97316', '#a855f7'];
+
+checkboxes.forEach((chk, index) => {
+let paramId = chk.value;
+let paramLabel = chk.parentElement.innerText.trim();
 let chartData = [];
 
 if(dates.length === 0) {
-labels = ["Start", "Heute"];
 let currentVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
 chartData = [currentVal, currentVal];
 } else {
-labels = dates;
 dates.forEach(date => {
 let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
 chartData.push(liveVal);
 });
 }
+
+let color = colors[index % colors.length];
+datasets.push({
+label: paramLabel,
+data: chartData,
+borderColor: color,
+backgroundColor: color + '26',
+borderWidth: 2,
+fill: false,
+tension: 0.2
+});
+});
 
 if(myWaterChart) {
 myWaterChart.destroy();
@@ -1787,15 +1808,7 @@ myWaterChart = new Chart(ctx, {
 type: 'line',
 data: {
 labels: labels,
-datasets: [{
-label: paramLabel,
-data: chartData,
-borderColor: '#0ea5e9',
-backgroundColor: 'rgba(14, 165, 233, 0.15)',
-borderWidth: 2,
-fill: true,
-tension: 0.2
-}]
+datasets: datasets
 },
 options: {
 responsive: true,
@@ -1871,42 +1884,42 @@ if(val === 'Abfallende untere Blätter') alerts.push({ type: 'blue', title: t.pl
 if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
 if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
 if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
-if(val === 'Weiße Punkte') alerts.push({ type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s + (t.fi_spots_p ? "<br><br>" + t.fi_spots_p : "") });
+if(val === 'Weiße Punkte') alerts.push({ type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s + (t.fi_spots_p ? '<br><br>' + t.fi_spots_p : '') });
 if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
 });
 
-if(alerts.length === 0) {
 alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
-}
 
-alerts.forEach(alertData => {
-let card = document.createElement('div');
-card.className = `alert-card alert-${alertData.type} dynamic-alert`;
-card.innerHTML = `
-<strong>${alertData.title}</strong>
-<span class="click-hint">${t.click_details}</span>
+alerts.forEach(item => {
+let alertDiv = document.createElement('div');
+alertDiv.className = `alert-card dynamic-alert alert-${item.type}`;
+alertDiv.innerHTML = `
+<strong>${item.title}</strong>
 <div class="alert-details">
-<p style="margin-bottom: 4px;"><strong>${t.expl_label}:</strong> ${alertData.expl}</p>
-<p><strong>${t.sol_label}:</strong> ${alertData.sol}</p>
+<p><strong>${t.expl_label}:</strong> ${item.expl}</p>
+<p style="margin-top:6px;"><strong>${t.sol_label}:</strong> ${item.sol}</p>
 </div>
+<span class="click-hint">${t.click_details}</span>
 `;
-card.onclick = () => {
-let details = card.querySelector('.alert-details');
+alertDiv.onclick = function() {
+let details = this.querySelector('.alert-details');
 details.style.display = details.style.display === 'block' ? 'none' : 'block';
 };
-resContainer.appendChild(card);
+resContainer.appendChild(alertDiv);
 });
 
 resSection.style.display = 'block';
 resSection.scrollIntoView({ behavior: 'smooth' });
 }
 
+window.onload = function() {
 updateTankSelector();
 loadTankData();
 calcVol();
 renderCalendar();
-updateComparisonDropdowns();
 updateWaterChart();
+switchLanguage(currentLang);
+};
 </script>
 </body>
 </html>
