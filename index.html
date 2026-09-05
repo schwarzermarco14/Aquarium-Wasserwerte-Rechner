@@ -1666,7 +1666,6 @@ let bGross = parseInt(document.getElementById('besatz_gross').value) || 0;
 let bWelse = parseInt(document.getElementById('besatz_welse').value) || 0;
 let bAlgen = parseInt(document.getElementById('besatz_algen').value) || 0;
 
-// Ungefähre Gesamtkörperlänge in cm als Daumenregel-Abschätzung
 let totalFishLength = (bKlein * 2) + (bMittel * 5) + (bGross * 10) + (bWelse * 12) + (bAlgen * 6);
 if (volumenVal > 0 && totalFishLength > (volumenVal * 0.8)) {
 let title = t.warn_overstock_title;
