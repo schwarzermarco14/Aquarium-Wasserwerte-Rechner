@@ -173,35 +173,45 @@ margin-top: 6px;
 
 .water-grid {
 display: grid;
-grid-template-columns: 1fr 1fr;
+grid-template-columns: 1fr;
 gap: 10px;
 }
-.water-column h3 {
+@media (min-width: 600px) {
+.water-grid {
+grid-template-columns: 1fr 1fr;
+}
+}
+.water-table {
+width: 100%;
+border-collapse: collapse;
+background: #020617;
+border-radius: 8px;
+overflow: hidden;
+font-size: 0.85rem;
+}
+.water-table th, .water-table td {
+padding: 8px 10px;
+text-align: left;
+border-bottom: 1px solid var(--border);
+}
+.water-table th {
+background: #0f172a;
+color: var(--accent);
 font-size: 0.8rem;
 text-align: center;
-background: #020617;
-padding: 6px;
-border-radius: 6px;
-margin-bottom: 10px;
-color: var(--text);
 }
-.water-field {
-margin-bottom: 8px;
+.water-table tr:last-child td {
+border-bottom: none;
 }
-.water-field label {
-display: block;
-font-size: 0.75rem;
-color: var(--text-muted);
-margin-bottom: 2px;
-}
-.water-field input {
+.water-table input {
 width: 100%;
-padding: 6px;
-border-radius: 6px;
+padding: 5px;
+border-radius: 4px;
 border: 1px solid var(--border);
 background: #0f172a;
 color: #fff;
 font-size: 0.8rem;
+text-align: right;
 }
 
 .check-group {
@@ -640,40 +650,87 @@ line-height: 1.5;
 <div class="card">
 <h2 data-i18n="sec_water_compare">🧪 Wasserwerte-Vergleich</h2>
 <div class="water-grid">
-<div class="water-column">
-<h3 data-i18n="col_water_change">Wasserwechsel</h3>
-<div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" value="7.2" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>GH:</label><input type="text" id="w_gh_wechsel" value="10.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>KH:</label><input type="text" id="w_kh_wechsel" value="6.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_wechsel" value="0.0" oninput="saveDataAuto()"></div>
-</div>
-<div class="water-column">
-<h3 data-i18n="col_water_tank">Aquarienwasser</h3>
-<div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>GH:</label><input type="text" id="w_gh_akt" value="12.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_akt" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_akt" value="0.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_akt" value="0.1" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_akt" value="5.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_akt" value="25.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_akt" value="5.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_akt" value="0.05" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_akt" value="5.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_akt" value="2.0" oninput="saveDataAuto()"></div>
-<div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_akt" value="10.0" oninput="saveDataAuto()"></div>
-</div>
+<table class="water-table">
+<thead>
+<tr>
+<th style="text-align:left;" data-i18n="col_water_parameter">Parameter</th>
+<th data-i18n="col_water_change">Wasserwechsel</th>
+<th data-i18n="col_water_tank">Aquarienwasser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pH</td>
+<td><input type="text" id="w_ph_wechsel" value="7.2" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_ph_akt" value="6.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>GH</td>
+<td><input type="text" id="w_gh_wechsel" value="10.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_gh_akt" value="12.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>KH</td>
+<td><input type="text" id="w_kh_wechsel" value="6.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_kh_akt" value="4.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>NH₄ (ppm)</td>
+<td><input type="text" id="w_nh4_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_nh4_akt" value="0.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>NO₂ (ppm)</td>
+<td><input type="text" id="w_no2_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_no2_akt" value="0.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>NO₃ (ppm)</td>
+<td><input type="text" id="w_no3_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_no3_akt" value="10.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>PO₄ (ppm)</td>
+<td><input type="text" id="w_po4_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_po4_akt" value="0.1" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>K (ppm)</td>
+<td><input type="text" id="w_k_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_k_akt" value="5.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>Ca (ppm)</td>
+<td><input type="text" id="w_ca_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_ca_akt" value="25.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>Mg (ppm)</td>
+<td><input type="text" id="w_mg_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_mg_akt" value="5.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>Fe (ppm)</td>
+<td><input type="text" id="w_fe_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_fe_akt" value="0.05" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>Na (ppm)</td>
+<td><input type="text" id="w_na_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_na_akt" value="5.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>SiO₂ (ppm)</td>
+<td><input type="text" id="w_sio2_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_sio2_akt" value="2.0" oninput="saveDataAuto()"></td>
+</tr>
+<tr>
+<td>SO₄ (ppm)</td>
+<td><input type="text" id="w_so4_wechsel" value="0.0" oninput="saveDataAuto()"></td>
+<td><input type="text" id="w_so4_akt" value="10.0" oninput="saveDataAuto()"></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -995,6 +1052,7 @@ wt_jumbo: "Jumbo-Wurzel (Großstückig)",
 wt_cork: "Korkenzieherhasel (Dekorativ)",
 lbl_wood_qty: "Menge an Holz (kg):",
 sec_water_compare: "🧪 Wasserwerte-Vergleich",
+col_water_parameter: "Parameter",
 col_water_change: "Wasserwechsel",
 col_water_tank: "Aquarienwasser",
 sec_history_compare: "📅 Tagebuch-Vergleich nach Datum",
@@ -1280,6 +1338,7 @@ wt_jumbo: "Jumbo root (Large pieces)",
 wt_cork: "Corkscrew hazel (Decorative)",
 lbl_wood_qty: "Wood quantity (kg):",
 sec_water_compare: "🧪 Water Parameters Comparison",
+col_water_parameter: "Parameter",
 col_water_change: "Water Change",
 col_water_tank: "Tank Water",
 sec_history_compare: "📅 Diary Comparison by Date",
@@ -1896,30 +1955,26 @@ alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t
 }
 
 alerts.forEach(item => {
-let alertClass = item.type === 'red' ? 'alert-red' : (item.type === 'orange' ? 'alert-orange' : 'alert-blue');
-let div = document.createElement('div');
-div.className = `alert-card ${alertClass} dynamic-alert`;
-div.innerHTML = `
-<strong>${item.title}</strong>
-<div class="alert-details">
-<p><strong>${t.expl_label}:</strong> ${item.expl}</p>
-<p style="margin-top:6px;"><strong>${t.sol_label}:</strong> ${item.sol}</p>
-</div>
-<span class="click-hint">${t.click_details}</span>
-`;
-div.onclick = function() {
+let alertDiv = document.createElement('div');
+let cssClass = item.type === 'red' ? 'alert-red' : (item.type === 'orange' ? 'alert-orange' : 'alert-blue');
+alertDiv.className = `alert-card ${cssClass} dynamic-alert`;
+alertDiv.innerHTML = `<strong>${item.title}</strong><span class="click-hint">${t.click_details}</span><div class="alert-details"><strong>${t.expl_label}:</strong> ${item.expl}<br><br><strong>${t.sol_label}:</strong> ${item.sol}</div>`;
+
+alertDiv.onclick = function() {
 let details = this.querySelector('.alert-details');
 details.style.display = details.style.display === 'block' ? 'none' : 'block';
 };
-resContainer.appendChild(div);
+
+resContainer.appendChild(alertDiv);
 });
 
 resSection.style.display = 'block';
+resSection.scrollIntoView({ behavior: 'smooth' });
 
 let todayStr = new Date().toISOString().split('T')[0];
-let reportSummary = alerts.map(a => `- ${a.title}`).join('\n');
-if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
-allTanks[currentTankName].diary[todayStr] = `Automatische Analyse:\n${reportSummary}`;
+let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
+let summaryText = alerts.map(a => `• ${a.title}`).join('\n');
+diaryData[todayStr] = `[${currentLang==='en'?'Analysis':'Analyse'}]\n${summaryText}`;
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 renderCalendar();
 updateComparisonDropdowns();
@@ -1930,10 +1985,7 @@ window.onload = function() {
 updateTankSelector();
 loadTankData();
 calcVol();
-renderCalendar();
-updateComparisonDropdowns();
-updateWaterChart();
-document.getElementById('langSelect').value = currentLang;
+switchLanguage(currentLang);
 };
 </script>
 </body>
