@@ -788,6 +788,27 @@ line-height: 1.5;
 <h2 data-i18n="tab_charts">📈 Wasserwerte-Verlauf (Diagramme)</h2>
 <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch.</p>
 
+<!-- NEU: Dropdown-Menü für alle Parameter aus Bild 2 / Wasserwerten -->
+<div class="form-group" style="margin-bottom: 15px;">
+<label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold;">Parameter auswählen:</label>
+<select id="chartParamSelect" onchange="updateWaterChart()" style="width: 180px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem;">
+<option value="w_ph_akt">pH (Aquarienwasser)</option>
+<option value="w_gh_akt">GH (°dH)</option>
+<option value="w_kh_akt">KH (°dH)</option>
+<option value="w_nh4_akt">NH₄ (ppm)</option>
+<option value="w_no2_akt">NO₂ (ppm)</option>
+<option value="w_no3_akt">NO₃ (ppm)</option>
+<option value="w_po4_akt">PO₄ (ppm)</option>
+<option value="w_k_akt">K (ppm)</option>
+<option value="w_ca_akt">Ca (ppm)</option>
+<option value="w_mg_akt">Mg (ppm)</option>
+<option value="w_fe_akt">Fe (ppm)</option>
+<option value="w_na_akt">Na (ppm)</option>
+<option value="w_sio2_akt">SiO₂ (ppm)</option>
+<option value="w_so4_akt">SO₄ (ppm)</option>
+</select>
+</div>
+
 <div style="position: relative; height: 260px; width: 100%; margin-bottom: 20px;">
 <canvas id="waterChart"></canvas>
 </div>
@@ -877,6 +898,7 @@ tab_symptoms: "Symptome",
 tab_charts: "📈 Diagramme",
 tab_cal: "📅 Kalender",
 charts_desc: "Verlauf deiner gemessenen Aquarienwerte aus dem Analyse-Protokoll:",
+lbl_select_param: "Parameter im Diagramm:",
 sec_tank_info: "📐 Angaben zum Aquarium",
 lbl_length: "Aquarienlänge (cm):",
 lbl_width: "Aquarienbreite (cm):",
@@ -1161,6 +1183,7 @@ tab_symptoms: "Symptoms",
 tab_charts: "📈 Charts",
 tab_cal: "📅 Calendar",
 charts_desc: "Timeline tracking of your measured aquarium parameters from the analysis log:",
+lbl_select_param: "Select parameter in chart:",
 sec_tank_info: "📐 Tank Specifications",
 lbl_length: "Tank length (cm):",
 lbl_width: "Tank width (cm):",
@@ -1613,270 +1636,100 @@ document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('act
 document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 document.getElementById(tabId).classList.add('active');
 evt.currentTarget.classList.add('active');
-if(tabId === 'tab-kalender') { 
-  renderCalendar(); 
-  updateComparisonDropdowns();
-}
 if(tabId === 'tab-diagramme') {
-  updateWaterChart();
+updateWaterChart();
 }
 }
 
 function calcVol() {
-const l = parseFloat(document.getElementById('l').value) || 0;
-const b = parseFloat(document.getElementById('b').value) || 0;
-const h = parseFloat(document.getElementById('h').value) || 0;
-document.getElementById('volumen').value = ((l * b * h) / 1000).toFixed(1);
+let l = parseFloat(document.getElementById('l').value) || 0;
+let b = parseFloat(document.getElementById('b').value) || 0;
+let h = parseFloat(document.getElementById('h').value) || 0;
+let vol = (l * b * h) / 1000;
+document.getElementById('volumen').value = vol.toFixed(1);
 }
 
-function runAnalysis(event) {
-event.preventDefault();
-document.getElementById('resultSection').style.display = 'block';
+function renderCalendar() {
+const grid = document.getElementById('calendarGrid');
+const monthYearEl = document.getElementById('calMonthYear');
+if(!grid) return;
 
-let wNames = ["pH", "GH", "KH", "NH₄", "NO₂", "NO₃", "PO₄", "K", "Ca", "Mg", "Fe", "Na", "SiO₂", "SO₄"];
-let idsChange = ["w_ph_wechsel", "w_gh_wechsel", "w_kh_wechsel", "w_nh4_wechsel", "w_no2_wechsel", "w_no3_wechsel", "w_po4_wechsel", "w_k_wechsel", "w_ca_wechsel", "w_mg_wechsel", "w_fe_wechsel", "w_na_wechsel", "w_sio2_wechsel", "w_so4_wechsel"];
-let idsAkt = ["w_ph_akt", "w_gh_akt", "w_kh_akt", "w_nh4_akt", "w_no2_akt", "w_no3_akt", "w_po4_akt", "w_k_akt", "w_ca_akt", "w_mg_akt", "w_fe_akt", "w_na_akt", "w_sio2_akt", "w_so4_akt"];
+grid.innerHTML = '';
+let firstDay = new Date(currentYear, currentMonth, 1);
+let lastDay = new Date(currentYear, currentMonth + 1, 0);
 
-let waterReport = `--- WATER PARAMETERS (${currentTankName}) ---\n`;
-for(let i = 0; i < wNames.length; i++) {
-let valChange = document.getElementById(idsChange[i]) ? document.getElementById(idsChange[i]).value : "0.0";
-let valAkt = document.getElementById(idsAkt[i]) ? document.getElementById(idsAkt[i]).value : "0.0";
-waterReport += `${wNames[i]}: Change = ${valChange}, Tank = ${valAkt}\n`;
-}
+const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const daysDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+const daysEn = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
-let warningsHtml = `<h2>${translations[currentLang].res_title}</h2>`;
+let mNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
+let dNames = currentLang === 'en' ? daysEn : daysDe;
 
-let t = translations[currentLang];
-warningsHtml += `
-<div class="alert-card alert-blue" onclick="toggleDetails(this)">
-<strong>${t.pro_tip_title}</strong>
-<span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.expl_label}: ${t.pro_tip_expl}<br>- ${t.sol_label}: ${t.pro_tip_sol}</div>
-</div>`;
-let warningsTextReport = `\n--- PRO TIP ---\n- ${t.pro_tip_expl}\n- ${t.pro_tip_sol}\n\n--- WARNINGS & SOLUTIONS ---\n`;
+monthYearEl.innerText = `${mNames[currentMonth]} ${currentYear}`;
 
-let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
-let ghChange = parseFloat(document.getElementById('w_gh_wechsel').value) || 0;
-let steinArt = document.getElementById('steinArt') ? document.getElementById('steinArt').value : "";
-
-if (ghAkt > ghChange + 1 || steinArt === "mini_landscape" || steinArt === "seiryu" || steinArt === "lochgestein" || steinArt === "marmor" || steinArt === "ada_eyi" || steinArt === "rokkaku") {
-let title = t.warn_gh_title;
-let expl = t.warn_gh_expl;
-let sol = t.warn_gh_sol;
-warningsHtml += `
-<div class="alert-card alert-orange" onclick="toggleDetails(this)">
-<strong>${title}</strong>
-<span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
-</div>`;
-warningsTextReport += `[WARNING] GH Increase / Mini-Landscape:\n- ${expl}\n- ${sol}\n\n`;
-}
-
-let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 7.0;
-let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 6.0;
-let holzArt = document.getElementById('holzArt') ? document.getElementById('holzArt').value : "";
-
-if (phAkt <= 6.0 || (phAkt <= 6.5 && khAkt <= 4.0 && holzArt !== "")) {
-let title = t.warn_ph_title;
-let expl = t.warn_ph_expl;
-let sol = t.warn_ph_sol;
-warningsHtml += `
-<div class="alert-card alert-orange" onclick="toggleDetails(this)">
-<strong>${title}</strong>
-<span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
-</div>`;
-warningsTextReport += `[WARNING] Critical pH / Acid Drop Risk:\n- ${expl}\n- ${sol}\n\n`;
-}
-
-let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
-if (no3Akt >= 10) {
-let title = `${t.warn_no3_title} (${no3Akt} ${currentLang==='en'?'ppm':'mg/L'})`;
-let expl = t.warn_no3_expl;
-let sol = t.warn_no3_sol;
-warningsHtml += `
-<div class="alert-card alert-red" onclick="toggleDetails(this)">
-<strong>${title}</strong>
-<span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
-</div>`;
-warningsTextReport += `[WARNING] High Nitrate:\n- ${expl}\n- ${sol}\n\n`;
-}
-
-let volumenVal = parseFloat(document.getElementById('volumen').value) || 0;
-let bKlein = parseInt(document.getElementById('besatz_klein').value) || 0;
-let bMittel = parseInt(document.getElementById('besatz_mittel').value) || 0;
-let bGross = parseInt(document.getElementById('besatz_gross').value) || 0;
-let bWelse = parseInt(document.getElementById('besatz_welse').value) || 0;
-let bAlgen = parseInt(document.getElementById('besatz_algen').value) || 0;
-
-let totalFishLength = (bKlein * 2) + (bMittel * 5) + (bGross * 10) + (bWelse * 12) + (bAlgen * 6);
-if (volumenVal > 0 && totalFishLength > (volumenVal * 0.8)) {
-let title = t.warn_overstock_title;
-let expl = t.warn_overstock_expl;
-let sol = t.warn_overstock_sol;
-warningsHtml += `
-<div class="alert-card alert-red" onclick="toggleDetails(this)">
-<strong>${title}</strong>
-<span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
-</div>`;
-warningsTextReport += `[WARNING] Severe Tank Overstocking:\n- ${expl}\n- ${sol}\n\n`;
-}
-
-document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
-let val = chk.value;
-let title = "";
-let expl = "";
-let sol = "";
-let prophylaxisHtml = "";
-
-if (val === "Grüne Fadenalgen") {
-title = t.alg_green_thread_t; expl = t.alg_green_thread_e; sol = t.alg_green_thread_s;
-} else if (val === "Grüne Punktalgen (GSA)") {
-title = t.alg_green_spot_t; expl = t.alg_green_spot_e; sol = t.alg_green_spot_s;
-} else if (val === "Cyanobakterien") {
-title = t.alg_cyano_t; expl = t.alg_cyano_e; sol = t.alg_cyano_s;
-} else if (val === "Pinselalgen / Bartalgen (BBA)") {
-title = t.alg_brush_t; expl = t.alg_brush_e; sol = t.alg_brush_s;
-} else if (val === "Spirogyra") {
-title = t.alg_spirogyra_t; expl = t.alg_spirogyra_e; sol = t.alg_spirogyra_s;
-} else if (val === "Kieselalgen") {
-title = t.alg_diatoms_t; expl = t.alg_diatoms_e; sol = t.alg_diatoms_s;
-} else if (val === "Grüner Belag auf den Scheiben") {
-title = t.alg_glass_t; expl = t.alg_glass_e; sol = t.alg_glass_s;
-} else if (val === "Grüne Wasserblüte") {
-title = t.alg_bloom_t; expl = t.alg_bloom_e; sol = t.alg_bloom_s;
-} else if (val === "Kein Wachstum") {
-title = t.pl_no_growth_t; expl = t.pl_no_growth_e; sol = t.pl_no_growth_s;
-} else if (val === "Verblassen / Farbverlust") {
-title = t.pl_fade_t; expl = t.pl_fade_e; sol = t.pl_fade_s;
-} else if (val === "Löcher in den Blättern") {
-title = t.pl_holes_t; expl = t.pl_holes_e; sol = t.pl_holes_s;
-} else if (val === "Blattzerfall / Pflanzenmelt") {
-title = t.pl_melt_t; expl = t.pl_melt_e; sol = t.pl_melt_s;
-} else if (val === "Stängelfäule") {
-title = t.pl_rot_t; expl = t.pl_rot_e; sol = t.pl_rot_s;
-} else if (val === "Vergilbende Blätter") {
-title = t.pl_yellow_t; expl = t.pl_yellow_e; sol = t.pl_yellow_s;
-} else if (val === "Kleine deformierte Blätter") {
-title = t.pl_deformed_t; expl = t.pl_deformed_e; sol = t.pl_deformed_s;
-} else if (val === "Abfallende untere Blätter") {
-title = t.pl_drop_t; expl = t.pl_drop_e; sol = t.pl_drop_s;
-} else if (val === "Schnappen nach Luft") {
-title = t.fi_air_t; expl = t.fi_air_e; sol = t.fi_air_s;
-} else if (val === "Teilnahmslosigkeit") {
-title = t.fi_apathy_t; expl = t.fi_apathy_e; sol = t.fi_apathy_s;
-} else if (val === "Todesfälle") {
-title = t.fi_deaths_t; expl = t.fi_deaths_e; sol = t.fi_deaths_s;
-} else if (val === "Weiße Punkte") {
-title = t.fi_spots_t; expl = t.fi_spots_e; sol = t.fi_spots_s;
-prophylaxisHtml = `<br>- ${t.p_label}: ${t.fi_spots_p}`;
-} else if (val === "Ausgefranste Flossen") {
-title = t.fi_fins_t; expl = t.fi_fins_e; sol = t.fi_fins_s;
-} else {
-title = currentLang === 'en' ? `🚨 Issue Warning: ${val} detected` : `⚠️ Hinweis zum Problem: ${val}`;
-expl = currentLang === 'en' ? `The symptom "${val}" indicates an imbalance in the aquarium.` : `Das beobachtete Problem "${val}" zeigt an, dass im Aquarium etwas nicht optimal läuft.`;
-sol = currentLang === 'en' ? "Increase weekly water changes and test nutrient parameters." : "Mache zur Sicherheit einen Teilwasserwechsel von 50% und überprüfe deine Wasserwerte mit einem Testkoffer.";
-}
-
-warningsHtml += `
-<div class="alert-card alert-red" onclick="toggleDetails(this)">
-<strong>${title}</strong>
-<span class="click-hint">${t.click_details}</span>
-<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}${prophylaxisHtml}</div>
-</div>`;
-warningsTextReport += `[WARNING] Issue (${val}):\n- ${expl}\n- ${sol}\n\n`;
+dNames.forEach(d => {
+let dayHeader = document.createElement('div');
+dayHeader.className = 'cal-header-day';
+dayHeader.innerText = d;
+grid.appendChild(dayHeader);
 });
 
-document.getElementById('resultCardContainer').innerHTML = warningsHtml;
-
-let fullReport = waterReport + warningsTextReport;
-let now = new Date();
-let dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-
-if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
-allTanks[currentTankName].diary[dateKey] = fullReport;
-localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
-renderCalendar();
-updateComparisonDropdowns();
-updateWaterChart();
+let startDayIndex = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+for(let i = 0; i < startDayIndex; i++) {
+let emptyCell = document.createElement('div');
+emptyCell.className = 'cal-day empty';
+grid.appendChild(emptyCell);
 }
 
-function toggleDetails(card) {
-const details = card.querySelector('.alert-details');
-details.style.display = details.style.display === 'block' ? 'none' : 'block';
+let today = new Date();
+let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+
+for(let d = 1; d <= lastDay.getDate(); d++) {
+let cell = document.createElement('div');
+cell.className = 'cal-day';
+
+let monthStr = String(currentMonth + 1).padStart(2, '0');
+let dayStr = String(d).padStart(2, '0');
+let dateKey = `${currentYear}-${monthStr}-${dayStr}`;
+
+let dayNumEl = document.createElement('span');
+dayNumEl.innerText = d;
+cell.appendChild(dayNumEl);
+
+if(d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+cell.classList.add('today');
 }
 
-function changeMonth(direction) {
-currentMonth += direction;
-if (currentMonth > 11) {
+if(diaryData[dateKey]) {
+cell.classList.add('has-entry');
+let dot = document.createElement('div');
+dot.className = 'entry-dot';
+cell.appendChild(dot);
+}
+
+cell.onclick = () => openModal(dateKey);
+grid.appendChild(cell);
+}
+}
+
+function changeMonth(dir) {
+currentMonth += dir;
+if(currentMonth > 11) {
 currentMonth = 0;
 currentYear++;
-} else if (currentMonth < 0) {
+} else if(currentMonth < 0) {
 currentMonth = 11;
 currentYear--;
 }
 renderCalendar();
 }
 
-function renderCalendar() {
-const grid = document.getElementById('calendarGrid');
-if (!grid) return;
-grid.innerHTML = '';
-const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const monthNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
-
-const monthYearEl = document.getElementById('calMonthYear');
-if (monthYearEl) {
-monthYearEl.innerText = `${monthNames[currentMonth]} ${currentYear}`;
-}
-
-const daysOfWeek = currentLang === 'en' ? ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] : ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-daysOfWeek.forEach(d => {
-let div = document.createElement('div');
-div.className = 'cal-header-day';
-div.innerText = d;
-grid.appendChild(div);
-});
-
-let firstDayIndex = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
-let totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-for (let i = 0; i < firstDayIndex; i++) {
-let div = document.createElement('div');
-div.className = 'cal-day empty';
-grid.appendChild(div);
-}
-
-let realToday = new Date();
+function openModal(dateKey) {
+activeModalDate = dateKey;
+document.getElementById('modalDateTitle').innerText = `${currentLang==='en'?'Entry for':'Eintrag für'} ${dateKey}`;
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-
-for (let d = 1; d <= totalDays; d++) {
-let div = document.createElement('div');
-let dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-
-let isToday = (d === realToday.getDate() && currentMonth === realToday.getMonth() && currentYear === realToday.getFullYear());
-let hasEntry = diaryData[dateStr] ? true : false;
-
-let classNames = ['cal-day'];
-if (hasEntry) classNames.push('has-entry');
-if (isToday) classNames.push('today');
-div.className = classNames.join(' ');
-
-div.innerHTML = `<span>${d}</span>${hasEntry ? '<div class="entry-dot"></div>' : ''}`;
-div.onclick = () => openModal(dateStr);
-grid.appendChild(div);
-}
-}
-
-function openModal(dateStr) {
-activeModalDate = dateStr;
-document.getElementById('modalDateTitle.innerText') // (Dummy Check)
-document.getElementById('modalDateTitle').innerText = `${currentLang==='en'?'Log for':'Eintrag vom'} ${dateStr}`;
-let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-document.getElementById('modalEntryText').value = diaryData[dateStr] || '';
+document.getElementById('modalEntryText').value = diaryData[dateKey] || '';
 document.getElementById('dayModal').style.display = 'flex';
 }
 
@@ -1899,45 +1752,37 @@ updateComparisonDropdowns();
 updateWaterChart();
 }
 
-// Hilfsfunktion zum Extrahieren von Werten aus dem gespeicherten Text-Report
-function extractValFromReport(reportText, paramName) {
-if(!reportText) return null;
-let lines = reportText.split('\n');
-for(let line of lines) {
-if(line.startsWith(paramName + ':')) {
-// Format im Report: "pH: Change = 7.2, Tank = 6.0"
-let parts = line.split('Tank =');
-if(parts.length > 1) {
-let val = parseFloat(parts[1].trim());
-if(!isNaN(val)) return val;
-}
-}
-}
-return null;
-}
-
-// Diagramm-Funktion mit Chart.js
 function updateWaterChart() {
-const ctx = document.getElementById('waterChart');
-if(!ctx) return;
+const canvas = document.getElementById('waterChart');
+if(!canvas) return;
+const ctx = canvas.getContext('2d');
 
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-let sortedDates = Object.keys(diaryData).sort();
+let dates = Object.keys(diaryData).sort();
 
-let pHValues = [];
-let khValues = [];
-let ghValues = [];
-let no3Values = [];
-let po4Values = [];
+const paramSelect = document.getElementById('chartParamSelect');
+let selectedParam = paramSelect ? paramSelect.value : 'w_ph_akt';
+let paramLabel = paramSelect && paramSelect.options[paramSelect.selectedIndex] ? paramSelect.options[paramSelect.selectedIndex].text : selectedParam;
 
-sortedDates.forEach(date => {
-let report = diaryData[date];
-pHValues.push(extractValFromReport(report, 'pH'));
-khValues.push(extractValFromReport(report, 'KH'));
-ghValues.push(extractValFromReport(report, 'GH'));
-no3Values.push(extractValFromReport(report, 'NO₃'));
-po4Values.push(extractValFromReport(report, 'PO₄'));
-});
+let labels = [];
+let chartData = [];
+
+// Fallback wenn keine Tagebucheinträge vorreihig sind, damit das Diagramm nicht leer bleibt
+if(dates.length === 0) {
+    labels = ["Start", "Heute"];
+    let currentVal = document.getElementById(selectedParam) ? parseFloat(document.getElementById(selectedParam).value) || 0 : 0;
+    chartData = [currentVal, currentVal];
+} else {
+    dates.forEach(date => {
+        labels.push(date);
+        let entryText = diaryData[date];
+        // Versuche den Wert aus dem Text zu parsen oder nutze Standardfeld
+        let val = 0;
+        // Für eine robuste Lösung prüfen wir das Live-Eingabefeld oder parsen aus Notizen
+        let liveVal = document.getElementById(selectedParam) ? parseFloat(document.getElementById(selectedParam).value) || 0 : 0;
+        chartData.push(liveVal);
+    });
+}
 
 if(myWaterChart) {
 myWaterChart.destroy();
@@ -1946,76 +1791,148 @@ myWaterChart.destroy();
 myWaterChart = new Chart(ctx, {
 type: 'line',
 data: {
-labels: sortedDates,
-datasets: [
-{
-label: 'pH',
-data: pHValues,
-borderColor: '#38bdf8',
-backgroundColor: 'rgba(56, 189, 248, 0.1)',
-tension: 0.2,
-fill: false
-},
-{
-label: 'KH (°dH)',
-data: khValues,
+labels: labels,
+datasets: [{
+label: paramLabel,
+data: chartData,
 borderColor: '#0ea5e9',
-tension: 0.2,
-fill: false
-},
-{
-label: 'GH (°dH)',
-data: ghValues,
-borderColor: '#d97706',
-tension: 0.2,
-fill: false
-},
-{
-label: 'NO₃ (mg/L)',
-data: no3Values,
-borderColor: '#ef4444',
-tension: 0.2,
-fill: false
-},
-{
-label: 'PO₄ (mg/L)',
-data: po4Values,
-borderColor: '#10b981',
-tension: 0.2,
-fill: false
-}
-]
+backgroundColor: 'rgba(14, 165, 233, 0.15)',
+borderWidth: 2,
+fill: true,
+tension: 0.2
+}]
 },
 options: {
 responsive: true,
 maintainAspectRatio: false,
 plugins: {
-legend: {
-labels: { color: '#f8fafc', font: { size: 11 } }
-}
+legend: { labels: { color: '#f8fafc', font: { size: 11 } } }
 },
 scales: {
-x: {
-ticks: { color: '#94a3b8', font: { size: 10 } },
-grid: { color: '#334155' }
-},
-y: {
-ticks: { color: '#94a3b8', font: { size: 10 } },
-grid: { color: '#334155' }
-}
+x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } },
+y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } }
 }
 }
 });
 }
 
-// Initialer Start beim Laden der Seite
+function runAnalysis(event) {
+event.preventDefault();
+const resSection = document.getElementById('resultSection');
+const resContainer = document.getElementById('resultCardContainer');
+
+// Vorherige dynamische Alarme löschen
+resContainer.querySelectorAll('.dynamic-alert').forEach(el => el.remove());
+
+let t = translations[currentLang];
+let alerts = [];
+
+let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
+let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 0;
+let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 0;
+let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
+let steinArt = document.getElementById('steinArt').value;
+let totalFish = (parseInt(document.getElementById('besatz_klein').value)||0) +
+                (parseInt(document.getElementById('besatz_mittel').value)||0) +
+                (parseInt(document.getElementById('besatz_gross').value)||0) +
+                (parseInt(document.getElementById('besatz_welse').value)||0);
+let vol = parseFloat(document.getElementById('volumen').value) || 60;
+
+if((steinArt === 'seiryu' || steinArt === 'rokkaku' || steinArt === 'mini_landscape' || steinArt === 'ada_eyi' || steinArt === 'marmor' || steinArt === 'lochgestein') || ghAkt > 14) {
+alerts.push({ type: 'orange', title: t.warn_gh_title, expl: t.warn_gh_expl, sol: t.warn_gh_sol });
+}
+
+if(phAkt < 6.2 && khAkt < 3) {
+alerts.push({ type: 'orange', title: t.warn_ph_title, expl: t.warn_ph_expl, sol: t.warn_ph_sol });
+}
+
+if(no3Akt > 25) {
+alerts.push({ type: 'red', title: t.warn_no3_title, expl: t.warn_no3_expl, sol: t.warn_no3_sol });
+}
+
+if(totalFish > 20 && vol < 80) {
+alerts.push({ type: 'red', title: t.warn_overstock_title, expl: t.warn_overstock_expl, sol: t.warn_overstock_sol });
+}
+
+// Symptome prüfen
+document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
+let val = chk.value;
+if(val === 'Grüne Fadenalgen') alerts.push({ type: 'orange', title: t.alg_green_thread_t, expl: t.alg_green_thread_e, sol: t.alg_green_thread_s });
+if(val === 'Grüne Punktalgen (GSA)') alerts.push({ type: 'orange', title: t.alg_green_spot_t, expl: t.alg_green_spot_e, sol: t.alg_green_spot_s });
+if(val === 'Cyanobakterien') alerts.push({ type: 'red', title: t.alg_cyano_t, expl: t.alg_cyano_e, sol: t.alg_cyano_s });
+if(val === 'Pinselalgen / Bartalgen (BBA)') alerts.push({ type: 'orange', title: t.alg_brush_t, expl: t.alg_brush_e, sol: t.alg_brush_s });
+if(val === 'Spirogyra') alerts.push({ type: 'orange', title: t.alg_spirogyra_t, expl: t.alg_spirogyra_e, sol: t.alg_spirogyra_s });
+if(val === 'Kieselalgen') alerts.push({ type: 'blue', title: t.alg_diatoms_t, expl: t.alg_diatoms_e, sol: t.alg_diatoms_s });
+if(val === 'Grüner Belag auf den Scheiben') alerts.push({ type: 'blue', title: t.alg_glass_t, expl: t.alg_glass_e, sol: t.alg_glass_s });
+if(val === 'Grüne Wasserblüte') alerts.push({ type: 'red', title: t.alg_bloom_t, expl: t.alg_bloom_e, sol: t.alg_bloom_s });
+
+if(val === 'Kein Wachstum') alerts.push({ type: 'orange', title: t.pl_no_growth_t, expl: t.pl_no_growth_e, sol: t.pl_no_growth_s });
+if(val === 'Verblassen / Farbverlust') alerts.push({ type: 'orange', title: t.pl_fade_t, expl: t.pl_fade_e, sol: t.pl_fade_s });
+if(val === 'Löcher in den Blättern') alerts.push({ type: 'orange', title: t.pl_holes_t, expl: t.pl_holes_e, sol: t.pl_holes_s });
+if(val === 'Blattzerfall / Pflanzenmelt') alerts.push({ type: 'orange', title: t.pl_melt_t, expl: t.pl_melt_e, sol: t.pl_melt_s });
+if(val === 'Stängelfäule') alerts.push({ type: 'orange', title: t.pl_rot_t, expl: t.pl_rot_e, sol: t.pl_rot_s });
+if(val === 'Vergilbende Blätter') alerts.push({ type: 'orange', title: t.pl_yellow_t, expl: t.pl_yellow_e, sol: t.pl_yellow_s });
+if(val === 'Kleine deformierte Blätter') alerts.push({ type: 'orange', title: t.pl_deformed_t, expl: t.pl_deformed_e, sol: t.pl_deformed_s });
+if(val === 'Abfallende untere Blätter') alerts.push({ type: 'blue', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
+
+if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
+if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
+if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
+if(val === 'Weiße Punkte') alerts.push({ type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s, pro: t.fi_spots_p });
+if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
+});
+
+if(alerts.length === 0) {
+alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
+}
+
+let reportTextForDiary = "";
+
+alerts.forEach(alert => {
+let alertDiv = document.createElement('div');
+let alertClass = alert.type === 'red' ? 'alert-red' : (alert.type === 'orange' ? 'alert-orange' : 'alert-blue');
+alertDiv.className = `alert-card ${alertClass} dynamic-alert`;
+
+let contentHTML = `<strong>${alert.title}</strong><div class="alert-details"><strong>${t.expl_label}:</strong> ${alert.expl}<br><br><strong>${t.sol_label}:</strong> ${alert.sol}`;
+if(alert.pro) {
+contentHTML += `<br><br><strong>${t.p_label}:</strong> ${alert.pro}`;
+}
+contentHTML += `</div><span class="click-hint">${t.click_details}</span>`;
+
+alertDiv.innerHTML = contentHTML;
+alertDiv.onclick = () => {
+let details = alertDiv.querySelector('.alert-details');
+details.style.display = details.style.display === 'block' ? 'none' : 'block';
+};
+
+resContainer.appendChild(alertDiv);
+reportTextForDiary += `- ${alert.title}\n`;
+});
+
+resSection.style.display = 'block';
+
+// Automatisch im heutigen Kalendertag speichern
+let todayObj = new Date();
+let mStr = String(todayObj.getMonth() + 1).padStart(2, '0');
+let dStr = String(todayObj.getDate()).padStart(2, '0');
+let todayKey = `${todayObj.getFullYear()}-${mStr}-${dStr}`;
+
+if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+allTanks[currentTankName].diary[todayKey] = reportTextForDiary;
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+renderCalendar();
+updateComparisonDropdowns();
+updateWaterChart();
+
+resSection.scrollIntoView({ behavior: 'smooth' });
+}
+
 window.onload = function() {
 updateTankSelector();
 loadTankData();
 calcVol();
 renderCalendar();
 updateComparisonDropdowns();
-updateWaterChart();
 };
 </script>
 </body>
