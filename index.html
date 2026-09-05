@@ -788,7 +788,6 @@ line-height: 1.5;
 <h2 data-i18n="tab_charts">📈 Wasserwerte-Verlauf (Diagramme)</h2>
 <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch.</p>
 
-<!-- MEHRFACH-AUSWAHL ÜBER CHECKBOXEN ERSETZT -->
 <div class="form-group" style="flex-direction: column; align-items: flex-start; margin-bottom: 15px;">
 <label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold; margin-bottom: 8px;">Parameter auswählen (mehrere möglich):</label>
 <div class="media-grid" id="chartParamSelect" style="width: 100%;">
@@ -1884,22 +1883,24 @@ if(val === 'Abfallende untere Blätter') alerts.push({ type: 'blue', title: t.pl
 if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
 if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
 if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
-if(val === 'Weiße Punkte') alerts.push({ type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s + (t.fi_spots_p ? '<br><br>' + t.fi_spots_p : '') });
+if(val === 'Weiße Punkte') alerts.push({ type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s + (t.fi_spots_p ? "<br><br>" + t.fi_spots_p : "") });
 if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
 });
 
+if(alerts.length === 0) {
 alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
+}
 
 alerts.forEach(item => {
 let alertDiv = document.createElement('div');
 alertDiv.className = `alert-card dynamic-alert alert-${item.type}`;
 alertDiv.innerHTML = `
 <strong>${item.title}</strong>
+<span class="click-hint">${t.click_details}</span>
 <div class="alert-details">
 <p><strong>${t.expl_label}:</strong> ${item.expl}</p>
 <p style="margin-top:6px;"><strong>${t.sol_label}:</strong> ${item.sol}</p>
 </div>
-<span class="click-hint">${t.click_details}</span>
 `;
 alertDiv.onclick = function() {
 let details = this.querySelector('.alert-details');
@@ -1909,15 +1910,25 @@ resContainer.appendChild(alertDiv);
 });
 
 resSection.style.display = 'block';
-resSection.scrollIntoView({ behavior: 'smooth' });
+
+let todayObj = new Date();
+let mStr = String(todayObj.getMonth() + 1).padStart(2, '0');
+let dStr = String(todayObj.getDate()).padStart(2, '0');
+let todayKey = `${todayObj.getFullYear()}-${mStr}-${dStr}`;
+
+let reportSummary = `--- ${t.res_title} ---\n` + alerts.map(a => `- ${a.title}`).join('\n');
+if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+allTanks[currentTankName].diary[todayKey] = reportSummary;
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+renderCalendar();
+updateComparisonDropdowns();
+updateWaterChart();
 }
 
 window.onload = function() {
 updateTankSelector();
 loadTankData();
 calcVol();
-renderCalendar();
-updateWaterChart();
 switchLanguage(currentLang);
 };
 </script>
