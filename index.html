@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-i18n="main_title">Aquarium-Wasserwerte-Rechner (AWR) – Das Original für professionelle Analysen</title>
+<!-- Chart.js CDN für die Diagramme -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root {
 --bg: #0f172a;
@@ -425,6 +427,7 @@ line-height: 1.5;
 <button class="tab-btn" onclick="openTab(event, 'tab-wasser')" data-i18n="tab_water">Wasserwerte</button>
 <button class="tab-btn" onclick="openTab(event, 'tab-besatz')" data-i18n="tab_stock">Besatz & Futter</button>
 <button class="tab-btn" onclick="openTab(event, 'tab-symptome')" data-i18n="tab_symptoms">Symptome</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-diagramme')" data-i18n="tab_charts">📈 Diagramme</button>
 <button class="tab-btn" onclick="openTab(event, 'tab-kalender')" data-i18n="tab_cal">📅 Kalender</button>
 </div>
 
@@ -779,7 +782,19 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 6: KALENDER & TAGEBUCH-VERGLEICH -->
+<!-- TAB 6: DIAGRAMME -->
+<div id="tab-diagramme" class="tab-content">
+<div class="card">
+<h2 data-i18n="tab_charts">📈 Wasserwerte-Verlauf (Diagramme)</h2>
+<p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch.</p>
+
+<div style="position: relative; height: 260px; width: 100%; margin-bottom: 20px;">
+<canvas id="waterChart"></canvas>
+</div>
+</div>
+</div>
+
+<!-- TAB 7: KALENDER & TAGEBUCH-VERGLEICH -->
 <div id="tab-kalender" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_cal">📅 Aquarien-Tagebuch</h2>
@@ -839,6 +854,7 @@ let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 let activeModalDate = '';
 let currentLang = localStorage.getItem('awr_lang') || 'de';
+let myWaterChart = null;
 
 let allTanks = JSON.parse(localStorage.getItem('awr_all_tanks')) || {
   "Hauptbecken (64L)": {
@@ -858,7 +874,9 @@ tab_deco: "Bodengrund & Deko",
 tab_water: "Wasserwerte",
 tab_stock: "Besatz & Futter",
 tab_symptoms: "Symptome",
+tab_charts: "📈 Diagramme",
 tab_cal: "📅 Kalender",
+charts_desc: "Verlauf deiner gemessenen Aquarienwerte aus dem Analyse-Protokoll:",
 sec_tank_info: "📐 Angaben zum Aquarium",
 lbl_length: "Aquarienlänge (cm):",
 lbl_width: "Aquarienbreite (cm):",
@@ -1025,7 +1043,6 @@ expl_label: "Erklärung",
 sol_label: "Lösung",
 p_label: "Prophylaxe",
 
-/* WARN-ÜBERSETZUNGEN */
 warn_gh_title: "⚠️ Wasser wird zu hart (Kalk im Becken)",
 warn_gh_expl: "Im Becken befinden sich kalkhaltige Steine (oder das Leitungswasser ist sehr hart). Diese Steine geben ununterbrochen Mineralien ab, wodurch das Wasser mit der Zeit immer härter wird.",
 warn_gh_sol: "Nimm die kalkhaltigen Steine heraus und ersetze sie durch neutrale Deko (wie Schiefer oder Lavastein). Mische beim nächsten Wasserwechsel normales Leitungswasser mit weichem Osmose- oder destillierten Wasser, um die Härte zu senken.",
@@ -1141,7 +1158,9 @@ tab_deco: "Substrate & Decor",
 tab_water: "Water Parameters",
 tab_stock: "Stocking & Feeding",
 tab_symptoms: "Symptoms",
+tab_charts: "📈 Charts",
 tab_cal: "📅 Calendar",
+charts_desc: "Timeline tracking of your measured aquarium parameters from the analysis log:",
 sec_tank_info: "📐 Tank Specifications",
 lbl_length: "Tank length (cm):",
 lbl_width: "Tank width (cm):",
@@ -1308,7 +1327,6 @@ expl_label: "Explanation",
 sol_label: "Solution",
 p_label: "Prophylaxis",
 
-/* ENGLISCHE WARN-ÜBERSETZUNGEN */
 warn_gh_title: "⚠️ GH Increase / Calcareous Hardscaping detected",
 warn_gh_expl: "Popular aquarium stones like 'Mini-Landscape' contain high amounts of calcium and continuously release minerals into the water, raising total and carbonate hardness.",
 warn_gh_sol: "For beginners: Either remove the calcareous stones and replace them with inert decor (slate/lava), or use soft/osmose water for water changes to balance the hardening effect.",
@@ -1493,6 +1511,7 @@ el.innerText = translations[lang][key];
 });
 renderCalendar();
 updateComparisonDropdowns();
+updateWaterChart();
 }
 
 function createNewTank() {
@@ -1535,6 +1554,7 @@ loadTankData();
 calcVol();
 renderCalendar();
 updateComparisonDropdowns();
+updateWaterChart();
 document.getElementById('resultSection').style.display = 'none';
 document.getElementById('comparisonResultBox').style.display = 'none';
 }
@@ -1585,6 +1605,7 @@ el.value = data[id];
 }
 renderCalendar();
 updateComparisonDropdowns();
+updateWaterChart();
 }
 
 function openTab(evt, tabId) {
@@ -1595,6 +1616,9 @@ evt.currentTarget.classList.add('active');
 if(tabId === 'tab-kalender') { 
   renderCalendar(); 
   updateComparisonDropdowns();
+}
+if(tabId === 'tab-diagramme') {
+  updateWaterChart();
 }
 }
 
@@ -1776,6 +1800,7 @@ allTanks[currentTankName].diary[dateKey] = fullReport;
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 renderCalendar();
 updateComparisonDropdowns();
+updateWaterChart();
 }
 
 function toggleDetails(card) {
@@ -1840,26 +1865,19 @@ if (hasEntry) classNames.push('has-entry');
 if (isToday) classNames.push('today');
 div.className = classNames.join(' ');
 
-let dotHtml = hasEntry ? '<div class="entry-dot"></div>' : '';
-div.innerHTML = `<span>${d}</span>${dotHtml}`;
-
-div.onclick = function() {
-openDayModal(dateStr);
-};
+div.innerHTML = `<span>${d}</span>${hasEntry ? '<div class="entry-dot"></div>' : ''}`;
+div.onclick = () => openModal(dateStr);
 grid.appendChild(div);
 }
 }
 
-function openDayModal(dateStr) {
+function openModal(dateStr) {
 activeModalDate = dateStr;
-const modal = document.getElementById('dayModal');
-const titleEl = document.getElementById('modalDateTitle');
-const textarea = document.getElementById('modalEntryText');
-
-titleEl.innerText = `${currentLang==='en'?'Diary Entry':'Eintrag vom'}: ${dateStr}`;
+document.getElementById('modalDateTitle.innerText') // (Dummy Check)
+document.getElementById('modalDateTitle').innerText = `${currentLang==='en'?'Log for':'Eintrag vom'} ${dateStr}`;
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-textarea.value = diaryData[dateStr] || '';
-modal.style.display = 'flex';
+document.getElementById('modalEntryText').value = diaryData[dateStr] || '';
+document.getElementById('dayModal').style.display = 'flex';
 }
 
 function closeModal() {
@@ -1867,20 +1885,137 @@ document.getElementById('dayModal').style.display = 'none';
 }
 
 function saveDayEntry() {
-const textarea = document.getElementById('modalEntryText');
+let text = document.getElementById('modalEntryText').value;
 if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
-allTanks[currentTankName].diary[activeModalDate] = textarea.value;
+if(text.trim() === '') {
+delete allTanks[currentTankName].diary[activeModalDate];
+} else {
+allTanks[currentTankName].diary[activeModalDate] = text;
+}
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 closeModal();
 renderCalendar();
 updateComparisonDropdowns();
+updateWaterChart();
 }
 
+// Hilfsfunktion zum Extrahieren von Werten aus dem gespeicherten Text-Report
+function extractValFromReport(reportText, paramName) {
+if(!reportText) return null;
+let lines = reportText.split('\n');
+for(let line of lines) {
+if(line.startsWith(paramName + ':')) {
+// Format im Report: "pH: Change = 7.2, Tank = 6.0"
+let parts = line.split('Tank =');
+if(parts.length > 1) {
+let val = parseFloat(parts[1].trim());
+if(!isNaN(val)) return val;
+}
+}
+}
+return null;
+}
+
+// Diagramm-Funktion mit Chart.js
+function updateWaterChart() {
+const ctx = document.getElementById('waterChart');
+if(!ctx) return;
+
+let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+let sortedDates = Object.keys(diaryData).sort();
+
+let pHValues = [];
+let khValues = [];
+let ghValues = [];
+let no3Values = [];
+let po4Values = [];
+
+sortedDates.forEach(date => {
+let report = diaryData[date];
+pHValues.push(extractValFromReport(report, 'pH'));
+khValues.push(extractValFromReport(report, 'KH'));
+ghValues.push(extractValFromReport(report, 'GH'));
+no3Values.push(extractValFromReport(report, 'NO₃'));
+po4Values.push(extractValFromReport(report, 'PO₄'));
+});
+
+if(myWaterChart) {
+myWaterChart.destroy();
+}
+
+myWaterChart = new Chart(ctx, {
+type: 'line',
+data: {
+labels: sortedDates,
+datasets: [
+{
+label: 'pH',
+data: pHValues,
+borderColor: '#38bdf8',
+backgroundColor: 'rgba(56, 189, 248, 0.1)',
+tension: 0.2,
+fill: false
+},
+{
+label: 'KH (°dH)',
+data: khValues,
+borderColor: '#0ea5e9',
+tension: 0.2,
+fill: false
+},
+{
+label: 'GH (°dH)',
+data: ghValues,
+borderColor: '#d97706',
+tension: 0.2,
+fill: false
+},
+{
+label: 'NO₃ (mg/L)',
+data: no3Values,
+borderColor: '#ef4444',
+tension: 0.2,
+fill: false
+},
+{
+label: 'PO₄ (mg/L)',
+data: po4Values,
+borderColor: '#10b981',
+tension: 0.2,
+fill: false
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: {
+labels: { color: '#f8fafc', font: { size: 11 } }
+}
+},
+scales: {
+x: {
+ticks: { color: '#94a3b8', font: { size: 10 } },
+grid: { color: '#334155' }
+},
+y: {
+ticks: { color: '#94a3b8', font: { size: 10 } },
+grid: { color: '#334155' }
+}
+}
+}
+});
+}
+
+// Initialer Start beim Laden der Seite
 window.onload = function() {
 updateTankSelector();
 loadTankData();
 calcVol();
-switchLanguage(currentLang);
+renderCalendar();
+updateComparisonDropdowns();
+updateWaterChart();
 };
 </script>
 </body>
