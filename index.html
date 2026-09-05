@@ -1738,12 +1738,16 @@ document.getElementById('dayModal').style.display = 'none';
 
 function saveDayEntry() {
 let text = document.getElementById('modalEntryText').value;
-if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
+let todayStr = new Date().toISOString().split('T')[0];
+let targetDate = activeModalDate || todayStr;
+
 if(text.trim() === '') {
-delete allTanks[currentTankName].diary[activeModalDate];
+delete diaryData[targetDate];
 } else {
-allTanks[currentTankName].diary[activeModalDate] = text;
+diaryData[targetDate] = text;
 }
+
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 closeModal();
 renderCalendar();
@@ -1824,7 +1828,7 @@ y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' }
 }
 
 function runAnalysis(event) {
-event.preventDefault();
+if(event) event.preventDefault();
 const resSection = document.getElementById('resultSection');
 const resContainer = document.getElementById('resultCardContainer');
 
@@ -1878,7 +1882,7 @@ if(val === 'Blattzerfall / Pflanzenmelt') alerts.push({ type: 'orange', title: t
 if(val === 'Stängelfäule') alerts.push({ type: 'orange', title: t.pl_rot_t, expl: t.pl_rot_e, sol: t.pl_rot_s });
 if(val === 'Vergilbende Blätter') alerts.push({ type: 'orange', title: t.pl_yellow_t, expl: t.pl_yellow_e, sol: t.pl_yellow_s });
 if(val === 'Kleine deformierte Blätter') alerts.push({ type: 'orange', title: t.pl_deformed_t, expl: t.pl_deformed_e, sol: t.pl_deformed_s });
-if(val === 'Abfallende untere Blätter') alerts.push({ type: 'blue', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
+if(val === 'Abfallende untere Blätter') alerts.push({ type: 'orange', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
 
 if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
 if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
@@ -1892,33 +1896,30 @@ alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t
 }
 
 alerts.forEach(item => {
-let alertDiv = document.createElement('div');
-alertDiv.className = `alert-card dynamic-alert alert-${item.type}`;
-alertDiv.innerHTML = `
+let alertClass = item.type === 'red' ? 'alert-red' : (item.type === 'orange' ? 'alert-orange' : 'alert-blue');
+let div = document.createElement('div');
+div.className = `alert-card ${alertClass} dynamic-alert`;
+div.innerHTML = `
 <strong>${item.title}</strong>
-<span class="click-hint">${t.click_details}</span>
 <div class="alert-details">
 <p><strong>${t.expl_label}:</strong> ${item.expl}</p>
 <p style="margin-top:6px;"><strong>${t.sol_label}:</strong> ${item.sol}</p>
 </div>
+<span class="click-hint">${t.click_details}</span>
 `;
-alertDiv.onclick = function() {
+div.onclick = function() {
 let details = this.querySelector('.alert-details');
 details.style.display = details.style.display === 'block' ? 'none' : 'block';
 };
-resContainer.appendChild(alertDiv);
+resContainer.appendChild(div);
 });
 
 resSection.style.display = 'block';
 
-let todayObj = new Date();
-let mStr = String(todayObj.getMonth() + 1).padStart(2, '0');
-let dStr = String(todayObj.getDate()).padStart(2, '0');
-let todayKey = `${todayObj.getFullYear()}-${mStr}-${dStr}`;
-
-let reportSummary = `--- ${t.res_title} ---\n` + alerts.map(a => `- ${a.title}`).join('\n');
+let todayStr = new Date().toISOString().split('T')[0];
+let reportSummary = alerts.map(a => `- ${a.title}`).join('\n');
 if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
-allTanks[currentTankName].diary[todayKey] = reportSummary;
+allTanks[currentTankName].diary[todayStr] = `Automatische Analyse:\n${reportSummary}`;
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 renderCalendar();
 updateComparisonDropdowns();
@@ -1929,7 +1930,10 @@ window.onload = function() {
 updateTankSelector();
 loadTankData();
 calcVol();
-switchLanguage(currentLang);
+renderCalendar();
+updateComparisonDropdowns();
+updateWaterChart();
+document.getElementById('langSelect').value = currentLang;
 };
 </script>
 </body>
