@@ -1036,6 +1036,10 @@ warn_no3_title: "🚨 Nitrat-Wert zu hoch",
 warn_no3_expl: "Es ist zu viel Nitrat im Wasser. Das passiert meistens durch zu viel Futter, zu seltenes Wasserwechseln oder weil bereits das Leitungswasser stark mit Nitrat belastet ist.",
 warn_no3_sol: "Mache ab sofort wöchentlich einen großen Wasserwechsel von 50%. Füttere deine Fische nur noch so viel, wie sie in 1-2 Minuten komplett auffressen können, ohne dass Reste auf den Boden sinken.",
 
+warn_overstock_title: "🚨 Alarm: Starker Überbesatz im Aquarium!",
+warn_overstock_expl: "Die Anzahl und Größe der ausgewählten Fische passt absolut nicht zum geringen Volumen deines Aquariums. Es droht akuter Sauerstoffmangel, massiver Ammoniak- und Nitrit-Anstieg sowie enormer Stress für die Tiere.",
+warn_overstock_sol: "Reduziere den Fischbesatz drastisch (z.B. durch Abgabe von Tieren an andere Aquarianer oder Zoofachgeschäfte) oder steige auf ein deutlich größeres Aquarium (mindestens 200–300 Liter) um.",
+
 alg_green_thread_t: "🚨 Algen-Hilfe: Grüne Fadenalgen (grüne Haare)",
 alg_green_thread_e: "Diese langen, haarigen Algen entstehen meistens, wenn zu viel Eisen/Dünger im Wasser ist, das Licht zu lange brennt oder die CO₂-Zufuhr ungleichmäßig läuft.",
 alg_green_thread_s: "Drehe die Düngung für die nächsten 2 Wochen um die Hälfte herunter. Wickle die Algen einfach mit einer kleinen Bürste oder einer Zahnbürste auf und mache wöchentlich 50% Wasserwechsel.",
@@ -1307,6 +1311,10 @@ warn_ph_sol: "Increase KH slightly using suitable mineral salts, perform regular
 warn_no3_title: "🚨 High Nitrate",
 warn_no3_expl: "Nitrate is elevated due to intensive feeding, accumulation over time, or high input from source water.",
 warn_no3_sol: "Perform regular partial water changes, optimize the amount of food, and check tap water values.",
+
+warn_overstock_title: "🚨 Critical Warning: Severe Tank Overstocking!",
+warn_overstock_expl: "The total number and size of the selected fish vastly exceed the capacity of your aquarium volume. This risks severe oxygen depletion, rapid ammonia/nitrite toxicity, and extreme stress for all animals.",
+warn_overstock_sol: "Drastically reduce the stocking density (e.g., rehoming fish) or upgrade to a significantly larger aquarium (at least 200–300 liters).",
 
 alg_green_thread_t: "🚨 Algae Warning: Green Thread Algae",
 alg_green_thread_e: "Often caused by excess micronutrients (iron), an imbalance in macro-nutrients (N-P-K), or unstable CO₂ supply combined with high light intensity.",
@@ -1648,6 +1656,29 @@ warningsHtml += `
 <div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
 </div>`;
 warningsTextReport += `[WARNING] High Nitrate:\n- ${expl}\n- ${sol}\n\n`;
+}
+
+// ÜBERBESATZ-PRÜFUNG (ANHAND WASSERVOLUMEN UND FISCHMENGE/-GRÖSSE)
+let volumenVal = parseFloat(document.getElementById('volumen').value) || 0;
+let bKlein = parseInt(document.getElementById('besatz_klein').value) || 0;
+let bMittel = parseInt(document.getElementById('besatz_mittel').value) || 0;
+let bGross = parseInt(document.getElementById('besatz_gross').value) || 0;
+let bWelse = parseInt(document.getElementById('besatz_welse').value) || 0;
+let bAlgen = parseInt(document.getElementById('besatz_algen').value) || 0;
+
+// Ungefähre Gesamtkörperlänge in cm als Daumenregel-Abschätzung
+let totalFishLength = (bKlein * 2) + (bMittel * 5) + (bGross * 10) + (bWelse * 12) + (bAlgen * 6);
+if (volumenVal > 0 && totalFishLength > (volumenVal * 0.8)) {
+let title = t.warn_overstock_title;
+let expl = t.warn_overstock_expl;
+let sol = t.warn_overstock_sol;
+warningsHtml += `
+<div class="alert-card alert-red" onclick="toggleDetails(this)">
+<strong>${title}</strong>
+<span class="click-hint">${t.click_details}</span>
+<div class="alert-details">- ${t.expl_label}: ${expl}<br>- ${t.sol_label}: ${sol}</div>
+</div>`;
+warningsTextReport += `[WARNING] Severe Tank Overstocking:\n- ${expl}\n- ${sol}\n\n`;
 }
 
 // PROFESSIONELLE SYMPTOM-LOGIK MIT DYNAMISCHEN ÜBERSETZUNGEN
