@@ -786,12 +786,12 @@ line-height: 1.5;
 <div id="tab-diagramme" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_charts">📈 Wasserwerte-Verlauf (Diagramme)</h2>
-<p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch. (Mehrfachauswahl mit Strg / Cmd möglich)</p>
+<p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch.</p>
 
-<!-- ANGEPASST: Dropdown-Menü für mehrere Parameter mit "multiple" -->
-<div class="form-group" style="margin-bottom: 15px; flex-direction: column; align-items: flex-start;">
-<label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold; margin-bottom: 6px;">Parameter auswählen (Mehrfachauswahl):</label>
-<select id="chartParamSelect" multiple onchange="updateWaterChart()" style="width: 100%; height: 130px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align: left; text-align-last: left;">
+<!-- KLASSISCHES DROP-DOWN MENÜ WIEDERHERGESTELLT -->
+<div class="form-group" style="margin-bottom: 15px;">
+<label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold;">Parameter auswählen:</label>
+<select id="chartParamSelect" onchange="updateWaterChart()" style="width: 180px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
 <option value="w_ph_akt" selected>pH (Aquarienwasser)</option>
 <option value="w_gh_akt">GH (°dH)</option>
 <option value="w_kh_akt">KH (°dH)</option>
@@ -1589,9 +1589,6 @@ document.querySelectorAll('input, select').forEach(el => {
 if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText' && el.id !== 'compareDate1' && el.id !== 'compareDate2') {
 if(el.type === 'checkbox' || el.type === 'radio') {
 data[el.id || el.name + '_' + Math.random()] = el.checked;
-} else if(el.multiple) {
-let selectedOpts = Array.from(el.selectedOptions).map(opt => opt.value);
-data[el.id] = selectedOpts;
 } else {
 data[el.id] = el.value;
 }
@@ -1623,10 +1620,6 @@ let el = document.getElementById(id);
 if(el) {
 if(el.type === 'checkbox') {
 el.checked = data[id];
-} else if(el.multiple && Array.isArray(data[id])) {
-Array.from(el.options).forEach(opt => {
-opt.selected = data[id].includes(opt.value);
-});
 } else {
 el.value = data[id];
 }
@@ -1768,44 +1761,23 @@ let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ?
 let dates = Object.keys(diaryData).sort();
 
 const paramSelect = document.getElementById('chartParamSelect');
-let selectedOptions = paramSelect ? Array.from(paramSelect.selectedOptions) : [];
+let paramId = paramSelect ? paramSelect.value : 'w_ph_akt';
+let paramLabel = paramSelect ? paramSelect.options[paramSelect.selectedIndex].text : 'pH';
 
 let labels = [];
+let chartData = [];
+
 if(dates.length === 0) {
-    labels = ["Start", "Heute"];
+labels = ["Start", "Heute"];
+let currentVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
+chartData = [currentVal, currentVal];
 } else {
-    labels = dates;
-}
-
-let datasets = [];
-let colorPalette = ['#0ea5e9', '#22c55e', '#eab308', '#ec4899', '#8b5cf6', '#06b6d4', '#f97316', '#3b82f6'];
-
-selectedOptions.forEach((opt, index) => {
-    let paramId = opt.value;
-    let paramLabel = opt.text;
-    let chartData = [];
-
-    if(dates.length === 0) {
-        let currentVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
-        chartData = [currentVal, currentVal];
-    } else {
-        dates.forEach(date => {
-            let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
-            chartData.push(liveVal);
-        });
-    }
-
-    let color = colorPalette[index % colorPalette.length];
-    datasets.push({
-        label: paramLabel,
-        data: chartData,
-        borderColor: color,
-        backgroundColor: color.replace(')', ', 0.15)').replace('rgb', 'rgba'),
-        borderWidth: 2,
-        fill: false,
-        tension: 0.2
-    });
+labels = dates;
+dates.forEach(date => {
+let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
+chartData.push(liveVal);
 });
+}
 
 if(myWaterChart) {
 myWaterChart.destroy();
@@ -1815,7 +1787,15 @@ myWaterChart = new Chart(ctx, {
 type: 'line',
 data: {
 labels: labels,
-datasets: datasets
+datasets: [{
+label: paramLabel,
+data: chartData,
+borderColor: '#0ea5e9',
+backgroundColor: 'rgba(14, 165, 233, 0.15)',
+borderWidth: 2,
+fill: true,
+tension: 0.2
+}]
 },
 options: {
 responsive: true,
@@ -1836,7 +1816,6 @@ event.preventDefault();
 const resSection = document.getElementById('resultSection');
 const resContainer = document.getElementById('resultCardContainer');
 
-// Vorherige dynamische Alarme löschen
 resContainer.querySelectorAll('.dynamic-alert').forEach(el => el.remove());
 
 let t = translations[currentLang];
@@ -1869,7 +1848,6 @@ if(totalFish > 20 && vol < 80) {
 alerts.push({ type: 'red', title: t.warn_overstock_title, expl: t.warn_overstock_expl, sol: t.warn_overstock_sol });
 }
 
-// Symptome prüfen
 document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
 let val = chk.value;
 if(val === 'Grüne Fadenalgen') alerts.push({ type: 'orange', title: t.alg_green_thread_t, expl: t.alg_green_thread_e, sol: t.alg_green_thread_s });
@@ -1888,12 +1866,12 @@ if(val === 'Blattzerfall / Pflanzenmelt') alerts.push({ type: 'orange', title: t
 if(val === 'Stängelfäule') alerts.push({ type: 'orange', title: t.pl_rot_t, expl: t.pl_rot_e, sol: t.pl_rot_s });
 if(val === 'Vergilbende Blätter') alerts.push({ type: 'orange', title: t.pl_yellow_t, expl: t.pl_yellow_e, sol: t.pl_yellow_s });
 if(val === 'Kleine deformierte Blätter') alerts.push({ type: 'orange', title: t.pl_deformed_t, expl: t.pl_deformed_e, sol: t.pl_deformed_s });
-if(val === 'Abfallende untere Blätter') alerts.push({ type: 'orange', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
+if(val === 'Abfallende untere Blätter') alerts.push({ type: 'blue', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
 
 if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
 if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
 if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
-if(val === 'Weiße Punkte') alerts.push({ type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s + (t.fi_spots_p ? '<br><br>' + t.fi_spots_p : '') });
+if(val === 'Weiße Punkte') alerts.push({ type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s + (t.fi_spots_p ? "<br><br>" + t.fi_spots_p : "") });
 if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
 });
 
@@ -1903,17 +1881,17 @@ alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t
 
 alerts.forEach(alertData => {
 let card = document.createElement('div');
-card.className = `alert-card dynamic-alert alert-${alertData.type}`;
+card.className = `alert-card alert-${alertData.type} dynamic-alert`;
 card.innerHTML = `
 <strong>${alertData.title}</strong>
 <span class="click-hint">${t.click_details}</span>
 <div class="alert-details">
-<p><strong>${t.expl_label}:</strong> ${alertData.expl}</p>
-<p style="margin-top: 6px;"><strong>${t.sol_label}:</strong> ${alertData.sol}</p>
+<p style="margin-bottom: 4px;"><strong>${t.expl_label}:</strong> ${alertData.expl}</p>
+<p><strong>${t.sol_label}:</strong> ${alertData.sol}</p>
 </div>
 `;
-card.onclick = function() {
-let details = this.querySelector('.alert-details');
+card.onclick = () => {
+let details = card.querySelector('.alert-details');
 details.style.display = details.style.display === 'block' ? 'none' : 'block';
 };
 resContainer.appendChild(card);
@@ -1923,11 +1901,11 @@ resSection.style.display = 'block';
 resSection.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Initialisiere App beim Laden
 updateTankSelector();
 loadTankData();
 calcVol();
 renderCalendar();
+updateComparisonDropdowns();
 updateWaterChart();
 </script>
 </body>
