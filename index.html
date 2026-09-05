@@ -1941,7 +1941,7 @@ if(val === 'Blattzerfall / Pflanzenmelt') alerts.push({ type: 'orange', title: t
 if(val === 'Stängelfäule') alerts.push({ type: 'orange', title: t.pl_rot_t, expl: t.pl_rot_e, sol: t.pl_rot_s });
 if(val === 'Vergilbende Blätter') alerts.push({ type: 'orange', title: t.pl_yellow_t, expl: t.pl_yellow_e, sol: t.pl_yellow_s });
 if(val === 'Kleine deformierte Blätter') alerts.push({ type: 'orange', title: t.pl_deformed_t, expl: t.pl_deformed_e, sol: t.pl_deformed_s });
-if(val === 'Abfallende untere Blätter') alerts.push({ type: 'orange', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
+if(val === 'Abfallende untere Blätter') alerts.push({ type: 'blue', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
 
 if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
 if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
@@ -1959,48 +1959,54 @@ alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t
 }
 
 alerts.forEach(alertData => {
-let div = document.createElement('div');
-let alertClass = alertData.type === 'red' ? 'alert-red' : (alertData.type === 'orange' ? 'alert-orange' : 'alert-blue');
-div.className = `alert-card ${alertClass} dynamic-alert`;
+let alertDiv = document.createElement('div');
+let alertClass = 'alert-orange';
+if(alertData.type === 'red') alertClass = 'alert-red';
+if(alertData.type === 'blue') alertClass = 'alert-blue';
 
-let html = `<strong>${alertData.title}</strong>`;
-html += `<span class="click-hint">${t.click_details}</span>`;
-html += `<div class="alert-details">`;
-html += `<div><strong>${t.expl_label}:</strong> ${alertData.expl}</div>`;
-html += `<div style="margin-top:4px;"><strong>${t.sol_label}:</strong> ${alertData.sol}</div>`;
+alertDiv.className = `alert-card ${alertClass} dynamic-alert`;
+let htmlContent = `<strong>${alertData.title}</strong><span class="click-hint">${t.click_details}</span>`;
+htmlContent += `<div class="alert-details">`;
+htmlContent += `<p><strong>${t.expl_label}:</strong> ${alertData.expl}</p>`;
+htmlContent += `<p style="margin-top:6px;"><strong>${t.sol_label}:</strong> ${alertData.sol}</p>`;
 if(alertData.pro) {
-html += `<div style="margin-top:4px;"><strong>${t.p_label}:</strong> ${alertData.pro}</div>`;
+htmlContent += `<p style="margin-top:6px;"><strong>${t.p_label}:</strong> ${alertData.pro}</p>`;
 }
-html += `</div>`;
+htmlContent += `</div>`;
 
-div.innerHTML = html;
-div.onclick = function() {
+alertDiv.innerHTML = htmlContent;
+
+alertDiv.onclick = function() {
 let details = this.querySelector('.alert-details');
-details.style.display = details.style.display === 'block' ? 'none' : 'block';
+if(details.style.display === 'block') {
+details.style.display = 'none';
+} else {
+details.style.display = 'block';
+}
 };
 
-resContainer.appendChild(div);
+resContainer.appendChild(alertDiv);
 });
 
 resSection.style.display = 'block';
+resSection.scrollIntoView({ behavior: 'smooth' });
 
-let reportText = `=== ${currentLang==='en'?'ANALYSIS REPORT':'ANALYSE-BERICHT'} ===\n` + alerts.map(a => `- ${a.title}\n  ${t.expl_label}: ${a.expl}\n  ${t.sol_label}: ${a.sol}`).join('\n\n');
 let todayStr = new Date().toISOString().split('T')[0];
 let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
-diaryData[todayStr] = reportText;
-localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+let summaryText = alerts.map(a => `[${a.title}] -> ${a.sol}`).join('\n');
+diaryData[todayStr] = summaryText;
 
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 renderCalendar();
 updateComparisonDropdowns();
 updateWaterChart();
-
-resSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 window.onload = function() {
 updateTankSelector();
 loadTankData();
 calcVol();
+renderCalendar();
 switchLanguage(currentLang);
 };
 </script>
