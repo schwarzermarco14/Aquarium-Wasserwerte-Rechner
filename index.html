@@ -1946,7 +1946,11 @@ if(val === 'Abfallende untere Blätter') alerts.push({ type: 'orange', title: t.
 if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
 if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
 if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
-if(val === 'Weiße Punkte') alerts.push({ type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s + (t.fi_spots_p ? "<br><br>" + t.fi_spots_p : "") });
+if(val === 'Weiße Punkte') {
+  let item = { type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s };
+  if(t.fi_spots_p) item.pro = t.fi_spots_p;
+  alerts.push(item);
+}
 if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
 });
 
@@ -1954,31 +1958,43 @@ if(alerts.length === 0) {
 alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
 }
 
-alerts.forEach(item => {
-let alertDiv = document.createElement('div');
-let cssClass = item.type === 'red' ? 'alert-red' : (item.type === 'orange' ? 'alert-orange' : 'alert-blue');
-alertDiv.className = `alert-card ${cssClass} dynamic-alert`;
-alertDiv.innerHTML = `<strong>${item.title}</strong><span class="click-hint">${t.click_details}</span><div class="alert-details"><strong>${t.expl_label}:</strong> ${item.expl}<br><br><strong>${t.sol_label}:</strong> ${item.sol}</div>`;
+alerts.forEach(alertData => {
+let div = document.createElement('div');
+let alertClass = alertData.type === 'red' ? 'alert-red' : (alertData.type === 'orange' ? 'alert-orange' : 'alert-blue');
+div.className = `alert-card ${alertClass} dynamic-alert`;
 
-alertDiv.onclick = function() {
+let html = `<strong>${alertData.title}</strong>`;
+html += `<span class="click-hint">${t.click_details}</span>`;
+html += `<div class="alert-details">`;
+html += `<div><strong>${t.expl_label}:</strong> ${alertData.expl}</div>`;
+html += `<div style="margin-top:4px;"><strong>${t.sol_label}:</strong> ${alertData.sol}</div>`;
+if(alertData.pro) {
+html += `<div style="margin-top:4px;"><strong>${t.p_label}:</strong> ${alertData.pro}</div>`;
+}
+html += `</div>`;
+
+div.innerHTML = html;
+div.onclick = function() {
 let details = this.querySelector('.alert-details');
 details.style.display = details.style.display === 'block' ? 'none' : 'block';
 };
 
-resContainer.appendChild(alertDiv);
+resContainer.appendChild(div);
 });
 
 resSection.style.display = 'block';
-resSection.scrollIntoView({ behavior: 'smooth' });
 
+let reportText = `=== ${currentLang==='en'?'ANALYSIS REPORT':'ANALYSE-BERICHT'} ===\n` + alerts.map(a => `- ${a.title}\n  ${t.expl_label}: ${a.expl}\n  ${t.sol_label}: ${a.sol}`).join('\n\n');
 let todayStr = new Date().toISOString().split('T')[0];
 let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
-let summaryText = alerts.map(a => `• ${a.title}`).join('\n');
-diaryData[todayStr] = `[${currentLang==='en'?'Analysis':'Analyse'}]\n${summaryText}`;
+diaryData[todayStr] = reportText;
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+
 renderCalendar();
 updateComparisonDropdowns();
 updateWaterChart();
+
+resSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 window.onload = function() {
