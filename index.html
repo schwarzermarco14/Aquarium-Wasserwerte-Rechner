@@ -1939,3 +1939,58 @@ if(val === 'Verblassen / Farbverlust') alerts.push({ type: 'orange', title: t.pl
 if(val === 'Löcher in den Blättern') alerts.push({ type: 'orange', title: t.pl_holes_t, expl: t.pl_holes_e, sol: t.pl_holes_s });
 if(val === 'Blattzerfall / Pflanzenmelt') alerts.push({ type: 'orange', title: t.pl_melt_t, expl: t.pl_melt_e, sol: t.pl_melt_s });
 if(val === 'Stängelfäule') alerts.push({ type: 'orange', title: t.pl_rot_t, expl: t.pl_rot_e, sol: t.pl_rot_s });
+if(val === 'Vergilbende Blätter') alerts.push({ type: 'orange', title: t.pl_yellow_t, expl: t.pl_yellow_e, sol: t.pl_yellow_s });
+if(val === 'Kleine deformierte Blätter') alerts.push({ type: 'orange', title: t.pl_deformed_t, expl: t.pl_deformed_e, sol: t.pl_deformed_s });
+if(val === 'Abfallende untere Blätter') alerts.push({ type: 'orange', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
+
+if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
+if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
+if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
+if(val === 'Weiße Punkte') alerts.push({ type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s + (t.fi_spots_p ? "<br><br>" + t.fi_spots_p : "") });
+if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
+});
+
+if(alerts.length === 0) {
+alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
+}
+
+alerts.forEach(alertObj => {
+let card = document.createElement('div');
+card.className = `alert-card dynamic-alert alert-${alertObj.type}`;
+card.innerHTML = `
+<strong>${alertObj.title}</strong>
+<div class="alert-details">
+<p><strong>${t.expl_label}:</strong> ${alertObj.expl}</p>
+<p style="margin-top:6px;"><strong>${t.sol_label}:</strong> ${alertObj.sol}</p>
+</div>
+<span class="click-hint">${t.click_details}</span>
+`;
+card.onclick = () => {
+let details = card.querySelector('.alert-details');
+details.style.display = details.style.display === 'block' ? 'none' : 'block';
+};
+resContainer.appendChild(card);
+});
+
+resSection.style.display = 'block';
+resSection.scrollIntoView({ behavior: 'smooth' });
+
+let todayStr = new Date().toISOString().split('T')[0];
+let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
+let summaryText = alerts.map(a => `[${a.title}]`).join(" | ");
+diaryData[todayStr] = summaryText;
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+renderCalendar();
+updateComparisonDropdowns();
+updateWaterChart();
+}
+
+window.onload = function() {
+updateTankSelector();
+loadTankData();
+calcVol();
+switchLanguage(currentLang);
+};
+</script>
+</body>
+</html>
