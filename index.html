@@ -1928,16 +1928,19 @@ function createNewTank() {
 // 2. Kalender-Sperre
 function saveCalendarEntry(dateStr, text) {
     if (!isPremiumUser) {
-        showUpgradeModal("Das Speichern von Kalendereinträgen ist eine Premium-Funktion.");
+        showUpgradeModal("Das Speichern von Kalendereinträgen ist eine Premium-Funktion. Schalte jetzt Premium frei!");
         return false;
     }
 
-    let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
-    diaryData[dateStr] = text;
+    if (!allTanks[currentTankName].diary) {
+        allTanks[currentTankName].diary = {};
+    }
+    allTanks[currentTankName].diary[dateStr] = text;
     localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
-    renderCalendar();
+    if (typeof renderCalendar === "function") renderCalendar();
     return true;
 }
+
 
 // 3. Diagramm-Sperre
 function updateWaterChart() {
