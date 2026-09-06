@@ -1906,22 +1906,25 @@ function showUpgradeModal(msg) {
 }
 
 // 1. Aquarien-Sperre
-function addNewTank(tankName) {
+function createNewTank() {
     const currentTankCount = Object.keys(allTanks).length;
     const maxAllowed = isPremiumUser ? MAX_TANKS_PREMIUM : MAX_TANKS_FREE;
 
     if (currentTankCount >= maxAllowed) {
         showUpgradeModal("In der Free-Version kannst du nur 1 Aquarium verwalten. Schalte Premium frei für bis zu 15 Aquarien!");
-        return false;
+        return;
     }
 
-    if (!allTanks[tankName]) {
+    const tankName = prompt("Name des neuen Aquariums:");
+    if (tankName && !allTanks[tankName]) {
         allTanks[tankName] = { data: {}, diary: {} };
         localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+        currentTankName = tankName;
         updateTankSelector();
-        return true;
+        if (typeof loadTankData === "function") loadTankData();
     }
 }
+
 // 2. Kalender-Sperre
 function saveCalendarEntry(dateStr, text) {
     if (!isPremiumUser) {
