@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.vercel.aquarium_wasserwerte_rechner.twa",
+        "sha256_cert_fingerprints": ["76:9E:9F:FC:A6:54:61:BA:3A:38:EB:F3:CC:E1:D1:6A:3F:80:17:0A:FC:D6:08:0E:37:2F:BB:52:33:C1:3D:F3"]
+      }
+    }]
