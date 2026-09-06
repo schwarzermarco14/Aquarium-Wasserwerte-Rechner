@@ -1889,6 +1889,70 @@ resContainer.appendChild(card);
 resSection.style.display = 'block';
 resSection.scrollIntoView({ behavior: 'smooth' });
 }
+// --- PREMIUM EINSTELLUNGEN ---
+let isPremiumUser = false;
+const MAX_TANKS_FREE = 1;
+const MAX_TANKS_PREMIUM = 15;
+const STRIPE_PAYMENT_URL = "DEIN_STRIPE_LINK";
+
+function redirectToStripe() {
+    window.location.href = STRIPE_PAYMENT_URL;
+}
+
+function showUpgradeModal(msg) {
+    if (confirm(`${msg}\n\nJetzt upgraden?`)) {
+        redirectToStripe();
+    }
+}
+
+// 1. Aquarien-Sperre
+function addNewTank(tankName) {
+    const currentTankCount = Object.keys(allTanks).length;
+    const maxAllowed = isPremiumUser ? MAX_TANKS_PREMIUM : MAX_TANKS_FREE;
+
+    if (currentTankCount >= maxAllowed) {
+        showUpgradeModal("In der Free-Version kannst du nur 1 Aquarium verwalten. Schalte Premium frei für bis zu 15 Aquarien!");
+        return false;
+    }
+
+    if (!allTanks[tankName]) {
+        allTanks[tankName] = { data: {}, diary: {} };
+        localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+        updateTankSelector();
+        return true;
+    }
+}
+// 2. Kalender-Sperre
+function saveCalendarEntry(dateStr, text) {
+    if (!isPremiumUser) {
+        showUpgradeModal("Das Speichern von Kalendereinträgen ist eine Premium-Funktion.");
+        return false;
+    }
+
+    let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
+    diaryData[dateStr] = text;
+    localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+    renderCalendar();
+    return true;
+}
+
+// 3. Diagramm-Sperre
+function updateWaterChart() {
+    if (!isPremiumUser) {
+        const chartCanvas = document.getElementById('waterChart');
+        if (chartCanvas && chartCanvas.parentElement) {
+            chartCanvas.parentElement.innerHTML = `
+                <div style="text-align:center; padding: 20px; border: 2px dashed #f59e0b; border-radius: 8px;">
+                    <h3 style="color:#f59e0b; margin-top:0;">📊 Diagramm-Funktion gesperrt</h3>
+                    <p style="color: #94a3b8;">Die grafische Auswertung ist in der Premium-Version enthalten.</p>
+                    <button onclick="redirectToStripe()" style="background:#0ea5e9; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:bold;">
+                        Jetzt Premium freischalten ⭐
+                    </button>
+                </div>`;
+        }
+        return;
+    }
+}
 
 updateTankSelector();
 loadTankData();
