@@ -1610,11 +1610,18 @@ document.getElementById('volumen').value = vol.toFixed(1);
 }
 
 function renderCalendar() {
-const grid = document.getElementById('calendarGrid');
-const monthYearEl = document.getElementById('calMonthYear');
-if(!grid) return;
+    const grid = document.getElementById('calendarGrid');
+    const monthYearEl = document.getElementById('monthYear');
+    if(!grid) return;
 
-grid.innerHTML = '';
+    if (!isPremiumUser) {
+        grid.onclick = function() {
+            showUpgradeModal("Das Aquarien-Tagebuch ist eine Premium-Funktion. Schalte Premium frei, um Einträge zu erstellen!");
+        };
+    }
+
+    grid.innerHTML = '';
+
 let firstDay = new Date(currentYear, currentMonth, 1);
 let lastDay = new Date(currentYear, currentMonth + 1, 0);
 
