@@ -1920,7 +1920,7 @@ function redirectToGooglePlayBilling() {
         alert("Google Play In-App-Kauf wird vorbereitet: " + GOOGLE_PLAY_PRODUCT_ID);
     }
 }
-window.showUpgradeModal(msg) {
+function showUpgradeModal(msg) {
     if (confirm(msg + "\n\nJetzt auf AquaDiagnose Premium upgraden (1,99 €)?")) {
         redirectToGooglePlayBilling();
     }
