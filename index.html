@@ -1910,47 +1910,10 @@ const MAX_TANKS_FREE = 1;
 const MAX_TANKS_PREMIUM = 15;
 const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose_premium";
 
-async function redirectToStripe() {
-    if ('getDigitalGoodsService' in window) {
-        try {
-            // Verbindung zum Google Play Billing Dienst herstellen
-            const service = await window.getDigitalGoodsService("https://play.google.com/billing");
-            
-            // Produktdetails abrufen
-            const details = await service.getDetails([GOOGLE_PLAY_PRODUCT_ID]);
-            if (details.length === 0) {
-                alert("Produkt nicht gefunden.");
-                return;
-            }
-
-            // Den Google Play Bezahl-Checkout (Overlay) direkt starten
-            const payment = new PaymentRequest([{
-                supportedMethods: "https://play.google.com/billing",
-                data: {
-                    sku: GOOGLE_PLAY_PRODUCT_ID
-                }
-            }], {
-                total: {
-                    label: details[0].title,
-                    amount: details[0].price
-                }
-            });
-
-            const paymentResponse = await payment.show();
-            
-            // Kauf erfolgreich abgeschlossen
-            await paymentResponse.complete('success');
-            alert("Kauf erfolgreich! Premium freigeschaltet.");
-            isPremiumUser = true;
-            
-        } catch (error) {
-            console.error("Kauf abgebrochen oder Fehler:", error);
-        }
-    } else {
-        // Fallback, falls die Umgebung es direkt in der Webansicht nicht unterstützt
-        window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
-    }
+function redirectToStripe() {
+    window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
 }
+
 
 
 
