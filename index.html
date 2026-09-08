@@ -1914,16 +1914,17 @@ function redirectToGooglePlayBilling() {
     if (window.nativeApp && window.nativeApp.buyItem) {
         window.nativeApp.buyItem(GOOGLE_PLAY_PRODUCT_ID);
     } else {
-        console.log("Google Play Billing Kauf wird angefordert für: " + GOOGLE_PLAY_PRODUCT_ID);
+        console.log("Google Play Billing Kauf: " + GOOGLE_PLAY_PRODUCT_ID);
         alert("Google Play In-App-Kauf wird vorbereitet: " + GOOGLE_PLAY_PRODUCT_ID);
     }
 }
-
 function showUpgradeModal(msg) {
-    if (confirm(`${msg}\n\nJetzt auf AquaDiagnose Premium upgraden (1,99 €)?`)) {
+    if (confirm(msg + "\n\nJetzt auf AquaDiagnose Premium upgraden (1,99 €)?")) {
         redirectToGooglePlayBilling();
     }
 }
+
+
 
 
 // 1. Aquarien-Sperre
