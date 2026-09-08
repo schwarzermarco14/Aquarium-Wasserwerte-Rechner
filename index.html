@@ -1620,8 +1620,7 @@ function renderCalendar() {
             <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px;">
                 <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 Premium-Funktion</h3>
                 <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Das Aquarien-Tagebuch ist exklusiv für Premium-Mitglieder verfügbar.</p>
-       <button    onclick="showUpgradeModal('Premium')"
-style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                <button onclick="redirectToStripe()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
                     Jetzt Premium freischalten
                 </button>
             </div>`;
@@ -1905,36 +1904,19 @@ resContainer.appendChild(card);
 resSection.style.display = 'block';
 resSection.scrollIntoView({ behavior: 'smooth' });
 }
-
 // --- PREMIUM EINSTELLUNGEN ---
 let isPremiumUser = false;
 const MAX_TANKS_FREE = 1;
 const MAX_TANKS_PREMIUM = 15;
-const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose-premium";
+const STRIPE_PAYMENT_URL = "DEIN_STRIPE_LINK";
 
-function redirectToGooglePlayBilling() {
-    // Falls die native App-Brücke da ist, nutzen wir sie
-    if (window.nativeApp && typeof window.nativeApp.buyItem === 'function') {
-        window.nativeApp.buyItem(GOOGLE_PLAY_PRODUCT_ID);
-    } else if (window.Android && typeof window.Android.buyItem === 'function') {
-        window.Android.buyItem(GOOGLE_PLAY_PRODUCT_ID);
-    } else {
-        // Fallback für den Test: Wenn kein nativeApp da ist, öffnen wir 
-        // den offiziellen Play Store Deep Link für dein Produkt direkt auf dem Handy!
-        const storeUrl = "https://play.google.com/store/apps/details?id=" + encodeURIComponent(window.location.hostname) + "&sku=" + GOOGLE_PLAY_PRODUCT_ID;
-        
-        // Alternativ direkt den Billing-Intent oder die Play Store Web-Ansicht öffnen:
-window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2&feature=inapp-"+ GOOGLE_PLAY_PRODUCT_ID;
-
-
-
-    }
+function redirectToStripe() {
+    window.location.href = STRIPE_PAYMENT_URL;
 }
 
-window.showUpgradeModal = function(msg) {
-
-    if (confirm(msg + "\n\nJetzt auf aquadiagnose-premium upgraden (1,99 €)?")) {
-        redirectToGooglePlayBilling();
+function showUpgradeModal(msg) {
+    if (confirm(`${msg}\n\nJetzt upgraden?`)) {
+        redirectToStripe();
     }
 }
 
