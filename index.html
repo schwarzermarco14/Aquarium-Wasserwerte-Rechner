@@ -1911,8 +1911,9 @@ const MAX_TANKS_PREMIUM = 15;
 const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose_premium";
 
 function redirectToStripe() {
-    alert("Um Premium zu kaufen, öffne bitte den Google Play Store (Produkt-ID: " + GOOGLE_PLAY_PRODUCT_ID + ")");
+    window.location.href = "https://play.google.com/store/apps/details?id=com.schwarzermarco14.aquadiagnose2";
 }
+
 
 function showUpgradeModal(msg) {
     if (confirm(`${msg}\n\nJetzt upgraden?`)) {
