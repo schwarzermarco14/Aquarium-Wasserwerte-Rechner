@@ -1943,12 +1943,14 @@ async function redirectToStripe() {
             alert("Kauf erfolgreich! Premium freigeschaltet.");
             isPremiumUser = true;
             
-} catch (error) {
-    console.error("Kauf abgebrochen oder Fehler:", error);
-    window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
+        } catch (error) {
+            console.error("Kauf abgebrochen oder Fehler:", error);
+        }
+    } else {
+        // Fallback, falls die Umgebung es direkt in der Webansicht nicht unterstützt
+        window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
+    }
 }
-
-
 
 
 
