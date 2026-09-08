@@ -1924,7 +1924,8 @@ function redirectToGooglePlayBilling() {
         const storeUrl = "https://play.google.com/store/apps/details?id=" + encodeURIComponent(window.location.hostname) + "&sku=" + GOOGLE_PLAY_PRODUCT_ID;
         
         // Alternativ direkt den Billing-Intent oder die Play Store Web-Ansicht öffnen:
-window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2&sku="+ GOOGLE_PLAY_PRODUCT_ID;
+window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2&feature=inapp-"+ GOOGLE_PLAY_PRODUCT_ID;
+
 
 
     }
