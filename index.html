@@ -1957,23 +1957,42 @@ function saveCalendarEntry(dateStr, text) {
 }
 
 
-// 3. Diagramm-Sperre
+// 3. Diagramm-Sperre (korrigiert)
 function updateWaterChart() {
+    const chartCanvas = document.getElementById('waterChart');
+    const parent = chartCanvas ? chartCanvas.parentElement : null;
+    
+    if (!parent) return;
+
     if (!isPremiumUser) {
-        const chartCanvas = document.getElementById('waterChart');
-        if (chartCanvas && chartCanvas.parentElement) {
-            chartCanvas.parentElement.innerHTML = `
-                <div style="text-align:center; padding: 20px; border: 2px dashed #f59e0b; border-radius: 8px;">
-                    <h3 style="color:#f59e0b; margin-top:0;">📊 Diagramm-Funktion gesperrt</h3>
-                    <p style="color: #94a3b8;">Die grafische Auswertung ist in der Premium-Version enthalten.</p>
-                    <button onclick="redirectToStripe()" style="background:#0ea5e9; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:bold;">
-                        Jetzt Premium freischalten ⭐
-                    </button>
-                </div>`;
+        // Prüfen, ob die Sperr-Nachricht schon da ist, sonst einfügen
+        let lockDiv = document.getElementById('waterChartLock');
+        if (!lockDiv) {
+            lockDiv = document.createElement('div');
+            lockDiv.id = 'waterChartLock';
+            lockDiv.style.cssText = 'text-align:center; padding: 20px; border: 2px dashed #f59e0b; border-radius: 8px;';
+            lockDiv.innerHTML = `
+                <h3 style="color:#f59e0b; margin-top:0;">📊 Diagramm-Funktion gesperrt</h3>
+                <p style="color: #94a3b8;">Die grafische Auswertung ist in der Premium-Version enthalten.</p>
+                <button onclick="redirectToStripe()" style="background:#0ea5e9; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:bold;">
+                    Jetzt Premium freischalten ⭐
+                </button>`;
+            parent.appendChild(lockDiv);
         }
+        lockDiv.style.display = 'block';
+        if (chartCanvas) chartCanvas.style.display = 'none'; // Canvas verstecken, aber nicht löschen!
         return;
+    } else {
+        // Wenn Premium aktiv ist: Sperre ausblenden, Canvas anzeigen
+        const lockDiv = document.getElementById('waterChartLock');
+        if (lockDiv) lockDiv.style.display = 'none';
+        if (chartCanvas) chartCanvas.style.display = 'block';
+
+        // HIER WIRD DEIN DIAGRAMM GEZEICHNET (Chart.js Code)
+        // Bsp: drawMyChartFunction();
     }
 }
+
 
 updateTankSelector();
 loadTankData();
