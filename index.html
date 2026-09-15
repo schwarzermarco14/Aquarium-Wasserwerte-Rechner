@@ -1677,116 +1677,27 @@ cell.classList.add('today');
 }
 
 if(diaryData[dateKey]) {
+cell.classList.add('has-entry');
+let dot = document.createElement('div');
+dot.className = 'entry-dot';
+cell.appendChild(dot);
+}
 
-function renderCalendar() {
-    const grid = document.getElementById('calendarGrid');
-    const monthYearEl = document.getElementById('calMonthYear');
-    if(!grid) return;
-
-    // 1. Premium-Sperre
-    if (!isPremiumUser) {
-        grid.innerHTML = `
-            <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px; grid-column: span 7;">
-                <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 Premium-Funktion</h3>
-                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Das Aquarien-Tagebuch ist exklusiv für Premium-Mitglieder verfügbar.</p>
-                <button onclick="redirectToStripe()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
-                    Jetzt Premium freischalten
-                </button>
-            </div>`;
-        if (monthYearEl) monthYearEl.innerText = "";
-        return;
-    }
-
-    // 2. Kalender für Premium-Nutzer aufbauen
-    grid.innerHTML = '';
-    
-    // Fallback falls currentYear oder currentMonth nicht definiert sind
-    if (typeof currentYear === 'undefined') window.currentYear = new Date().getFullYear();
-    if (typeof currentMonth === 'undefined') window.currentMonth = new Date().getMonth();
-
-    let firstDay = new Date(currentYear, currentMonth, 1);
-    let lastDay = new Date(currentYear, currentMonth + 1, 0);
-
-    const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-    const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const daysDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-    const daysEn = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-
-    let mNames = (typeof currentLang !== 'undefined' && currentLang === 'en') ? monthNamesEn : monthNamesDe;
-    let dNames = (typeof currentLang !== 'undefined' && currentLang === 'en') ? daysEn : daysDe;
-
-    if (monthYearEl) {
-        monthYearEl.innerText = `${mNames[currentMonth]} ${currentYear}`;
-    }
-
-    dNames.forEach(d => {
-        let dayHeader = document.createElement('div');
-        dayHeader.className = 'cal-header-day';
-        dayHeader.innerText = d;
-        grid.appendChild(dayHeader);
-    });
-
-    let startDayIndex = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
-    for(let i = 0; i < startDayIndex; i++) {
-        let emptyCell = document.createElement('div');
-        emptyCell.className = 'cal-day empty';
-        grid.appendChild(emptyCell);
-    }
-
-    let today = new Date();
-    let diaryData = (typeof allTanks !== 'undefined' && allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-
-    for(let d = 1; d <= lastDay.getDate(); d++) {
-        let cell = document.createElement('div');
-        cell.className = 'cal-day';
-
-        let monthStr = String(currentMonth + 1).padStart(2, '0');
-        let dayStr = String(d).padStart(2, '0');
-        let dateKey = `${currentYear}-${monthStr}-${dayStr}`;
-
-        let dayNumEl = document.createElement('span');
-        dayNumEl.innerText = d;
-        cell.appendChild(dayNumEl);
-
-        if(d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
-            cell.classList.add('today');
-        }
-
-        if(diaryData[dateKey]) {
-            cell.classList.add('has-entry');
-            let dot = document.createElement('div');
-            dot.className = 'entry-dot';
-            cell.appendChild(dot);
-        }
-
-        cell.onclick = () => {
-            if (typeof openModal === 'function') {
-                openModal(dateKey);
-            } else {
-                let existingText = diaryData[dateKey] || "";
-                let newText = prompt(`Tagebucheintrag für ${dateKey}:`, existingText);
-                if (newText !== null && typeof saveCalendarEntry === 'function') {
-                    saveCalendarEntry(dateKey, newText);
-                }
-            }
-        };
-        grid.appendChild(cell);
-    }
+cell.onclick = () => openModal(dateKey);
+grid.appendChild(cell);
+}
 }
 
 function changeMonth(dir) {
-    if (typeof currentMonth === 'undefined') window.currentMonth = new Date().getMonth();
-    if (typeof currentYear === 'undefined') window.currentYear = new Date().getFullYear();
-
-    currentMonth += dir;
-    if(currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-    } else if(currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-    }
-    renderCalendar();
+currentMonth += dir;
+if(currentMonth > 11) {
+currentMonth = 0;
+currentYear++;
+} else if(currentMonth < 0) {
+currentMonth = 11;
+currentYear--;
+}
+renderCalendar();
 }
 
 function openModal(dateKey) {
@@ -1994,7 +1905,7 @@ resSection.style.display = 'block';
 resSection.scrollIntoView({ behavior: 'smooth' });
 }
 // --- PREMIUM EINSTELLUNGEN ---
-let isPremiumUser = false;
+let isPremiumUsnumber true;
 const MAX_TANKS_FREE = 1;
 const MAX_TANKS_PREMIUM = 15;
 const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose_premium";
