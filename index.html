@@ -1627,6 +1627,61 @@ function renderCalendar() {
         return;
     }
 
+    // Ab hier wird das Kalender-Raster für freigeschaltete Nutzer gebaut:
+    grid.innerHTML = ""; // Grid leeren
+    
+    // Beispielhafte Monats- und Datumslogik (falls deine globale Variable für das Datum existiert)
+    const now = window.currentDate || new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    
+    if (monthYearEl) {
+        const options = { month: 'long', year: 'numeric' };
+        monthYearEl.textContent = now.toLocaleDateString('de-DE', options);
+    }
+
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const totalDays = new Date(year, month + 1, 0).getDate();
+    
+    // Wochentage-Header einfügen
+    const weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+    weekdays.forEach(day => {
+        const dayHeader = document.createElement('div');
+        dayHeader.style.cssText = 'text-align:center; font-weight:bold; color:#94a3b8; padding:5px;';
+        dayHeader.textContent = day;
+        grid.appendChild(dayHeader);
+    });
+
+    // Korrektur für Wochenstart (Montag = 0)
+    let startDay = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+    
+    // Leere Felder für Tage vor Monatsbeginn
+    for (let i = 0; i < startDay; i++) {
+        const emptyCell = document.createElement('div');
+        grid.appendChild(emptyCell);
+    }
+
+    // Tage des Monats generieren
+    for (let day = 1; day <= totalDays; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.style.cssText = 'min-height: 60px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 5px; cursor: pointer;';
+        dayCell.innerHTML = `<div style="font-weight:bold; font-size:12px; color:#e2e8f0;">${day}</div>`;
+        
+        // Klick-Event für Einträge
+        dayCell.onclick = function() {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const existingText = (allTanks[currentTankName]?.diary && allTanks[currentTankName].diary[dateStr]) || "";
+            const newText = prompt(`Tagebucheintrag für ${dateStr}:`, existingText);
+            if (newText !== null) {
+                saveCalendarEntry(dateStr, newText);
+            }
+        };
+
+        grid.appendChild(dayCell);
+    }
+}
+
+
 
     grid.innerHTML = '';
 
