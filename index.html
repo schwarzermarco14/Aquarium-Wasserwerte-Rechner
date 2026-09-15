@@ -1612,7 +1612,7 @@ document.getElementById('volumen').value = vol.toFixed(1);
 
 function renderCalendar() {
     const grid = document.getElementById('calendarGrid');
-    const monthYearEl = document.getElementById('monthYear');
+    const monthYearEl = document.getElementById('calMonthYear');
     if(!grid) return;
 
     if (!isPremiumUser) {
@@ -1626,61 +1626,6 @@ function renderCalendar() {
             </div>`;
         return;
     }
-
-    // Ab hier wird das Kalender-Raster für freigeschaltete Nutzer gebaut:
-    grid.innerHTML = ""; // Grid leeren
-    
-    // Beispielhafte Monats- und Datumslogik (falls deine globale Variable für das Datum existiert)
-    const now = window.currentDate || new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    
-    if (monthYearEl) {
-        const options = { month: 'long', year: 'numeric' };
-        monthYearEl.textContent = now.toLocaleDateString('de-DE', options);
-    }
-
-    const firstDayIndex = new Date(year, month, 1).getDay();
-    const totalDays = new Date(year, month + 1, 0).getDate();
-    
-    // Wochentage-Header einfügen
-    const weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-    weekdays.forEach(day => {
-        const dayHeader = document.createElement('div');
-        dayHeader.style.cssText = 'text-align:center; font-weight:bold; color:#94a3b8; padding:5px;';
-        dayHeader.textContent = day;
-        grid.appendChild(dayHeader);
-    });
-
-    // Korrektur für Wochenstart (Montag = 0)
-    let startDay = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
-    
-    // Leere Felder für Tage vor Monatsbeginn
-    for (let i = 0; i < startDay; i++) {
-        const emptyCell = document.createElement('div');
-        grid.appendChild(emptyCell);
-    }
-
-    // Tage des Monats generieren
-    for (let day = 1; day <= totalDays; day++) {
-        const dayCell = document.createElement('div');
-        dayCell.style.cssText = 'min-height: 60px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 5px; cursor: pointer;';
-        dayCell.innerHTML = `<div style="font-weight:bold; font-size:12px; color:#e2e8f0;">${day}</div>`;
-        
-        // Klick-Event für Einträge
-        dayCell.onclick = function() {
-            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const existingText = (allTanks[currentTankName]?.diary && allTanks[currentTankName].diary[dateStr]) || "";
-            const newText = prompt(`Tagebucheintrag für ${dateStr}:`, existingText);
-            if (newText !== null) {
-                saveCalendarEntry(dateStr, newText);
-            }
-        };
-
-        grid.appendChild(dayCell);
-    }
-}
-
 
 
     grid.innerHTML = '';
@@ -1960,14 +1905,54 @@ resSection.style.display = 'block';
 resSection.scrollIntoView({ behavior: 'smooth' });
 }
 // --- PREMIUM EINSTELLUNGEN ---
-let isPremiumUser = true;
+let isPremiumUser = false;
 const MAX_TANKS_FREE = 1;
 const MAX_TANKS_PREMIUM = 15;
-const STRIPE_PAYMENT_URL = "DEIN_STRIPE_LINK";
+const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose_premium";
 
-function redirectToStripe() {
-    window.location.href = STRIPE_PAYMENT_URL;
+async function redirectToStripe() {
+    if ('getDigitalGoodsService' in window) {
+        try {
+            // Verbindung zum Google Play Billing Dienst herstellen
+            const service = await window.getDigitalGoodsService("https://play.google.com/billing");
+            
+            // Produktdetails abrufen
+            const details = await service.getDetails([GOOGLE_PLAY_PRODUCT_ID]);
+            if (details.length === 0) {
+                alert("Produkt nicht gefunden.");
+                return;
+            }
+
+            // Den Google Play Bezahl-Checkout (Overlay) direkt starten
+            const payment = new PaymentRequest([{
+                supportedMethods: "https://play.google.com/billing",
+                data: {
+                    sku: GOOGLE_PLAY_PRODUCT_ID
+                }
+            }], {
+                total: {
+                    label: details[0].title,
+                    amount: details[0].price
+                }
+            });
+
+            const paymentResponse = await payment.show();
+            
+            // Kauf erfolgreich abgeschlossen
+            await paymentResponse.complete('success');
+            alert("Kauf erfolgreich! Premium freigeschaltet.");
+            isPremiumUser = true;
+            
+        } catch (error) {
+            console.error("Kauf abgebrochen oder Fehler:", error);
+        }
+    } else {
+        // Fallback, falls die Umgebung es direkt in der Webansicht nicht unterstützt
+        window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
+    }
 }
+
+
 
 function showUpgradeModal(msg) {
     if (confirm(`${msg}\n\nJetzt upgraden?`)) {
@@ -2012,42 +1997,23 @@ function saveCalendarEntry(dateStr, text) {
 }
 
 
-// 3. Diagramm-Sperre (korrigiert)
+// 3. Diagramm-Sperre
 function updateWaterChart() {
-    const chartCanvas = document.getElementById('waterChart');
-    const parent = chartCanvas ? chartCanvas.parentElement : null;
-    
-    if (!parent) return;
-
     if (!isPremiumUser) {
-        // Prüfen, ob die Sperr-Nachricht schon da ist, sonst einfügen
-        let lockDiv = document.getElementById('waterChartLock');
-        if (!lockDiv) {
-            lockDiv = document.createElement('div');
-            lockDiv.id = 'waterChartLock';
-            lockDiv.style.cssText = 'text-align:center; padding: 20px; border: 2px dashed #f59e0b; border-radius: 8px;';
-            lockDiv.innerHTML = `
-                <h3 style="color:#f59e0b; margin-top:0;">📊 Diagramm-Funktion gesperrt</h3>
-                <p style="color: #94a3b8;">Die grafische Auswertung ist in der Premium-Version enthalten.</p>
-                <button onclick="redirectToStripe()" style="background:#0ea5e9; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:bold;">
-                    Jetzt Premium freischalten ⭐
-                </button>`;
-            parent.appendChild(lockDiv);
+        const chartCanvas = document.getElementById('waterChart');
+        if (chartCanvas && chartCanvas.parentElement) {
+            chartCanvas.parentElement.innerHTML = `
+                <div style="text-align:center; padding: 20px; border: 2px dashed #f59e0b; border-radius: 8px;">
+                    <h3 style="color:#f59e0b; margin-top:0;">📊 Diagramm-Funktion gesperrt</h3>
+                    <p style="color: #94a3b8;">Die grafische Auswertung ist in der Premium-Version enthalten.</p>
+                    <button onclick="redirectToStripe()" style="background:#0ea5e9; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:bold;">
+                        Jetzt Premium freischalten ⭐
+                    </button>
+                </div>`;
         }
-        lockDiv.style.display = 'block';
-        if (chartCanvas) chartCanvas.style.display = 'none'; // Canvas verstecken, aber nicht löschen!
         return;
-    } else {
-        // Wenn Premium aktiv ist: Sperre ausblenden, Canvas anzeigen
-        const lockDiv = document.getElementById('waterChartLock');
-        if (lockDiv) lockDiv.style.display = 'none';
-        if (chartCanvas) chartCanvas.style.display = 'block';
-
-        // HIER WIRD DEIN DIAGRAMM GEZEICHNET (Chart.js Code)
-        // Bsp: drawMyChartFunction();
     }
 }
-
 
 updateTankSelector();
 loadTankData();
