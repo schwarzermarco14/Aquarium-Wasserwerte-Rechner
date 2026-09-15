@@ -1627,7 +1627,6 @@ function renderCalendar() {
         return;
     }
 
-
     grid.innerHTML = '';
 
 let firstDay = new Date(currentYear, currentMonth, 1);
@@ -1904,6 +1903,7 @@ resContainer.appendChild(card);
 resSection.style.display = 'block';
 resSection.scrollIntoView({ behavior: 'smooth' });
 }
+
 // --- PREMIUM EINSTELLUNGEN ---
 let isPremiumUser = true;
 const MAX_TANKS_FREE = 1;
@@ -1914,74 +1914,18 @@ function redirectToStripe() {
     window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
 }
 
-
-
-
 function showUpgradeModal(msg) {
-    if (confirm(`${msg}\n\nJetzt upgraden?`)) {
-        redirectToStripe();
-    }
+    alert(msg || "Diese Funktion erfordert eine Premium-Freischaltung.");
 }
 
-// 1. Aquarien-Sperre
-function createNewTank() {
-    const currentTankCount = Object.keys(allTanks).length;
-    const maxAllowed = isPremiumUser ? MAX_TANKS_PREMIUM : MAX_TANKS_FREE;
+// Initiale Initialisierung beim Laden der Seite
+window.onload = function() {
+    updateTankSelector();
+    loadTankData();
+    calcVol();
+    switchLanguage(currentLang);
+};
 
-    if (currentTankCount >= maxAllowed) {
-        showUpgradeModal("In der Free-Version kannst du nur 1 Aquarium verwalten. Schalte Premium frei für bis zu 15 Aquarien!");
-        return;
-    }
-
-    const tankName = prompt("Name des neuen Aquariums:");
-    if (tankName && !allTanks[tankName]) {
-        allTanks[tankName] = { data: {}, diary: {} };
-        localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
-        currentTankName = tankName;
-        updateTankSelector();
-        if (typeof loadTankData === "function") loadTankData();
-    }
-}
-
-// 2. Kalender-Sperre
-function saveCalendarEntry(dateStr, text) {
-    if (!isPremiumUser) {
-        showUpgradeModal("Das Speichern von Kalendereinträgen ist eine Premium-Funktion. Schalte jetzt Premium frei!");
-        return false;
-    }
-
-    if (!allTanks[currentTankName].diary) {
-        allTanks[currentTankName].diary = {};
-    }
-    allTanks[currentTankName].diary[dateStr] = text;
-    localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
-    if (typeof renderCalendar === "function") renderCalendar();
-    return true;
-}
-
-
-// 3. Diagramm-Sperre
-function updateWaterChart() {
-    if (!isPremiumUser) {
-        const chartCanvas = document.getElementById('waterChart');
-        if (chartCanvas && chartCanvas.parentElement) {
-            chartCanvas.parentElement.innerHTML = `
-                <div style="text-align:center; padding: 20px; border: 2px dashed #f59e0b; border-radius: 8px;">
-                    <h3 style="color:#f59e0b; margin-top:0;">📊 Diagramm-Funktion gesperrt</h3>
-                    <p style="color: #94a3b8;">Die grafische Auswertung ist in der Premium-Version enthalten.</p>
-                    <button onclick="redirectToStripe()" style="background:#0ea5e9; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:bold;">
-                        Jetzt Premium freischalten ⭐
-                    </button>
-                </div>`;
-        }
-        return;
-    }
-}
-
-updateTankSelector();
-loadTankData();
-calcVol();
-renderCalendar();
 </script>
 </body>
-  </html>
+</html>
