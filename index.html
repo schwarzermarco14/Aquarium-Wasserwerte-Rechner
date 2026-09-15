@@ -1915,10 +1915,17 @@ function redirectToStripe() {
 }
 
 function showUpgradeModal(msg) {
-    if (confirm(`${msg}\n\nJetzt upgraden?`)) {
-        redirectToStripe();
-    }
+    alert(msg || "Diese Funktion erfordert eine Premium-Freischaltung.");
 }
+
+// Initiale Initialisierung beim Laden der Seite
+window.onload = function() {
+    updateTankSelector();
+    loadTankData();
+    calcVol();
+    switchLanguage(currentLang);
+};
+
 </script>
 </body>
 </html>
