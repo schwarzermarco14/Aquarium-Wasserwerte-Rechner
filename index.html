@@ -1902,7 +1902,21 @@ resContainer.appendChild(card);
 
 resSection.style.display = 'block';
 resSection.scrollIntoView({ behavior: 'smooth' });
-}
+} 
+    // Analyse-Ergebnis automatisch für den heutigen Tag im Kalender/Diary speichern
+    let todayStr = newotypicStr = new Date().toISOString().split('T')[0]; // oder das aktive Datum falls vorhanden
+    if (!allTanks[currentTankName].diary) {
+        allTanks[currentTankName].diary = {};
+    }
+    
+    // Text aus den generierten Alerts zusammenbauen
+    let analysisText = "Wasseranalyse:\n" + alerts.map(a => "- " + (a.msg || a.text || "Auffälligkeit")).join("\n");
+    
+    allTanks[currentTankName].diary[todayStr] = analysisText;
+    localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+    
+    // Falls der Kalender gerade offen ist, diesen aktualisieren
+    if (typeof renderCalendar === 'function') renderCalendar();
 
 // --- PREMIUM EINSTELLUNGEN ---
 let isPremiumUser = true;
