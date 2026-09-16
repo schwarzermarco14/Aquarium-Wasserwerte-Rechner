@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-i18n="main_title">AquaDiagnose – Das Original für professionelle Analysen</title>
-<link rel="manifest" href="manifest.json">
-<!-- Chart.js CDN für die Diagramme -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title data-i18n="main_title">Aquarium-Wasserwerte-Rechner (AWR) - Vollständige Analyse</title>
 <style>
 :root {
 --bg: #0f172a;
@@ -174,45 +171,35 @@ margin-top: 6px;
 
 .water-grid {
 display: grid;
-grid-template-columns: 1fr;
+grid-template-columns: 1fr 1fr;
 gap: 10px;
 }
-@media (min-width: 600px) {
-.water-grid {
-grid-template-columns: 1fr 1fr;
-}
-}
-.water-table {
-width: 100%;
-border-collapse: collapse;
-background: #020617;
-border-radius: 8px;
-overflow: hidden;
-font-size: 0.85rem;
-}
-.water-table th, .water-table td {
-padding: 8px 10px;
-text-align: left;
-border-bottom: 1px solid var(--border);
-}
-.water-table th {
-background: #0f172a;
-color: var(--accent);
+.water-column h3 {
 font-size: 0.8rem;
 text-align: center;
+background: #020617;
+padding: 6px;
+border-radius: 6px;
+margin-bottom: 10px;
+color: var(--text);
 }
-.water-table tr:last-child td {
-border-bottom: none;
+.water-field {
+margin-bottom: 8px;
 }
-.water-table input {
+.water-field label {
+display: block;
+font-size: 0.75rem;
+color: var(--text-muted);
+margin-bottom: 2px;
+}
+.water-field input {
 width: 100%;
-padding: 5px;
-border-radius: 4px;
+padding: 6px;
+border-radius: 6px;
 border: 1px solid var(--border);
 background: #0f172a;
 color: #fff;
 font-size: 0.8rem;
-text-align: right;
 }
 
 .check-group {
@@ -240,6 +227,19 @@ padding: 14px;
 border-radius: 8px;
 font-size: 1rem;
 margin-top: 15px;
+cursor: pointer;
+}
+
+.btn-accent {
+width: 100%;
+background: var(--accent);
+color: #0f172a;
+font-weight: bold;
+border: none;
+padding: 10px;
+border-radius: 8px;
+font-size: 0.9rem;
+margin-top: 10px;
 cursor: pointer;
 }
 
@@ -399,7 +399,7 @@ line-height: 1.5;
 <!-- Header -->
 <div class="header">
 <div class="header-left">
-<h1><span data-i18n="title">AquaDiagnose</span> 💧</h1>
+<h1><span data-i18n="title">Aquarium-Wasserwerte-Rechner (AWR)</span> 💧</h1>
 <p data-i18n="subtitle">Vollständige Aquarium-Analyse</p>
 </div>
 <div class="header-controls">
@@ -425,7 +425,6 @@ line-height: 1.5;
 <button class="tab-btn" onclick="openTab(event, 'tab-wasser')" data-i18n="tab_water">Wasserwerte</button>
 <button class="tab-btn" onclick="openTab(event, 'tab-besatz')" data-i18n="tab_stock">Besatz & Futter</button>
 <button class="tab-btn" onclick="openTab(event, 'tab-symptome')" data-i18n="tab_symptoms">Symptome</button>
-<button class="tab-btn" onclick="openTab(event, 'tab-diagramme')" data-i18n="tab_charts">📈 Diagramme</button>
 <button class="tab-btn" onclick="openTab(event, 'tab-kalender')" data-i18n="tab_cal">📅 Kalender</button>
 </div>
 
@@ -638,87 +637,40 @@ line-height: 1.5;
 <div class="card">
 <h2 data-i18n="sec_water_compare">🧪 Wasserwerte-Vergleich</h2>
 <div class="water-grid">
-<table class="water-table">
-<thead>
-<tr>
-<th style="text-align:left;" data-i18n="col_water_parameter">Parameter</th>
-<th data-i18n="col_water_change">Wasserwechsel</th>
-<th data-i18n="col_water_tank">Aquarienwasser</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pH</td>
-<td><input type="text" id="w_ph_wechsel" value="7.2" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_ph_akt" value="6.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>GH</td>
-<td><input type="text" id="w_gh_wechsel" value="10.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_gh_akt" value="12.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>KH</td>
-<td><input type="text" id="w_kh_wechsel" value="6.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_kh_akt" value="4.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>NH₄ (ppm)</td>
-<td><input type="text" id="w_nh4_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_nh4_akt" value="0.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>NO₂ (ppm)</td>
-<td><input type="text" id="w_no2_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_no2_akt" value="0.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>NO₃ (ppm)</td>
-<td><input type="text" id="w_no3_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_no3_akt" value="10.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>PO₄ (ppm)</td>
-<td><input type="text" id="w_po4_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_po4_akt" value="0.1" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>K (ppm)</td>
-<td><input type="text" id="w_k_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_k_akt" value="5.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>Ca (ppm)</td>
-<td><input type="text" id="w_ca_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_ca_akt" value="25.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>Mg (ppm)</td>
-<td><input type="text" id="w_mg_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_mg_akt" value="5.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>Fe (ppm)</td>
-<td><input type="text" id="w_fe_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_fe_akt" value="0.05" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>Na (ppm)</td>
-<td><input type="text" id="w_na_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_na_akt" value="5.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>SiO₂ (ppm)</td>
-<td><input type="text" id="w_sio2_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_sio2_akt" value="2.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>SO₄ (ppm)</td>
-<td><input type="text" id="w_so4_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_so4_akt" value="10.0" oninput="saveDataAuto()"></td>
-</tr>
-</tbody>
-</table>
+<div class="water-column">
+<h3 data-i18n="col_water_change">Wasserwechsel</h3>
+<div class="water-field"><label>pH:</label><input type="text" id="w_ph_wechsel" value="7.2" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>GH:</label><input type="text" id="w_gh_wechsel" value="10.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>KH:</label><input type="text" id="w_kh_wechsel" value="6.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_wechsel" value="0.0" oninput="saveDataAuto()"></div>
+</div>
+<div class="water-column">
+<h3 data-i18n="col_water_tank">Aquarienwasser</h3>
+<div class="water-field"><label>pH:</label><input type="text" id="w_ph_akt" value="6.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>GH:</label><input type="text" id="w_gh_akt" value="12.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>KH:</label><input type="text" id="w_kh_akt" value="4.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NH₄ (ppm):</label><input type="text" id="w_nh4_akt" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NO₂ (ppm):</label><input type="text" id="w_no2_akt" value="0.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>NO₃ (ppm):</label><input type="text" id="w_no3_akt" value="10.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>PO₄ (ppm):</label><input type="text" id="w_po4_akt" value="0.1" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>K (ppm):</label><input type="text" id="w_k_akt" value="5.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Ca (ppm):</label><input type="text" id="w_ca_akt" value="25.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Mg (ppm):</label><input type="text" id="w_mg_akt" value="5.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Fe (ppm):</label><input type="text" id="w_fe_akt" value="0.05" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>Na (ppm):</label><input type="text" id="w_na_akt" value="5.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>SiO₂ (ppm):</label><input type="text" id="w_sio2_akt" value="2.0" oninput="saveDataAuto()"></div>
+<div class="water-field"><label>SO₄ (ppm):</label><input type="text" id="w_so4_akt" value="10.0" oninput="saveDataAuto()"></div>
+</div>
 </div>
 </div>
 </div>
@@ -827,39 +779,7 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 6: DIAGRAMME -->
-<div id="tab-diagramme" class="tab-content">
-<div class="card">
-<h2 data-i18n="tab_charts">📈 Wasserwerte-Verlauf (Diagramme)</h2>
-<p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch.</p>
-
-<div class="form-group" style="flex-direction: column; align-items: flex-start; margin-bottom: 15px;">
-<label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold; margin-bottom: 8px;">Parameter auswählen (mehrere möglich):</label>
-<div class="media-grid" id="chartParamSelect" style="width: 100%;">
-<label class="check-group"><input type="checkbox" value="w_ph_akt" checked onchange="updateWaterChart()"> pH (Aquarienwasser)</label>
-<label class="check-group"><input type="checkbox" value="w_gh_akt" onchange="updateWaterChart()"> GH (°dH)</label>
-<label class="check-group"><input type="checkbox" value="w_kh_akt" onchange="updateWaterChart()"> KH (°dH)</label>
-<label class="check-group"><input type="checkbox" value="w_nh4_akt" onchange="updateWaterChart()"> NH₄ (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_no2_akt" onchange="updateWaterChart()"> NO₂ (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_no3_akt" onchange="updateWaterChart()"> NO₃ (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_po4_akt" onchange="updateWaterChart()"> PO₄ (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_k_akt" onchange="updateWaterChart()"> K (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_ca_akt" onchange="updateWaterChart()"> Ca (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_mg_akt" onchange="updateWaterChart()"> Mg (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_fe_akt" onchange="updateWaterChart()"> Fe (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_na_akt" onchange="updateWaterChart()"> Na (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_sio2_akt" onchange="updateWaterChart()"> SiO₂ (ppm)</label>
-<label class="check-group"><input type="checkbox" value="w_so4_akt" onchange="updateWaterChart()"> SO₄ (ppm)</label>
-</div>
-</div>
-
-<div style="position: relative; height: 260px; width: 100%; margin-bottom: 20px;">
-<canvas id="waterChart"></canvas>
-</div>
-</div>
-</div>
-
-<!-- TAB 7: KALENDER -->
+<!-- TAB 6: KALENDER & TAGEBUCH-VERGLEICH -->
 <div id="tab-kalender" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_cal">📅 Aquarien-Tagebuch</h2>
@@ -869,6 +789,28 @@ line-height: 1.5;
 <button type="button" onclick="changeMonth(1)">›</button>
 </div>
 <div class="calendar-grid" id="calendarGrid"></div>
+</div>
+
+<div class="card">
+<h2 data-i18n="sec_history_compare">📅 Tagebuch-Vergleich nach Datum</h2>
+<div class="form-group">
+<label data-i18n="lbl_date_1">Erstes Datum:</label>
+<select id="compareDate1" style="width: 140px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
+<option value="">-- Wähle Datum --</option>
+</select>
+</div>
+<div class="form-group">
+<label data-i18n="lbl_date_2">Zweites Datum:</label>
+<select id="compareDate2" style="width: 140px; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.85rem; text-align-last: right;">
+<option value="">-- Wähle Datum --</option>
+</select>
+</div>
+<button type="button" class="btn-accent" onclick="compareDiaryDates()" data-i18n="btn_compare">Einträge vergleichen</button>
+
+<div id="comparisonResultBox" style="margin-top: 15px; display: none;">
+<h3 id="comparisonTitle" style="font-size: 0.9rem; color: var(--accent); margin-bottom: 8px;"></h3>
+<div id="comparisonContent" style="font-size: 0.85rem; line-height: 1.4; background: #020617; padding: 10px; border-radius: 6px; border: 1px solid var(--border); white-space: pre-wrap;"></div>
+</div>
 </div>
 </div>
 
@@ -888,7 +830,7 @@ line-height: 1.5;
 </div>
 
 <footer class="app-footer">
-<p><span data-i18n="footer_text">AquaDiagnose v2.9</span> | <a href="#" onclick="alert(currentLang==='en'?'Data saved locally':'Daten lokal gespeichert'); return false;" data-i18n="footer_save">Daten sichern</a></p>
+<p><span data-i18n="footer_text">Aquarium-Wasserwerte-Rechner (AWR) v2.9</span> | <a href="#" onclick="alert(currentLang==='en'?'Data saved locally':'Daten lokal gespeichert'); return false;" data-i18n="footer_save">Daten sichern</a></p>
 <p style="margin-top: 4px;"><span data-i18n="footer_provider">Bereitgestellt von</span> <a href="https://aqua-enthusiasts.de" target="_blank">Aqua-Enthusiasts.de</a></p>
 </footer>
 
@@ -897,7 +839,6 @@ let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 let activeModalDate = '';
 let currentLang = localStorage.getItem('awr_lang') || 'de';
-let myWaterChart = null;
 
 let allTanks = JSON.parse(localStorage.getItem('awr_all_tanks')) || {
   "Hauptbecken (64L)": {
@@ -909,18 +850,15 @@ let currentTankName = Object.keys(allTanks)[0];
 
 const translations = {
 de: {
-main_title: "AquaDiagnose – Das Original für professionelle Analysen",
-title: "AquaDiagnose",
+main_title: "Aquarium-Wasserwerte-Rechner (AWR) – Das Original für professionelle Analysen",
+title: "Aquarium-Wasserwerte-Rechner (AWR)",
 subtitle: "Dein digitaler Assistent für ein stabiles Ökosystem",
 tab_tech: "Becken & Technik",
 tab_deco: "Bodengrund & Deko",
 tab_water: "Wasserwerte",
 tab_stock: "Besatz & Futter",
 tab_symptoms: "Symptome",
-tab_charts: "📈 Diagramme",
 tab_cal: "📅 Kalender",
-charts_desc: "Verlauf deiner gemessenen Aquarienwerte aus dem Analyse-Protokoll:",
-lbl_select_param: "Parameter im Diagramm (mehrere möglich):",
 sec_tank_info: "📐 Angaben zum Aquarium",
 lbl_length: "Aquarienlänge (cm):",
 lbl_width: "Aquarienbreite (cm):",
@@ -1018,9 +956,12 @@ wt_jumbo: "Jumbo-Wurzel (Großstückig)",
 wt_cork: "Korkenzieherhasel (Dekorativ)",
 lbl_wood_qty: "Menge an Holz (kg):",
 sec_water_compare: "🧪 Wasserwerte-Vergleich",
-col_water_parameter: "Parameter",
 col_water_change: "Wasserwechsel",
 col_water_tank: "Aquarienwasser",
+sec_history_compare: "📅 Tagebuch-Vergleich nach Datum",
+lbl_date_1: "Erstes Datum:",
+lbl_date_2: "Zweites Datum:",
+btn_compare: "Einträge vergleichen",
 lbl_fish_small: "Kleine Fische (bis 3 cm):",
 lbl_fish_medium: "Mittelgroße Fische (3–8 cm):",
 lbl_fish_large: "Große Fische (über 8 cm):",
@@ -1064,7 +1005,6 @@ fi_air: "Schnappen nach Luft an der Oberfläche",
 fi_apathy: "Teilnahmslosigkeit / Appetitlosigkeit",
 fi_deaths: "Todesfälle in den letzten Tagen",
 fi_spots: "Weiße Punkte oder Beläge auf Fischen",
-fi_spots_p: "Prophylaxe: Neue Fische immer gut eingewöhnen und auf makellosen Gesundheitszustand beim Kauf achten.",
 fi_fins: "Ausgefranste oder sich auflösende Flossen",
 lbl_sym_water: "Wasser und Erscheinungsbild:",
 wa_turbid: "Trübes Wasser",
@@ -1076,133 +1016,20 @@ btn_analyze: "Analysieren & im Kalender speichern",
 res_title: "📊 Analyseergebnis & Auswertung",
 modal_subtitle: "Vollständiger Analyse-Report:",
 modal_save: "Speichern",
-footer_text: "AquaDiagnose v2.9",
+footer_text: "Aquarium-Wasserwerte-Rechner (AWR) v2.9",
 footer_save: "Daten sichern",
-footer_provider: "Bereitgestellt von",
-click_details: "Klicken für Details",
-expl_label: "Erklärung",
-sol_label: "Lösung",
-p_label: "Prophylaxe",
-
-warn_gh_title: "⚠️ Wasser wird zu hart (Kalk im Becken)",
-warn_gh_expl: "Im Becken befinden sich kalkhaltige Steine (oder das Leitungswasser ist sehr hart). Diese Steine geben ununterbrochen Mineralien ab, wodurch das Wasser mit der Zeit immer härter wird.",
-warn_gh_sol: "Nimm die kalkhaltigen Steine heraus und ersetze sie durch neutrale Deko (wie Schiefer oder Lavastein). Mische beim nächsten Wasserwechsel normales Leitungswasser mit weichem Osmose- oder destillierten Wasser, um die Härte zu senken.",
-
-warn_ph_title: "⚠️ Achtung: Gefahr eines Säuresturzes (pH-Wert zu niedrig)",
-warn_ph_expl: "Der pH-Wert ist im sauren Bereich und die Karbonathärte (KH) ist zu gering. Das Wasser hat keinen Puffer mehr, wodurch der pH-Wert plötzlich blitzartig abstürzen und die Fische gefährden kann.",
-warn_ph_sol: "Wechsle sofort ca. 30-50% des Wassers aus. Nutze beim Wasserwechsel Leitungswasser mit höherer Karbonathärte, um den Puffer im Aquarium wieder aufzubauen (Ziel KH: mindestens 5° dH).",
-
-warn_no3_title: "🚨 Nitrat-Wert zu hoch",
-warn_no3_expl: "Es ist zu viel Nitrat im Wasser. Das passiert meistens durch zu viel Futter, zu seltenes Wasserwechseln oder weil bereits das Leitungswasser stark mit Nitrat belastet ist.",
-warn_no3_sol: "Mache ab sofort wöchentlich einen großen Wasserwechsel von 50%. Füttere deine Fische nur noch so viel, wie sie in 1-2 Minuten komplett auffressen können, ohne dass Reste auf den Boden sinken.",
-
-warn_overstock_title: "🚨 Alarm: Starker Überbesatz im Aquarium!",
-warn_overstock_expl: "Die Anzahl und Größe der ausgewählten Fische passt absolut nicht zum geringen Volumen deines Aquariums. Es droht akuter Sauerstoffmangel, massiver Ammoniak- und Nitrit-Anstieg sowie enormer Stress für die Tiere.",
-warn_overstock_sol: "Reduziere den Fischbesatz drastisch (z.B. durch Abgabe von Tieren an andere Aquarianer oder Zoofachgeschäfte) oder steige auf ein deutlich größeres Aquarium (mindestens 200–300 Liter) um.",
-
-pro_tip_title: "💡 Profi-Tipp: Biologische Stabilität",
-pro_tip_expl: "Ein eingefahrenes Aquarium verzeiht kleine Fehler, aber verlasse dich nie auf Teststreifen allein – Tröpfchentests liefern exakte Ergebnisse für ein stabiles Millieu.",
-pro_tip_sol: "Führe wöchentlich feste Routinen für Wasserwechsel und Filterpflege ein, anstatt erst bei Problemen zu reagieren.",
-
-alg_green_thread_t: "🚨 Algen-Hilfe: Grüne Fadenalgen (grüne Haare)",
-alg_green_thread_e: "Diese langen, haarigen Algen entstehen meistens, wenn zu viel Eisen/Dünger im Wasser ist, das Licht zu lange brennt oder die CO₂-Zufuhr ungleichmäßig läuft.",
-alg_green_thread_s: "Drehe die Düngung für die nächsten 2 Wochen um die Hälfte herunter. Wickle die Algen einfach mit einer kleinen Bürste oder einer Zahnbürste auf und mache wöchentlich 50% Wasserwechsel.",
-
-alg_green_spot_t: "🚨 Algen-Hilfe: Grüne Punktalgen (harte Punkte auf Scheiben)",
-alg_green_spot_e: "Harte, kleine grüne Punkte an den Glasscheiben oder Blättern zeigen an, dass deinen Pflanzen ein bestimmter Nährstoff (Phosphat) fehlt.",
-alg_green_spot_s: "Kratze die Punkte vorsichtig mit einem Klingenschaber von der Scheibe. Dünge etwas Phosphat nach und verkürze die Beleuchtungszeit am Tag um 1 Stunde.",
-
-alg_cyano_t: "🚨 Algen-Hilfe: Cyanobakterien (Blaualgen - schmierig & stinkend)",
-alg_cyano_e: "Das sind eigentlich Bakterien, die einen bläulich-grünen, schmierigen Teppich bilden und oft muffig riechen. Ursache ist meistens alter Schmutz (Mulm) am Boden oder Ecken mit zu wenig Wasserströmung.",
-alg_cyano_s: "Sauge den schmierigen Belag mit einem Schlauch ab. Reinige den Bodengrund gründlicher vom Mulm und sorge dafür, dass das Wasser im Aquarium überall gut zirkulieren kann.",
-
-alg_brush_t: "🚨 Algen-Hilfe: Pinselalgen / Bartalgen (büschelartig, dunkel)",
-alg_brush_e: "Dunkle, buschige Algen, die sich gerne an Filtereinläufen oder stark angeströmten Pflanzenblättern festsetzen. Sie lieben schwankende CO₂-Werte und viel Schmutz im Wasser.",
-alg_brush_s: "Prüfe deine CO₂-Anlage, damit sie gleichmäßig läuft. Sauge Schmutzreste konsequent ab und spritze betroffene Steine oder Wurzeln außerhalb des Wassers mit etwas flüssigem Kohlenstoff ein.",
-
-alg_spirogyra_t: "🚨 Algen-Hilfe: Wollige Fadenalgen (Spirogyra)",
-alg_spirogyra_e: "Diese Algen bilden helle, watteartige Nester, die sich extrem schnell vermehren. Sie wachsen besonders gut, wenn zu viel Eisendünger und gleichzeitig Schmutz im Becken ist.",
-alg_spirogyra_s: "Stoppe vorerst jeglichen Eisendünger. Wickle die Watte-Nester manuell heraus und reinige deinen Filter, falls sich dort alter Schmutz angesammelt hat.",
-
-alg_diatoms_t: "🚨 Algen-Hilfe: Kieselalgen (brauner Belag)",
-alg_diatoms_e: "Ein brauner, schmieriger Belag, der sich in der Einlaufphase eines neuen Aquariums fast immer zeigt. Schuld daran ist oft Kieselsäure im Leitungswasser.",
-alg_diatoms_s: "Keine Panik, das ist bei neuen Becken normal und verschwindet nach ein paar Wochen von selbst. Du kannst den Belag einfach abwischen und Geduld haben.",
-
-alg_glass_t: "🚨 Algen-Hilfe: Grüner Belag auf den Glasscheiben",
-alg_glass_e: "Ein leichter grüner Film auf den Scheiben ist völlig normal. Er entsteht durch Licht und Nährstoffe im Wasser.",
-alg_glass_s: "Putz die Scheiben einfach regelmäßig mit einem Scheibenmagneten oder einem Klingenreiniger. Steht das Aquarium evtl. in der prallen Sonne? Wenn ja, verstelle es oder schirme das Licht ab.",
-
-alg_bloom_t: "🚨 Algen-Hilfe: Grüne Wasserblüte (milchig-grünes Wasser)",
-alg_bloom_e: "Das Wasser aussieht wie grüne Erbsensuppe. Winzige Schwebealgen schwimmen frei im Wasser, meist ausgelöst durch zu viel Licht oder ein Nährstoffungleichgewicht.",
-alg_bloom_s: "Schalte das Licht komplett aus und decke das Aquarium für 3 Tage blickdicht ab (Dunkelkur). Mache danach einen großen Wasserwechsel von 50%. Ein UV-C-Klärer hilft ebenfalls sofort.",
-
-pl_no_growth_t: "⚠️ Pflanzen-Hilfe: Pflanzen wachsen überhaupt nicht",
-pl_no_growth_e: "Deine Pflanzen stehen einfach still und wachsen nicht weiter. Das liegt meist daran, dass ihnen ein wichtiger Hauptnährstoff (wie NPK) oder CO₂ fehlt.",
-pl_no_growth_s: "Besorge dir einen guten Volldünger und prüfe, ob deine Pflanzen genug Licht bekommen. Wenn es wurzelzehrende Pflanzen sind, stecke ihnen Düngestäbchen oder Düngekugeln an die Wurzeln.",
-
-pl_fade_t: "⚠️ Pflanzen-Hilfe: Blätter werden blass und bleichen aus",
-pl_fade_e: "Die Blätter verlieren ihre grüne Farbe und werden blass. Meistens fehlt den Pflanzen Eisen oder Stickstoff, wodurch sie kein Blattgrün mehr bilden können.",
-pl_fade_s: "Dosiere einen eisenhaltigen Flüssigdünger nach Anleitung ins Wasser, damit die Pflanzen ihre kräftige grüne Farbe zurückbekommen.",
-
-pl_holes_t: "⚠️ Pflanzen-Hilfe: Löcher in den Blättern",
-pl_holes_e: "Wenn Blätter erst kleine dunkle Flecken bekommen und diese zu Löchern zerfallen, liegt das fast immer an einem Mangel des Nährstoffs Kalium.",
-pl_holes_s: "Kaufe einen reinen Kaliumdünger im Fachhandel und dünge diesen nach Packungsanweisung zu, um die Löcher bei neuen Blättern zu stoppen.",
-
-pl_melt_t: "⚠️ Pflanzen-Hilfe: Blätter zerfallen und lösen sich auf",
-pl_melt_e: "Das passiert sehr oft kurz nach dem Neukauf von Pflanzen, wenn sie sich erst an das Unterwasser-Klima gewöhnen müssen oder durch die Umstellung gestresst sind.",
-pl_melt_s: "Zupfe matschige und zerfallene Blätter sofort ab, damit sie nicht das Wasser vergiften. Hab etwas Geduld – meist treiben die Pflanzen danach gesund neu aus.",
-
-pl_rot_t: "⚠️ Pflanzen-Hilfe: Stängelfäule (Stängel knicken ab)",
-pl_rot_e: "Die Pflanzenstängel werden unten am Boden weich, faulen und knicken um. Oft stehen the Pflanzen zu dicht, sodass kein Licht mehr nach unten kommt.",
-pl_rot_s: "Schneide die oberen, gesunden Teile der Pflanze ab und stecke sie neu in den Boden. Wirf die verfaulten unteren Stücke weg. Setze die Pflanzen in Zukunft mit etwas mehr Abstand zueinander.",
-
-pl_yellow_t: "⚠️ Pflanzen-Hilfe: Blätter werden gelb",
-pl_yellow_e: "Vor allem ältere Blätter werden gelb und sterben ab. Die Pflanze zieht die letzten Nährstoffe aus den alten Blättern heraus, um neue Spitzen zu versorgen.",
-pl_yellow_s: "Füge regelmäßigen Volldünger hinzu und achte darauf, dass deine Fische genug gefüttert werden, damit über den Fischkot natürlicher Stickstoff entsteht.",
-
-pl_deformed_t: "⚠️ Pflanzen-Hilfe: Neue Blätter wachsen krüppelig nach",
-pl_deformed_e: "Die ganz frisch nachwachsenden Blätter oben an der Triebspitze sehen klein, verdreht oder deformiert aus. Es fehlt an Spurenelementen oder Mineralien.",
-pl_deformed_s: "Verwende einen hochwertigen Spurenelemente- bzw. Volldünger, der alle wichtigen Mineralien abdeckt.",
-
-pl_drop_t: "⚠️ Pflanzen-Hilfe: Untere Blätter fallen ab",
-pl_drop_e: "Oft bekommen the unteren Blätter einfach zu wenig Licht ab, weil die Pflanze oben bereits so dicht und buschig geworden ist.",
-pl_drop_s: "Schneide den Busch etwas zurück oder dünne ihn aus, damit wieder Licht bis nach unten auf den Boden scheinen kann.",
-
-fi_air_t: "🚨 AKTION NÖTIG: Fische hängen an der Wasseroberfläche und schnappen Luft!",
-fi_air_e: "Achtung, akuter Notfall! Deine Fische bekommen zu wenig Sauerstoff oder das Wasser ist durch Schadstoffe belastet, sodass sie ersticken könnten.",
-fi_air_s: "1. Schalte sofort eine eventuelle CO₂-Anlage aus! 2. Richte den Filterauslauf so aus, dass die Wasseroberfläche stark sprudelt (Sauerstoff). 3. Mache sofort einen 50%igen Wasserwechsel!",
-
-fi_apathy_t: "⚠️ Fisch-Gesundheit: Fische sind träge und fressen nicht",
-fi_apathy_e: "Die Fische hängen nur herum, verstecken sich oder zeigen keinen Appetit. Das ist ein Zeichen von Stress, falscher Temperatur oder beginnender Krankheit.",
-fi_apathy_s: "Teste sofort die Wassertemperatur und die Werte für Nitrit und pH. Füttere sparsam abwechslungsreiches Futter und beobachte, ob Flecken oder Pünktchen auftreten.",
-
-fi_deaths_t: "🚨 ALARM: Todesfälle im Aquarium!",
-fi_deaths_e: "Wenn in den letzten Tagen Fische gestorben sind, liegt meist eine akute Wasservergiftung (z.B. durch giftiges Ammoniak oder Nitrit) vor.",
-fi_deaths_s: "Teste sofort das Wasser auf Nitrit (NO₂). Mache ohne zu zögern einen großen Wasserwechsel von 50%. Nimm tote Fische sofort aus dem Becken heraus.",
-
-fi_spots_t: "🚨 Krankheits-Alarm: Weiße Pünktchenkrankheit (Ichtho)",
-fi_spots_e: "Die Fische sehen aus, als wären sie mit Grießkörnern bestreut. Das ist die bekannte Pünktchenkrankheit, ausgelöst durch Parasiten nach Stress.",
-fi_spots_s: "Kauf dir im Zoohandel ein spezielles Mittel gegen die Pünktchenkrankheit und wende es nach Packungsanweisung an. Erhöhe die Belüftung im Aquarium.",
-fi_spots_p:"💡 Profi-Tipp: Temperatur kurzfristig für 4-5 Tage auf 30-31 Grad erhöhen – das beschleunigt das Wachstum der Pünktchen und hilft, dass die Medizin überhaupt wirken kann.",
-
-fi_fins_t: "⚠️ Fisch-Gesundheit: Flossen fransen aus oder lösen sich auf",
-fi_fins_e: "Die Flossen der Fische sehen ausgefranst aus oder werden kürzer. Das ist die sogenannte Flossenfäule, ausgelöst durch schlechte Wasserhygiene oder Bakterien.",
-fi_fins_s: "Verbessere sofort die Wasserhygiene durch mehrere großzügige Wasserwechsel (wöchentlich 50%). Achte darauf, dass sich die Fische untereinander nicht jagen."
+footer_provider: "Bereitgestellt von"
 },
-
 en: {
-main_title: "AquaDiagnose – The Ultimate Analysis Tool",
-title: "AquaDiagnose",
+main_title: "Aquarium Water Parameters Calculator (AWR) – The Ultimate Analysis Tool",
+title: "Aquarium Water Parameters Calculator (AWR)",
 subtitle: "Your digital assistant for a thriving ecosystem",
 tab_tech: "Tank & Equipment",
 tab_deco: "Substrate & Decor",
 tab_water: "Water Parameters",
 tab_stock: "Stocking & Feeding",
 tab_symptoms: "Symptoms",
-tab_charts: "📈 Charts",
 tab_cal: "📅 Calendar",
-charts_desc: "Timeline tracking of your measured aquarium parameters from the analysis log:",
-lbl_select_param: "Select parameters in chart (multiple allowed):",
 sec_tank_info: "📐 Tank Specifications",
 lbl_length: "Tank length (cm):",
 lbl_width: "Tank width (cm):",
@@ -1300,9 +1127,12 @@ wt_jumbo: "Jumbo root (Large pieces)",
 wt_cork: "Corkscrew hazel (Decorative)",
 lbl_wood_qty: "Wood quantity (kg):",
 sec_water_compare: "🧪 Water Parameters Comparison",
-col_water_parameter: "Parameter",
 col_water_change: "Water Change",
 col_water_tank: "Tank Water",
+sec_history_compare: "📅 Diary Comparison by Date",
+lbl_date_1: "First Date:",
+lbl_date_2: "Second Date:",
+btn_compare: "Compare Entries",
 lbl_fish_small: "Small fish (up to 3 cm):",
 lbl_fish_medium: "Medium fish (3–8 cm):",
 lbl_fish_large: "Large fish (over 8 cm):",
@@ -1346,7 +1176,6 @@ fi_air: "Gasping for air at the surface",
 fi_apathy: "Apathy / Loss of appetite",
 fi_deaths: "Deaths in recent days",
 fi_spots: "White spots or coatings on fish",
-fi_spots_p: "Prophylaxis: Always acclimate new fish properly and ensure a pristine health status upon purchase.",
 fi_fins: "Frayed or dissolving fins",
 lbl_sym_water: "Water and Appearance:",
 wa_turbid: "Turbid / Cloudy water",
@@ -1358,118 +1187,9 @@ btn_analyze: "Analyze & Save to Calendar",
 res_title: "📊 Analysis Results & Evaluation",
 modal_subtitle: "Complete analysis report:",
 modal_save: "Save",
-footer_text: "AquaDiagnose v2.9",
+footer_text: "Aquarium Water Parameters Calculator (AWR) v2.9",
 footer_save: "Save Data",
-footer_provider: "Provided by",
-click_details: "Click for details",
-expl_label: "Explanation",
-sol_label: "Solution",
-p_label: "Prophylaxis",
-
-warn_gh_title: "⚠️ GH Increase / Calcareous Hardscaping detected",
-warn_gh_expl: "Popular aquarium stones like 'Mini-Landscape' contain high amounts of calcium and continuously release minerals into the water, raising total and carbonate hardness.",
-warn_gh_sol: "For beginners: Either remove the calcareous stones and replace them with inert decor (slate/lava), or use soft/osmose water for water changes to balance the hardening effect.",
-
-warn_ph_title: "⚠️ Critical pH & Acid Drop Risk",
-warn_ph_expl: "The pH value is critically low, combined with low carbonate hardness. This means the water has lost its buffer and can crash suddenly.",
-warn_ph_sol: "Increase KH slightly using suitable mineral salts, perform regular water changes to secure buffering, and monitor pH/KH closely.",
-
-warn_no3_title: "🚨 High Nitrate",
-warn_no3_expl: "Nitrate is elevated due to intensive feeding, accumulation over time, or high input from source water.",
-warn_no3_sol: "Perform regular partial water changes, optimize the amount of food, and check tap water values.",
-
-warn_overstock_title: "🚨 Critical Warning: Severe Tank Overstocking!",
-warn_overstock_expl: "The total number and size of the selected fish vastly exceed the capacity of your aquarium volume. This risks severe oxygen depletion, rapid ammonia/nitrite toxicity, and extreme stress for all animals.",
-warn_overstock_sol: "Drastically reduce the stocking density (e.g., rehoming fish) or upgrade to a significantly larger aquarium (at least 200–300 liters).",
-
-pro_tip_title: "💡 Pro Tip: Biological Stability",
-pro_tip_expl: "An mature aquarium forgives minor mistakes, but never rely solely on test strips – liquid drop tests provide exact results for a stable milieu.",
-pro_tip_sol: "Establish fixed routines for water changes and filter maintenance weekly instead of reacting only when issues arise.",
-
-alg_green_thread_t: "🚨 Algae Warning: Green Thread Algae",
-alg_green_thread_e: "Often caused by excess micronutrients (iron), an imbalance in macro-nutrients (N-P-K), or unstable CO₂ supply combined with high light intensity.",
-alg_green_thread_s: "Reduce micro-fertilizers, perform large weekly water changes, remove algae mechanically, and ensure a stable CO₂ level of 20–30 mg/L.",
-
-alg_green_spot_t: "🚨 Algae Warning: Green Spot Algae (GSA)",
-alg_green_spot_e: "Typically linked to a depleted or very low phosphate (PO₄) level in the water column or overly long lighting periods.",
-alg_green_spot_s: "Test and increase phosphate (PO₄) levels to 0.5–1.0 mg/L via dedicated fertilizer, scrape hard glass surfaces, and check lighting hours.",
-
-alg_cyano_t: "🚨 Algae Warning: Cyanobacteria (Blue-Green Algae)",
-alg_cyano_e: "Bacterial mats often triggered by high organic pollution (accumulated mulm), dead zones with poor water circulation, or low nitrate levels relative to phosphate.",
-alg_cyano_s: "Siphon out mats physically, improve water flow in dead zones, reduce organic load via filter maintenance, and perform targeted water changes.",
-
-alg_brush_t: "🚨 Algae Warning: Brush / Beard Algae (BBA)",
-alg_brush_e: "Thrive on unstable CO₂ levels, organic waste accumulation, or locations with direct high water flow where nutrients accumulate.",
-alg_brush_s: "Stabilize CO₂ injection, reduce organic waste through rigorous filter checks and water changes, and spot-treat affected decor with Liquid Carbon.",
-
-alg_spirogyra_t: "🚨 Algae Warning: Spirogyra (Green Silk Algae)",
-alg_spirogyra_e: "Spirogyra forms cotton-like mats and grows rapidly under high micro-nutrient levels, heavy organic waste, and unstable macro parameters.",
-alg_spirogyra_s: "Reduce iron/micro-fertilizer dosage, perform generous water changes, remove mass manually, and clean the filter media.",
-
-alg_diatoms_t: "🚨 Algae Warning: Diatoms (Brown Algae)",
-alg_diatoms_e: "Diatoms feature brown, slimy layers frequently caused by high silicate (SiO₂) concentrations in source water combined with insufficient light.",
-alg_diatoms_s: "Increase lighting intensity/duration, use silicate-adsorbing filter media (e.g. Zeolite/SilicaEx), and maintain regular water changes.",
-
-alg_glass_t: "🚨 Algae Warning: Green Film on Glass",
-alg_glass_e: "Normal biological biofilm accelerated by excessive light exposure, direct sunlight, or elevated nutrient levels.",
-alg_glass_s: "Clean glass regularly using an algae magnet or scraper, and adjust lighting periods if algae growth is excessively fast.",
-
-alg_bloom_t: "🚨 Algae Warning: Green Water Bloom",
-alg_bloom_e: "Microscopic single-celled algae floating freely, caused by intense light peaks, ammonia spikes, or severe nutrient imbalances.",
-alg_bloom_s: "Deploy a UV-C clarifier, execute a 3-day complete blackout of the tank, and perform large subsequent water changes.",
-
-pl_no_growth_t: "⚠️ Plant Issue: No Growth",
-pl_no_growth_e: "Indicates a limiting factor, most commonly a shortage of essential macro-nutrients (Nitrogen, Phosphate, Potassium) or insufficient CO₂.",
-pl_no_growth_s: "Check macro-nutrient levels (NPK) and CO₂ supply, test lighting intensity, and ensure root nutrients are available for heavy root feeders.",
-
-pl_fade_t: "⚠️ Plant Issue: Fading / Loss of Color",
-pl_fade_e: "Typically points to a deficiency in Nitrogen (NO₃) or micro-nutrients/Iron (Fe), leading to impaired chlorophyll formation (chlorosis).",
-pl_fade_s: "Test Nitrate and Iron levels in the water column, and apply a balanced liquid fertilizer or iron booster.",
-
-pl_holes_t: "⚠️ Plant Issue: Holes in Leaves",
-pl_holes_e: "Classic symptom of a severe Potassium (K) deficiency. Often begins with small dark necrotic spots that decay into holes.",
-pl_holes_s: "Dose potassium sulfate or a specialized macro-fertilizer to raise potassium levels to 10–20 mg/L.",
-
-pl_melt_t: "⚠️ Plant Issue: Plant Melt / Leaf Decay",
-pl_melt_e: "Often occurs after plant transition (emerge to submerge), sudden water parameter shifts, or severe shock.",
-pl_melt_s: "Remove decaying plant matter immediately to protect water quality, ensure stable parameters, and allow plants time to adapt.",
-
-pl_rot_t: "⚠️ Plant Issue: Stem Rot",
-pl_rot_e: "Stems rot near the substrate due to lack of light at the base, poor water circulation, or damaged tissue during planting.",
-pl_rot_s: "Cut healthy top shoots and replant them, remove rotten lower stems, and improve spacing and lighting penetration.",
-
-pl_yellow_t: "⚠️ Plant Issue: Yellowing Leaves",
-pl_yellow_e: "Indicates mobile nutrient deficiencies (such as Nitrogen or Magnesium) where older leaves turn yellow as nutrients are translocated.",
-pl_yellow_s: "Check macro-nutrients and general hardness (Magnesium/Calcium ratio), and ensure regular liquid fertilization.",
-
-pl_deformed_t: "⚠️ Plant Issue: Small, Deformed New Leaves",
-pl_deformed_e: "Points to micronutrient deficiencies (like Calcium, Boron, or Iron) affecting new meristematic tissue growth.",
-pl_deformed_s: "Check trace element supply and ensure overall mineral balance in the water column.",
-
-pl_drop_t: "⚠️ Plant Issue: Dropping Lower Leaves",
-pl_drop_e: "Often caused by shading from dense upper canopy growth or general nutrient redistribution by the plant.",
-pl_drop_s: "Prune and thin out overgrown stems to allow light penetration to lower regions, and check overall fertilization.",
-
-fi_air_t: "🚨 Critical Warning: Fish gasping for air at surface",
-fi_air_e: "Severe oxygen depletion, excessive CO₂ injection, or high toxic pollutant levels (Ammonia/Nitrite) blocking gill function.",
-fi_air_s: "Increase surface agitation immediately via filter outflow or air pump, stop CO₂ injection, test NH₄/NO₂, and perform a large water change.",
-
-fi_apathy_t: "⚠️ Health Warning: Apathy / Loss of appetite",
-fi_apathy_e: "Indicates chronic stress, poor water parameters, incorrect temperature, or early stages of a bacterial/parasitic infection.",
-fi_apathy_s: "Test all core water parameters (NH₄, NO₂, pH, temperature) and observe animals closely for further symptoms.",
-
-fi_deaths_t: "🚨 Critical Warning: Recent fish deaths",
-fi_deaths_e: "Points to acute poisoning (Ammonia/Nitrite spike), aggressive pathogen outbreaks, or severe environmental shock.",
-fi_deaths_s: "Test water for NH₄ and NO₂ immediately, perform a 50% water change, and isolate sick or weakened specimens.",
-
-fi_spots_t: "🚨 Disease Warning: White Spots (Ichthyophthirius)",
-fi_spots_e: "Parasitic infection ('Ich') triggered by environmental stress, temperature fluctuations, or introduction of new fish.",
-fi_spots_s: "Treat with dedicated anti-parasite medication following instructions, gently raise temperature, and ensure good aeration.",
-fi_spots_p:"💡 Pro-Tip: Briefly increase the temperature to 30–31 °C for 4–5 days – this accelerates the growth of the spots and helps the medicine to work at all.",
-
-fi_fins_t: "⚠️ Health Warning: Frayed or dissolving fins",
-fi_fins_e: "Bacterial fin rot often caused by poor water hygiene, high germ load in the aquarium, or mechanical fin nipping.",
-fi_fins_s: "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates."
+footer_provider: "Provided by"
 }
 };
 
@@ -1485,6 +1205,57 @@ select.appendChild(opt);
 });
 }
 
+function updateComparisonDropdowns() {
+const sel1 = document.getElementById('compareDate1');
+const sel2 = document.getElementById('compareDate2');
+if(!sel1 || !sel2) return;
+
+let val1 = sel1.value;
+let val2 = sel2.value;
+
+sel1.innerHTML = `<option value="">-- ${currentLang==='en'?'Select date':'Wähle Datum'} --</option>`;
+sel2.innerHTML = `<option value="">-- ${currentLang==='en'?'Select date':'Wähle Datum'} --</option>`;
+
+let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+let dates = Object.keys(diaryData).sort();
+
+dates.forEach(dateStr => {
+let opt1 = document.createElement('option');
+opt1.value = dateStr;
+opt1.innerText = dateStr;
+sel1.appendChild(opt1);
+
+let opt2 = document.createElement('option');
+opt2.value = dateStr;
+opt2.innerText = dateStr;
+sel2.appendChild(opt2);
+});
+
+if(val1) sel1.value = val1;
+if(val2) sel2.value = val2;
+}
+
+function compareDiaryDates() {
+const date1 = document.getElementById('compareDate1').value;
+const date2 = document.getElementById('compareDate2').value;
+const resBox = document.getElementById('comparisonResultBox');
+const titleEl = document.getElementById('comparisonTitle');
+const contentEl = document.getElementById('comparisonContent');
+
+if(!date1 || !date2) {
+alert(currentLang === 'en' ? "Please select both dates for comparison." : "Bitte wähle beide Daten für den Vergleich aus.");
+return;
+}
+
+let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+let text1 = diaryData[date1] || (currentLang === 'en' ? "No entry for this date." : "Kein Eintrag vorhanden.");
+let text2 = diaryData[date2] || (currentLang === 'en' ? "No entry for this date." : "Kein Eintrag vorhanden.");
+
+titleEl.innerText = `${currentLang==='en'?'Comparison':'Vergleich'}: ${date1} vs ${date2}`;
+contentEl.innerText = `--- [ ${date1} ] ---\n${text1}\n\n--- [ ${date2} ] ---\n${text2}`;
+resBox.style.display = 'block';
+}
+
 function switchLanguage(lang) {
 currentLang = lang;
 localStorage.setItem('awr_lang', lang);
@@ -1498,7 +1269,7 @@ el.innerText = translations[lang][key];
 }
 });
 renderCalendar();
-updateWaterChart();
+updateComparisonDropdowns();
 }
 
 function createNewTank() {
@@ -1540,15 +1311,16 @@ currentTankName = name;
 loadTankData();
 calcVol();
 renderCalendar();
-updateWaterChart();
+updateComparisonDropdowns();
 document.getElementById('resultSection').style.display = 'none';
+document.getElementById('comparisonResultBox').style.display = 'none';
 }
 
 function saveDataAuto() {
 if(!allTanks[currentTankName]) allTanks[currentTankName] = {};
 let data = {};
 document.querySelectorAll('input, select').forEach(el => {
-if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText') {
+if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText' && el.id !== 'compareDate1' && el.id !== 'compareDate2') {
 if(el.type === 'checkbox' || el.type === 'radio') {
 data[el.id || el.name + '_' + Math.random()] = el.checked;
 } else {
@@ -1589,7 +1361,7 @@ el.value = data[id];
 }
 }
 renderCalendar();
-updateWaterChart();
+updateComparisonDropdowns();
 }
 
 function openTab(evt, tabId) {
@@ -1597,113 +1369,279 @@ document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('act
 document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 document.getElementById(tabId).classList.add('active');
 evt.currentTarget.classList.add('active');
-if(tabId === 'tab-diagramme') {
-updateWaterChart();
+if(tabId === 'tab-kalender') { 
+  renderCalendar(); 
+  updateComparisonDropdowns();
 }
 }
 
 function calcVol() {
-let l = parseFloat(document.getElementById('l').value) || 0;
-let b = parseFloat(document.getElementById('b').value) || 0;
-let h = parseFloat(document.getElementById('h').value) || 0;
-let vol = (l * b * h) / 1000;
-document.getElementById('volumen').value = vol.toFixed(1);
+const l = parseFloat(document.getElementById('l').value) || 0;
+const b = parseFloat(document.getElementById('b').value) || 0;
+const h = parseFloat(document.getElementById('h').value) || 0;
+document.getElementById('volumen').value = ((l * b * h) / 1000).toFixed(1);
 }
 
-function renderCalendar() {
-    const grid = document.getElementById('calendarGrid');
-    const monthYearEl = document.getElementById('calMonthYear');
-    if(!grid) return;
+function runAnalysis(event) {
+event.preventDefault();
+document.getElementById('resultSection').style.display = 'block';
 
-    if (!isPremiumUser) {
-        grid.innerHTML = `
-            <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px;">
-                <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 Premium-Funktion</h3>
-                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Das Aquarien-Tagebuch ist exklusiv für Premium-Mitglieder verfügbar.</p>
-                <button onclick="redirectToStripe()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
-                    Jetzt Premium freischalten
-                </button>
-            </div>`;
-        return;
-    }
+let wNames = ["pH", "GH", "KH", "NH₄", "NO₂", "NO₃", "PO₄", "K", "Ca", "Mg", "Fe", "Na", "SiO₂", "SO₄"];
+let idsChange = ["w_ph_wechsel", "w_gh_wechsel", "w_kh_wechsel", "w_nh4_wechsel", "w_no2_wechsel", "w_no3_wechsel", "w_po4_wechsel", "w_k_wechsel", "w_ca_wechsel", "w_mg_wechsel", "w_fe_wechsel", "w_na_wechsel", "w_sio2_wechsel", "w_so4_wechsel"];
+let idsAkt = ["w_ph_akt", "w_gh_akt", "w_kh_akt", "w_nh4_akt", "w_no2_akt", "w_no3_akt", "w_po4_akt", "w_k_akt", "w_ca_akt", "w_mg_akt", "w_fe_akt", "w_na_akt", "w_sio2_akt", "w_so4_akt"];
 
-    grid.innerHTML = '';
+let waterReport = `--- WATER PARAMETERS (${currentTankName}) ---\n`;
+for(let i = 0; i < wNames.length; i++) {
+let valChange = document.getElementById(idsChange[i]) ? document.getElementById(idsChange[i]).value : "0.0";
+let valAkt = document.getElementById(idsAkt[i]) ? document.getElementById(idsAkt[i]).value : "0.0";
+waterReport += `${wNames[i]}: Change = ${valChange}, Tank = ${valAkt}\n`;
+}
 
-let firstDay = new Date(currentYear, currentMonth, 1);
-let lastDay = new Date(currentYear, currentMonth + 1, 0);
+let warningsHtml = `<h2>${translations[currentLang].res_title}</h2>`;
+let warningsTextReport = "\n--- WARNINGS & SOLUTIONS ---\n";
 
-const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const daysDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-const daysEn = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
+let ghChange = parseFloat(document.getElementById('w_gh_wechsel').value) || 0;
+let steinArt = document.getElementById('steinArt') ? document.getElementById('steinArt').value : "";
 
-let mNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
-let dNames = currentLang === 'en' ? daysEn : daysDe;
+if (ghAkt > ghChange + 1 || steinArt === "mini_landscape" || steinArt === "seiryu" || steinArt === "lochgestein" || steinArt === "marmor" || steinArt === "ada_eyi" || steinArt === "rokkaku") {
+let title = currentLang === 'en' ? "⚠️ GH Increase / Calcareous Hardscaping detected" : "⚠️ Wasser wird zu hart (Kalk im Becken)";
+let expl = currentLang === 'en' ? "Popular aquarium stones like 'Mini-Landscape' contain high amounts of calcium and continuously release minerals into the water, raising total and carbonate hardness." : "Im Becken befinden sich kalkhaltige Steine (oder das Leitungswasser ist sehr hart). Diese Steine geben ununterbrochen Mineralien ab, wodurch das Wasser mit der Zeit immer härter wird.";
+let sol = currentLang === 'en' ? "For beginners: Either remove the calcareous stones and replace them with inert decor (slate/lava), or use soft/osmose water for water changes to balance the hardening effect." : "Nimm die kalkhaltigen Steine heraus und ersetze sie durch neutrale Deko (wie Schiefer oder Lavastein). Mische beim nächsten Wasserwechsel normales Leitungswasser mit weichem Osmose- oder destillierten Wasser, um die Härte zu senken.";
+warningsHtml += `
+<div class="alert-card alert-orange" onclick="toggleDetails(this)">
+<strong>${title}</strong>
+<span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
+<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
+</div>`;
+warningsTextReport += `[WARNING] GH Increase / Mini-Landscape:\n- ${expl}\n- ${sol}\n\n`;
+}
 
-monthYearEl.innerText = `${mNames[currentMonth]} ${currentYear}`;
+let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 7.0;
+let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 6.0;
+let holzArt = document.getElementById('holzArt') ? document.getElementById('holzArt').value : "";
 
-dNames.forEach(d => {
-let dayHeader = document.createElement('div');
-dayHeader.className = 'cal-header-day';
-dayHeader.innerText = d;
-grid.appendChild(dayHeader);
+if (phAkt <= 6.0 || (phAkt <= 6.5 && khAkt <= 4.0 && holzArt !== "")) {
+let title = currentLang === 'en' ? "⚠️ Critical pH & Acid Drop Risk (Säuresturz)" : "⚠️ Achtung: Gefahr eines Säuresturzes (pH-Wert zu niedrig)";
+let expl = currentLang === 'en' ? "The pH value is critically low, combined with low carbonate hardness. This means the water has lost its buffer and can crash suddenly." : "Der pH-Wert ist im sauren Bereich und die Karbonathärte (KH) ist zu gering. Das Wasser hat keinen Puffer mehr, wodurch der pH-Wert plötzlich blitzartig abstürzen und die Fische gefährden kann.";
+let sol = currentLang === 'en' ? "Increase KH slightly using suitable mineral salts, perform regular water changes to secure buffering, and monitor pH/KH closely." : "Wechsle sofort ca. 30-50% des Wassers aus. Nutze beim Wasserwechsel Leitungswasser mit höherer Karbonathärte, um den Puffer im Aquarium wieder aufzubauen (Ziel KH: mindestens 5° dH).";
+warningsHtml += `
+<div class="alert-card alert-orange" onclick="toggleDetails(this)">
+<strong>${title}</strong>
+<span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
+<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
+</div>`;
+warningsTextReport += `[WARNING] Critical pH / Acid Drop Risk:\n- ${expl}\n- ${sol}\n\n`;
+}
+
+let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
+if (no3Akt >= 10) {
+let title = currentLang === 'en' ? `🚨 High Nitrate: NO₃ level is at ${no3Akt} ppm.` : `🚨 Nitrat-Wert zu hoch (${no3Akt} mg/L)`;
+let expl = currentLang === 'en' ? "Nitrate is elevated due to intensive feeding, accumulation over time, or high input from source water." : "Es ist zu viel Nitrat im Wasser. Das passiert meistens durch zu viel Futter, zu seltenes Wasserwechseln oder weil bereits das Leitungswasser stark mit Nitrat belastet ist.";
+let sol = currentLang === 'en' ? "Perform regular partial water changes, optimize the amount of food, and check tap water values." : "Mache ab sofort wöchentlich einen großen Wasserwechsel von 50%. Füttere deine Fische nur noch so viel, wie sie in 1-2 Minuten komplett auffressen können, ohne dass Reste auf den Boden sinken.";
+warningsHtml += `
+<div class="alert-card alert-red" onclick="toggleDetails(this)">
+<strong>${title}</strong>
+<span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
+<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Lösung"}: ${sol}</div>
+</div>`;
+warningsTextReport += `[WARNING] High Nitrate:\n- ${expl}\n- ${sol}\n\n`;
+}
+
+// PROFESSIONELLE SYMPTOM-LOGIK MIT FACHLICH FUNDIERTEN TEXTEN
+document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
+let val = chk.value;
+let title = "";
+let expl = "";
+let sol = "";
+
+if (val === "Grüne Fadenalgen") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Green Thread Algae" : "🚨 Algen-Hilfe: Grüne Fadenalgen (grüne Haare)";
+expl = currentLang === 'en' ? "Often caused by excess micronutrients (iron), an imbalance in macro-nutrients (N-P-K), or unstable CO₂ supply combined with high light intensity." : "Diese langen, haarigen Algen entstehen meistens, wenn zu viel Eisen/Dünger im Wasser ist, das Licht zu lange brennt oder die CO₂-Zufuhr ungleichmäßig läuft.";
+sol = currentLang === 'en' ? "Reduce micro-fertilizers, perform large weekly water changes, remove algae mechanically, and ensure a stable CO₂ level of 20–30 mg/L." : "Drehe die Düngung für die nächsten 2 Wochen um die Hälfte herunter. Wickle die Algen einfach mit einer kleinen Bürste oder einer Zahnbürste auf und mache wöchentlich 50% Wasserwechsel.";
+} else if (val === "Grüne Punktalgen (GSA)") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Green Spot Algae (GSA)" : "🚨 Algen-Hilfe: Grüne Punktalgen (harte Punkte auf Scheiben)";
+expl = currentLang === 'en' ? "Typically linked to a depleted or very low phosphate (PO₄) level in the water column or overly long lighting periods." : "Harte, kleine grüne Punkte an den Glasscheiben oder Blättern zeigen an, dass deinen Pflanzen ein bestimmter Nährstoff (Phosphat) fehlt.";
+sol = currentLang === 'en' ? "Test and increase phosphate (PO₄) levels to 0.5–1.0 mg/L via dedicated fertilizer, scrape hard glass surfaces, and check lighting hours." : "Kratze die Punkte vorsichtig mit einem Klingenschaber von der Scheibe. Dünge etwas Phosphat nach und verkürze die Beleuchtungszeit am Tag um 1 Stunde.";
+} else if (val === "Cyanobakterien") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Cyanobacteria (Blue-Green Algae)" : "🚨 Algen-Hilfe: Cyanobakterien (Blaualgen - schmierig & stinkend)";
+expl = currentLang === 'en' ? "Bacterial mats often triggered by high organic pollution (accumulated mulm), dead zones with poor water circulation, or low nitrate levels relative to phosphate." : "Das sind eigentlich Bakterien, die einen bläulich-grünen, schmierigen Teppich bilden und oft muffig riechen. Ursache ist meistens alter Schmutz (Mulm) am Boden oder Ecken mit zu wenig Wasserströmung.";
+sol = currentLang === 'en' ? "Siphon out mats physically, improve water flow in dead zones, reduce organic load via filter maintenance, and perform targeted water changes." : "Sauge den schmierigen Belag mit einem Schlauch ab. Reinige den Bodengrund gründlicher vom Mulm und sorge dafür, dass das Wasser im Aquarium überall gut zirkulieren kann.";
+} else if (val === "Pinselalgen / Bartalgen (BBA)") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Brush / Beard Algae (BBA)" : "🚨 Algen-Hilfe: Pinselalgen / Bartalgen (büschelartig, dunkel)";
+expl = currentLang === 'en' ? "Thrive on unstable CO₂ levels, organic waste accumulation, or locations with direct high water flow where nutrients accumulate." : "Dunkle, buschige Algen, die sich gerne an Filtereinläufen oder stark angeströmten Pflanzenblättern festsetzen. Sie lieben schwankende CO₂-Werte und viel Schmutz im Wasser.";
+sol = currentLang === 'en' ? "Stabilize CO₂ injection, reduce organic waste through rigorous filter checks and water changes, and spot-treat affected decor with Liquid Carbon." : "Prüfe deine CO₂-Anlage, damit sie gleichmäßig läuft. Sauge Schmutzreste konsequent ab und spritze betroffene Steine oder Wurzeln außerhalb des Wassers mit etwas flüssigem Kohlenstoff ein.";
+} else if (val === "Spirogyra") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Spirogyra (Green Silk Algae)" : "🚨 Algen-Hilfe: Wollige Fadenalgen (Spirogyra)";
+expl = currentLang === 'en' ? "Spirogyra forms cotton-like mats and grows rapidly under high micro-nutrient levels, heavy organic waste, and unstable macro parameters." : "Diese Algen bilden helle, watteartige Nester, die sich extrem schnell vermehren. Sie wachsen besonders gut, wenn zu viel Eisendünger und gleichzeitig Schmutz im Becken ist.";
+sol = currentLang === 'en' ? "Reduce iron/micro-fertilizer dosage, perform generous water changes, remove mass manually, and clean the filter media." : "Stoppe vorerst jeglichen Eisendünger. Wickle die Watte-Nester manuell heraus und reinige deinen Filter, falls sich dort alter Schmutz angesammelt hat.";
+} else if (val === "Kieselalgen") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Diatoms (Brown Algae)" : "🚨 Algen-Hilfe: Kieselalgen (brauner Belag)";
+expl = currentLang === 'en' ? "Diatoms feature brown, slimy layers frequently caused by high silicate (SiO₂) concentrations in source water combined with insufficient light." : "Ein brauner, schmieriger Belag, der sich in der Einlaufphase eines neuen Aquariums fast immer zeigt. Schuld daran ist oft Kieselsäure im Leitungswasser.";
+sol = currentLang === 'en' ? "Increase lighting intensity/duration, use silicate-adsorbing filter media (e.g. Zeolite/SilicaEx), and maintain regular water changes." : "Keine Panik, das ist bei neuen Becken normal und verschwindet nach ein paar Wochen von selbst. Du kannst den Belag einfach abwischen und Geduld haben.";
+} else if (val === "Grüner Belag auf den Scheiben") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Green Film on Glass" : "🚨 Algen-Hilfe: Grüner Belag auf den Glasscheiben";
+expl = currentLang === 'en' ? "Normal biological biofilm accelerated by excessive light exposure, direct sunlight, or elevated nutrient levels." : "Ein leichter grüner Film auf den Scheiben ist völlig normal. Er entsteht durch Licht und Nährstoffe im Wasser.";
+sol = currentLang === 'en' ? "Clean glass regularly using an algae magnet or scraper, and adjust lighting periods if algae growth is excessively fast." : "Putz die Scheiben einfach regelmäßig mit einem Scheibenmagneten oder einem Klingenreiniger. Steht das Aquarium evtl. in der prallen Sonne? Wenn ja, verstelle es oder schirme das Licht ab.";
+} else if (val === "Grüne Wasserblüte") {
+title = currentLang === 'en' ? "🚨 Algae Warning: Green Water Bloom" : "🚨 Algen-Hilfe: Grüne Wasserblüte (milchig-grünes Wasser)";
+expl = currentLang === 'en' ? "Microscopic single-celled algae floating freely, caused by intense light peaks, ammonia spikes, or severe nutrient imbalances." : "Das Wasser aussieht wie grüne Erbsensuppe. Winzige Schwebealgen schwimmen frei im Wasser, meist ausgelöst durch zu viel Licht oder ein Nährstoffungleichgewicht.";
+sol = currentLang === 'en' ? "Deploy a UV-C clarifier, execute a 3-day complete blackout of the tank, and perform large subsequent water changes." : "Schalte das Licht komplett aus und decke das Aquarium für 3 Tage blickdicht ab (Dunkelkur). Mache danach einen großen Wasserwechsel von 50%. Ein UV-C-Klärer hilft ebenfalls sofort.";
+} else if (val === "Kein Wachstum") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: No Growth" : "⚠️ Pflanzen-Hilfe: Pflanzen wachsen überhaupt nicht";
+expl = currentLang === 'en' ? "Indicates a limiting factor, most commonly a shortage of essential macro-nutrients (Nitrogen, Phosphate, Potassium) or insufficient CO₂." : "Deine Pflanzen stehen einfach still und wachsen nicht weiter. Das liegt meist daran, dass ihnen ein wichtiger Hauptnährstoff (wie NPK) oder CO₂ fehlt.";
+sol = currentLang === 'en' ? "Check macro-nutrient levels (NPK) and CO₂ supply, test lighting intensity, and ensure root nutrients are available for heavy root feeders." : "Besorge dir einen guten Volldünger und prüfe, ob deine Pflanzen genug Licht bekommen. Wenn es wurzelzehrende Pflanzen sind, stecke ihnen Düngestäbchen oder Düngekugeln an die Wurzeln.";
+} else if (val === "Verblassen / Farbverlust") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Fading / Loss of Color" : "⚠️ Pflanzen-Hilfe: Blätter werden blass und bleichen aus";
+expl = currentLang === 'en' ? "Typically points to a deficiency in Nitrogen (NO₃) or micro-nutrients/Iron (Fe), leading to impaired chlorophyll formation (chlorosis)." : "Die Blätter verlieren ihre grüne Farbe und werden blass. Meistens fehlt den Pflanzen Eisen oder Stickstoff, wodurch sie kein Blattgrün mehr bilden können.";
+sol = currentLang === 'en' ? "Test Nitrate and Iron levels in the water column, and apply a balanced liquid fertilizer or iron booster." : "Dosiere einen eisenhaltigen Flüssigdünger nach Anleitung ins Wasser, damit die Pflanzen ihre kräftige grüne Farbe zurückbekommen.";
+} else if (val === "Löcher in den Blättern") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Holes in Leaves" : "⚠️ Pflanzen-Hilfe: Löcher in den Blättern";
+expl = currentLang === 'en' ? "Classic symptom of a severe Potassium (K) deficiency. Often begins with small dark necrotic spots that decay into holes." : "Wenn Blätter erst kleine dunkle Flecken bekommen und diese zu Löchern zerfallen, liegt das fast immer an einem Mangel des Nährstoffs Kalium.";
+sol = currentLang === 'en' ? "Dose potassium sulfate or a specialized macro-fertilizer to raise potassium levels to 10–20 mg/L." : "Kaufe einen reinen Kaliumdünger im Fachhandel und dünge diesen nach Packungsanweisung zu, um die Löcher bei neuen Blättern zu stoppen.";
+} else if (val === "Blattzerfall / Pflanzenmelt") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Plant Melt / Leaf Decay" : "⚠️ Pflanzen-Hilfe: Blätter zerfallen und lösen sich auf";
+expl = currentLang === 'en' ? "Often occurs after plant transition (emerge to submerge), sudden water parameter shifts, or severe shock." : "Das passiert sehr oft kurz nach dem Neukauf von Pflanzen, wenn sie sich erst an das Unterwasser-Klima gewöhnen müssen oder durch die Umstellung gestresst sind.";
+sol = currentLang === 'en' ? "Remove decaying plant matter immediately to protect water quality, ensure stable parameters, and allow plants time to adapt." : "Zupfe matschige und zerfallene Blätter sofort ab, damit sie nicht das Wasser vergiften. Hab etwas Geduld – meist treiben die Pflanzen danach gesund neu aus.";
+} else if (val === "Stängelfäule") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Stem Rot" : "⚠️ Pflanzen-Hilfe: Stängelfäule (Stängel knicken ab)";
+expl = currentLang === 'en' ? "Stems rot near the substrate due to lack of light at the base, poor water circulation, or damaged tissue during planting." : "Die Pflanzenstängel werden unten am Boden weich, faulen und knicken um. Oft stehen die Pflanzen zu dicht, sodass kein Licht mehr nach unten kommt.";
+sol = currentLang === 'en' ? "Cut healthy top shoots and replant them, remove rotten lower stems, and improve spacing and lighting penetration." : "Schneide die oberen, gesunden Teile der Pflanze ab und stecke sie neu in den Boden. Wirf die verfaulten unteren Stücke weg. Setze die Pflanzen in Zukunft mit etwas mehr Abstand zueinander.";
+} else if (val === "Vergilbende Blätter") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Yellowing Leaves" : "⚠️ Pflanzen-Hilfe: Blätter werden gelb";
+expl = currentLang === 'en' ? "Indicates mobile nutrient deficiencies (such as Nitrogen or Magnesium) where older leaves turn yellow as nutrients are translocated." : "Vor allem ältere Blätter werden gelb und sterben ab. Die Pflanze zieht die letzten Nährstoffe aus den alten Blättern heraus, um neue Spitzen zu versorgen.";
+sol = currentLang === 'en' ? "Check macro-nutrients and general hardness (Magnesium/Calcium ratio), and ensure regular liquid fertilization." : "Füge regelmäßigen Volldünger hinzu und achte darauf, dass deine Fische genug gefüttert werden, damit über den Fischkot natürlicher Stickstoff entsteht.";
+} else if (val === "Kleine deformierte Blätter") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Small, Deformed New Leaves" : "⚠️ Pflanzen-Hilfe: Neue Blätter wachsen krüppelig nach";
+expl = currentLang === 'en' ? "Points to micronutrient deficiencies (like Calcium, Boron, or Iron) affecting new meristematic tissue growth." : "Die ganz frisch nachwachsenden Blätter oben an der Triebspitze sehen klein, verdreht oder deformiert aus. Es fehlt an Spurenelementen oder Mineralien.";
+sol = currentLang === 'en' ? "Check trace element supply and ensure overall mineral balance in the water column." : "Verwende einen hochwertigen Spurenelemente- bzw. Volldünger, der alle wichtigen Mineralien abdeckt.";
+} else if (val === "Abfallende untere Blätter") {
+title = currentLang === 'en' ? "⚠️ Plant Issue: Dropping Lower Leaves" : "⚠️ Pflanzen-Hilfe: Untere Blätter fallen ab";
+expl = currentLang === 'en' ? "Often caused by shading from dense upper canopy growth or general nutrient redistribution by the plant." : "Oft bekommen die unteren Blätter einfach zu wenig Licht ab, weil die Pflanze oben bereits so dicht und buschig geworden ist.";
+sol = currentLang === 'en' ? "Prune and thin out overgrown stems to allow light penetration to lower regions, and check overall fertilization." : "Schneide den Busch etwas zurück oder dünne ihn aus, damit wieder Licht bis nach unten auf den Boden scheinen kann.";
+} else if (val === "Schnappen nach Luft") {
+title = currentLang === 'en' ? "🚨 Critical Warning: Fish gasping for air at surface" : "🚨 AKTION NÖTIG: Fische hängen an der Wasseroberfläche und schnappen Luft!";
+expl = currentLang === 'en' ? "Severe oxygen depletion, excessive CO₂ injection, or high toxic pollutant levels (Ammonia/Nitrite) blocking gill function." : "Achtung, akuter Notfall! Deine Fische bekommen zu wenig Sauerstoff oder das Wasser ist durch Schadstoffe belastet, sodass sie ersticken könnten.";
+sol = currentLang === 'en' ? "Increase surface agitation immediately via filter outflow or air pump, stop CO₂ injection, test NH₄/NO₂, and perform a large water change." : "1. Schalte sofort eine eventuelle CO₂-Anlage aus! 2. Richte den Filterauslauf so aus, dass die Wasseroberfläche stark sprudelt (Sauerstoff). 3. Mache sofort einen 50%igen Wasserwechsel!";
+} else if (val === "Teilnahmslosigkeit") {
+title = currentLang === 'en' ? "⚠️ Health Warning: Apathy / Loss of appetite" : "⚠️ Fisch-Gesundheit: Fische sind träge und fressen nicht";
+expl = currentLang === 'en' ? "Indicates chronic stress, poor water parameters, incorrect temperature, or early stages of a bacterial/parasitic infection." : "Die Fische hängen nur herum, verstecken sich oder zeigen keinen Appetit. Das ist ein Zeichen von Stress, falscher Temperatur oder beginnender Krankheit.";
+sol = currentLang === 'en' ? "Test all core water parameters (NH₄, NO₂, pH, temperature) and observe animals closely for further symptoms." : "Teste sofort die Wassertemperatur und die Werte für Nitrit und pH. Füttere sparsam abwechslungsreiches Futter und beobachte, ob Flecken oder Pünktchen auftreten.";
+} else if (val === "Todesfälle") {
+title = currentLang === 'en' ? "🚨 Critical Warning: Recent fish deaths" : "🚨 ALARM: Todesfälle im Aquarium!";
+expl = currentLang === 'en' ? "Points to acute poisoning (Ammonia/Nitrite spike), aggressive pathogen outbreaks, or severe environmental shock." : "Wenn in den letzten Tagen Fische gestorben sind, liegt meist eine akute Wasservergiftung (z.B. durch giftiges Ammoniak oder Nitrit) vor.";
+sol = currentLang === 'en' ? "Test water for NH₄ and NO₂ immediately, perform a 50% water change, and isolate sick or weakened specimens." : "Teste sofort das Wasser auf Nitrit (NO₂). Mache ohne zu zögern einen großen Wasserwechsel von 50%. Nimm tote Fische sofort aus dem Becken heraus.";
+} else if (val === "Weiße Punkte") {
+title = currentLang === 'en' ? "🚨 Disease Warning: White Spots (Ichthyophthirius)" : "🚨 Krankheits-Alarm: Weiße Pünktchenkrankheit (Ichtho)";
+expl = currentLang === 'en' ? "Parasitic infection ('Ich') triggered by environmental stress, temperature fluctuations, or introduction of new fish." : "Die Fische sehen aus, als wären sie mit Grießkörnern bestreut. Das ist die bekannte Pünktchenkrankheit, ausgelöst durch Parasiten nach Stress.";
+sol = currentLang === 'en' ? "Treat with dedicated anti-parasite medication following instructions, gently raise temperature, and ensure good aeration." : "Kauf dir im Zoohandel ein spezielles Mittel gegen die Pünktchenkrankheit und wende es nach Packungsanweisung an. Erhöhe die Belüftung im Aquarium.";
+} else if (val === "Ausgefranste Flossen") {
+title = currentLang === 'en' ? "⚠️ Health Warning: Frayed or dissolving fins" : "⚠️ Fisch-Gesundheit: Flossen fransen aus oder lösen sich auf";
+expl = currentLang === 'en' ? "Bacterial fin rot often caused by poor water hygiene, high germ load in the aquarium, or mechanical fin nipping." : "Die Flossen der Fische sehen ausgefranst aus oder werden kürzer. Das ist die sogenannte Flossenfäule, ausgelöst durch schlechte Wasserhygiene oder Bakterien.";
+sol = currentLang === 'en' ? "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates." : "Verbessere sofort die Wasserhygiene durch mehrere großzügige Wasserwechsel (wöchentlich 50%). Achte darauf, dass sich die Fische untereinander nicht jagen.";
+} else {
+title = currentLang === 'en' ? `🚨 Issue Warning: ${val} detected` : `⚠️ Hinweis zum Problem: ${val}`;
+expl = currentLang === 'en' ? `The symptom "${val}" indicates an imbalance in the aquarium.` : `Das beobachtete Problem "${val}" zeigt an, dass im Aquarium etwas nicht optimal läuft.`;
+sol = currentLang === 'en' ? "Increase weekly water changes and test nutrient parameters." : "Mache zur Sicherheit einen Teilwasserwechsel von 50% und überprüfe deine Wasserwerte mit einem Testkoffer.";
+}
+
+warningsHtml += `
+<div class="alert-card alert-red" onclick="toggleDetails(this)">
+<strong>${title}</strong>
+<span class="click-hint">${currentLang === 'en' ? "Click for details" : "Klicken für Details"}</span>
+<div class="alert-details">- ${currentLang === 'en' ? "Explanation" : "Erklärung"}: ${expl}<br>- ${currentLang === 'en' ? "Solution" : "Ergänzung"}: ${sol}</div>
+</div>`;
+warningsTextReport += `[WARNING] Issue (${val}):\n- ${expl}\n- ${sol}\n\n`;
 });
 
-let startDayIndex = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
-for(let i = 0; i < startDayIndex; i++) {
-let emptyCell = document.createElement('div');
-emptyCell.className = 'cal-day empty';
-grid.appendChild(emptyCell);
+document.getElementById('resultCardContainer').innerHTML = warningsHtml;
+
+let fullReport = waterReport + warningsTextReport;
+let now = new Date();
+let dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+allTanks[currentTankName].diary[dateKey] = fullReport;
+localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+renderCalendar();
+updateComparisonDropdowns();
 }
 
-let today = new Date();
-let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-
-for(let d = 1; d <= lastDay.getDate(); d++) {
-let cell = document.createElement('div');
-cell.className = 'cal-day';
-
-let monthStr = String(currentMonth + 1).padStart(2, '0');
-let dayStr = String(d).padStart(2, '0');
-let dateKey = `${currentYear}-${monthStr}-${dayStr}`;
-
-let dayNumEl = document.createElement('span');
-dayNumEl.innerText = d;
-cell.appendChild(dayNumEl);
-
-if(d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
-cell.classList.add('today');
+function toggleDetails(card) {
+const details = card.querySelector('.alert-details');
+details.style.display = details.style.display === 'block' ? 'none' : 'block';
 }
 
-if(diaryData[dateKey]) {
-cell.classList.add('has-entry');
-let dot = document.createElement('div');
-dot.className = 'entry-dot';
-cell.appendChild(dot);
-}
-
-cell.onclick = () => openModal(dateKey);
-grid.appendChild(cell);
-}
-}
-
-function changeMonth(dir) {
-currentMonth += dir;
-if(currentMonth > 11) {
+function changeMonth(direction) {
+currentMonth += direction;
+if (currentMonth > 11) {
 currentMonth = 0;
 currentYear++;
-} else if(currentMonth < 0) {
+} else if (currentMonth < 0) {
 currentMonth = 11;
 currentYear--;
 }
 renderCalendar();
 }
 
-function openModal(dateKey) {
-activeModalDate = dateKey;
-document.getElementById('modalDateTitle').innerText = `${currentLang==='en'?'Entry for':'Eintrag für'} ${dateKey}`;
+function renderCalendar() {
+const grid = document.getElementById('calendarGrid');
+if (!grid) return;
+grid.innerHTML = '';
+const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const monthNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
+
+const monthYearEl = document.getElementById('calMonthYear');
+if (monthYearEl) {
+monthYearEl.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+}
+
+const daysOfWeek = currentLang === 'en' ? ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] : ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+daysOfWeek.forEach(d => {
+let div = document.createElement('div');
+div.className = 'cal-header-day';
+div.innerText = d;
+grid.appendChild(div);
+});
+
+let firstDayIndex = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
+let totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+for (let i = 0; i < firstDayIndex; i++) {
+let div = document.createElement('div');
+div.className = 'cal-day empty';
+grid.appendChild(div);
+}
+
+let realToday = new Date();
 let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-document.getElementById('modalEntryText').value = diaryData[dateKey] || '';
+
+for (let d = 1; d <= totalDays; d++) {
+let div = document.createElement('div');
+let dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+let isToday = (d === realToday.getDate() && currentMonth === realToday.getMonth() && currentYear === realToday.getFullYear());
+let hasEntry = diaryData[dateStr] ? true : false;
+
+let classNames = ['cal-day'];
+if (hasEntry) classNames.push('has-entry');
+if (isToday) classNames.push('today');
+div.className = classNames.join(' ');
+
+let dotHtml = hasEntry ? '<div class="entry-dot"></div>' : '';
+div.innerHTML = `<span>${d}</span>${dotHtml}`;
+div.onclick = () => openModal(dateStr);
+grid.appendChild(div);
+}
+}
+
+function openModal(dateStr) {
+activeModalDate = dateStr;
+let titlePrefix = currentLang === 'en' ? "Entry for" : "Eintrag vom";
+document.getElementById('modalDateTitle').innerText = `${titlePrefix} ${dateStr} (${currentTankName})`;
+let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+document.getElementById('modalEntryText').value = diaryData[dateStr] || '';
 document.getElementById('dayModal').style.display = 'flex';
 }
 
@@ -1712,220 +1650,27 @@ document.getElementById('dayModal').style.display = 'none';
 }
 
 function saveDayEntry() {
-let text = document.getElementById('modalEntryText').value;
-let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
-let todayStr = new Date().toISOString().split('T')[0];
-let targetDate = activeModalDate || todayStr;
-
-if(text.trim() === '') {
-delete diaryData[targetDate];
+let text = document.getElementById('modalEntryText').value.trim();
+if(!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+if (text) {
+allTanks[currentTankName].diary[activeModalDate] = text;
 } else {
-diaryData[targetDate] = text;
+delete allTanks[currentTankName].diary[activeModalDate];
 }
-
 localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 closeModal();
 renderCalendar();
-updateWaterChart();
+updateComparisonDropdowns();
 }
 
-function updateWaterChart() {
-const canvas = document.getElementById('waterChart');
-if(!canvas) return;
-const ctx = canvas.getContext('2d');
-
-let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-let dates = Object.keys(diaryData).sort();
-
-const container = document.getElementById('chartParamSelect');
-const checkboxes = container ? container.querySelectorAll('input[type="checkbox"]:checked') : [];
-
-let labels = [];
-if(dates.length === 0) {
-labels = ["Start", "Heute"];
-} else {
-labels = dates;
-}
-
-let datasets = [];
-const colors = ['#0ea5e9', '#f43f5e', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#3b82f6', '#eab308', '#6366f1', '#14b8a6', '#f97316', '#a855f7'];
-
-checkboxes.forEach((chk, index) => {
-let paramId = chk.value;
-let paramLabel = chk.parentElement.innerText.trim();
-let chartData = [];
-
-if(dates.length === 0) {
-let currentVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
-chartData = [currentVal, currentVal];
-} else {
-dates.forEach(date => {
-let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
-chartData.push(liveVal);
+window.addEventListener('DOMContentLoaded', () => {
+updateTankSelector();
+switchLanguage(currentLang);
+loadTankData();
+calcVol();
+renderCalendar();
+updateComparisonDropdowns();
 });
-}
-
-let color = colors[index % colors.length];
-datasets.push({
-label: paramLabel,
-data: chartData,
-borderColor: color,
-backgroundColor: color + '26',
-borderWidth: 2,
-fill: false,
-tension: 0.2
-});
-});
-
-if(myWaterChart) {
-myWaterChart.destroy();
-}
-
-myWaterChart = new Chart(ctx, {
-type: 'line',
-data: {
-labels: labels,
-datasets: datasets
-},
-options: {
-responsive: true,
-maintainAspectRatio: false,
-plugins: {
-legend: { labels: { color: '#f8fafc', font: { size: 11 } } }
-},
-scales: {
-x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } },
-y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } }
-}
-}
-});
-}
-
-function runAnalysis(event) {
-if(event) event.preventDefault();
-const resSection = document.getElementById('resultSection');
-const resContainer = document.getElementById('resultCardContainer');
-
-resContainer.querySelectorAll('.dynamic-alert').forEach(el => el.remove());
-
-let t = translations[currentLang];
-let alerts = [];
-
-let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
-let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 0;
-let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 0;
-let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
-let steinArt = document.getElementById('steinArt').value;
-let totalFish = (parseInt(document.getElementById('besatz_klein').value)||0) +
-                (parseInt(document.getElementById('besatz_mittel').value)||0) +
-                (parseInt(document.getElementById('besatz_gross').value)||0) +
-                (parseInt(document.getElementById('besatz_welse').value)||0);
-let vol = parseFloat(document.getElementById('volumen').value) || 60;
-
-if((steinArt === 'seiryu' || steinArt === 'rokkaku' || steinArt === 'mini_landscape' || steinArt === 'ada_eyi' || steinArt === 'marmor' || steinArt === 'lochgestein') || ghAkt > 14) {
-alerts.push({ type: 'orange', title: t.warn_gh_title, expl: t.warn_gh_expl, sol: t.warn_gh_sol });
-}
-
-if(phAkt < 6.2 && khAkt < 3) {
-alerts.push({ type: 'orange', title: t.warn_ph_title, expl: t.warn_ph_expl, sol: t.warn_ph_sol });
-}
-
-if(no3Akt > 25) {
-alerts.push({ type: 'red', title: t.warn_no3_title, expl: t.warn_no3_expl, sol: t.warn_no3_sol });
-}
-
-if(totalFish > 20 && vol < 80) {
-alerts.push({ type: 'red', title: t.warn_overstock_title, expl: t.warn_overstock_expl, sol: t.warn_overstock_sol });
-}
-
-document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
-let val = chk.value;
-if(val === 'Grüne Fadenalgen') alerts.push({ type: 'orange', title: t.alg_green_thread_t, expl: t.alg_green_thread_e, sol: t.alg_green_thread_s });
-if(val === 'Grüne Punktalgen (GSA)') alerts.push({ type: 'orange', title: t.alg_green_spot_t, expl: t.alg_green_spot_e, sol: t.alg_green_spot_s });
-if(val === 'Cyanobakterien') alerts.push({ type: 'red', title: t.alg_cyano_t, expl: t.alg_cyano_e, sol: t.alg_cyano_s });
-if(val === 'Pinselalgen / Bartalgen (BBA)') alerts.push({ type: 'orange', title: t.alg_brush_t, expl: t.alg_brush_e, sol: t.alg_brush_s });
-if(val === 'Spirogyra') alerts.push({ type: 'orange', title: t.alg_spirogyra_t, expl: t.alg_spirogyra_e, sol: t.alg_spirogyra_s });
-if(val === 'Kieselalgen') alerts.push({ type: 'blue', title: t.alg_diatoms_t, expl: t.alg_diatoms_e, sol: t.alg_diatoms_s });
-if(val === 'Grüner Belag auf den Scheiben') alerts.push({ type: 'blue', title: t.alg_glass_t, expl: t.alg_glass_e, sol: t.alg_glass_s });
-if(val === 'Grüne Wasserblüte') alerts.push({ type: 'red', title: t.alg_bloom_t, expl: t.alg_bloom_e, sol: t.alg_bloom_s });
-
-if(val === 'Kein Wachstum') alerts.push({ type: 'orange', title: t.pl_no_growth_t, expl: t.pl_no_growth_e, sol: t.pl_no_growth_s });
-if(val === 'Verblassen / Farbverlust') alerts.push({ type: 'orange', title: t.pl_fade_t, expl: t.pl_fade_e, sol: t.pl_fade_s });
-if(val === 'Löcher in den Blättern') alerts.push({ type: 'orange', title: t.pl_holes_t, expl: t.pl_holes_e, sol: t.pl_holes_s });
-if(val === 'Blattzerfall / Pflanzenmelt') alerts.push({ type: 'orange', title: t.pl_melt_t, expl: t.pl_melt_e, sol: t.pl_melt_s });
-if(val === 'Stängelfäule') alerts.push({ type: 'orange', title: t.pl_rot_t, expl: t.pl_rot_e, sol: t.pl_rot_s });
-if(val === 'Vergilbende Blätter') alerts.push({ type: 'orange', title: t.pl_yellow_t, expl: t.pl_yellow_e, sol: t.pl_yellow_s });
-if(val === 'Kleine deformierte Blätter') alerts.push({ type: 'orange', title: t.pl_deformed_t, expl: t.pl_deformed_e, sol: t.pl_deformed_s });
-if(val === 'Abfallende untere Blätter') alerts.push({ type: 'orange', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
-
-if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
-if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
-if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
-if(val === 'Weiße Punkte') {
-let alertObj = { type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s };
-if(t.fi_spots_p) alertObj.pro = t.fi_spots_p;
-alerts.push(alertObj);
-}
-if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
-});
-
-if(alerts.length === 0) {
-alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
-}
-
-alerts.forEach(alertData => {
-let card = document.createElement('div');
-let colorClass = alertData.type === 'red' ? 'alert-red' : (alertData.type === 'orange' ? 'alert-orange' : 'alert-blue');
-card.className = `alert-card ${colorClass} dynamic-alert`;
-
-let titleHtml = `<strong>${alertData.title}</strong>`;
-let clickHint = `<span class="click-hint">${t.click_details}</span>`;
-let detailsHtml = `
-<div class="alert-details">
-<p><strong>${t.expl_label}:</strong> ${alertData.expl}</p>
-<p style="margin-top: 6px;"><strong>${t.sol_label}:</strong> ${alertData.sol}</p>
-${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${alertData.pro}</p>` : ''}
-</div>
-`;
-
-card.innerHTML = titleHtml + clickHint + detailsHtml;
-card.onclick = function() {
-let details = card.querySelector('.alert-details');
-if(details.style.display === 'block') {
-details.style.display = 'none';
-} else {
-details.style.display = 'block';
-}
-};
-resContainer.appendChild(card);
-});
-
-resSection.style.display = 'block';
-resSection.scrollIntoView({ behavior: 'smooth' });
-}
-
-// --- PREMIUM EINSTELLUNGEN ---
-let isPremiumUser = true;
-const MAX_TANKS_FREE = 1;
-const MAX_TANKS_PREMIUM = 15;
-const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose_premium";
-
-function redirectToStripe() {
-    window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
-}
-
-function showUpgradeModal(msg) {
-    alert(msg || "Diese Funktion erfordert eine Premium-Freischaltung.");
-}
-
-// Initiale Initialisierung beim Laden der Seite
-window.onload = function() {
-    updateTankSelector();
-    loadTankData();
-    calcVol();
-    switchLanguage(currentLang);
-};
-
 </script>
 </body>
-</html>
+  </html>
