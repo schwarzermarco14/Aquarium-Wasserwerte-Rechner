@@ -1902,20 +1902,7 @@ resContainer.appendChild(card);
 
 resSection.style.display = 'block';
 resSection.scrollIntoView({ behavior: 'smooth' });
-    resSection.style.display = 'block';
-    resSection.scrollIntoView({ behavior: 'smooth' });
-
-    // Hier das Speichern ins Tagebuch einfügen:
-    let todayStr = new Date().toISOString().split('T')[0];
-    if (!allTanks[currentTankName].diary) {
-        allTanks[currentTankName].diary = {}
-    
-    allTanks[currentTankName].diary[todayStr] = warningsTextReport;
-    localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
-    renderCalendar();
-} 
-
-
+}
 
 // --- PREMIUM EINSTELLUNGEN ---
 let isPremiumUser = true;
