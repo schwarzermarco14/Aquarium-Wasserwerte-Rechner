@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-i18n="main_title">AquaDiagnose – Das Original für professionelle Analysen</title>
 <link rel="manifest" href="manifest.json">
-<!-- Chart.js CDN für die Diagramme -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root {
@@ -28,7 +27,6 @@ color: var(--text);
 padding: 12px;
 padding-bottom: 60px;
 }
-
 .header {
 display: flex;
 justify-content: space-between;
@@ -42,14 +40,7 @@ gap: 10px;
 .header-left { text-align: left; }
 .header h1 { font-size: 1.1rem; color: var(--accent); }
 .header p { font-size: 0.75rem; color: var(--text-muted); }
-
-.header-controls {
-display: flex;
-gap: 8px;
-align-items: center;
-flex-wrap: wrap;
-}
-
+.header-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .tank-selector-container, .lang-selector-container {
 display: flex;
 gap: 6px;
@@ -77,7 +68,6 @@ border-radius: 4px;
 cursor: pointer;
 font-size: 0.75rem;
 }
-
 .tabs {
 display: flex;
 gap: 4px;
@@ -100,10 +90,8 @@ cursor: pointer;
 white-space: nowrap;
 }
 .tab-btn.active { background: var(--accent); color: #0f172a; }
-
 .tab-content { display: none; }
 .tab-content.active { display: block; }
-
 .card {
 background: var(--card);
 border: 1px solid var(--border);
@@ -123,7 +111,6 @@ font-size: 0.85rem;
 color: var(--accent);
 margin: 12px 0 6px 0;
 }
-
 .form-group {
 margin-bottom: 10px;
 display: flex;
@@ -142,21 +129,9 @@ font-size: 0.85rem;
 text-align: right;
 }
 .form-group select { text-align-last: right; }
-
-.question-block {
-margin-bottom: 12px;
-font-size: 0.85rem;
-}
-.question-block label.main-label {
-display: block;
-margin-bottom: 6px;
-color: var(--text);
-}
-.radio-row {
-display: flex;
-gap: 20px;
-margin-top: 4px;
-}
+.question-block { margin-bottom: 12px; font-size: 0.85rem; }
+.question-block label.main-label { display: block; margin-bottom: 6px; color: var(--text); }
+.radio-row { display: flex; gap: 20px; margin-top: 4px; }
 .radio-row label, .media-grid label {
 font-size: 0.8rem;
 color: var(--text-muted);
@@ -165,23 +140,9 @@ display: flex;
 align-items: center;
 gap: 6px;
 }
-.media-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 6px;
-margin-top: 6px;
-}
-
-.water-grid {
-display: grid;
-grid-template-columns: 1fr;
-gap: 10px;
-}
-@media (min-width: 600px) {
-.water-grid {
-grid-template-columns: 1fr 1fr;
-}
-}
+.media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.water-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 600px) { .water-grid { grid-template-columns: 1fr 1fr; } }
 .water-table {
 width: 100%;
 border-collapse: collapse;
@@ -190,20 +151,9 @@ border-radius: 8px;
 overflow: hidden;
 font-size: 0.85rem;
 }
-.water-table th, .water-table td {
-padding: 8px 10px;
-text-align: left;
-border-bottom: 1px solid var(--border);
-}
-.water-table th {
-background: #0f172a;
-color: var(--accent);
-font-size: 0.8rem;
-text-align: center;
-}
-.water-table tr:last-child td {
-border-bottom: none;
-}
+.water-table th, .water-table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+.water-table th { background: #0f172a; color: var(--accent); font-size: 0.8rem; text-align: center; }
+.water-table tr:last-child td { border-bottom: none; }
 .water-table input {
 width: 100%;
 padding: 5px;
@@ -214,7 +164,6 @@ color: #fff;
 font-size: 0.8rem;
 text-align: right;
 }
-
 .check-group {
 display: flex;
 align-items: center;
@@ -229,7 +178,6 @@ height: 18px;
 accent-color: var(--accent);
 flex-shrink: 0;
 }
-
 .btn-red {
 width: 100%;
 background: var(--btn-red);
@@ -242,11 +190,7 @@ font-size: 1rem;
 margin-top: 15px;
 cursor: pointer;
 }
-
-.result-box {
-display: none;
-margin-top: 15px;
-}
+.result-box { display: none; margin-top: 15px; }
 .alert-card {
 padding: 12px;
 border-radius: 8px;
@@ -259,7 +203,6 @@ cursor: pointer;
 .alert-blue { background: rgba(2, 132, 199, 0.15); border-color: var(--warn-blue); color: #38bdf8; }
 .alert-orange { background: rgba(217, 119, 6, 0.15); border-color: var(--warn-orange); color: #fbbf24; }
 .alert-red { background: rgba(220, 38, 38, 0.15); border-color: var(--warn-red); color: #f87171; }
-
 .alert-details {
 display: none;
 margin-top: 8px;
@@ -277,7 +220,6 @@ color: var(--text-muted);
 margin-top: 4px;
 font-style: italic;
 }
-
 .calendar-nav {
 display: flex;
 justify-content: space-between;
@@ -320,8 +262,6 @@ transition: background 0.2s, border-color 0.2s;
 .cal-day.has-entry { border-color: var(--accent); background: rgba(14, 165, 233, 0.15); }
 .cal-day.today { font-weight: bold; color: var(--accent); border-color: var(--accent); }
 .entry-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 3px; }
-
-/* MODAL STILE */
 .modal-overlay {
 display: none;
 position: fixed;
@@ -353,10 +293,7 @@ font-size: 1.2rem;
 cursor: pointer;
 }
 .modal-close:hover { color: var(--text); }
-.modal-body {
-margin-top: 10px;
-font-size: 0.85rem;
-}
+.modal-body { margin-top: 10px; font-size: 0.85rem; }
 .modal-body textarea {
 width: 100%;
 height: 160px;
@@ -380,7 +317,6 @@ border-radius: 6px;
 margin-top: 12px;
 cursor: pointer;
 }
-
 .app-footer {
 text-align: center;
 margin-top: 25px;
@@ -396,7 +332,6 @@ line-height: 1.5;
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
 <div class="header-left">
 <h1><span data-i18n="title">AquaDiagnose</span> 💧</h1>
@@ -404,8 +339,7 @@ line-height: 1.5;
 </div>
 <div class="header-controls">
 <div class="tank-selector-container">
-<select id="tankSelect" onchange="switchTank(this.value)">
-</select>
+<select id="tankSelect" onchange="switchTank(this.value)"></select>
 <button type="button" onclick="createNewTank()" title="Neues Aquarium hinzufügen">+</button>
 <button type="button" onclick="renameCurrentTank()" title="Aktuelles Aquarium umbenennen">✏️</button>
 </div>
@@ -418,7 +352,6 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TABS NAVIGATION -->
 <div class="tabs">
 <button class="tab-btn active" onclick="openTab(event, 'tab-becken')" data-i18n="tab_tech">Becken & Technik</button>
 <button class="tab-btn" onclick="openTab(event, 'tab-duengung')" data-i18n="tab_deco">Bodengrund & Deko</button>
@@ -431,7 +364,6 @@ line-height: 1.5;
 
 <form onsubmit="runAnalysis(event)">
 
-<!-- TAB 1: BECKEN, FILTER, LICHT & PFLANZEN -->
 <div id="tab-becken" class="tab-content active">
 <div class="card">
 <h2 data-i18n="sec_tank_info">📐 Angaben zum Aquarium</h2>
@@ -455,7 +387,6 @@ line-height: 1.5;
 </select>
 </div>
 <div class="form-group"><label data-i18n="lbl_flow">Filterdurchfluss (L/h):</label><input type="number" id="inp_flow" value="500" oninput="saveDataAuto()"></div>
-
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_skimmer">Ist ein Oberflächenabsauger installiert?</label>
 <div class="radio-row">
@@ -463,7 +394,6 @@ line-height: 1.5;
 <label><input type="radio" name="skimmer" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
-
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_uv">UV-Klärer:</label>
 <div class="radio-row">
@@ -471,7 +401,6 @@ line-height: 1.5;
 <label><input type="radio" name="uv" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
-
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_filtermedia">Welche Filtermedien werden verwendet?</label>
 <div class="media-grid">
@@ -484,9 +413,7 @@ line-height: 1.5;
 <label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_zeolite">Zeolith</span></label>
 </div>
 </div>
-
 <div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" id="inp_clean" placeholder="z. B. 2" oninput="saveDataAuto()"></div>
-
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_heater">Ist im Aquarium ein Heizstab installiert?</label>
 <div class="radio-row">
@@ -494,7 +421,6 @@ line-height: 1.5;
 <label><input type="radio" name="heater" value="nein" onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
-
 <div class="form-group"><label data-i18n="lbl_temp">Wassertemperatur (°C):</label><input type="number" id="inp_temp" value="24" step="0.5" oninput="saveDataAuto()"></div>
 </div>
 
@@ -540,7 +466,6 @@ line-height: 1.5;
 <option value="sehr_dicht" data-i18n="pd_very_dense">Sehr dicht bepflanzt</option>
 </select>
 </div>
-
 <div class="form-group" style="flex-direction: column; align-items: flex-start;">
 <label style="margin-bottom: 10px; display: block;" data-i18n="lbl_fert_types">Welche Dünger werden verwendet?</label>
 <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
@@ -557,7 +482,6 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 2: BODENGRUND & DEKO -->
 <div id="tab-duengung" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_deco">🪨 Bodengrund und Dekoration</h2>
@@ -570,7 +494,6 @@ line-height: 1.5;
 <option value="soil" data-i18n="sub_soil">Soil (Aktiver Bodengrund)</option>
 </select>
 </div>
-
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_nutrient_sub">Wurde ein nährstoffreicher Untergrund verwendet?</label>
 <div class="radio-row">
@@ -578,7 +501,6 @@ line-height: 1.5;
 <label><input type="radio" name="nutrient_sub" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
-
 <div class="question-block" style="margin-top: 10px;">
 <label class="main-label" data-i18n="lbl_regular_sub_fert">Werden regelmäßig Bodendünger verwendet?</label>
 <div class="radio-row">
@@ -586,9 +508,7 @@ line-height: 1.5;
 <label><input type="radio" name="regular_sub_fert" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
 </div>
 </div>
-
 <div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0" oninput="saveDataAuto()"></div>
-
 <h3 data-i18n="sec_stone">Steinauswahl (Kalk-Analyse)</h3>
 <div class="form-group">
 <label data-i18n="lbl_stone_type">Steinart:</label>
@@ -612,7 +532,6 @@ line-height: 1.5;
 </select>
 </div>
 <div class="form-group"><label data-i18n="lbl_stone_qty">Menge an Steinen (kg):</label><input type="number" id="steinMenge" value="5" step="0.1" oninput="saveDataAuto()"></div>
-
 <h3 data-i18n="sec_wood">Holzauswahl</h3>
 <div class="form-group">
 <label data-i18n="lbl_wood_type">Holzart:</label>
@@ -633,7 +552,6 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 3: WASSERWERTE -->
 <div id="tab-wasser" class="tab-content">
 <div class="card">
 <h2 data-i18n="sec_water_compare">🧪 Wasserwerte-Vergleich</h2>
@@ -647,83 +565,26 @@ line-height: 1.5;
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>pH</td>
-<td><input type="text" id="w_ph_wechsel" value="7.2" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_ph_akt" value="6.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>GH</td>
-<td><input type="text" id="w_gh_wechsel" value="10.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_gh_akt" value="12.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>KH</td>
-<td><input type="text" id="w_kh_wechsel" value="6.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_kh_akt" value="4.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>NH₄ (ppm)</td>
-<td><input type="text" id="w_nh4_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_nh4_akt" value="0.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>NO₂ (ppm)</td>
-<td><input type="text" id="w_no2_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_no2_akt" value="0.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>NO₃ (ppm)</td>
-<td><input type="text" id="w_no3_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_no3_akt" value="10.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>PO₄ (ppm)</td>
-<td><input type="text" id="w_po4_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_po4_akt" value="0.1" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>K (ppm)</td>
-<td><input type="text" id="w_k_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_k_akt" value="5.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>Ca (ppm)</td>
-<td><input type="text" id="w_ca_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_ca_akt" value="25.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>Mg (ppm)</td>
-<td><input type="text" id="w_mg_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_mg_akt" value="5.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>Fe (ppm)</td>
-<td><input type="text" id="w_fe_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_fe_akt" value="0.05" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>Na (ppm)</td>
-<td><input type="text" id="w_na_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_na_akt" value="5.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>SiO₂ (ppm)</td>
-<td><input type="text" id="w_sio2_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_sio2_akt" value="2.0" oninput="saveDataAuto()"></td>
-</tr>
-<tr>
-<td>SO₄ (ppm)</td>
-<td><input type="text" id="w_so4_wechsel" value="0.0" oninput="saveDataAuto()"></td>
-<td><input type="text" id="w_so4_akt" value="10.0" oninput="saveDataAuto()"></td>
-</tr>
+<tr><td>pH</td><td><input type="text" id="w_ph_wechsel" value="7.2" oninput="saveDataAuto()"></td><td><input type="text" id="w_ph_akt" value="6.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>GH</td><td><input type="text" id="w_gh_wechsel" value="10.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_gh_akt" value="12.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>KH</td><td><input type="text" id="w_kh_wechsel" value="6.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_kh_akt" value="4.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>NH₄ (ppm)</td><td><input type="text" id="w_nh4_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_nh4_akt" value="0.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>NO₂ (ppm)</td><td><input type="text" id="w_no2_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_no2_akt" value="0.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>NO₃ (ppm)</td><td><input type="text" id="w_no3_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_no3_akt" value="10.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>PO₄ (ppm)</td><td><input type="text" id="w_po4_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_po4_akt" value="0.1" oninput="saveDataAuto()"></td></tr>
+<tr><td>K (ppm)</td><td><input type="text" id="w_k_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_k_akt" value="5.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>Ca (ppm)</td><td><input type="text" id="w_ca_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_ca_akt" value="25.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>Mg (ppm)</td><td><input type="text" id="w_mg_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_mg_akt" value="5.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>Fe (ppm)</td><td><input type="text" id="w_fe_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_fe_akt" value="0.05" oninput="saveDataAuto()"></td></tr>
+<tr><td>Na (ppm)</td><td><input type="text" id="w_na_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_na_akt" value="5.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>SiO₂ (ppm)</td><td><input type="text" id="w_sio2_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_sio2_akt" value="2.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>SO₄ (ppm)</td><td><input type="text" id="w_so4_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_so4_akt" value="10.0" oninput="saveDataAuto()"></td></tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
 
-<!-- TAB 4: BESATZ & FÜTTERUNG -->
 <div id="tab-besatz" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_stock">🐟 Tierbesatz & Fütterung</h2>
@@ -734,7 +595,6 @@ line-height: 1.5;
 <div class="form-group"><label data-i18n="lbl_fish_algae">Algenfressende Fische:</label><input type="number" id="besatz_algen" value="2" oninput="saveDataAuto()"></div>
 <div class="form-group"><label data-i18n="lbl_shrimp">Garnelen (Stk.):</label><input type="number" id="besatz_garnelen" value="15" oninput="saveDataAuto()"></div>
 <div class="form-group"><label data-i18n="lbl_snails">Schnecken (Stk.):</label><input type="number" id="besatz_schnecken" value="10" oninput="saveDataAuto()"></div>
-
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_feeding">Fütterung:</label>
 <div class="media-grid">
@@ -745,7 +605,6 @@ line-height: 1.5;
 <label class="check-group"><input type="checkbox" class="fd-chk" checked onchange="saveDataAuto()"> <span data-i18n="fd_tabs">Wels-Tabs / Chips</span></label>
 </div>
 </div>
-
 <div class="form-group" style="margin-top: 12px;">
 <label data-i18n="lbl_feeding_freq">Fütterungshäufigkeit:</label>
 <select id="fuetterungs_haeufigkeit" onchange="saveDataAuto()">
@@ -761,11 +620,9 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 5: SYMPTOME -->
 <div id="tab-symptome" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
-
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_sym_algae">Welche Algen treten auf?</label>
 <div class="media-grid">
@@ -779,7 +636,6 @@ line-height: 1.5;
 <label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Wasserblüte" onchange="saveDataAuto()"> <span data-i18n="alg_bloom">Grüne Wasserblüte</span></label>
 </div>
 </div>
-
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_sym_plants">Pflanzenprobleme:</label>
 <div class="media-grid">
@@ -793,7 +649,6 @@ line-height: 1.5;
 <label class="check-group"><input type="checkbox" class="symptom-chk" value="Abfallende untere Blätter" onchange="saveDataAuto()"> <span data-i18n="pl_drop">Abfallende untere Blätter</span></label>
 </div>
 </div>
-
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_sym_fish">Fische und Wirbellose:</label>
 <div class="media-grid">
@@ -804,7 +659,6 @@ line-height: 1.5;
 <label class="check-group"><input type="checkbox" class="symptom-chk" value="Ausgefranste Flossen" onchange="saveDataAuto()"> <span data-i18n="fi_fins">Ausgefranste oder sich auflösende Flossen</span></label>
 </div>
 </div>
-
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_sym_water">Wasser und Erscheinungsbild:</label>
 <div class="media-grid">
@@ -815,11 +669,9 @@ line-height: 1.5;
 <label class="check-group"><input type="checkbox" class="symptom-chk" value="Weißer Belag auf Holz" onchange="saveDataAuto()"> <span data-i18n="wa_biofilm">Weißer Belag oder Biofilm auf Holz</span></label>
 </div>
 </div>
-
 <button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
 </div>
 
-<!-- ANALYSE ERGEBNISSE -->
 <div class="result-box" id="resultSection">
 <div class="card" id="resultCardContainer">
 <h2 data-i18n="res_title">📊 Analyseergebnis & Auswertung</h2>
@@ -827,12 +679,10 @@ line-height: 1.5;
 </div>
 </div>
 
-<!-- TAB 6: DIAGRAMME -->
 <div id="tab-diagramme" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_charts">📈 Wasserwerte-Verlauf (Diagramme)</h2>
 <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch.</p>
-
 <div class="form-group" style="flex-direction: column; align-items: flex-start; margin-bottom: 15px;">
 <label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold; margin-bottom: 8px;">Parameter auswählen (mehrere möglich):</label>
 <div class="media-grid" id="chartParamSelect" style="width: 100%;">
@@ -852,14 +702,12 @@ line-height: 1.5;
 <label class="check-group"><input type="checkbox" value="w_so4_akt" onchange="updateWaterChart()"> SO₄ (ppm)</label>
 </div>
 </div>
-
 <div style="position: relative; height: 260px; width: 100%; margin-bottom: 20px;">
 <canvas id="waterChart"></canvas>
 </div>
 </div>
 </div>
 
-<!-- TAB 7: KALENDER -->
 <div id="tab-kalender" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_cal">📅 Aquarien-Tagebuch</h2>
@@ -874,7 +722,6 @@ line-height: 1.5;
 
 </form>
 
-<!-- POPUP / MODAL FÜR TAGESDETAILS -->
 <div class="modal-overlay" id="dayModal">
 <div class="modal-content">
 <button class="modal-close" onclick="closeModal()">×</button>
@@ -1183,13 +1030,12 @@ fi_deaths_s: "Teste sofort das Wasser auf Nitrit (NO₂). Mache ohne zu zögern 
 fi_spots_t: "🚨 Krankheits-Alarm: Weiße Pünktchenkrankheit (Ichtho)",
 fi_spots_e: "Die Fische sehen aus, als wären sie mit Grießkörnern bestreut. Das ist die bekannte Pünktchenkrankheit, ausgelöst durch Parasiten nach Stress.",
 fi_spots_s: "Kauf dir im Zoohandel ein spezielles Mittel gegen die Pünktchenkrankheit und wende es nach Packungsanweisung an. Erhöhe die Belüftung im Aquarium.",
-fi_spots_p:"💡 Profi-Tipp: Temperatur kurzfristig für 4-5 Tage auf 30-31 Grad erhöhen – das beschleunigt das Wachstum der Pünktchen und hilft, dass die Medizin überhaupt wirken kann.",
+fi_spots_p: "💡 Profi-Tipp: Temperatur kurzfristig für 4-5 Tage auf 30-31 Grad erhöhen – das beschleunigt das Wachstum der Pünktchen und hilft, dass die Medizin überhaupt wirken kann.",
 
 fi_fins_t: "⚠️ Fisch-Gesundheit: Flossen fransen aus oder lösen sich auf",
 fi_fins_e: "Die Flossen der Fische sehen ausgefranst aus oder werden kürzer. Das ist die sogenannte Flossenfäule, ausgelöst durch schlechte Wasserhygiene oder Bakterien.",
 fi_fins_s: "Verbessere sofort die Wasserhygiene durch mehrere großzügige Wasserwechsel (wöchentlich 50%). Achte darauf, dass sich die Fische untereinander nicht jagen."
 },
-
 en: {
 main_title: "AquaDiagnose – The Ultimate Analysis Tool",
 title: "AquaDiagnose",
@@ -1465,7 +1311,7 @@ fi_deaths_s: "Test water for NH₄ and NO₂ immediately, perform a 50% water ch
 fi_spots_t: "🚨 Disease Warning: White Spots (Ichthyophthirius)",
 fi_spots_e: "Parasitic infection ('Ich') triggered by environmental stress, temperature fluctuations, or introduction of new fish.",
 fi_spots_s: "Treat with dedicated anti-parasite medication following instructions, gently raise temperature, and ensure good aeration.",
-fi_spots_p:"💡 Pro-Tip: Briefly increase the temperature to 30–31 °C for 4–5 days – this accelerates the growth of the spots and helps the medicine to work at all.",
+fi_spots_p: "💡 Pro-Tip: Briefly increase the temperature to 30–31 °C for 4–5 days – this accelerates the growth of the spots and helps the medicine to work at all.",
 
 fi_fins_t: "⚠️ Health Warning: Frayed or dissolving fins",
 fi_fins_e: "Bacterial fin rot often caused by poor water hygiene, high germ load in the aquarium, or mechanical fin nipping.",
@@ -1474,437 +1320,426 @@ fi_fins_s: "Improve water hygiene through frequent large water changes, reduce g
 };
 
 function updateTankSelector() {
-const select = document.getElementById('tankSelect');
-select.innerHTML = '';
-Object.keys(allTanks).forEach(name => {
-let opt = document.createElement('option');
-opt.value = name;
-opt.innerText = name;
-if(name === currentTankName) opt.selected = true;
-select.appendChild(opt);
-});
+  const select = document.getElementById('tankSelect');
+  select.innerHTML = '';
+  Object.keys(allTanks).forEach(name => {
+    let opt = document.createElement('option');
+    opt.value = name;
+    opt.innerText = name;
+    if(name === currentTankName) opt.selected = true;
+    select.appendChild(opt);
+  });
 }
 
 function switchLanguage(lang) {
-currentLang = lang;
-localStorage.setItem('awr_lang', lang);
-document.getElementById('langSelect').value = lang;
-document.documentElement.lang = lang;
-
-document.querySelectorAll('[data-i18n]').forEach(el => {
-let key = el.getAttribute('data-i18n');
-if(translations[lang] && translations[lang][key]) {
-el.innerText = translations[lang][key];
-}
-});
-renderCalendar();
-updateWaterChart();
+  currentLang = lang;
+  localStorage.setItem('awr_lang', lang);
+  document.getElementById('langSelect').value = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    let key = el.getAttribute('data-i18n');
+    if(translations[lang] && translations[lang][key]) {
+      el.innerText = translations[lang][key];
+    }
+  });
+  renderCalendar();
+  updateWaterChart();
 }
 
 function createNewTank() {
-if(Object.keys(allTanks).length >= 10) {
-alert(currentLang === 'en' ? "Maximum limit of 10 aquariums reached." : "Maximale Anzahl von 10 Aquarien erreicht.");
-return;
-}
-let promptText = currentLang === 'en' ? "Enter name for the new aquarium:" : "Name für das neue Aquarium eingeben:";
-let newName = prompt(promptText, `Aquarium ${Object.keys(allTanks).length + 1}`);
-if(!newName) return;
-if(allTanks[newName]) {
-alert(currentLang === 'en' ? "An aquarium with this name already exists." : "Ein Aquarium mit diesem Namen existiert bereits.");
-return;
-}
-allTanks[newName] = { inputs: {}, diary: {} };
-currentTankName = newName;
-updateTankSelector();
-loadTankData();
-calcVol();
+  if(Object.keys(allTanks).length >= 10) {
+    alert(currentLang === 'en' ? "Maximum limit of 10 aquariums reached." : "Maximale Anzahl von 10 Aquarien erreicht.");
+    return;
+  }
+  let promptText = currentLang === 'en' ? "Enter name for the new aquarium:" : "Name für das neue Aquarium eingeben:";
+  let newName = prompt(promptText, `Aquarium ${Object.keys(allTanks).length + 1}`);
+  if(!newName) return;
+  if(allTanks[newName]) {
+    alert(currentLang === 'en' ? "An aquarium with this name already exists." : "Ein Aquarium mit diesem Namen existiert bereits.");
+    return;
+  }
+  allTanks[newName] = { inputs: {}, diary: {} };
+  currentTankName = newName;
+  updateTankSelector();
+  loadTankData();
+  calcVol();
 }
 
 function renameCurrentTank() {
-let promptText = currentLang === 'en' ? "Enter new name for the aquarium:" : "Neuen Namen für das Aquarium eingeben:";
-let newNameNeun = prompt(promptText, currentTankName);
-if(!newNameNeun || newNameNeun === currentTankName) return;
-if(allTanks[newNameNeun]) {
-alert(currentLang === 'en' ? "An aquarium with this name already exists." : "Ein Aquarium mit diesem Namen existiert bereits.");
-return;
-}
-allTanks[newNameNeun] = allTanks[currentTankName];
-delete allTanks[currentTankName];
-currentTankName = newNameNeun;
-updateTankSelector();
-saveDataAuto();
+  let promptText = currentLang === 'en' ? "Enter new name for the aquarium:" : "Neuen Namen für das Aquarium eingeben:";
+  let newNameNeun = prompt(promptText, currentTankName);
+  if(!newNameNeun || newNameNeun === currentTankName) return;
+  if(allTanks[newNameNeun]) {
+    alert(currentLang === 'en' ? "An aquarium with this name already exists." : "Ein Aquarium mit diesem Namen existiert bereits.");
+    return;
+  }
+  allTanks[newNameNeun] = allTanks[currentTankName];
+  delete allTanks[currentTankName];
+  currentTankName = newNameNeun;
+  updateTankSelector();
+  saveDataAuto();
 }
 
 function switchTank(name) {
-currentTankName = name;
-loadTankData();
-calcVol();
-renderCalendar();
-updateWaterChart();
-document.getElementById('resultSection').style.display = 'none';
+  currentTankName = name;
+  loadTankData();
+  calcVol();
+  renderCalendar();
+  updateWaterChart();
+  document.getElementById('resultSection').style.display = 'none';
 }
 
 function saveDataAuto() {
-if(!allTanks[currentTankName]) allTanks[currentTankName] = {};
-let data = {};
-document.querySelectorAll('input, select').forEach(el => {
-if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText') {
-if(el.type === 'checkbox' || el.type === 'radio') {
-data[el.id || el.name + '_' + Math.random()] = el.checked;
-} else {
-data[el.id] = el.value;
-}
-}
-});
-const radios = ['skimmer', 'uv', 'heater', 'co2_zuafuhr', 'nutrient_sub', 'regular_sub_fert'];
-radios.forEach(rName => {
-let checkedEl = document.querySelector(`input[name="${rName}"]:checked`);
-if(checkedEl) data['radio_' + rName] = checkedEl.value;
-});
-
-allTanks[currentTankName].inputs = data;
-localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+  if(!allTanks[currentTankName]) allTanks[currentTankName] = {};
+  let data = {};
+  document.querySelectorAll('input, select').forEach(el => {
+    if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText') {
+      if(el.type === 'checkbox' || el.type === 'radio') {
+        data[el.id || el.name + '_' + Math.random()] = el.checked;
+      } else {
+        data[el.id] = el.value;
+      }
+    }
+  });
+  const radios = ['skimmer', 'uv', 'heater', 'co2_zuafuhr', 'nutrient_sub', 'regular_sub_fert'];
+  radios.forEach(rName => {
+    let checkedEl = document.querySelector(`input[name="${rName}"]:checked`);
+    if(checkedEl) data['radio_' + rName] = checkedEl.value;
+  });
+  allTanks[currentTankName].inputs = data;
+  localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
 }
 
 function loadTankData() {
-let tankData = allTanks[currentTankName];
-if(!tankData || !tankData.inputs) return;
-let data = tankData.inputs;
-
-for(let id in data) {
-if(id.startsWith('radio_')) {
-let rName = id.replace('radio_', '');
-let targetVal = data[id];
-let radioEl = document.querySelector(`input[name="${rName}"][value="${targetVal}"]`);
-if(radioEl) radioEl.checked = true;
-} else {
-let el = document.getElementById(id);
-if(el) {
-if(el.type === 'checkbox') {
-el.checked = data[id];
-} else {
-el.value = data[id];
-}
-}
-}
-}
-renderCalendar();
-updateWaterChart();
+  let tankData = allTanks[currentTankName];
+  if(!tankData || !tankData.inputs) return;
+  let data = tankData.inputs;
+  for(let id in data) {
+    if(id.startsWith('radio_')) {
+      let rName = id.replace('radio_', '');
+      let targetVal = data[id];
+      let radioEl = document.querySelector(`input[name="${rName}"][value="${targetVal}"]`);
+      if(radioEl) radioEl.checked = true;
+    } else {
+      let el = document.getElementById(id);
+      if(el) {
+        if(el.type === 'checkbox') {
+          el.checked = data[id];
+        } else {
+          el.value = data[id];
+        }
+      }
+    }
+  }
+  renderCalendar();
+  updateWaterChart();
 }
 
 function openTab(evt, tabId) {
-document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-document.getElementById(tabId).classList.add('active');
-evt.currentTarget.classList.add('active');
-if(tabId === 'tab-diagramme') {
-updateWaterChart();
-}
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  evt.currentTarget.classList.add('active');
+  if(tabId === 'tab-diagramme') {
+    updateWaterChart();
+  }
+  if(tabId === 'tab-kalender') {
+    let now = new Date();
+    currentMonth = now.getMonth();
+    currentYear = now.getFullYear();
+    renderCalendar();
+  }
 }
 
 function calcVol() {
-let l = parseFloat(document.getElementById('l').value) || 0;
-let b = parseFloat(document.getElementById('b').value) || 0;
-let h = parseFloat(document.getElementById('h').value) || 0;
-let vol = (l * b * h) / 1000;
-document.getElementById('volumen').value = vol.toFixed(1);
+  let l = parseFloat(document.getElementById('l').value) || 0;
+  let b = parseFloat(document.getElementById('b').value) || 0;
+  let h = parseFloat(document.getElementById('h').value) || 0;
+  let vol = (l * b * h) / 1000;
+  document.getElementById('volumen').value = vol.toFixed(1);
 }
 
 function renderCalendar() {
-    const grid = document.getElementById('calendarGrid');
-    const monthYearEl = document.getElementById('calMonthYear');
-    if(!grid) return;
-
-    if (!isPremiumUser) {
-        grid.innerHTML = `
-            <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px;">
-                <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 Premium-Funktion</h3>
-                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Das Aquarien-Tagebuch ist exklusiv für Premium-Mitglieder verfügbar.</p>
-                <button onclick="redirectToStripe()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
-                    Jetzt Premium freischalten
-                </button>
-            </div>`;
-        return;
+  const grid = document.getElementById('calendarGrid');
+  const monthYearEl = document.getElementById('calMonthYear');
+  if(!grid) return;
+  if (!isPremiumUser) {
+    grid.innerHTML = `
+      <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px;">
+        <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 Premium-Funktion</h3>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Das Aquarien-Tagebuch ist exklusiv für Premium-Mitglieder verfügbar.</p>
+        <button onclick="redirectToStripe()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+          Jetzt Premium freischalten
+        </button>
+      </div>`;
+    return;
+  }
+  grid.innerHTML = '';
+  let firstDay = new Date(currentYear, currentMonth, 1);
+  let lastDay = new Date(currentYear, currentMonth + 1, 0);
+  const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+  const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const daysDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+  const daysEn = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+  let mNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
+  let dNames = currentLang === 'en' ? daysEn : daysDe;
+  monthYearEl.innerText = `${mNames[currentMonth]} ${currentYear}`;
+  dNames.forEach(d => {
+    let dayHeader = document.createElement('div');
+    dayHeader.className = 'cal-header-day';
+    dayHeader.innerText = d;
+    grid.appendChild(dayHeader);
+  });
+  let startDayIndex = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+  for(let i = 0; i < startDayIndex; i++) {
+    let emptyCell = document.createElement('div');
+    emptyCell.className = 'cal-day empty';
+    grid.appendChild(emptyCell);
+  }
+  let today = new Date();
+  let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+  for(let d = 1; d <= lastDay.getDate(); d++) {
+    let cell = document.createElement('div');
+    cell.className = 'cal-day';
+    let monthStr = String(currentMonth + 1).padStart(2, '0');
+    let dayStr = String(d).padStart(2, '0');
+    let dateKey = `${currentYear}-${monthStr}-${dayStr}`;
+    let dayNumEl = document.createElement('span');
+    dayNumEl.innerText = d;
+    cell.appendChild(dayNumEl);
+    if(d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+      cell.classList.add('today');
     }
-
-    grid.innerHTML = '';
-
-let firstDay = new Date(currentYear, currentMonth, 1);
-let lastDay = new Date(currentYear, currentMonth + 1, 0);
-
-const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const daysDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-const daysEn = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-
-let mNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
-let dNames = currentLang === 'en' ? daysEn : daysDe;
-
-monthYearEl.innerText = `${mNames[currentMonth]} ${currentYear}`;
-
-dNames.forEach(d => {
-let dayHeader = document.createElement('div');
-dayHeader.className = 'cal-header-day';
-dayHeader.innerText = d;
-grid.appendChild(dayHeader);
-});
-
-let startDayIndex = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
-for(let i = 0; i < startDayIndex; i++) {
-let emptyCell = document.createElement('div');
-emptyCell.className = 'cal-day empty';
-grid.appendChild(emptyCell);
-}
-
-let today = new Date();
-let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-
-for(let d = 1; d <= lastDay.getDate(); d++) {
-let cell = document.createElement('div');
-cell.className = 'cal-day';
-
-let monthStr = String(currentMonth + 1).padStart(2, '0');
-let dayStr = String(d).padStart(2, '0');
-let dateKey = `${currentYear}-${monthStr}-${dayStr}`;
-
-let dayNumEl = document.createElement('span');
-dayNumEl.innerText = d;
-cell.appendChild(dayNumEl);
-
-if(d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
-cell.classList.add('today');
-}
-
-if(diaryData[dateKey]) {
-cell.classList.add('has-entry');
-let dot = document.createElement('div');
-dot.className = 'entry-dot';
-cell.appendChild(dot);
-}
-
-cell.onclick = () => openModal(dateKey);
-grid.appendChild(cell);
-}
+    if(diaryData[dateKey]) {
+      cell.classList.add('has-entry');
+      let dot = document.createElement('div');
+      dot.className = 'entry-dot';
+      cell.appendChild(dot);
+    }
+    cell.onclick = () => openModal(dateKey);
+    grid.appendChild(cell);
+  }
 }
 
 function changeMonth(dir) {
-currentMonth += dir;
-if(currentMonth > 11) {
-currentMonth = 0;
-currentYear++;
-} else if(currentMonth < 0) {
-currentMonth = 11;
-currentYear--;
-}
-renderCalendar();
+  currentMonth += dir;
+  if(currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  } else if(currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
+  renderCalendar();
 }
 
 function openModal(dateKey) {
-activeModalDate = dateKey;
-document.getElementById('modalDateTitle').innerText = `${currentLang==='en'?'Entry for':'Eintrag für'} ${dateKey}`;
-let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-document.getElementById('modalEntryText').value = diaryData[dateKey] || '';
-document.getElementById('dayModal').style.display = 'flex';
+  activeModalDate = dateKey;
+  document.getElementById('modalDateTitle').innerText = `${currentLang==='en' ? 'Entry for' : 'Eintrag für'} ${dateKey}`;
+  let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+  document.getElementById('modalEntryText').value = diaryData[dateKey] || '';
+  document.getElementById('dayModal').style.display = 'flex';
 }
 
 function closeModal() {
-document.getElementById('dayModal').style.display = 'none';
+  document.getElementById('dayModal').style.display = 'none';
 }
 
 function saveDayEntry() {
-let text = document.getElementById('modalEntryText').value;
-let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
-let todayStr = new Date().toISOString().split('T')[0];
-let targetDate = activeModalDate || todayStr;
-
-if(text.trim() === '') {
-delete diaryData[targetDate];
-} else {
-diaryData[targetDate] = text;
-}
-
-localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
-closeModal();
-renderCalendar();
-updateWaterChart();
+  let text = document.getElementById('modalEntryText').value;
+  let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
+  let todayStr = new Date().toISOString().split('T')[0];
+  let targetDate = activeModalDate || todayStr;
+  if(text.trim() === '') {
+    delete diaryData[targetDate];
+  } else {
+    diaryData[targetDate] = text;
+  }
+  localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+  closeModal();
+  renderCalendar();
+  updateWaterChart();
 }
 
 function updateWaterChart() {
-const canvas = document.getElementById('waterChart');
-if(!canvas) return;
-const ctx = canvas.getContext('2d');
-
-let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-let dates = Object.keys(diaryData).sort();
-
-const container = document.getElementById('chartParamSelect');
-const checkboxes = container ? container.querySelectorAll('input[type="checkbox"]:checked') : [];
-
-let labels = [];
-if(dates.length === 0) {
-labels = ["Start", "Heute"];
-} else {
-labels = dates;
-}
-
-let datasets = [];
-const colors = ['#0ea5e9', '#f43f5e', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#3b82f6', '#eab308', '#6366f1', '#14b8a6', '#f97316', '#a855f7'];
-
-checkboxes.forEach((chk, index) => {
-let paramId = chk.value;
-let paramLabel = chk.parentElement.innerText.trim();
-let chartData = [];
-
-if(dates.length === 0) {
-let currentVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
-chartData = [currentVal, currentVal];
-} else {
-dates.forEach(date => {
-let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
-chartData.push(liveVal);
-});
-}
-
-let color = colors[index % colors.length];
-datasets.push({
-label: paramLabel,
-data: chartData,
-borderColor: color,
-backgroundColor: color + '26',
-borderWidth: 2,
-fill: false,
-tension: 0.2
-});
-});
-
-if(myWaterChart) {
-myWaterChart.destroy();
-}
-
-myWaterChart = new Chart(ctx, {
-type: 'line',
-data: {
-labels: labels,
-datasets: datasets
-},
-options: {
-responsive: true,
-maintainAspectRatio: false,
-plugins: {
-legend: { labels: { color: '#f8fafc', font: { size: 11 } } }
-},
-scales: {
-x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } },
-y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } }
-}
-}
-});
+  const canvas = document.getElementById('waterChart');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+  let dates = Object.keys(diaryData).sort();
+  const container = document.getElementById('chartParamSelect');
+  const checkboxes = container ? container.querySelectorAll('input[type="checkbox"]:checked') : [];
+  let labels = [];
+  if(dates.length === 0) {
+    labels = ["Start", "Heute"];
+  } else {
+    labels = dates;
+  }
+  let datasets = [];
+  const colors = ['#0ea5e9', '#f43f5e', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#3b82f6', '#eab308', '#6366f1', '#14b8a6', '#f97316', '#a855f7'];
+  checkboxes.forEach((chk, index) => {
+    let paramId = chk.value;
+    let paramLabel = chk.parentElement.innerText.trim();
+    let chartData = [];
+    if(dates.length === 0) {
+      let currentVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
+      chartData = [currentVal, currentVal];
+    } else {
+      dates.forEach(date => {
+        let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
+        chartData.push(liveVal);
+      });
+    }
+    let color = colors[index % colors.length];
+    datasets.push({
+      label: paramLabel,
+      data: chartData,
+      borderColor: color,
+      backgroundColor: color + '26',
+      borderWidth: 2,
+      fill: false,
+      tension: 0.2
+    });
+  });
+  if(myWaterChart) {
+    myWaterChart.destroy();
+  }
+  myWaterChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#f8fafc', font: { size: 11 } } }
+      },
+      scales: {
+        x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } },
+        y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } }
+      }
+    }
+  });
 }
 
 function runAnalysis(event) {
-if(event) event.preventDefault();
-const resSection = document.getElementById('resultSection');
-const resContainer = document.getElementById('resultCardContainer');
-
-resContainer.querySelectorAll('.dynamic-alert').forEach(el => el.remove());
-
-let t = translations[currentLang];
-let alerts = [];
-
-let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
-let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 0;
-let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 0;
-let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
-let steinArt = document.getElementById('steinArt').value;
-let totalFish = (parseInt(document.getElementById('besatz_klein').value)||0) +
-                (parseInt(document.getElementById('besatz_mittel').value)||0) +
-                (parseInt(document.getElementById('besatz_gross').value)||0) +
-                (parseInt(document.getElementById('besatz_welse').value)||0);
-let vol = parseFloat(document.getElementById('volumen').value) || 60;
-
-if((steinArt === 'seiryu' || steinArt === 'rokkaku' || steinArt === 'mini_landscape' || steinArt === 'ada_eyi' || steinArt === 'marmor' || steinArt === 'lochgestein') || ghAkt > 14) {
-alerts.push({ type: 'orange', title: t.warn_gh_title, expl: t.warn_gh_expl, sol: t.warn_gh_sol });
-}
-
-if(phAkt < 6.2 && khAkt < 3) {
-alerts.push({ type: 'orange', title: t.warn_ph_title, expl: t.warn_ph_expl, sol: t.warn_ph_sol });
-}
-
-if(no3Akt > 25) {
-alerts.push({ type: 'red', title: t.warn_no3_title, expl: t.warn_no3_expl, sol: t.warn_no3_sol });
-}
-
-if(totalFish > 20 && vol < 80) {
-alerts.push({ type: 'red', title: t.warn_overstock_title, expl: t.warn_overstock_expl, sol: t.warn_overstock_sol });
-}
-
-document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
-let val = chk.value;
-if(val === 'Grüne Fadenalgen') alerts.push({ type: 'orange', title: t.alg_green_thread_t, expl: t.alg_green_thread_e, sol: t.alg_green_thread_s });
-if(val === 'Grüne Punktalgen (GSA)') alerts.push({ type: 'orange', title: t.alg_green_spot_t, expl: t.alg_green_spot_e, sol: t.alg_green_spot_s });
-if(val === 'Cyanobakterien') alerts.push({ type: 'red', title: t.alg_cyano_t, expl: t.alg_cyano_e, sol: t.alg_cyano_s });
-if(val === 'Pinselalgen / Bartalgen (BBA)') alerts.push({ type: 'orange', title: t.alg_brush_t, expl: t.alg_brush_e, sol: t.alg_brush_s });
-if(val === 'Spirogyra') alerts.push({ type: 'orange', title: t.alg_spirogyra_t, expl: t.alg_spirogyra_e, sol: t.alg_spirogyra_s });
-if(val === 'Kieselalgen') alerts.push({ type: 'blue', title: t.alg_diatoms_t, expl: t.alg_diatoms_e, sol: t.alg_diatoms_s });
-if(val === 'Grüner Belag auf den Scheiben') alerts.push({ type: 'blue', title: t.alg_glass_t, expl: t.alg_glass_e, sol: t.alg_glass_s });
-if(val === 'Grüne Wasserblüte') alerts.push({ type: 'red', title: t.alg_bloom_t, expl: t.alg_bloom_e, sol: t.alg_bloom_s });
-
-if(val === 'Kein Wachstum') alerts.push({ type: 'orange', title: t.pl_no_growth_t, expl: t.pl_no_growth_e, sol: t.pl_no_growth_s });
-if(val === 'Verblassen / Farbverlust') alerts.push({ type: 'orange', title: t.pl_fade_t, expl: t.pl_fade_e, sol: t.pl_fade_s });
-if(val === 'Löcher in den Blättern') alerts.push({ type: 'orange', title: t.pl_holes_t, expl: t.pl_holes_e, sol: t.pl_holes_s });
-if(val === 'Blattzerfall / Pflanzenmelt') alerts.push({ type: 'orange', title: t.pl_melt_t, expl: t.pl_melt_e, sol: t.pl_melt_s });
-if(val === 'Stängelfäule') alerts.push({ type: 'orange', title: t.pl_rot_t, expl: t.pl_rot_e, sol: t.pl_rot_s });
-if(val === 'Vergilbende Blätter') alerts.push({ type: 'orange', title: t.pl_yellow_t, expl: t.pl_yellow_e, sol: t.pl_yellow_s });
-if(val === 'Kleine deformierte Blätter') alerts.push({ type: 'orange', title: t.pl_deformed_t, expl: t.pl_deformed_e, sol: t.pl_deformed_s });
-if(val === 'Abfallende untere Blätter') alerts.push({ type: 'orange', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
-
-if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
-if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
-if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
-if(val === 'Weiße Punkte') {
-let alertObj = { type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s };
-if(t.fi_spots_p) alertObj.pro = t.fi_spots_p;
-alerts.push(alertObj);
-}
-if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
-});
-
-if(alerts.length === 0) {
-alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
-}
-
-alerts.forEach(alertData => {
-let card = document.createElement('div');
-let colorClass = alertData.type === 'red' ? 'alert-red' : (alertData.type === 'orange' ? 'alert-orange' : 'alert-blue');
-card.className = `alert-card ${colorClass} dynamic-alert`;
-
-let titleHtml = `<strong>${alertData.title}</strong>`;
-let clickHint = `<span class="click-hint">${t.click_details}</span>`;
-let detailsHtml = `
+  if(event) event.preventDefault();
+  const resSection = document.getElementById('resultSection');
+  const resContainer = document.getElementById('resultCardContainer');
+  resContainer.querySelectorAll('.dynamic-alert').forEach(el => el.remove());
+  let t = translations[currentLang];
+  let alerts = [];
+  let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
+  let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 0;
+  let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 0;
+  let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
+  let steinArt = document.getElementById('steinArt').value;
+  let totalFish = (parseInt(document.getElementById('besatz_klein').value)||0) +
+                  (parseInt(document.getElementById('besatz_mittel').value)||0) +
+                  (parseInt(document.getElementById('besatz_gross').value)||0) +
+                  (parseInt(document.getElementById('besatz_welse').value)||0);
+  let vol = parseFloat(document.getElementById('volumen').value) || 60;
+  if((steinArt === 'seiryu' || steinArt === 'rokkaku' || steinArt === 'mini_landscape' || steinArt === 'ada_eyi' || steinArt === 'marmor' || steinArt === 'lochgestein') || ghAkt > 14) {
+    alerts.push({ type: 'orange', title: t.warn_gh_title, expl: t.warn_gh_expl, sol: t.warn_gh_sol });
+  }
+  if(phAkt < 6.2 && khAkt < 3) {
+    alerts.push({ type: 'orange', title: t.warn_ph_title, expl: t.warn_ph_expl, sol: t.warn_ph_sol });
+  }
+  if(no3Akt > 25) {
+    alerts.push({ type: 'red', title: t.warn_no3_title, expl: t.warn_no3_expl, sol: t.warn_no3_sol });
+  }
+  if(totalFish > 20 && vol < 80) {
+    alerts.push({ type: 'red', title: t.warn_overstock_title, expl: t.warn_overstock_expl, sol: t.warn_overstock_sol });
+  }
+  document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
+    let val = chk.value;
+    if(val === 'Grüne Fadenalgen') alerts.push({ type: 'orange', title: t.alg_green_thread_t, expl: t.alg_green_thread_e, sol: t.alg_green_thread_s });
+    if(val === 'Grüne Punktalgen (GSA)') alerts.push({ type: 'orange', title: t.alg_green_spot_t, expl: t.alg_green_spot_e, sol: t.alg_green_spot_s });
+    if(val === 'Cyanobakterien') alerts.push({ type: 'red', title: t.alg_cyano_t, expl: t.alg_cyano_e, sol: t.alg_cyano_s });
+    if(val === 'Pinselalgen / Bartalgen (BBA)') alerts.push({ type: 'orange', title: t.alg_brush_t, expl: t.alg_brush_e, sol: t.alg_brush_s });
+    if(val === 'Spirogyra') alerts.push({ type: 'orange', title: t.alg_spirogyra_t, expl: t.alg_spirogyra_e, sol: t.alg_spirogyra_s });
+    if(val === 'Kieselalgen') alerts.push({ type: 'blue', title: t.alg_diatoms_t, expl: t.alg_diatoms_e, sol: t.alg_diatoms_s });
+    if(val === 'Grüner Belag auf den Scheiben') alerts.push({ type: 'blue', title: t.alg_glass_t, expl: t.alg_glass_e, sol: t.alg_glass_s });
+    if(val === 'Grüne Wasserblüte') alerts.push({ type: 'red', title: t.alg_bloom_t, expl: t.alg_bloom_e, sol: t.alg_bloom_s });
+    if(val === 'Kein Wachstum') alerts.push({ type: 'orange', title: t.pl_no_growth_t, expl: t.pl_no_growth_e, sol: t.pl_no_growth_s });
+    if(val === 'Verblassen / Farbverlust') alerts.push({ type: 'orange', title: t.pl_fade_t, expl: t.pl_fade_e, sol: t.pl_fade_s });
+    if(val === 'Löcher in den Blättern') alerts.push({ type: 'orange', title: t.pl_holes_t, expl: t.pl_holes_e, sol: t.pl_holes_s });
+    if(val === 'Blattzerfall / Pflanzenmelt') alerts.push({ type: 'orange', title: t.pl_melt_t, expl: t.pl_melt_e, sol: t.pl_melt_s });
+    if(val === 'Stängelfäule') alerts.push({ type: 'orange', title: t.pl_rot_t, expl: t.pl_rot_e, sol: t.pl_rot_s });
+    if(val === 'Vergilbende Blätter') alerts.push({ type: 'orange', title: t.pl_yellow_t, expl: t.pl_yellow_e, sol: t.pl_yellow_s });
+    if(val === 'Kleine deformierte Blätter') alerts.push({ type: 'orange', title: t.pl_deformed_t, expl: t.pl_deformed_e, sol: t.pl_deformed_s });
+    if(val === 'Abfallende untere Blätter') alerts.push({ type: 'orange', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
+    if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
+    if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
+    if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
+    if(val === 'Weiße Punkte') {
+      let alertObj = { type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s };
+      if(t.fi_spots_p) alertObj.pro = t.fi_spots_p;
+      alerts.push(alertObj);
+    }
+    if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
+  });
+  if(alerts.length === 0) {
+    alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
+  }
+  alerts.forEach(alertData => {
+    let card = document.createElement('div');
+    let colorClass = alertData.type === 'red' ? 'alert-red' : (alertData.type === 'orange' ? 'alert-orange' : 'alert-blue');
+    card.className = `alert-card ${colorClass} dynamic-alert`;
+    let titleHtml = `<strong>${alertData.title}</strong>`;
+    let clickHint = `<span class="click-hint">${t.click_details}</span>`;
+    let detailsHtml = `
 <div class="alert-details">
 <p><strong>${t.expl_label}:</strong> ${alertData.expl}</p>
 <p style="margin-top: 6px;"><strong>${t.sol_label}:</strong> ${alertData.sol}</p>
 ${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${alertData.pro}</p>` : ''}
 </div>
 `;
+    card.innerHTML = titleHtml + clickHint + detailsHtml;
+    card.onclick = function() {
+      let details = card.querySelector('.alert-details');
+      if(details.style.display === 'block') {
+        details.style.display = 'none';
+      } else {
+        details.style.display = 'block';
+      }
+    };
+    resContainer.appendChild(card);
+  });
+  resSection.style.display = 'block';
+  resSection.scrollIntoView({ behavior: 'smooth' });
 
-card.innerHTML = titleHtml + clickHint + detailsHtml;
-card.onclick = function() {
-let details = card.querySelector('.alert-details');
-if(details.style.display === 'block') {
-details.style.display = 'none';
-} else {
-details.style.display = 'block';
+  // ✅ NEU: Report im Kalender für HEUTE speichern
+  let reportText = "";
+  alerts.forEach(a => {
+    reportText += `■ ${a.title}\n`;
+    reportText += `${t.expl_label}: ${a.expl}\n`;
+    reportText += `${t.sol_label}: ${a.sol}\n`;
+    if (a.pro) reportText += `${t.p_label}: ${a.pro}\n`;
+    reportText += "\n";
+  });
+  reportText += "--- WASSERWERTE ---\n";
+  ['ph','gh','kh','nh4','no2','no3','po4','k','ca','mg','fe','na','sio2','so4'].forEach(p => {
+    let wW = document.getElementById('w_' + p + '_wechsel');
+    let wA = document.getElementById('w_' + p + '_akt');
+    if (wW && wA) {
+      reportText += `${p.toUpperCase()}: Wechsel = ${wW.value}, Aquarium = ${wA.value}\n`;
+    }
+  });
+  let now = new Date();
+  let todayStr = now.getFullYear() + '-' +
+    String(now.getMonth() + 1).padStart(2, '0') + '-' +
+    String(now.getDate()).padStart(2, '0');
+  if (!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+  allTanks[currentTankName].diary[todayStr] = reportText;
+  localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+  renderCalendar();
+  updateWaterChart();
+  alert('✅ Analyse im Kalender für heute (' + todayStr + ') gespeichert!');
 }
-};
-resContainer.appendChild(card);
-});
 
-resSection.style.display = 'block';
-resSection.scrollIntoView({ behavior: 'smooth' });
-}
-
-// --- PREMIUM EINSTELLUNGEN ---
 let isPremiumUser = true;
 const MAX_TANKS_FREE = 1;
 const MAX_TANKS_PREMIUM = 15;
@@ -1918,14 +1753,12 @@ function showUpgradeModal(msg) {
     alert(msg || "Diese Funktion erfordert eine Premium-Freischaltung.");
 }
 
-// Initiale Initialisierung beim Laden der Seite
 window.onload = function() {
     updateTankSelector();
     loadTankData();
     calcVol();
     switchLanguage(currentLang);
 };
-
 </script>
 </body>
-</html>
+  </html>
