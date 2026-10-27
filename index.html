@@ -326,6 +326,1837 @@ font-size: 0.75rem;
 color: var(--text-muted);
 line-height: 1.5;
 }
+.app-footer a { color: var(--accent); text-decoration: none; cursor: pointer; }
+.app-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="header-left">
+<h1><span data-i18n="title">AquaDiagnose</span> 💧</h1>
+<p data-i18n="subtitle">Vollständige Aquarium-Analyse</p>
+</div>
+<div class="header-controls">
+<div class="tank-selector-container">
+<select id="tankSelect" onchange="switchTank(this.value)"></select>
+<button type="button" onclick="createNewTank()" title="Neues Aquarium hinzufügen">+</button>
+<button type="button" onclick="renameCurrentTank()" title="Aktuelles Aquarium umbenennen">✏️</button>
+</div>
+<div class="lang-selector-container">
+<select id="langSelect" onchange="switchLanguage(this.value)">
+<option value="de">DE</option>
+<option value="en">EN</option>
+</select>
+</div>
+</div>
+</div>
+
+<div class="tabs">
+<button class="tab-btn active" onclick="openTab(event, 'tab-becken')" data-i18n="tab_tech">Becken & Technik</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-duengung')" data-i18n="tab_deco">Bodengrund & Deko</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-wasser')" data-i18n="tab_water">Wasserwerte</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-besatz')" data-i18n="tab_stock">Besatz & Futter</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-symptome')" data-i18n="tab_symptoms">Symptome</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-diagramme')" data-i18n="tab_charts">📈 Diagramme</button>
+<button class="tab-btn" onclick="openTab(event, 'tab-kalender')" data-i18n="tab_cal">📅 Kalender</button>
+</div>
+
+<form onsubmit="runAnalysis(event)">
+
+<div id="tab-becken" class="tab-content active">
+<div class="card">
+<h2 data-i18n="sec_tank_info">📐 Angaben zum Aquarium</h2>
+<div class="form-group"><label data-i18n="lbl_length">Aquarienlänge (cm):</label><input type="number" id="l" value="60" oninput="calcVol(); saveDataAuto();"></div>
+<div class="form-group"><label data-i18n="lbl_width">Aquarienbreite (cm):</label><input type="number" id="b" value="30" oninput="calcVol(); saveDataAuto();"></div>
+<div class="form-group"><label data-i18n="lbl_height">Aquarienhöhe (cm):</label><input type="number" id="h" value="36" oninput="calcVol(); saveDataAuto();"></div>
+<div class="form-group"><label data-i18n="lbl_vol">Aquarienvolumen (L):</label><input type="number" id="volumen" value="64.8" readonly style="background:#020617; color:var(--accent);"></div>
+<div class="form-group"><label data-i18n="lbl_runtime">Einrichtungszeit:</label><input type="text" id="inp_runtime" value="7 Wochen" oninput="saveDataAuto()"></div>
+</div>
+
+<div class="card">
+<h2 data-i18n="sec_filter">🌀 Filterung & Heizung</h2>
+<div class="form-group">
+<label data-i18n="lbl_filtertype">Filtertyp:</label>
+<select id="sel_filtertype" onchange="saveDataAuto()">
+<option data-i18n="opt_select">-- Aus der Liste auswählen --</option>
+<option value="Innenfilter" data-i18n="opt_infilt">Innenfilter</option>
+<option value="Rucksackfilter" data-i18n="opt_backpack">Rucksackfilter</option>
+<option value="Außenfilter" data-i18n="opt_outfilt" selected>Außenfilter</option>
+<option value="Filterbecken" data-i18n="opt_sump">Filterbecken (Sump)</option>
+</select>
+</div>
+<div class="form-group"><label data-i18n="lbl_flow">Filterdurchfluss (L/h):</label><input type="number" id="inp_flow" value="500" oninput="saveDataAuto()"></div>
+<div class="question-block">
+<label class="main-label" data-i18n="lbl_skimmer">Ist ein Oberflächenabsauger installiert?</label>
+<div class="radio-row">
+<label><input type="radio" name="skimmer" value="ja" onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="skimmer" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
+</div>
+</div>
+<div class="question-block">
+<label class="main-label" data-i18n="lbl_uv">UV-Klärer:</label>
+<div class="radio-row">
+<label><input type="radio" name="uv" value="ja" onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="uv" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
+</div>
+</div>
+<div class="question-block">
+<label class="main-label" data-i18n="lbl_filtermedia">Welche Filtermedien werden verwendet?</label>
+<div class="media-grid">
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_ceramic">Keramische Filtermedien</span></label>
+<label><input type="checkbox" class="fm-chk" checked onchange="saveDataAuto()"> <span data-i18n="fm_sponge">Filterschwamm</span></label>
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_clay">Blähton</span></label>
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_lava">Lavastein</span></label>
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_carbon">Aktivkohle</span></label>
+<label><input type="checkbox" class="fm-chk" checked onchange="saveDataAuto()"> <span data-i18n="fm_floss">Filterwatte</span></label>
+<label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_zeolite">Zeolith</span></label>
+</div>
+</div>
+<div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" id="inp_clean" placeholder="z. B. 2" oninput="saveDataAuto()"></div>
+<div class="question-block" style="margin-top: 15px;">
+<label class="main-label" data-i18n="lbl_heater">Ist im Aquarium ein Heizstab installiert?</label>
+<div class="radio-row">
+<label><input type="radio" name="heater" value="ja" checked onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="heater" value="nein" onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
+</div>
+</div>
+<div class="form-group"><label data-i18n="lbl_temp">Wassertemperatur (°C):</label><input type="number" id="inp_temp" value="24" step="0.5" oninput="saveDataAuto()"></div>
+</div>
+
+<div class="card">
+<h2 data-i18n="sec_co2">🫧 CO₂</h2>
+<div class="question-block">
+<label class="main-label" data-i18n="lbl_co2">Wird CO₂ zugeführt?</label>
+<div class="radio-row">
+<label><input type="radio" name="co2_zuafuhr" value="ja" checked onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="co2_zuafuhr" value="nein" onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2 data-i18n="sec_light">💡 Beleuchtung</h2>
+<div class="form-group">
+<label data-i18n="lbl_light_type">Beleuchtungsart:</label>
+<select id="beleuchtungsart" onchange="saveDataAuto()">
+<option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
+<option value="t5_t8" data-i18n="opt_t5t8">T5-/T8-Leuchtstoffröhre</option>
+<option value="led" data-i18n="opt_led">LED</option>
+<option value="hqi" data-i18n="opt_hqi">HQI</option>
+<option value="hql" data-i18n="opt_hql">HQL</option>
+</select>
+</div>
+<div class="form-group"><label data-i18n="lbl_light_kelvin">Farbtemperatur (K):</label><input type="number" id="farbtemperatur" value="6500" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_light_watt">Leistung (W):</label><input type="number" id="leistung" value="30" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_light_lum">Lichtstrom (lm):</label><input type="number" id="lichtstrom" value="2000" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_light_duration">Tägliche Beleuchtungsdauer (h):</label><input type="number" id="beleuchtungsdauer" value="10" oninput="saveDataAuto()"></div>
+</div>
+
+<div class="card">
+<h2 data-i18n="sec_plants">🌿 Pflanzen und Düngung</h2>
+<div class="form-group">
+<label data-i18n="lbl_plant_density">Wie dicht ist das Aquarium bepflanzt?</label>
+<select id="bepflanzungsdichte" onchange="saveDataAuto()">
+<option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
+<option value="sehr_wenig" data-i18n="pd_very_few">Sehr wenige Pflanzen</option>
+<option value="wenig" data-i18n="pd_few">Wenige Pflanzen</option>
+<option value="mittel" data-i18n="pd_medium">Mittlere Pflanzendichte</option>
+<option value="dicht" data-i18n="pd_dense">Dicht bepflanzt</option>
+<option value="sehr_dicht" data-i18n="pd_very_dense">Sehr dicht bepflanzt</option>
+</select>
+</div>
+<div class="form-group" style="flex-direction: column; align-items: flex-start;">
+<label style="margin-bottom: 10px; display: block;" data-i18n="lbl_fert_types">Welche Dünger werden verwendet?</label>
+<div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_flüssig_c" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_liq_c">Flüssiger Kohlenstoffzusatz</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_volldünger" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_allinone">Volldünger (All-in-One)</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_makro" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_macro">Makronährstoffdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_mikro" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_micro">Mikronährstoffdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_stickstoff" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_nitro">Stickstoffdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_phosphat" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_phos">Phosphatdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_kalium" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_pot">Kaliumdünger</span></label>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="duenger_iron" onchange="saveDataAuto()" style="width: 18px; height: 18px; accent-color: #38bdf8;"> <span data-i18n="ft_iron">Eisendünger</span></label>
+</div>
+</div>
+</div>
+</div>
+
+<div id="tab-duengung" class="tab-content">
+<div class="card">
+<h2 data-i18n="tab_deco">🪨 Bodengrund und Dekoration</h2>
+<div class="form-group">
+<label data-i18n="lbl_sub_type">Art des Bodengrunds:</label>
+<select id="bodenArt" onchange="saveDataAuto()">
+<option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
+<option value="quarzkies" data-i18n="sub_gravel" selected>Quarzkies</option>
+<option value="sand" data-i18n="sub_sand">Sand</option>
+<option value="soil" data-i18n="sub_soil">Soil (Aktiver Bodengrund)</option>
+</select>
+</div>
+<div class="question-block">
+<label class="main-label" data-i18n="lbl_nutrient_sub">Wurde ein nährstoffreicher Untergrund verwendet?</label>
+<div class="radio-row">
+<label><input type="radio" name="nutrient_sub" value="ja" onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="nutrient_sub" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
+</div>
+</div>
+<div class="question-block" style="margin-top: 10px;">
+<label class="main-label" data-i18n="lbl_regular_sub_fert">Werden regelmäßig Bodendünger verwendet?</label>
+<div class="radio-row">
+<label><input type="radio" name="regular_sub_fert" value="ja" onchange="saveDataAuto()"> <span data-i18n="lbl_yes">Ja</span></label>
+<label><input type="radio" name="regular_sub_fert" value="nein" checked onchange="saveDataAuto()"> <span data-i18n="lbl_no">Nein</span></label>
+</div>
+</div>
+<div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0" oninput="saveDataAuto()"></div>
+<h3 data-i18n="sec_stone">Steinauswahl (Kalk-Analyse)</h3>
+<div class="form-group">
+<label data-i18n="lbl_stone_type">Steinart:</label>
+<select id="steinArt" onchange="saveDataAuto()">
+<option value="" data-i18n="opt_nostone">-- Keine / Keine Angabe --</option>
+<option value="seiryu" data-i18n="st_seiryu">Seiryu Stone / Green Stone (Kalkhaltig)</option>
+<option value="dragon" data-i18n="st_dragon">Dragon Stone / Ohko Stone (Tonstein)</option>
+<option value="rokkaku" data-i18n="st_rokkaku">Rokkaku Stone (Kalkhaltig)</option>
+<option value="mini_landscape" data-i18n="st_mini">Mini-Landscape (Kalkhaltig)</option>
+<option value="schiefer" data-i18n="st_slate">Schiefer / Black Slate (Neutral)</option>
+<option value="lava" data-i18n="st_lava">Lavastein (Neutral, porös)</option>
+<option value="manten" data-i18n="st_manten">Manten Stone (Meist neutral)</option>
+<option value="ada_eyi" data-i18n="st_ada">ADA Eiyu / Ryuoh Stone (Härtet stark auf)</option>
+<option value="granit" data-i18n="st_granite">Granit (Neutral, inert)</option>
+<option value="marmor" data-i18n="st_marmor">Marmor / Weissmarmor (Extrem kalkhaltig)</option>
+<option value="lochgestein" data-i18n="st_loch">Lochgestein (Stark kalkhaltig)</option>
+<option value="flusskiesel" data-i18n="st_river">Flusskiesel (Meist neutral)</option>
+<option value="zebra" data-i18n="st_zebra">Zebra Stone (Leicht kalkhaltig)</option>
+<option value="holzstein" data-i18n="st_holzstein">Holzstein (Meist neutral)</option>
+<option value="tiger" data-i18n="st_tiger">Tiger Stone (Neutral)</option>
+</select>
+</div>
+<div class="form-group"><label data-i18n="lbl_stone_qty">Menge an Steinen (kg):</label><input type="number" id="steinMenge" value="5" step="0.1" oninput="saveDataAuto()"></div>
+<h3 data-i18n="sec_wood">Holzauswahl</h3>
+<div class="form-group">
+<label data-i18n="lbl_wood_type">Holzart:</label>
+<select id="holzArt" onchange="saveDataAuto()">
+<option value="" data-i18n="opt_nowood">-- Kein Holz / Keine Angabe --</option>
+<option value="red_moor" data-i18n="wt_redmoor">Red Moor Wood (Gibt Tannine ab)</option>
+<option value="mangrove" data-i18n="wt_mangrove">Mangrovenholz (Säuert leicht an)</option>
+<option value="moorkien" data-i18n="wt_moor">Moorkienholz (Säuert stark an)</option>
+<option value="spider_wood" data-i18n="wt_spider">Spider Wood (Astig, hell)</option>
+<option value="driftwood" data-i18n="wt_drift">Treibholz (Leicht sauer)</option>
+<option value="savannenholz" data-i18n="wt_savannah">Savannenholz (Hart, glatt)</option>
+<option value="rondeletia" data-i18n="wt_ironwood">Eisenholz (Sehr hart und schwer)</option>
+<option value="jumbo" data-i18n="wt_jumbo">Jumbo-Wurzel (Großstückig)</option>
+<option value="korkenzieher" data-i18n="wt_cork">Korkenzieherhasel (Dekorativ)</option>
+</select>
+</div>
+<div class="form-group"><label data-i18n="lbl_wood_qty">Menge an Holz (kg):</label><input type="number" id="holzMenge" value="2" step="0.1" oninput="saveDataAuto()"></div>
+</div>
+</div>
+
+<div id="tab-wasser" class="tab-content">
+<div class="card">
+<h2 data-i18n="sec_water_compare">🧪 Wasserwerte-Vergleich</h2>
+<div class="water-grid">
+<table class="water-table">
+<thead>
+<tr>
+<th style="text-align:left;" data-i18n="col_water_parameter">Parameter</th>
+<th data-i18n="col_water_change">Wasserwechsel</th>
+<th data-i18n="col_water_tank">Aquarienwasser</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>pH</td><td><input type="text" id="w_ph_wechsel" value="7.2" oninput="saveDataAuto()"></td><td><input type="text" id="w_ph_akt" value="6.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>GH</td><td><input type="text" id="w_gh_wechsel" value="10.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_gh_akt" value="12.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>KH</td><td><input type="text" id="w_kh_wechsel" value="6.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_kh_akt" value="4.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>NH₄ (ppm)</td><td><input type="text" id="w_nh4_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_nh4_akt" value="0.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>NO₂ (ppm)</td><td><input type="text" id="w_no2_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_no2_akt" value="0.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>NO₃ (ppm)</td><td><input type="text" id="w_no3_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_no3_akt" value="10.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>PO₄ (ppm)</td><td><input type="text" id="w_po4_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_po4_akt" value="0.1" oninput="saveDataAuto()"></td></tr>
+<tr><td>K (ppm)</td><td><input type="text" id="w_k_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_k_akt" value="5.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>Ca (ppm)</td><td><input type="text" id="w_ca_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_ca_akt" value="25.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>Mg (ppm)</td><td><input type="text" id="w_mg_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_mg_akt" value="5.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>Fe (ppm)</td><td><input type="text" id="w_fe_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_fe_akt" value="0.05" oninput="saveDataAuto()"></td></tr>
+<tr><td>Na (ppm)</td><td><input type="text" id="w_na_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_na_akt" value="5.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>SiO₂ (ppm)</td><td><input type="text" id="w_sio2_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_sio2_akt" value="2.0" oninput="saveDataAuto()"></td></tr>
+<tr><td>SO₄ (ppm)</td><td><input type="text" id="w_so4_wechsel" value="0.0" oninput="saveDataAuto()"></td><td><input type="text" id="w_so4_akt" value="10.0" oninput="saveDataAuto()"></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="tab-besatz" class="tab-content">
+<div class="card">
+<h2 data-i18n="tab_stock">🐟 Tierbesatz & Fütterung</h2>
+<div class="form-group"><label data-i18n="lbl_fish_small">Kleine Fische (bis 3 cm):</label><input type="number" id="besatz_klein" value="10" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_fish_medium">Mittelgroße Fische (3–8 cm):</label><input type="number" id="besatz_mittel" value="5" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_fish_large">Große Fische (über 8 cm):</label><input type="number" id="besatz_gross" value="0" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_fish_pleco">L-Welse / Harnischwelse:</label><input type="number" id="besatz_welse" value="1" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_fish_algae">Algenfressende Fische:</label><input type="number" id="besatz_algen" value="2" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_shrimp">Garnelen (Stk.):</label><input type="number" id="besatz_garnelen" value="15" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_snails">Schnecken (Stk.):</label><input type="number" id="besatz_schnecken" value="10" oninput="saveDataAuto()"></div>
+<div class="question-block" style="margin-top: 15px;">
+<label class="main-label" data-i18n="lbl_feeding">Fütterung:</label>
+<div class="media-grid">
+<label class="check-group"><input type="checkbox" class="fd-chk" onchange="saveDataAuto()"> <span data-i18n="fd_live">Lebendfutter</span></label>
+<label class="check-group"><input type="checkbox" class="fd-chk" onchange="saveDataAuto()"> <span data-i18n="fd_frozen">Frostfutter</span></label>
+<label class="check-group"><input type="checkbox" class="fd-chk" onchange="saveDataAuto()"> <span data-i18n="fd_flakes">Flockenfutter</span></label>
+<label class="check-group"><input type="checkbox" class="fd-chk" checked onchange="saveDataAuto()"> <span data-i18n="fd_granule">Granulatfutter</span></label>
+<label class="check-group"><input type="checkbox" class="fd-chk" checked onchange="saveDataAuto()"> <span data-i18n="fd_tabs">Wels-Tabs / Chips</span></label>
+</div>
+</div>
+<div class="form-group" style="margin-top: 12px;">
+<label data-i18n="lbl_feeding_freq">Fütterungshäufigkeit:</label>
+<select id="fuetterungs_haeufigkeit" onchange="saveDataAuto()">
+<option data-i18n="opt_select">-- Aus der Liste auswählen --</option>
+<option value="1x_taeglich" data-i18n="ff_1x_d">1 x täglich</option>
+<option value="2x_taeglich" data-i18n="ff_2x_d" selected>2 x täglich</option>
+<option value="mehr_als_2x_taeglich" data-i18n="ff_more_d">Mehr als 2 x täglich</option>
+<option value="1x_woechentlich" data-i18n="ff_1x_w">1 x wöchentlich</option>
+<option value="2x_woechentlich" data-i18n="ff_2x_w">2 x wöchentlich</option>
+<option value="mehr_als_2x_woechentlich" data-i18n="ff_more_w">Mehr als 2 x wöchentlich</option>
+</select>
+</div>
+</div>
+</div>
+
+<div id="tab-symptome" class="tab-content">
+<div class="card">
+<h2 data-i18n="tab_symptoms">⚠️ Beobachtete Probleme</h2>
+<div class="question-block">
+<label class="main-label" data-i18n="lbl_sym_algae">Welche Algen treten auf?</label>
+<div class="media-grid">
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Fadenalgen" onchange="saveDataAuto()"> <span data-i18n="alg_green_thread">Grüne Fadenalgen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Punktalgen (GSA)" onchange="saveDataAuto()"> <span data-i18n="alg_green_spot">Grüne Punktalgen (GSA)</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Cyanobakterien" onchange="saveDataAuto()"> <span data-i18n="alg_cyano">Cyanobakterien</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Pinselalgen / Bartalgen (BBA)" onchange="saveDataAuto()"> <span data-i18n="alg_brush">Pinselalgen / Bartalgen (BBA)</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Spirogyra" onchange="saveDataAuto()"> <span data-i18n="alg_spirogyra">Spirogyra</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kieselalgen" onchange="saveDataAuto()"> <span data-i18n="alg_diatoms">Kieselalgen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüner Belag auf den Scheiben" onchange="saveDataAuto()"> <span data-i18n="alg_glass">Grüner Belag auf den Scheiben</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Grüne Wasserblüte" onchange="saveDataAuto()"> <span data-i18n="alg_bloom">Grüne Wasserblüte</span></label>
+</div>
+</div>
+<div class="question-block" style="margin-top: 15px;">
+<label class="main-label" data-i18n="lbl_sym_plants">Pflanzenprobleme:</label>
+<div class="media-grid">
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kein Wachstum" onchange="saveDataAuto()"> <span data-i18n="pl_no_growth">Kein Wachstum</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Verblassen / Farbverlust" onchange="saveDataAuto()"> <span data-i18n="pl_fade">Verblassen / Farbverlust</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Löcher in den Blättern" onchange="saveDataAuto()"> <span data-i18n="pl_holes">Löcher in den Blättern</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Blattzerfall / Pflanzenmelt" onchange="saveDataAuto()"> <span data-i18n="pl_melt">Blattzerfall / Pflanzenmelt</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Stängelfäule" onchange="saveDataAuto()"> <span data-i18n="pl_rot">Stängelfäule</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Vergilbende Blätter" onchange="saveDataAuto()"> <span data-i18n="pl_yellow">Vergilbende Blätter</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Kleine deformierte Blätter" onchange="saveDataAuto()"> <span data-i18n="pl_deformed">Kleine, deformierte neue Blätter</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Abfallende untere Blätter" onchange="saveDataAuto()"> <span data-i18n="pl_drop">Abfallende untere Blätter</span></label>
+</div>
+</div>
+<div class="question-block" style="margin-top: 15px;">
+<label class="main-label" data-i18n="lbl_sym_fish">Fische und Wirbellose:</label>
+<div class="media-grid">
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Schnappen nach Luft" onchange="saveDataAuto()"> <span data-i18n="fi_air">Schnappen nach Luft an der Oberfläche</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Teilnahmslosigkeit" onchange="saveDataAuto()"> <span data-i18n="fi_apathy">Teilnahmslosigkeit / Appetitlosigkeit</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Todesfälle" onchange="saveDataAuto()"> <span data-i18n="fi_deaths">Todesfälle in den letzten Tagen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weiße Punkte" onchange="saveDataAuto()"> <span data-i18n="fi_spots">Weiße Punkte oder Beläge auf Fischen</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Ausgefranste Flossen" onchange="saveDataAuto()"> <span data-i18n="fi_fins">Ausgefranste oder sich auflösende Flossen</span></label>
+</div>
+</div>
+<div class="question-block" style="margin-top: 15px;">
+<label class="main-label" data-i18n="lbl_sym_water">Wasser und Erscheinungsbild:</label>
+<div class="media-grid">
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Trübes Wasser" onchange="saveDataAuto()"> <span data-i18n="wa_turbid">Trübes Wasser</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Gelbe Wasserfärbung" onchange="saveDataAuto()"> <span data-i18n="wa_yellow">Gelbe oder teefarbene Wasserfärbung</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Mineralische Ablagerungen" onchange="saveDataAuto()"> <span data-i18n="wa_deposits">Mineralische Ablagerungen auf Scheiben/Technik</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Unangenehmer Geruch" onchange="saveDataAuto()"> <span data-i18n="wa_odor">Unangenehmer Geruch</span></label>
+<label class="check-group"><input type="checkbox" class="symptom-chk" value="Weißer Belag auf Holz" onchange="saveDataAuto()"> <span data-i18n="wa_biofilm">Weißer Belag oder Biofilm auf Holz</span></label>
+</div>
+</div>
+<button type="submit" class="btn-red" data-i18n="btn_analyze">Analysieren & im Kalender speichern</button>
+</div>
+
+<div class="result-box" id="resultSection">
+<div class="card" id="resultCardContainer">
+<h2 data-i18n="res_title">📊 Analyseergebnis & Auswertung</h2>
+</div>
+</div>
+</div>
+
+<div id="tab-diagramme" class="tab-content">
+<div class="card">
+<h2 data-i18n="tab_charts">📈 Wasserwerte-Verlauf (Diagramme)</h2>
+<p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch.</p>
+<div class="form-group" style="flex-direction: column; align-items: flex-start; margin-bottom: 15px;">
+<label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold; margin-bottom: 8px;">Parameter auswählen (mehrere möglich):</label>
+<div class="media-grid" id="chartParamSelect" style="width: 100%;">
+<label class="check-group"><input type="checkbox" value="w_ph_akt" checked onchange="updateWaterChart()"> pH (Aquarienwasser)</label>
+<label class="check-group"><input type="checkbox" value="w_gh_akt" onchange="updateWaterChart()"> GH (°dH)</label>
+<label class="check-group"><input type="checkbox" value="w_kh_akt" onchange="updateWaterChart()"> KH (°dH)</label>
+<label class="check-group"><input type="checkbox" value="w_nh4_akt" onchange="updateWaterChart()"> NH₄ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_no2_akt" onchange="updateWaterChart()"> NO₂ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_no3_akt" onchange="updateWaterChart()"> NO₃ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_po4_akt" onchange="updateWaterChart()"> PO₄ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_k_akt" onchange="updateWaterChart()"> K (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_ca_akt" onchange="updateWaterChart()"> Ca (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_mg_akt" onchange="updateWaterChart()"> Mg (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_fe_akt" onchange="updateWaterChart()"> Fe (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_na_akt" onchange="updateWaterChart()"> Na (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_sio2_akt" onchange="updateWaterChart()"> SiO₂ (ppm)</label>
+<label class="check-group"><input type="checkbox" value="w_so4_akt" onchange="updateWaterChart()"> SO₄ (ppm)</label>
+</div>
+</div>
+<div style="position: relative; height: 260px; width: 100%; margin-bottom: 20px;">
+<canvas id="waterChart"></canvas>
+</div>
+</div>
+</div>
+
+<div id="tab-kalender" class="tab-content">
+<div class="card">
+<h2 data-i18n="tab_cal">📅 Aquarien-Tagebuch</h2>
+<div class="calendar-nav">
+<button type="button" onclick="changeMonth(-1)">‹</button>
+<span id="calMonthYear">März 2026</span>
+<button type="button" onclick="changeMonth(1)">›</button>
+</div>
+<div class="calendar-grid" id="calendarGrid"></div>
+</div>
+</div>
+
+</form>
+
+<div class="modal-overlay" id="dayModal">
+<div class="modal-content">
+<button class="modal-close" onclick="closeModal()">×</button>
+<h3 id="modalDateTitle" style="color:var(--accent); margin-bottom: 10px;">Datum</h3>
+<div class="modal-body">
+<p style="margin-bottom: 6px; color:var(--text-muted);" data-i18n="modal_subtitle">Vollständiger Analyse-Report:</p>
+<textarea id="modalEntryText" placeholder="Notizen oder gemessene Werte hier eintragen..."></textarea>
+<button type="button" class="modal-btn" onclick="saveDayEntry()" data-i18n="modal_save">Speichern</button>
+</div>
+</div>
+</div>
+
+<footer class="app-footer">
+<p>
+  <span data-i18n="footer_text">AquaDiagnose v2.9</span> | 
+  <a onclick="exportData()" data-i18n="footer_save">Daten exportieren</a> | 
+  <a onclick="triggerImport()">Daten importieren</a>
+  <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+</p>
+<p style="margin-top: 4px;"><span data-i18n="footer_provider">Bereitgestellt von</span> <a href="https://aqua-enthusiasts.de" target="_blank">Aqua-Enthusiasts.de</a></p>
+</footer>
+
+<script>
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+let activeModalDate = '';
+let currentLang = localStorage.getItem('awr_lang') || 'de';
+let myWaterChart = null;
+
+let allTanks = JSON.parse(localStorage.getItem('awr_all_tanks')) || {
+  "Hauptbecken (64L)": {
+    inputs: {},
+    diary: {}
+  }
+};
+let currentTankName = Object.keys(allTanks)[0];
+
+// Premium Status aus LocalStorage (Standard: false)
+let isPremiumUser = localStorage.getItem('awr_is_premium') === 'true';
+
+const translations = {
+de: {
+main_title: "AquaDiagnose – Das Original für professionelle Analysen",
+title: "AquaDiagnose",
+subtitle: "Dein digitaler Assistent für ein stabiles Ökosystem",
+tab_tech: "Becken & Technik",
+tab_deco: "Bodengrund & Deko",
+tab_water: "Wasserwerte",
+tab_stock: "Besatz & Futter",
+tab_symptoms: "Symptome",
+tab_charts: "📈 Diagramme",
+tab_cal: "📅 Kalender",
+charts_desc: "Verlauf deiner gemessenen Aquarienwerte aus dem Analyse-Protokoll:",
+lbl_select_param: "Parameter im Diagramm (mehrere möglich):",
+sec_tank_info: "📐 Angaben zum Aquarium",
+lbl_length: "Aquarienlänge (cm):",
+lbl_width: "Aquarienbreite (cm):",
+lbl_height: "Aquarienhöhe (cm):",
+lbl_vol: "Aquarienvolumen (L):",
+lbl_runtime: "Einrichtungszeit:",
+sec_filter: "🌀 Filterung & Heizung",
+lbl_filtertype: "Filtertyp:",
+opt_select: "-- Aus der Liste auswählen --",
+opt_infilt: "Innenfilter",
+opt_backpack: "Rucksackfilter",
+opt_outfilt: "Außenfilter",
+opt_sump: "Filterbecken (Sump)",
+lbl_flow: "Filterdurchfluss (L/h):",
+lbl_skimmer: "Ist ein Oberflächenabsauger installiert?",
+lbl_uv: "UV-Klärer:",
+lbl_yes: "Ja",
+lbl_no: "Nein",
+lbl_filtermedia: "Welche Filtermedien werden verwendet?",
+fm_ceramic: "Keramische Filtermedien",
+fm_sponge: "Filterschwamm",
+fm_clay: "Blähton",
+fm_lava: "Lavastein",
+fm_carbon: "Aktivkohle",
+fm_floss: "Filterwatte",
+fm_zeolite: "Zeolith",
+lbl_clean_interval: "In welchem Abstand wird der Filter gereinigt (in Wochen)?",
+lbl_heater: "Ist im Aquarium ein Heizstab installiert?",
+lbl_temp: "Wassertemperatur (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "Wird CO₂ zugeführt?",
+sec_light: "💡 Beleuchtung",
+lbl_light_type: "Beleuchtungsart:",
+opt_t5t8: "T5-/T8-Leuchtstoffröhre",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Farbtemperatur (K):",
+lbl_light_watt: "Leistung (W):",
+lbl_light_lum: "Lichtstrom (lm):",
+lbl_light_duration: "Tägliche Beleuchtungsdauer (h):",
+sec_plants: "🌿 Pflanzen und Düngung",
+lbl_plant_density: "Wie dicht ist das Aquarium bepflanzt?",
+pd_very_few: "Sehr wenige Pflanzen",
+pd_few: "Wenige Pflanzen",
+pd_medium: "Mittlere Pflanzendichte",
+pd_dense: "Dicht bepflanzt",
+pd_very_dense: "Sehr dicht bepflanzt",
+lbl_fert_types: "Welche Dünger werden verwendet?",
+ft_liq_c: "Flüssiger Kohlenstoffzusatz",
+ft_allinone: "Volldünger (All-in-One)",
+ft_macro: "Makronährstoffdünger",
+ft_micro: "Mikronährstoffdünger",
+ft_nitro: "Stickstoffdünger",
+ft_phos: "Phosphatdünger",
+ft_pot: "Kaliumdünger",
+ft_iron: "Eisendünger",
+lbl_sub_type: "Art des Bodengrunds:",
+sub_gravel: "Quarzkies",
+sub_sand: "Sand",
+sub_soil: "Soil (Aktiver Bodengrund)",
+lbl_nutrient_sub: "Wurde ein nährstoffreicher Untergrund verwendet?",
+lbl_regular_sub_fert: "Werden regelmäßig Bodendünger verwendet?",
+lbl_sub_vol: "Gesamtvolumen des Bodengrunds (L):",
+sec_stone: "Steinauswahl (Kalk-Analyse)",
+lbl_stone_type: "Steinart:",
+opt_nostone: "-- Keine / Keine Angabe --",
+st_seiryu: "Seiryu Stone / Green Stone (Kalkhaltig)",
+st_dragon: "Dragon Stone / Ohko Stone (Tonstein)",
+st_rokkaku: "Rokkaku Stone (Kalkhaltig)",
+st_mini: "Mini-Landscape (Kalkhaltig)",
+st_slate: "Schiefer / Black Slate (Neutral)",
+st_lava: "Lavastein (Neutral, porös)",
+st_manten: "Manten Stone (Meist neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Härtet stark auf)",
+st_granite: "Granit (Neutral, inert)",
+st_marmor: "Marmor / Weissmarmor (Extrem kalkhaltig)",
+st_loch: "Lochgestein (Stark kalkhaltig)",
+st_river: "Flusskiesel (Meist neutral)",
+st_zebra: "Zebra Stone (Leicht kalkhaltig)",
+st_holzstein: "Holzstein (Meist neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Menge an Steinen (kg):",
+sec_wood: "Holzauswahl",
+lbl_wood_type: "Holzart:",
+opt_nowood: "-- Kein Holz / Keine Angabe --",
+wt_redmoor: "Red Moor Wood (Gibt Tannine ab)",
+wt_mangrove: "Mangrovenholz (Säuert leicht an)",
+wt_moor: "Moorkienholz (Säuert stark an)",
+wt_spider: "Spider Wood (Astig, hell)",
+wt_drift: "Treibholz (Leicht sauer)",
+wt_savannah: "Savannenholz (Hart, glatt)",
+wt_rondeletia: "Eisenholz (Sehr hart und schwer)",
+wt_jumbo: "Jumbo-Wurzel (Großstückig)",
+wt_cork: "Korkenzieherhasel (Dekorativ)",
+lbl_wood_qty: "Menge an Holz (kg):",
+sec_water_compare: "🧪 Wasserwerte-Vergleich",
+col_water_parameter: "Parameter",
+col_water_change: "Wasserwechsel",
+col_water_tank: "Aquarienwasser",
+lbl_fish_small: "Kleine Fische (bis 3 cm):",
+lbl_fish_medium: "Mittelgroße Fische (3–8 cm):",
+lbl_fish_large: "Große Fische (über 8 cm):",
+lbl_fish_pleco: "L-Welse / Harnischwelse:",
+lbl_fish_algae: "Algenfressende Fische:",
+lbl_shrimp: "Garnelen (Stk.):",
+lbl_snails: "Schnecken (Stk.):",
+lbl_feeding: "Fütterung:",
+fd_live: "Lebendfutter",
+fd_frozen: "Frostfutter",
+fd_flakes: "Flockenfutter",
+fd_granule: "Granulatfutter",
+fd_tabs: "Wels-Tabs / Chips",
+lbl_feeding_freq: "Fütterungshäufigkeit:",
+ff_1x_d: "1 x täglich",
+ff_2x_d: "2 x täglich",
+ff_more_d: "Mehr als 2 x täglich",
+ff_1x_w: "1 x wöchentlich",
+ff_2x_w: "2 x wöchentlich",
+ff_more_w: "Mehr als 2 x wöchentlich",
+lbl_sym_algae: "Welche Algen treten auf?",
+alg_green_thread: "Grüne Fadenalgen",
+alg_green_spot: "Grüne Punktalgen (GSA)",
+alg_cyano: "Cyanobakterien",
+alg_brush: "Pinselalgen / Bartalgen (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Kieselalgen",
+alg_glass: "Grüner Belag auf den Scheiben",
+alg_bloom: "Grüne Wasserblüte",
+lbl_sym_plants: "Pflanzenprobleme:",
+pl_no_growth: "Kein Wachstum",
+pl_fade: "Verblassen / Farbverlust",
+pl_holes: "Löcher in den Blättern",
+pl_melt: "Blattzerfall / Pflanzenmelt",
+pl_rot: "Stängelfäule",
+pl_yellow: "Vergilbende Blätter",
+pl_deformed: "Kleine, deformierte neue Blätter",
+pl_drop: "Abfallende untere Blätter",
+lbl_sym_fish: "Fische und Wirbellose:",
+fi_air: "Schnappen nach Luft an der Oberfläche",
+fi_apathy: "Teilnahmslosigkeit / Appetitlosigkeit",
+fi_deaths: "Todesfälle in den letzten Tagen",
+fi_spots: "Weiße Punkte oder Beläge auf Fischen",
+fi_spots_p: "Prophylaxe: Neue Fische immer gut eingewöhnen und auf makellosen Gesundheitszustand beim Kauf achten.",
+fi_fins: "Ausgefranste oder sich auflösende Flossen",
+lbl_sym_water: "Wasser und Erscheinungsbild:",
+wa_turbid: "Trübes Wasser",
+wa_yellow: "Gelbe oder teefarbene Wasserfärbung",
+wa_deposits: "Mineralische Ablagerungen auf Scheiben/Technik",
+wa_odor: "Unangenehmer Geruch",
+wa_biofilm: "Weißer Belag oder Biofilm auf Holz",
+btn_analyze: "Analysieren & im Kalender speichern",
+res_title: "📊 Analyseergebnis & Auswertung",
+modal_subtitle: "Vollständiger Analyse-Report:",
+modal_save: "Speichern",
+footer_text: "AquaDiagnose v2.9",
+footer_save: "Daten sichern",
+footer_provider: "Bereitgestellt von",
+click_details: "Klicken für Details",
+expl_label: "Erklärung",
+sol_label: "Lösung",
+p_label: "Prophylaxe",
+
+warn_gh_title: "⚠️ Wasser wird zu hart (Kalk im Becken)",
+warn_gh_expl: "Im Becken befinden sich kalkhaltige Steine (oder das Leitungswasser ist sehr hart). Diese Steine geben ununterbrochen Mineralien ab, wodurch das Wasser mit der Zeit immer härter wird.",
+warn_gh_sol: "Nimm die kalkhaltigen Steine heraus und ersetze sie durch neutrale Deko (wie Schiefer oder Lavastein). Mische beim nächsten Wasserwechsel normales Leitungswasser mit weichem Osmose- oder destillierten Wasser, um die Härte zu senken.",
+
+warn_ph_title: "⚠️ Achtung: Gefahr eines Säuresturzes (pH-Wert zu niedrig)",
+warn_ph_expl: "Der pH-Wert ist im sauren Bereich und die Karbonathärte (KH) ist zu gering. Das Wasser hat keinen Puffer mehr, wodurch der pH-Wert plötzlich blitzartig abstürzen und die Fische gefährden kann.",
+warn_ph_sol: "Wechsle sofort ca. 30-50% des Wassers aus. Nutze beim Wasserwechsel Leitungswasser mit höherer Karbonathärte, um den Puffer im Aquarium wieder aufzubauen (Ziel KH: mindestens 5° dH).",
+
+warn_no3_title: "🚨 Nitrat-Wert zu hoch",
+warn_no3_expl: "Es ist zu viel Nitrat im Wasser. Das passiert meistens durch zu viel Futter, zu seltenes Wasserwechseln oder weil bereits das Leitungswasser stark mit Nitrat belastet ist.",
+warn_no3_sol: "Mache ab sofort wöchentlich einen großen Wasserwechsel von 50%. Füttere deine Fische nur noch so viel, wie sie in 1-2 Minuten komplett auffressen können, ohne dass Reste auf den Boden sinken.",
+
+warn_overstock_title: "🚨 Alarm: Starker Überbesatz im Aquarium!",
+warn_overstock_expl: "Die Anzahl und Größe der ausgewählten Fische passt absolut nicht zum geringen Volumen deines Aquariums. Es droht akuter Sauerstoffmangel, massiver Ammoniak- und Nitrit-Anstieg sowie enormer Stress für die Tiere.",
+warn_overstock_sol: "Reduziere den Fischbesatz drastisch (z.B. durch Abgabe von Tieren an andere Aquarianer oder Zoofachgeschäfte) oder steige auf ein deutlich größeres Aquarium (mindestens 200–300 Liter) um.",
+
+pro_tip_title: "💡 Profi-Tipp: Biologische Stabilität",
+pro_tip_expl: "Ein eingefahrenes Aquarium verzeiht kleine Fehler, aber verlasse dich nie auf Teststreifen allein – Tröpfchentests liefern exakte Ergebnisse für ein stabiles Millieu.",
+pro_tip_sol: "Führe wöchentlich feste Routinen für Wasserwechsel und Filterpflege ein, anstatt erst bei Problemen zu reagieren.",
+
+alg_green_thread_t: "🚨 Algen-Hilfe: Grüne Fadenalgen (grüne Haare)",
+alg_green_thread_e: "Diese langen, haarigen Algen entstehen meistens, wenn zu viel Eisen/Dünger im Wasser ist, das Licht zu lange brennt oder die CO₂-Zufuhr ungleichmäßig läuft.",
+alg_green_thread_s: "Drehe die Düngung für die nächsten 2 Wochen um die Hälfte herunter. Wickle die Algen einfach mit einer kleinen Bürste oder einer Zahnbürste auf und mache wöchentlich 50% Wasserwechsel.",
+
+alg_green_spot_t: "🚨 Algen-Hilfe: Grüne Punktalgen (harte Punkte auf Scheiben)",
+alg_green_spot_e: "Harte, kleine grüne Punkte an den Glasscheiben oder Blättern zeigen an, dass deinen Pflanzen ein bestimmter Nährstoff (Phosphat) fehlt.",
+alg_green_spot_s: "Kratze die Punkte vorsichtig mit einem Klingenschaber von der Scheibe. Dünge etwas Phosphat nach und verkürze die Beleuchtungszeit am Tag um 1 Stunde.",
+
+alg_cyano_t: "🚨 Algen-Hilfe: Cyanobakterien (Blaualgen - schmierig & stinkend)",
+alg_cyano_e: "Das sind eigentlich Bakterien, die einen bläulich-grünen, schmierigen Teppich bilden und oft muffig riechen. Ursache ist meistens alter Schmutz (Mulm) am Boden oder Ecken mit zu wenig Wasserströmung.",
+alg_cyano_s: "Sauge den schmierigen Belag mit einem Schlauch ab. Reinige den Bodengrund gründlicher vom Mulm und sorge dafür, dass das Wasser im Aquarium überall gut zirkulieren kann.",
+
+alg_brush_t: "🚨 Algen-Hilfe: Pinselalgen / Bartalgen (büschelartig, dunkel)",
+alg_brush_e: "Dunkle, buschige Algen, die sich gerne an Filtereinläufen oder stark angeströmten Pflanzenblättern festsetzen. Sie lieben schwankende CO₂-Werte und viel Schmutz im Wasser.",
+alg_brush_s: "Prüfe deine CO₂-Anlage, damit sie gleichmäßig läuft. Sauge Schmutzreste konsequent ab und spritze betroffene Steine oder Wurzeln außerhalb des Wassers mit etwas flüssigem Kohlenstoff ein.",
+
+alg_spirogyra_t: "🚨 Algen-Hilfe: Wollige Fadenalgen (Spirogyra)",
+alg_spirogyra_e: "Diese Algen bilden helle, watteartige Nester, die sich extrem schnell vermehren. Sie wachsen besonders gut, wenn zu viel Eisendünger und gleichzeitig Schmutz im Becken ist.",
+alg_spirogyra_s: "Stoppe vorerst jeglichen Eisendünger. Wickle die Watte-Nester manuell heraus und reinige deinen Filter, falls sich dort alter Schmutz angesammelt hat.",
+
+alg_diatoms_t: "🚨 Algen-Hilfe: Kieselalgen (brauner Belag)",
+alg_diatoms_e: "Ein brauner, schmieriger Belag, der sich in der Einlaufphase eines neuen Aquariums fast immer zeigt. Schuld daran ist oft Kieselsäure im Leitungswasser.",
+alg_diatoms_s: "Keine Panik, das ist bei neuen Becken normal und verschwindet nach ein paar Wochen von selbst. Du kannst den Belag einfach abwischen und Geduld haben.",
+
+alg_glass_t: "🚨 Algen-Hilfe: Grüner Belag auf den Glasscheiben",
+alg_glass_e: "Ein leichter grüner Film auf den Scheiben ist völlig normal. Er entsteht durch Licht und Nährstoffe im Wasser.",
+alg_glass_s: "Putz die Scheiben einfach regelmäßig mit einem Scheibenmagneten oder einem Klingenreiniger. Steht das Aquarium evtl. in der prallen Sonne? Wenn ja, verstelle es oder schirme das Licht ab.",
+
+alg_bloom_t: "🚨 Algen-Hilfe: Grüne Wasserblüte (milchig-grünes Wasser)",
+alg_bloom_e: "Das Wasser aussieht wie grüne Erbsensuppe. Winzige Schwebealgen schwimmen frei im Wasser, meist ausgelöst durch zu viel Licht oder ein Nährstoffungleichgewicht.",
+alg_bloom_s: "Schalte das Licht komplett aus und decke das Aquarium für 3 Tage blickdicht ab (Dunkelkur). Mache danach einen großen Wasserwechsel von 50%. Ein UV-C-Klärer hilft ebenfalls sofort.",
+
+pl_no_growth_t: "⚠️ Pflanzen-Hilfe: Pflanzen wachsen überhaupt nicht",
+pl_no_growth_e: "Deine Pflanzen stehen einfach still und wachsen nicht weiter. Das liegt meist daran, dass ihnen ein wichtiger Hauptnährstoff (wie NPK) oder CO₂ fehlt.",
+pl_no_growth_s: "Besorge dir einen guten Volldünger und prüfe, ob deine Pflanzen genug Licht bekommen. Wenn es wurzelzehrende Pflanzen sind, stecke ihnen Düngestäbchen oder Düngekugeln an die Wurzeln.",
+
+pl_fade_t: "⚠️ Pflanzen-Hilfe: Blätter werden blass und bleichen aus",
+pl_fade_e: "Die Blätter verlieren ihre grüne Farbe und werden blass. Meistens fehlt den Pflanzen Eisen oder Stickstoff, wodurch sie kein Blattgrün mehr bilden können.",
+pl_fade_s: "Dosiere einen eisenhaltigen Flüssigdünger nach Anleitung ins Wasser, damit die Pflanzen ihre kräftige grüne Farbe zurückbekommen.",
+
+pl_holes_t: "⚠️ Pflanzen-Hilfe: Löcher in den Blättern",
+pl_holes_e: "Wenn Blätter erst kleine dunkle Flecken bekommen und diese zu Löchern zerfallen, liegt das fast immer an einem Mangel des Nährstoffs Kalium.",
+pl_holes_s: "Kaufe einen reinen Kaliumdünger im Fachhandel und dünge diesen nach Packungsanweisung zu, um die Löcher bei neuen Blättern zu stoppen.",
+
+pl_melt_t: "⚠️ Pflanzen-Hilfe: Blätter zerfallen und lösen sich auf",
+pl_melt_e: "Das passiert sehr oft kurz nach dem Neukauf von Pflanzen, wenn sie sich erst an das Unterwasser-Klima gewöhnen müssen oder durch die Umstellung gestresst sind.",
+pl_melt_s: "Zupfe matschige und zerfallene Blätter sofort ab, damit sie nicht das Wasser vergiften. Hab etwas Geduld – meist treiben die Pflanzen danach gesund neu aus.",
+
+pl_rot_t: "⚠️ Pflanzen-Hilfe: Stängelfäule (Stängel knicken ab)",
+pl_rot_e: "Die Pflanzenstängel werden unten am Boden weich, faulen und knicken um. Oft stehen the Pflanzen zu dicht, sodass kein Licht mehr nach unten kommt.",
+pl_rot_s: "Schneide die oberen, gesunden Teile der Pflanze ab und stecke sie neu in den Boden. Wirf die verfaulten unteren Stücke weg. Setze die Pflanzen in Zukunft mit etwas mehr Abstand zueinander.",
+
+pl_yellow_t: "⚠️ Pflanzen-Hilfe: Blätter werden gelb",
+pl_yellow_e: "Vor allem ältere Blätter werden gelb und sterben ab. Die Pflanze zieht die letzten Nährstoffe aus den alten Blättern heraus, um neue Spitzen zu versorgen.",
+pl_yellow_s: "Füge regelmäßigen Volldünger hinzu und achte darauf, dass deine Fische genug gefüttert werden, damit über den Fischkot natürlicher Stickstoff entsteht.",
+
+pl_deformed_t: "⚠️ Pflanzen-Hilfe: Neue Blätter wachsen krüppelig nach",
+pl_deformed_e: "Die ganz frisch nachwachsenden Blätter oben an der Triebspitze sehen klein, verdreht oder deformiert aus. Es fehlt an Spurenelementen oder Mineralien.",
+pl_deformed_s: "Verwende einen hochwertigen Spurenelemente- bzw. Volldünger, der alle wichtigen Mineralien abdeckt.",
+
+pl_drop_t: "⚠️ Pflanzen-Hilfe: Untere Blätter fallen ab",
+pl_drop_e: "Oft bekommen the unteren Blätter einfach zu wenig Licht ab, weil die Pflanze oben bereits so dicht und buschig geworden ist.",
+pl_drop_s: "Schneide den Busch etwas zurück oder dünne ihn aus, damit wieder Licht bis nach unten auf den Boden scheinen kann.",
+
+fi_air_t: "🚨 AKTION NÖTIG: Fische hängen an der Wasseroberfläche und schnappen Luft!",
+fi_air_e: "Achtung, akuter Notfall! Deine Fische bekommen zu wenig Sauerstoff oder das Wasser ist durch Schadstoffe belastet, sodass sie ersticken könnten.",
+fi_air_s: "1. Schalte sofort eine eventuelle CO₂-Anlage aus! 2. Richte den Filterauslauf so aus, dass die Wasseroberfläche stark sprudelt (Sauerstoff). 3. Mache sofort einen 50%igen Wasserwechsel!",
+
+fi_apathy_t: "⚠️ Fisch-Gesundheit: Fische sind träge und fressen nicht",
+fi_apathy_e: "Die Fische hängen nur herum, verstecken sich oder zeigen keinen Appetit. Das ist ein Zeichen von Stress, falscher Temperatur oder beginnender Krankheit.",
+fi_apathy_s: "Teste sofort die Wassertemperatur und die Werte für Nitrit und pH. Füttere sparsam abwechslungsreiches Futter und beobachte, ob Flecken oder Pünktchen auftreten.",
+
+fi_deaths_t: "🚨 ALARM: Todesfälle im Aquarium!",
+fi_deaths_e: "Wenn in den letzten Tagen Fische gestorben sind, liegt meist eine akute Wasservergiftung (z.B. durch giftiges Ammoniak oder Nitrit) vor.",
+fi_deaths_s: "Teste sofort das Wasser auf Nitrit (NO₂). Mache ohne zu zögern einen großen Wasserwechsel von 50%. Nimm tote Fische sofort aus dem Becken heraus.",
+
+fi_spots_t: "🚨 Krankheits-Alarm: Weiße Pünktchenkrankheit (Ichtho)",
+fi_spots_e: "Die Fische sehen aus, als wären sie mit Grießkörnern bestreut. Das ist die bekannte Pünktchenkrankheit, ausgelöst durch Parasiten nach Stress.",
+fi_spots_s: "Kauf dir im Zoohandel ein spezielles Mittel gegen die Pünktchenkrankheit und wende es nach Packungsanweisung an. Erhöhe die Belüftung im Aquarium.",
+fi_spots_p: "💡 Profi-Tipp: Temperatur kurzfristig für 4-5 Tage auf 30-31 Grad erhöhen – das beschleunigt das Wachstum der Pünktchen und hilft, dass die Medizin überhaupt wirken kann.",
+
+fi_fins_t: "⚠️ Fisch-Gesundheit: Flossen fransen aus oder lösen sich auf",
+fi_fins_e: "Die Flossen der Fische sehen ausgefranst aus oder werden kürzer. Das ist die sogenannte Flossenfäule, ausgelöst durch schlechte Wasserhygiene oder Bakterien.",
+fi_fins_s: "Verbessere sofort die Wasserhygiene durch mehrere großzügige Wasserwechsel (wöchentlich 50%). Achte darauf, dass sich die Fische untereinander nicht jagen."
+},
+en: {
+main_title: "AquaDiagnose – The Ultimate Analysis Tool",
+title: "AquaDiagnose",
+subtitle: "Your digital assistant for a thriving ecosystem",
+tab_tech: "Tank & Equipment",
+tab_deco: "Substrate & Decor",
+tab_water: "Water Parameters",
+tab_stock: "Stocking & Feeding",
+tab_symptoms: "Symptoms",
+tab_charts: "📈 Charts",
+tab_cal: "📅 Calendar",
+charts_desc: "Timeline tracking of your measured aquarium parameters from the analysis log:",
+lbl_select_param: "Select parameters in chart (multiple allowed):",
+sec_tank_info: "📐 Tank Specifications",
+lbl_length: "Tank length (cm):",
+lbl_width: "Tank width (cm):",
+lbl_height: "Tank height (cm):",
+lbl_vol: "Tank volume (L):",
+lbl_runtime: "Running time:",
+sec_filter: "🌀 Filtration & Heating",
+lbl_filtertype: "Filter type:",
+opt_select: "-- Select from list --",
+opt_infilt: "Internal filter",
+opt_backpack: "Hang-on filter",
+opt_outfilt: "Canister filter",
+opt_sump: "Sump / Filter basin",
+lbl_flow: "Filter flow rate (L/h):",
+lbl_skimmer: "Is a surface skimmer installed?",
+lbl_uv: "UV sterilizer:",
+lbl_yes: "Yes",
+lbl_no: "No",
+lbl_filtermedia: "Which filter media are used?",
+fm_ceramic: "Ceramic rings",
+fm_sponge: "Filter sponge",
+fm_clay: "Expanded clay",
+fm_lava: "Lava rock",
+fm_carbon: "Activated carbon",
+fm_floss: "Filter floss",
+fm_zeolite: "Zeolite",
+lbl_clean_interval: "Filter cleaning interval (in weeks)?",
+lbl_heater: "Is a heater installed in the tank?",
+lbl_temp: "Water temperature (°C):",
+sec_co2: "🫧 CO₂",
+lbl_co2: "Is CO₂ injected?",
+sec_light: "💡 Lighting",
+lbl_light_type: "Lighting type:",
+opt_t5t8: "T5/T8 fluorescent tube",
+opt_led: "LED",
+opt_hqi: "HQI",
+opt_hql: "HQL",
+lbl_light_kelvin: "Color temperature (K):",
+lbl_light_watt: "Power (W):",
+lbl_light_lum: "Luminous flux (lm):",
+lbl_light_duration: "Daily lighting duration (h):",
+sec_plants: "🌿 Plants and Fertilization",
+lbl_plant_density: "How densely is the tank planted?",
+pd_very_few: "Very few plants",
+pd_few: "Few plants",
+pd_medium: "Medium plant density",
+pd_dense: "Densely planted",
+pd_very_dense: "Very densely planted",
+lbl_fert_types: "Which fertilizers are used?",
+ft_liq_c: "Liquid carbon booster",
+ft_allinone: "All-in-one fertilizer",
+ft_macro: "Macronutrient fertilizer",
+ft_micro: "Micronutrient fertilizer",
+ft_nitro: "Nitrogen fertilizer",
+ft_phos: "Phosphate fertilizer",
+ft_pot: "Potassium fertilizer",
+ft_iron: "Iron fertilizer",
+lbl_sub_type: "Substrate type:",
+sub_gravel: "Quartz gravel",
+sub_sand: "Sand",
+sub_soil: "Active soil",
+lbl_nutrient_sub: "Was a nutrient-rich base layer used?",
+lbl_regular_sub_fert: "Are root fertilizers used regularly?",
+lbl_sub_vol: "Total substrate volume (L):",
+sec_stone: "Stone Selection (Hardness Analysis)",
+lbl_stone_type: "Stone type:",
+opt_nostone: "-- None / Not specified --",
+st_seiryu: "Seiryu Stone / Green Stone (Calcareous)",
+st_dragon: "Dragon Stone / Ohko Stone (Clay stone)",
+st_rokkaku: "Rokkaku Stone (Calcareous)",
+st_mini: "Mini-Landscape (Calcareous)",
+st_slate: "Slate / Black Slate (Neutral)",
+st_lava: "Lava Rock (Neutral, porous)",
+st_manten: "Manten Stone (Mostly neutral)",
+st_ada: "ADA Eiyu / Ryuoh Stone (Hardens water significantly)",
+st_granite: "Granite (Neutral, inert)",
+st_marble: "Marble / White Marble (Extremely calcareous)",
+st_loch: "Lochstein / Honeycomb limestone (Highly calcareous)",
+st_river: "River pebbles (Mostly neutral)",
+st_zebra: "Zebra Stone (Slightly calcareous)",
+st_holzstein: "Wood stone (Mostly neutral)",
+st_tiger: "Tiger Stone (Neutral)",
+lbl_stone_qty: "Stone quantity (kg):",
+sec_wood: "Wood Selection",
+lbl_wood_type: "Wood type:",
+opt_nowood: "-- No wood / Not specified --",
+wt_redmoor: "Red Moor Wood (Releases tannins)",
+wt_mangrove: "Mangrove wood (Acidifies slightly)",
+wt_moor: "Bog oak / Moorkien (Strongly acidic)",
+wt_spider: "Spider Wood (Branchy, light)",
+wt_drift: "Driftwood (Slightly acidic)",
+wt_savannah: "Savannah wood (Hard, smooth)",
+wt_rondeletia: "Ironwood (Very hard and heavy)",
+wt_jumbo: "Jumbo root (Large pieces)",
+wt_cork: "Corkscrew hazel (Decorative)",
+lbl_wood_qty: "Wood quantity (kg):",
+sec_water_compare: "🧪 Water Parameters Comparison",
+col_water_parameter: "Parameter",
+col_water_change: "Water Change",
+col_water_tank: "Tank Water",
+lbl_fish_small: "Small fish (up to 3 cm):",
+lbl_fish_medium: "Medium fish (3–8 cm):",
+lbl_fish_large: "Large fish (over 8 cm):",
+lbl_fish_pleco: "Plecos / L-numbers:",
+lbl_fish_algae: "Algae-eating fish:",
+lbl_shrimp: "Shrimp (pcs.):",
+lbl_snails: "Snails (pcs.):",
+lbl_feeding: "Feeding:",
+fd_live: "Live food",
+fd_frozen: "Frozen food",
+fd_flakes: "Flake food",
+fd_granule: "Granule food",
+fd_tabs: "Pleco tabs / Chips",
+lbl_feeding_freq: "Feeding frequency:",
+ff_1x_d: "1 x daily",
+ff_2x_d: "2 x daily",
+ff_more_d: "More than 2 x daily",
+ff_1x_w: "1 x weekly",
+ff_2x_w: "2 x weekly",
+ff_more_w: "More than 2 x weekly",
+lbl_sym_algae: "Which algae are present?",
+alg_green_thread: "Green thread algae",
+alg_green_spot: "Green spot algae (GSA)",
+alg_cyano: "Cyanobacteria (Blue-green algae)",
+alg_brush: "Brush / Beard algae (BBA)",
+alg_spirogyra: "Spirogyra",
+alg_diatoms: "Diatoms (Brown algae)",
+alg_glass: "Green film on glass",
+alg_bloom: "Green water bloom",
+lbl_sym_plants: "Plant issues:",
+pl_no_growth: "No growth",
+pl_fade: "Fading / Loss of color",
+pl_holes: "Holes in leaves",
+pl_melt: "Plant melt / Leaf decay",
+pl_rot: "Stem rot",
+pl_yellow: "Yellowing leaves",
+pl_deformed: "Small, deformed new leaves",
+pl_drop: "Dropping lower leaves",
+lbl_sym_fish: "Fish and Invertebrates:",
+fi_air: "Gasping for air at the surface",
+fi_apathy: "Apathy / Loss of appetite",
+fi_deaths: "Deaths in recent days",
+fi_spots: "White spots or coatings on fish",
+fi_spots_p: "Prophylaxis: Always acclimate new fish properly and ensure a pristine health status upon purchase.",
+fi_fins: "Frayed or dissolving fins",
+lbl_sym_water: "Water and Appearance:",
+wa_turbid: "Turbid / Cloudy water",
+wa_yellow: "Yellow or tea-colored water tint",
+wa_deposits: "Mineral deposits on glass/equipment",
+wa_odor: "Unpleasant odor",
+wa_biofilm: "White coating or biofilm on wood",
+btn_analyze: "Analyze & Save to Calendar",
+res_title: "📊 Analysis Results & Evaluation",
+modal_subtitle: "Complete analysis report:",
+modal_save: "Save",
+footer_text: "AquaDiagnose v2.9",
+footer_save: "Export Data",
+footer_provider: "Provided by",
+click_details: "Click for details",
+expl_label: "Explanation",
+sol_label: "Solution",
+p_label: "Prophylaxis",
+
+warn_gh_title: "⚠️ GH Increase / Calcareous Hardscaping detected",
+warn_gh_expl: "Popular aquarium stones like 'Mini-Landscape' contain high amounts of calcium and continuously release minerals into the water, raising total and carbonate hardness.",
+warn_gh_sol: "For beginners: Either remove the calcareous stones and replace them with inert decor (slate/lava), or use soft/osmose water for water changes to balance the hardening effect.",
+
+warn_ph_title: "⚠️ Critical pH & Acid Drop Risk",
+warn_ph_expl: "The pH value is critically low, combined with low carbonate hardness. This means the water has lost its buffer and can crash suddenly.",
+warn_ph_sol: "Increase KH slightly using suitable mineral salts, perform regular water changes to secure buffering, and monitor pH/KH closely.",
+
+warn_no3_title: "🚨 High Nitrate",
+warn_no3_expl: "Nitrate is elevated due to intensive feeding, accumulation over time, or high input from source water.",
+warn_no3_sol: "Perform regular partial water changes, optimize the amount of food, and check tap water values.",
+
+warn_overstock_title: "🚨 Critical Warning: Severe Tank Overstocking!",
+warn_overstock_expl: "The total number and size of the selected fish vastly exceed the capacity of your aquarium volume. This risks severe oxygen depletion, rapid ammonia/nitrite toxicity, and extreme stress for all animals.",
+warn_overstock_sol: "Drastically reduce the stocking density (e.g., rehoming fish) or upgrade to a significantly larger aquarium (at least 200–300 liters).",
+
+pro_tip_title: "💡 Pro Tip: Biological Stability",
+pro_tip_expl: "An mature aquarium forgives minor mistakes, but never rely solely on test strips – liquid drop tests provide exact results for a stable milieu.",
+pro_tip_sol: "Establish fixed routines for water changes and filter maintenance weekly instead of reacting only when issues arise.",
+
+alg_green_thread_t: "🚨 Algae Warning: Green Thread Algae",
+alg_green_thread_e: "Often caused by excess micronutrients (iron), an imbalance in macro-nutrients (N-P-K), or unstable CO₂ supply combined with high light intensity.",
+alg_green_thread_s: "Reduce micro-fertilizers, perform large weekly water changes, remove algae mechanically, and ensure a stable CO₂ level of 20–30 mg/L.",
+
+alg_green_spot_t: "🚨 Algae Warning: Green Spot Algae (GSA)",
+alg_green_spot_e: "Typically linked to a depleted or very low phosphate (PO₄) level in the water column or overly long lighting periods.",
+alg_green_spot_s: "Test and increase phosphate (PO₄) levels to 0.5–1.0 mg/L via dedicated fertilizer, scrape hard glass surfaces, and check lighting hours.",
+
+alg_cyano_t: "🚨 Algae Warning: Cyanobacteria (Blue-Green Algae)",
+alg_cyano_e: "Bacterial mats often triggered by high organic pollution (accumulated mulm), dead zones with poor water circulation, or low nitrate levels relative to phosphate.",
+alg_cyano_s: "Siphon out mats physically, improve water flow in dead zones, reduce organic load via filter maintenance, and perform targeted water changes.",
+
+alg_brush_t: "🚨 Algae Warning: Brush / Beard Algae (BBA)",
+alg_brush_e: "Thrive on unstable CO₂ levels, organic waste accumulation, or locations with direct high water flow where nutrients accumulate.",
+alg_brush_s: "Stabilize CO₂ injection, reduce organic waste through rigorous filter checks and water changes, and spot-treat affected decor with Liquid Carbon.",
+
+alg_spirogyra_t: "🚨 Algae Warning: Spirogyra (Green Silk Algae)",
+alg_spirogyra_e: "Spirogyra forms cotton-like mats and grows rapidly under high micro-nutrient levels, heavy organic waste, and unstable macro parameters.",
+alg_spirogyra_s: "Reduce iron/micro-fertilizer dosage, perform generous water changes, remove mass manually, and clean the filter media.",
+
+alg_diatoms_t: "🚨 Algae Warning: Diatoms (Brown Algae)",
+alg_diatoms_e: "Diatoms feature brown, slimy layers frequently caused by high silicate (SiO₂) concentrations in source water combined with insufficient light.",
+alg_diatoms_s: "Increase lighting intensity/duration, use silicate-adsorbing filter media (e.g. Zeolite/SilicaEx), and maintain regular water changes.",
+
+alg_glass_t: "🚨 Algae Warning: Green Film on Glass",
+alg_glass_e: "Normal biological biofilm accelerated by excessive light exposure, direct sunlight, or elevated nutrient levels.",
+alg_glass_s: "Clean glass regularly using an algae magnet or scraper, and adjust lighting periods if algae growth is excessively fast.",
+
+alg_bloom_t: "🚨 Algae Warning: Green Water Bloom",
+alg_bloom_e: "Microscopic single-celled algae floating freely, caused by intense light peaks, ammonia spikes, or severe nutrient imbalances.",
+alg_bloom_s: "Deploy a UV-C clarifier, execute a 3-day complete blackout of the tank, and perform large subsequent water changes.",
+
+pl_no_growth_t: "⚠️ Plant Issue: No Growth",
+pl_no_growth_e: "Indicates a limiting factor, most commonly a shortage of essential macro-nutrients (Nitrogen, Phosphate, Potassium) or insufficient CO₂.",
+pl_no_growth_s: "Check macro-nutrient levels (NPK) and CO₂ supply, test lighting intensity, and ensure root nutrients are available for heavy root feeders.",
+
+pl_fade_t: "⚠️ Plant Issue: Fading / Loss of Color",
+pl_fade_e: "Typically points to a deficiency in Nitrogen (NO₃) or micro-nutrients/Iron (Fe), leading to impaired chlorophyll formation (chlorosis).",
+pl_fade_s: "Test Nitrate and Iron levels in the water column, and apply a balanced liquid fertilizer or iron booster.",
+
+pl_holes_t: "⚠️ Plant Issue: Holes in Leaves",
+pl_holes_e: "Classic symptom of a severe Potassium (K) deficiency. Often begins with small dark necrotic spots that decay into holes.",
+pl_holes_s: "Dose potassium sulfate or a specialized macro-fertilizer to raise potassium levels to 10–20 mg/L.",
+
+pl_melt_t: "⚠️ Plant Issue: Plant Melt / Leaf Decay",
+pl_melt_e: "Often occurs after plant transition (emerge to submerge), sudden water parameter shifts, or severe shock.",
+pl_melt_s: "Remove decaying plant matter immediately to protect water quality, ensure stable parameters, and allow plants time to adapt.",
+
+pl_rot_t: "⚠️ Plant Issue: Stem Rot",
+pl_rot_e: "Stems rot near the substrate due to lack of light at the base, poor water circulation, or damaged tissue during planting.",
+pl_rot_s: "Cut healthy top shoots and replant them, remove rotten lower stems, and improve spacing and lighting penetration.",
+
+pl_yellow_t: "⚠️ Plant Issue: Yellowing Leaves",
+pl_yellow_e: "Indicates mobile nutrient deficiencies (such as Nitrogen or Magnesium) where older leaves turn yellow as nutrients are translocated.",
+pl_yellow_s: "Check macro-nutrients and general hardness (Magnesium/Calcium ratio), and ensure regular liquid fertilization.",
+
+pl_deformed_t: "⚠️ Plant Issue: Small, Deformed New Leaves",
+pl_deformed_e: "Points to micronutrient deficiencies (like Calcium, Boron, or Iron) affecting new meristematic tissue growth.",
+pl_deformed_s: "Check trace element supply and ensure overall mineral balance in the water column.",
+
+pl_drop_t: "⚠️ Plant Issue: Dropping Lower Leaves",
+pl_drop_e: "Often caused by shading from dense upper canopy growth or general nutrient redistribution by the plant.",
+pl_drop_s: "Prune and thin out overgrown stems to allow light penetration to lower regions, and check overall fertilization.",
+
+fi_air_t: "🚨 Critical Warning: Fish gasping for air at surface",
+fi_air_e: "Severe oxygen depletion, excessive CO₂ injection, or high toxic pollutant levels (Ammonia/Nitrite) blocking gill function.",
+fi_air_s: "Increase surface agitation immediately via filter outflow or air pump, stop CO₂ injection, test NH₄/NO₂, and perform a large water change.",
+
+fi_apathy_t: "⚠️ Health Warning: Apathy / Loss of appetite",
+fi_apathy_e: "Indicates chronic stress, poor water parameters, incorrect temperature, or early stages of a bacterial/parasitic infection.",
+fi_apathy_s: "Test all core water parameters (NH₄, NO₂, pH, temperature) and observe animals closely for further symptoms.",
+
+fi_deaths_t: "🚨 Critical Warning: Recent fish deaths",
+fi_deaths_e: "Points to acute poisoning (Ammonia/Nitrite spike), aggressive pathogen outbreaks, or severe environmental shock.",
+fi_deaths_s: "Test water for NH₄ and NO₂ immediately, perform a 50% water change, and isolate sick or weakened specimens.",
+
+fi_spots_t: "🚨 Disease Warning: White Spots (Ichthyophthirius)",
+fi_spots_e: "Parasitic infection ('Ich') triggered by environmental stress, temperature fluctuations, or introduction of new fish.",
+fi_spots_s: "Treat with dedicated anti-parasite medication following instructions, gently raise temperature, and ensure good aeration.",
+fi_spots_p: "💡 Pro-Tip: Briefly increase the temperature to 30–31 °C for 4–5 days – this accelerates the growth of the spots and helps the medicine to work at all.",
+
+fi_fins_t: "⚠️ Health Warning: Frayed or dissolving fins",
+fi_fins_e: "Bacterial fin rot often caused by poor water hygiene, high germ load in the aquarium, or mechanical fin nipping.",
+fi_fins_s: "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates."
+}
+};
+
+function updateTankSelector() {
+  const select = document.getElementById('tankSelect');
+  select.innerHTML = '';
+  Object.keys(allTanks).forEach(name => {
+    let opt = document.createElement('option');
+    opt.value = name;
+    opt.innerText = name;
+    if(name === currentTankName) opt.selected = true;
+    select.appendChild(opt);
+  });
+}
+
+function switchLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('awr_lang', lang);
+  document.getElementById('langSelect').value = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    let key = el.getAttribute('data-i18n');
+    if(translations[lang] && translations[lang][key]) {
+      el.innerText = translations[lang][key];
+    }
+  });
+  renderCalendar();
+  updateWaterChart();
+}
+
+function createNewTank() {
+  if(Object.keys(allTanks).length >= 10) {
+    alert(currentLang === 'en' ? "Maximum limit of 10 aquariums reached." : "Maximale Anzahl von 10 Aquarien erreicht.");
+    return;
+  }
+  let promptText = currentLang === 'en' ? "Enter name for the new aquarium:" : "Name für das neue Aquarium eingeben:";
+  let newName = prompt(promptText, \`Aquarium ${Object.keys(allTanks).length + 1}\`);
+  if(!newName) return;
+  if(allTanks[newName]) {
+    alert(currentLang === 'en' ? "An aquarium with this name already exists." : "Ein Aquarium mit diesem Namen existiert bereits.");
+    return;
+  }
+  allTanks[newName] = { inputs: {}, diary: {} };
+  currentTankName = newName;
+  updateTankSelector();
+  loadTankData();
+  calcVol();
+}
+
+function renameCurrentTank() {
+  let promptText = currentLang === 'en' ? "Enter new name for the aquarium:" : "Neuen Namen für das Aquarium eingeben:";
+  let newNameNeun = prompt(promptText, currentTankName);
+  if(!newNameNeun || newNameNeun === currentTankName) return;
+  if(allTanks[newNameNeun]) {
+    alert(currentLang === 'en' ? "An aquarium with this name already exists." : "Ein Aquarium mit diesem Namen existiert bereits.");
+    return;
+  }
+  allTanks[newNameNeun] = allTanks[currentTankName];
+  delete allTanks[currentTankName];
+  currentTankName = newNameNeun;
+  updateTankSelector();
+  saveDataAuto();
+}
+
+function switchTank(name) {
+  currentTankName = name;
+  loadTankData();
+  calcVol();
+  renderCalendar();
+  updateWaterChart();
+  document.getElementById('resultSection').style.display = 'none';
+}
+
+function saveDataAuto() {
+  if(!allTanks[currentTankName]) allTanks[currentTankName] = {};
+  let data = {};
+  document.querySelectorAll('input, select').forEach(el => {
+    if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText') {
+      if(el.type === 'checkbox' || el.type === 'radio') {
+        data[el.id || el.name + '_' + Math.random()] = el.checked;
+      } else {
+        data[el.id] = el.value;
+      }
+    }
+  });
+  const radios = ['skimmer', 'uv', 'heater', 'co2_zuafuhr', 'nutrient_sub', 'regular_sub_fert'];
+  radios.forEach(rName => {
+    let checkedEl = document.querySelector(\`input[name="${rName}"]:checked\`);
+    if(checkedEl) data['radio_' + rName] = checkedEl.value;
+  });
+  allTanks[currentTankName].inputs = data;
+  localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+}
+
+function loadTankData() {
+  let tankData = allTanks[currentTankName];
+  if(!tankData || !tankData.inputs) return;
+  let data = tankData.inputs;
+  for(let id in data) {
+    if(id.startsWith('radio_')) {
+      let rName = id.replace('radio_', '');
+      let targetVal = data[id];
+      let radioEl = document.querySelector(\`input[name="${rName}"][value="${targetVal}"]\`);
+      if(radioEl) radioEl.checked = true;
+    } else {
+      let el = document.getElementById(id);
+      if(el) {
+        if(el.type === 'checkbox') {
+          el.checked = data[id];
+        } else {
+          el.value = data[id];
+        }
+      }
+    }
+  }
+  renderCalendar();
+  updateWaterChart();
+}
+
+function openTab(evt, tabId) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  evt.currentTarget.classList.add('active');
+  if(tabId === 'tab-diagramme') {
+    updateWaterChart();
+  }
+  if(tabId === 'tab-kalender') {
+    let now = new Date();
+    currentMonth = now.getMonth();
+    currentYear = now.getFullYear();
+    renderCalendar();
+  }
+}
+
+function calcVol() {
+  let l = parseFloat(document.getElementById('l').value) || 0;
+  let b = parseFloat(document.getElementById('b').value) || 0;
+  let h = parseFloat(document.getElementById('h').value) || 0;
+  let vol = (l * b * h) / 1000;
+  document.getElementById('volumen').value = vol.toFixed(1);
+}
+
+function renderCalendar() {
+  const grid = document.getElementById('calendarGrid');
+  const monthYearEl = document.getElementById('calMonthYear');
+  if(!grid) return;
+  if (!isPremiumUser) {
+    grid.innerHTML = \`
+      <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px;">
+        <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 Premium-Funktion</h3>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Das Aquarien-Tagebuch ist exklusiv für Premium-Mitglieder verfügbar.</p>
+        <button onclick="redirectToStripe()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+          Jetzt Premium freischalten
+        </button>
+      </div>\`;
+    return;
+  }
+  grid.innerHTML = '';
+  let firstDay = new Date(currentYear, currentMonth, 1);
+  let lastDay = new Date(currentYear, currentMonth + 1, 0);
+  const monthNamesDe = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+  const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const daysDe = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+  const daysEn = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+  let mNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
+  let dNames = currentLang === 'en' ? daysEn : daysDe;
+  monthYearEl.innerText = \`${mNames[currentMonth]} ${currentYear}\`;
+  dNames.forEach(d => {
+    let dayHeader = document.createElement('div');
+    dayHeader.className = 'cal-header-day';
+    dayHeader.innerText = d;
+    grid.appendChild(dayHeader);
+  });
+  let startDayIndex = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+  for(let i = 0; i < startDayIndex; i++) {
+    let emptyCell = document.createElement('div');
+    emptyCell.className = 'cal-day empty';
+    grid.appendChild(emptyCell);
+  }
+  let today = new Date();
+  let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+  for(let d = 1; d <= lastDay.getDate(); d++) {
+    let cell = document.createElement('div');
+    cell.className = 'cal-day';
+    let monthStr = String(currentMonth + 1).padStart(2, '0');
+    let dayStr = String(d).padStart(2, '0');
+    let dateKey = \`${currentYear}-${monthStr}-${dayStr}\`;
+    let dayNumEl = document.createElement('span');
+    dayNumEl.innerText = d;
+    cell.appendChild(dayNumEl);
+    if(d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+      cell.classList.add('today');
+    }
+    if(diaryData[dateKey]) {
+      cell.classList.add('has-entry');
+      let dot = document.createElement('div');
+      dot.className = 'entry-dot';
+      cell.appendChild(dot);
+    }
+    cell.onclick = () => openModal(dateKey);
+    grid.appendChild(cell);
+  }
+}
+
+function changeMonth(dir) {
+  currentMonth += dir;
+  if(currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  } else if(currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
+  renderCalendar();
+}
+
+function openModal(dateKey) {
+  activeModalDate = dateKey;
+  document.getElementById('modalDateTitle').innerText = \`${currentLang==='en' ? 'Entry for' : 'Eintrag für'} ${dateKey}\`;
+  let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+  document.getElementById('modalEntryText').value = diaryData[dateKey] || '';
+  document.getElementById('dayModal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('dayModal').style.display = 'none';
+}
+
+function saveDayEntry() {
+  let text = document.getElementById('modalEntryText').value;
+  let diaryData = allTanks[currentTankName].diary || (allTanks[currentTankName].diary = {});
+  let todayStr = new Date().toISOString().split('T')[0];
+  let targetDate = activeModalDate || todayStr;
+  if(text.trim() === '') {
+    delete diaryData[targetDate];
+  } else {
+    diaryData[targetDate] = text;
+  }
+  localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+  closeModal();
+  renderCalendar();
+  updateWaterChart();
+}
+
+function updateWaterChart() {
+  const canvas = document.getElementById('waterChart');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
+  let dates = Object.keys(diaryData).sort();
+  const container = document.getElementById('chartParamSelect');
+  const checkboxes = container ? container.querySelectorAll('input[type="checkbox"]:checked') : [];
+  let labels = [];
+  if(dates.length === 0) {
+    labels = ["Start", "Heute"];
+  } else {
+    labels = dates;
+  }
+  let datasets = [];
+  const colors = ['#0ea5e9', '#f43f5e', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#3b82f6', '#eab308', '#6366f1', '#14b8a6', '#f97316', '#a855f7'];
+  checkboxes.forEach((chk, index) => {
+    let paramId = chk.value;
+    let paramLabel = chk.parentElement.innerText.trim();
+    let chartData = [];
+    if(dates.length === 0) {
+      let currentVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
+      chartData = [currentVal, currentVal];
+    } else {
+      dates.forEach(date => {
+        let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
+        chartData.push(liveVal);
+      });
+    }
+    let color = colors[index % colors.length];
+    datasets.push({
+      label: paramLabel,
+      data: chartData,
+      borderColor: color,
+      backgroundColor: color + '26',
+      borderWidth: 2,
+      fill: false,
+      tension: 0.2
+    });
+  });
+  if(myWaterChart) {
+    myWaterChart.destroy();
+  }
+  myWaterChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#f8fafc', font: { size: 11 } } }
+      },
+      scales: {
+        x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } },
+        y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } }
+      }
+    }
+  });
+}
+
+function runAnalysis(event) {
+  if(event) event.preventDefault();
+  const resSection = document.getElementById('resultSection');
+  const resContainer = document.getElementById('resultCardContainer');
+  resContainer.querySelectorAll('.dynamic-alert').forEach(el => el.remove());
+  let t = translations[currentLang];
+  let alerts = [];
+  let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
+  let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 0;
+  let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 0;
+  let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
+  let steinArt = document.getElementById('steinArt').value;
+  let totalFish = (parseInt(document.getElementById('besatz_klein').value)||0) +
+                  (parseInt(document.getElementById('besatz_mittel').value)||0) +
+                  (parseInt(document.getElementById('besatz_gross').value)||0) +
+                  (parseInt(document.getElementById('besatz_welse').value)||0);
+  let vol = parseFloat(document.getElementById('volumen').value) || 60;
+  if((steinArt === 'seiryu' || steinArt === 'rokkaku' || steinArt === 'mini_landscape' || steinArt === 'ada_eyi' || steinArt === 'marmor' || steinArt === 'lochgestein') || ghAkt > 14) {
+    alerts.push({ type: 'orange', title: t.warn_gh_title, expl: t.warn_gh_expl, sol: t.warn_gh_sol });
+  }
+  if(phAkt < 6.2 && khAkt < 3) {
+    alerts.push({ type: 'orange', title: t.warn_ph_title, expl: t.warn_ph_expl, sol: t.warn_ph_sol });
+  }
+  if(no3Akt > 25) {
+    alerts.push({ type: 'red', title: t.warn_no3_title, expl: t.warn_no3_expl, sol: t.warn_no3_sol });
+  }
+  if(totalFish > 20 && vol < 80) {
+    alerts.push({ type: 'red', title: t.warn_overstock_title, expl: t.warn_overstock_expl, sol: t.warn_overstock_sol });
+  }
+  document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
+    let val = chk.value;
+    if(val === 'Grüne Fadenalgen') alerts.push({ type: 'orange', title: t.alg_green_thread_t, expl: t.alg_green_thread_e, sol: t.alg_green_thread_s });
+    if(val === 'Grüne Punktalgen (GSA)') alerts.push({ type: 'orange', title: t.alg_green_spot_t, expl: t.alg_green_spot_e, sol: t.alg_green_spot_s });
+    if(val === 'Cyanobakterien') alerts.push({ type: 'red', title: t.alg_cyano_t, expl: t.alg_cyano_e, sol: t.alg_cyano_s });
+    if(val === 'Pinselalgen / Bartalgen (BBA)') alerts.push({ type: 'orange', title: t.alg_brush_t, expl: t.alg_brush_e, sol: t.alg_brush_s });
+    if(val === 'Spirogyra') alerts.push({ type: 'orange', title: t.alg_spirogyra_t, expl: t.alg_spirogyra_e, sol: t.alg_spirogyra_s });
+    if(val === 'Kieselalgen') alerts.push({ type: 'blue', title: t.alg_diatoms_t, expl: t.alg_diatoms_e, sol: t.alg_diatoms_s });
+    if(val === 'Grüner Belag auf den Scheiben') alerts.push({ type: 'blue', title: t.alg_glass_t, expl: t.alg_glass_e, sol: t.alg_glass_s });
+    if(val === 'Grüne Wasserblüte') alerts.push({ type: 'red', title: t.alg_bloom_t, expl: t.alg_bloom_e, sol: t.alg_bloom_s });
+    if(val === 'Kein Wachstum') alerts.push({ type: 'orange', title: t.pl_no_growth_t, expl: t.pl_no_growth_e, sol: t.pl_no_growth_s });
+    if(val === 'Verblassen / Farbverlust') alerts.push({ type: 'orange', title: t.pl_fade_t, expl: t.pl_fade_e, sol: t.pl_fade_s });
+    if(val === 'Löcher in den Blättern') alerts.push({ type: 'orange', title: t.pl_holes_t, expl: t.pl_holes_e, sol: t.pl_holes_s });
+    if(val === 'Blattzerfall / Pflanzenmelt') alerts.push({ type: 'orange', title: t.pl_melt_t, expl: t.pl_melt_e, sol: t.pl_melt_s });
+    if(val === 'Stängelfäule') alerts.push({ type: 'orange', title: t.pl_rot_t, expl: t.pl_rot_e, sol: t.pl_rot_s });
+    if(val === 'Vergilbende Blätter') alerts.push({ type: 'orange', title: t.pl_yellow_t, expl: t.pl_yellow_e, sol: t.pl_yellow_s });
+    if(val === 'Kleine deformierte Blätter') alerts.push({ type: 'orange', title: t.pl_deformed_t, expl: t.pl_deformed_e, sol: t.pl_deformed_s });
+    if(val === 'Abfallende untere Blätter') alerts.push({ type: 'orange', title: t.pl_drop_t, expl: t.pl_drop_e, sol: t.pl_drop_s });
+    if(val === 'Schnappen nach Luft') alerts.push({ type: 'red', title: t.fi_air_t, expl: t.fi_air_e, sol: t.fi_air_s });
+    if(val === 'Teilnahmslosigkeit') alerts.push({ type: 'orange', title: t.fi_apathy_t, expl: t.fi_apathy_e, sol: t.fi_apathy_s });
+    if(val === 'Todesfälle') alerts.push({ type: 'red', title: t.fi_deaths_t, expl: t.fi_deaths_e, sol: t.fi_deaths_s });
+    if(val === 'Weiße Punkte') {
+      let alertObj = { type: 'red', title: t.fi_spots_t, expl: t.fi_spots_e, sol: t.fi_spots_s };
+      if(t.fi_spots_p) alertObj.pro = t.fi_spots_p;
+      alerts.push(alertObj);
+    }
+    if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
+  });
+  if(alerts.length === 0) {
+    alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
+  }
+  alerts.forEach(alertData => {
+    let card = document.createElement('div');
+    let colorClass = alertData.type === 'red' ? 'alert-red' : (alertData.type === 'orange' ? 'alert-orange' : 'alert-blue');
+    card.className = \`alert-card ${colorClass} dynamic-alert\`;
+    let titleHtml = \`<strong>${alertData.title}</strong>\`;
+    let clickHint = \`<span class="click-hint">${t.click_details}</span>\`;
+    let detailsHtml = \`
+<div class="alert-details">
+<p><strong>${t.expl_label}:</strong> ${alertData.expl}</p>
+<p style="margin-top: 6px;"><strong>${t.sol_label}:</strong> ${alertData.sol}</p>
+${alertData.pro ? \`<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${alertData.pro}</p>\` : ''}
+</div>
+\`;
+    card.innerHTML = titleHtml + clickHint + detailsHtml;
+    card.onclick = function() {
+      let details = card.querySelector('.alert-details');
+      if(details.style.display === 'block') {
+        details.style.display = 'none';
+      } else {
+        details.style.display = 'block';
+      }
+    };
+    resContainer.appendChild(card);
+  });
+  resSection.style.display = 'block';
+  resSection.scrollIntoView({ behavior: 'smooth' });
+
+  // Tagebucheintrag für heute speichern, wenn Premium aktiv
+  if (isPremiumUser) {
+    let reportText = "";
+    alerts.forEach(a => {
+      reportText += \`■ ${a.title}\n\`;
+      reportText += \`${t.expl_label}: ${a.expl}\n\`;
+      reportText += \`${t.sol_label}: ${a.sol}\n\`;
+      if (a.pro) reportText += \`${t.p_label}: ${a.pro}\n\`;
+      reportText += "\n";
+    });
+    reportText += "--- WASSERWERTE ---\n";
+    ['ph','gh','kh','nh4','no2','no3','po4','k','ca','mg','fe','na','sio2','so4'].forEach(p => {
+      let wW = document.getElementById('w_' + p + '_wechsel');
+      let wA = document.getElementById('w_' + p + '_akt');
+      if (wW && wA) {
+        reportText += \`${p.toUpperCase()}: Wechsel = ${wW.value}, Aquarium = ${wA.value}\n\`;
+      }
+    });
+    let now = new Date();
+    let todayStr = now.getFullYear() + '-' +
+      String(now.getMonth() + 1).padStart(2, '0') + '-' +
+      String(now.getDate()).padStart(2, '0');
+    if (!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+    allTanks[currentTankName].diary[todayStr] = reportText;
+    localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+    renderCalendar();
+    updateWaterChart();
+  }
+}
+
+// 🛒 Korrigierte Checkout- / IAP-Funktion
+function redirectToStripe() {
+    // Echten Zahlungslink (z.B. Stripe Checkout oder PayPal Me / Webshop-Link) einfügen:
+    // window.location.href = "https://buy.stripe.com/DEIN_STRIPE_LINK";
+    
+    // Für Testzwecke simulieren wir hier den erfolgreichen Kauf & schalten Premium sofort frei:
+    if(confirm(currentLang === 'en' ? "Simulate successful purchase and unlock Premium?" : "Erfolgreichen Kauf simulieren und Premium freischalten?")) {
+        isPremiumUser = true;
+        localStorage.setItem('awr_is_premium', 'true');
+        alert(currentLang === 'en' ? "Premium unlocked successfully!" : "Premium erfolgreich freigeschaltet!");
+        renderCalendar();
+    }
+}
+
+// 💾 NEU: Daten Exportieren (Backup als JSON-Datei gegen Datenverlust bei Cache-Löschung)
+function exportData() {
+    let exportObj = {
+        tanks: allTanks,
+        lang: currentLang,
+        isPremium: isPremiumUser,
+        exportDate: new Date().toISOString()
+    };
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
+    let downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", \`aquadiagnose_backup_${new Date().toISOString().split('T')[0]}.json\`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+}
+
+// 📂 NEU: Daten Importieren (Wiederherstellen aus Backup)
+function triggerImport() {
+    document.getElementById('importFile').click();
+}
+
+function importData(event) {
+    let file = event.target.files[0];
+    if(!file) return;
+    let reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            let importedObj = JSON.parse(e.target.result);
+            if(importedObj.tanks) {
+                allTanks = importedObj.tanks;
+                if(importedObj.lang) currentLang = importedObj.lang;
+                if(importedObj.isPremium !== undefined) {
+                    isPremiumUser = importedObj.isPremium;
+                    localStorage.setItem('awr_is_premium', isPremiumUser);
+                }
+                localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+                updateTankSelector();
+                currentTankName = Object.keys(allTanks)[0];
+                loadTankData();
+                calcVol();
+                switchLanguage(currentLang);
+                alert(currentLang === 'en' ? "Data imported successfully!" : "Daten erfolgreich wiederhergestellt!");
+            } else {
+                alert("Ungültiges Backup-Format.");
+            }
+        } catch (err) {
+            alert("Fehler beim Lesen der Datei.");
+        }
+    };
+    reader.readAsText(file);
+}
+
+window.onload = function() {
+    updateTankSelector();
+    loadTankData();
+    calcVol();
+    switchLanguage(currentLang);
+};
+</script>
+</body>
+</html>
+
+
+Am 24.10.2026 um 06:22 schrieb Marco Schwarzer <schwarzermarco@yahoo.de>:
+
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="main_title">AquaDiagnose – Das Original für professionelle Analysen</title>
+<link rel="manifest" href="manifest.json">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+--bg: #0f172a;
+--card: #1e293b;
+--border: #334155;
+--accent: #0ea5e9;
+--text: #f8fafc;
+--text-muted: #94a3b8;
+--btn-red: #ef4444;
+--warn-orange: #d97706;
+--warn-red: #dc2626;
+--warn-blue: #0284c7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+font-family: system-ui, -apple-system, sans-serif;
+background-color: var(--bg);
+color: var(--text);
+padding: 12px;
+padding-bottom: 60px;
+}
+.header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 0 15px;
+border-bottom: 1px solid var(--border);
+margin-bottom: 15px;
+flex-wrap: wrap;
+gap: 10px;
+}
+.header-left { text-align: left; }
+.header h1 { font-size: 1.1rem; color: var(--accent); }
+.header p { font-size: 0.75rem; color: var(--text-muted); }
+.header-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.tank-selector-container, .lang-selector-container {
+display: flex;
+gap: 6px;
+align-items: center;
+background: #020617;
+padding: 6px 10px;
+border: 1px solid var(--border);
+border-radius: 8px;
+}
+.tank-selector-container select, .lang-selector-container select {
+background: transparent;
+border: none;
+color: var(--text);
+font-size: 0.8rem;
+cursor: pointer;
+outline: none;
+}
+.tank-selector-container button {
+background: var(--accent);
+border: none;
+color: #0f172a;
+font-weight: bold;
+padding: 2px 6px;
+border-radius: 4px;
+cursor: pointer;
+font-size: 0.75rem;
+}
+.tabs {
+display: flex;
+gap: 4px;
+margin-bottom: 15px;
+background: #020617;
+padding: 4px;
+border-radius: 10px;
+overflow-x: auto;
+}
+.tab-btn {
+flex: 1;
+padding: 10px 6px;
+font-size: 0.75rem;
+font-weight: bold;
+border: none;
+background: transparent;
+color: var(--text-muted);
+border-radius: 8px;
+cursor: pointer;
+white-space: nowrap;
+}
+.tab-btn.active { background: var(--accent); color: #0f172a; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.card {
+background: var(--card);
+border: 1px solid var(--border);
+border-radius: 12px;
+padding: 14px;
+margin-bottom: 12px;
+}
+.card h2 {
+font-size: 0.95rem;
+color: var(--accent);
+margin-bottom: 12px;
+border-bottom: 1px solid var(--border);
+padding-bottom: 6px;
+}
+.card h3 {
+font-size: 0.85rem;
+color: var(--accent);
+margin: 12px 0 6px 0;
+}
+.form-group {
+margin-bottom: 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.form-group label { font-size: 0.85rem; flex: 1; padding-right: 10px; }
+.form-group input, .form-group select {
+width: 140px;
+padding: 8px;
+border-radius: 6px;
+border: 1px solid var(--border);
+background: #0f172a;
+color: #fff;
+font-size: 0.85rem;
+text-align: right;
+}
+.form-group select { text-align-last: right; }
+.question-block { margin-bottom: 12px; font-size: 0.85rem; }
+.question-block label.main-label { display: block; margin-bottom: 6px; color: var(--text); }
+.radio-row { display: flex; gap: 20px; margin-top: 4px; }
+.radio-row label, .media-grid label {
+font-size: 0.8rem;
+color: var(--text-muted);
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.water-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 600px) { .water-grid { grid-template-columns: 1fr 1fr; } }
+.water-table {
+width: 100%;
+border-collapse: collapse;
+background: #020617;
+border-radius: 8px;
+overflow: hidden;
+font-size: 0.85rem;
+}
+.water-table th, .water-table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+.water-table th { background: #0f172a; color: var(--accent); font-size: 0.8rem; text-align: center; }
+.water-table tr:last-child td { border-bottom: none; }
+.water-table input {
+width: 100%;
+padding: 5px;
+border-radius: 4px;
+border: 1px solid var(--border);
+background: #0f172a;
+color: #fff;
+font-size: 0.8rem;
+text-align: right;
+}
+.check-group {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 8px;
+font-size: 0.85rem;
+cursor: pointer;
+}
+.check-group input[type="checkbox"] {
+width: 18px;
+height: 18px;
+accent-color: var(--accent);
+flex-shrink: 0;
+}
+.btn-red {
+width: 100%;
+background: var(--btn-red);
+color: #fff;
+font-weight: bold;
+border: none;
+padding: 14px;
+border-radius: 8px;
+font-size: 1rem;
+margin-top: 15px;
+cursor: pointer;
+}
+.result-box { display: none; margin-top: 15px; }
+.alert-card {
+padding: 12px;
+border-radius: 8px;
+margin-bottom: 10px;
+font-size: 0.85rem;
+line-height: 1.4;
+border-left: 4px solid;
+cursor: pointer;
+}
+.alert-blue { background: rgba(2, 132, 199, 0.15); border-color: var(--warn-blue); color: #38bdf8; }
+.alert-orange { background: rgba(217, 119, 6, 0.15); border-color: var(--warn-orange); color: #fbbf24; }
+.alert-red { background: rgba(220, 38, 38, 0.15); border-color: var(--warn-red); color: #f87171; }
+.alert-details {
+display: none;
+margin-top: 8px;
+padding-top: 8px;
+border-top: 1px dashed rgba(255,255,255,0.2);
+font-size: 0.8rem;
+color: #cbd5e1;
+line-height: 1.4;
+}
+.click-hint {
+display: block;
+font-size: 0.7rem;
+text-align: right;
+color: var(--text-muted);
+margin-top: 4px;
+font-style: italic;
+}
+.calendar-nav {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 12px;
+font-weight: bold;
+font-size: 0.95rem;
+}
+.calendar-nav button {
+background: var(--border);
+color: #fff;
+border: none;
+padding: 6px 12px;
+border-radius: 6px;
+cursor: pointer;
+}
+.calendar-grid {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 4px;
+text-align: center;
+}
+.cal-header-day { font-size: 0.7rem; color: var(--text-muted); padding-bottom: 4px; }
+.cal-day {
+background: #020617;
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: 8px 2px;
+font-size: 0.8rem;
+min-height: 45px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+cursor: pointer;
+transition: background 0.2s, border-color 0.2s;
+}
+.cal-day:hover { border-color: var(--accent); }
+.cal-day.empty { background: transparent; border: none; cursor: default; }
+.cal-day.has-entry { border-color: var(--accent); background: rgba(14, 165, 233, 0.15); }
+.cal-day.today { font-weight: bold; color: var(--accent); border-color: var(--accent); }
+.entry-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 3px; }
+.modal-overlay {
+display: none;
+position: fixed;
+top: 0; left: 0; width: 100%; height: 100%;
+background: rgba(2, 6, 23, 0.8);
+z-index: 1000;
+justify-content: center;
+align-items: center;
+padding: 15px;
+}
+.modal-content {
+background: var(--card);
+border: 1px solid var(--accent);
+width: 100%;
+max-width: 450px;
+border-radius: 12px;
+padding: 20px;
+position: relative;
+max-height: 90vh;
+overflow-y: auto;
+}
+.modal-close {
+position: absolute;
+top: 12px; right: 15px;
+background: transparent;
+border: none;
+color: var(--text-muted);
+font-size: 1.2rem;
+cursor: pointer;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body { margin-top: 10px; font-size: 0.85rem; }
+.modal-body textarea {
+width: 100%;
+height: 160px;
+background: #0f172a;
+border: 1px solid var(--border);
+color: #fff;
+border-radius: 6px;
+padding: 8px;
+margin-top: 8px;
+font-family: inherit;
+resize: vertical;
+}
+.modal-btn {
+background: var(--accent);
+color: #0f172a;
+border: none;
+padding: 10px;
+width: 100%;
+font-weight: bold;
+border-radius: 6px;
+margin-top: 12px;
+cursor: pointer;
+}
+.app-footer {
+text-align: center;
+margin-top: 25px;
+padding-top: 15px;
+border-top: 1px solid var(--border);
+font-size: 0.75rem;
+color: var(--text-muted);
+line-height: 1.5;
+}
 .app-footer a { color: var(--accent); text-decoration: none; }
 .app-footer a:hover { text-decoration: underline; }
 </style>
@@ -1352,7 +3183,7 @@ function createNewTank() {
     return;
   }
   let promptText = currentLang === 'en' ? "Enter name for the new aquarium:" : "Name für das neue Aquarium eingeben:";
-  let newName = prompt(promptText, `Aquarium ${Object.keys(allTanks).length + 1}`);
+  let newName = prompt(promptText, \`Aquarium ${Object.keys(allTanks).length + 1}\`);
   if(!newName) return;
   if(allTanks[newName]) {
     alert(currentLang === 'en' ? "An aquarium with this name already exists." : "Ein Aquarium mit diesem Namen existiert bereits.");
@@ -1403,7 +3234,7 @@ function saveDataAuto() {
   });
   const radios = ['skimmer', 'uv', 'heater', 'co2_zuafuhr', 'nutrient_sub', 'regular_sub_fert'];
   radios.forEach(rName => {
-    let checkedEl = document.querySelector(`input[name="${rName}"]:checked`);
+    let checkedEl = document.querySelector(\`input[name="${rName}"]:checked\`);
     if(checkedEl) data['radio_' + rName] = checkedEl.value;
   });
   allTanks[currentTankName].inputs = data;
@@ -1418,7 +3249,7 @@ function loadTankData() {
     if(id.startsWith('radio_')) {
       let rName = id.replace('radio_', '');
       let targetVal = data[id];
-      let radioEl = document.querySelector(`input[name="${rName}"][value="${targetVal}"]`);
+      let radioEl = document.querySelector(\`input[name="${rName}"][value="${targetVal}"]\`);
       if(radioEl) radioEl.checked = true;
     } else {
       let el = document.getElementById(id);
@@ -1464,14 +3295,14 @@ function renderCalendar() {
   const monthYearEl = document.getElementById('calMonthYear');
   if(!grid) return;
   if (!isPremiumUser) {
-    grid.innerHTML = `
+    grid.innerHTML = \`
       <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px;">
         <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 Premium-Funktion</h3>
         <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Das Aquarien-Tagebuch ist exklusiv für Premium-Mitglieder verfügbar.</p>
         <button onclick="redirectToStripe()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
           Jetzt Premium freischalten
         </button>
-      </div>`;
+      </div>\`;
     return;
   }
   grid.innerHTML = '';
@@ -1483,7 +3314,7 @@ function renderCalendar() {
   const daysEn = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
   let mNames = currentLang === 'en' ? monthNamesEn : monthNamesDe;
   let dNames = currentLang === 'en' ? daysEn : daysDe;
-  monthYearEl.innerText = `${mNames[currentMonth]} ${currentYear}`;
+  monthYearEl.innerText = \`${mNames[currentMonth]} ${currentYear}\`;
   dNames.forEach(d => {
     let dayHeader = document.createElement('div');
     dayHeader.className = 'cal-header-day';
@@ -1503,7 +3334,7 @@ function renderCalendar() {
     cell.className = 'cal-day';
     let monthStr = String(currentMonth + 1).padStart(2, '0');
     let dayStr = String(d).padStart(2, '0');
-    let dateKey = `${currentYear}-${monthStr}-${dayStr}`;
+    let dateKey = \`${currentYear}-${monthStr}-${dayStr}\`;
     let dayNumEl = document.createElement('span');
     dayNumEl.innerText = d;
     cell.appendChild(dayNumEl);
@@ -1535,7 +3366,7 @@ function changeMonth(dir) {
 
 function openModal(dateKey) {
   activeModalDate = dateKey;
-  document.getElementById('modalDateTitle').innerText = `${currentLang==='en' ? 'Entry for' : 'Eintrag für'} ${dateKey}`;
+  document.getElementById('modalDateTitle').innerText = \`${currentLang==='en' ? 'Entry for' : 'Eintrag für'} ${dateKey}\`;
   let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
   document.getElementById('modalEntryText').value = diaryData[dateKey] || '';
   document.getElementById('dayModal').style.display = 'flex';
@@ -1687,16 +3518,16 @@ function runAnalysis(event) {
   alerts.forEach(alertData => {
     let card = document.createElement('div');
     let colorClass = alertData.type === 'red' ? 'alert-red' : (alertData.type === 'orange' ? 'alert-orange' : 'alert-blue');
-    card.className = `alert-card ${colorClass} dynamic-alert`;
-    let titleHtml = `<strong>${alertData.title}</strong>`;
-    let clickHint = `<span class="click-hint">${t.click_details}</span>`;
-    let detailsHtml = `
+    card.className = \`alert-card ${colorClass} dynamic-alert\`;
+    let titleHtml = \`<strong>${alertData.title}</strong>\`;
+    let clickHint = \`<span class="click-hint">${t.click_details}</span>\`;
+    let detailsHtml = \`
 <div class="alert-details">
 <p><strong>${t.expl_label}:</strong> ${alertData.expl}</p>
 <p style="margin-top: 6px;"><strong>${t.sol_label}:</strong> ${alertData.sol}</p>
-${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${alertData.pro}</p>` : ''}
+${alertData.pro ? \`<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${alertData.pro}</p>\` : ''}
 </div>
-`;
+\`;
     card.innerHTML = titleHtml + clickHint + detailsHtml;
     card.onclick = function() {
       let details = card.querySelector('.alert-details');
@@ -1714,10 +3545,10 @@ ${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${
   // ✅ NEU: Report im Kalender für HEUTE speichern
   let reportText = "";
   alerts.forEach(a => {
-    reportText += `■ ${a.title}\n`;
-    reportText += `${t.expl_label}: ${a.expl}\n`;
-    reportText += `${t.sol_label}: ${a.sol}\n`;
-    if (a.pro) reportText += `${t.p_label}: ${a.pro}\n`;
+    reportText += \`■ ${a.title}\n\`;
+    reportText += \`${t.expl_label}: ${a.expl}\n\`;
+    reportText += \`${t.sol_label}: ${a.sol}\n\`;
+    if (a.pro) reportText += \`${t.p_label}: ${a.pro}\n\`;
     reportText += "\n";
   });
   reportText += "--- WASSERWERTE ---\n";
@@ -1725,7 +3556,7 @@ ${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${
     let wW = document.getElementById('w_' + p + '_wechsel');
     let wA = document.getElementById('w_' + p + '_akt');
     if (wW && wA) {
-      reportText += `${p.toUpperCase()}: Wechsel = ${wW.value}, Aquarium = ${wA.value}\n`;
+      reportText += \`${p.toUpperCase()}: Wechsel = ${wW.value}, Aquarium = ${wA.value}\n\`;
     }
   });
   let now = new Date();
