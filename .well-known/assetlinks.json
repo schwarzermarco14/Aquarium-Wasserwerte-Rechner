@@ -1,10 +1,10 @@
 [{
-  "relation": ["delegate_permission/common.handle_all_urls", "delegate_permission/common.get_login_creds"],
+  "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
     "package_name": "com.schwarzermarco14.aquadiagnose2",
     "sha256_cert_fingerprints": [
-      "9A:13:E5:C4:BE:78:05:5A:D9:7D:78:AF:27:48:C2:23:9F:17:A3:26:1C:D0:D0:70:5A:0C:A0:17:81:72:83:4C"
+      "7B:AC:12:CF:C3:F1:14:37:D1:F4:C6:2F:E0:A7:94:FB:87:19:C6:EC"
     ]
   }
 }]
