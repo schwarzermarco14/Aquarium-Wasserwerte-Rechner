@@ -3,7 +3,7 @@
   "target": {
     "namespace": "android_app",
     "package_name": "com.schwarzermarco14.aquadiagnose2",
-    "sha1_cert_fingerprints": [
+    "sha256_cert_fingerprints": [
       "15:5C:16:82:22:F5:40:5D:D6:82:A6:3B:3F:F3:CB:14:01:06:AC:C0"
     ]
   }
