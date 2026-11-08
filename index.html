@@ -1740,64 +1740,14 @@ ${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${
   alert('✅ Analyse im Kalender für heute (' + todayStr + ') gespeichert!');
 }
 
-let isPremiumUser = false;
+let isPremiumUser = true;
 const MAX_TANKS_FREE = 1;
 const MAX_TANKS_PREMIUM = 15;
 const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose_premium";
 
-async function redirectToStripe() {
-    if (!('getDigitalGoodsService' in window)) {
-        alert("In-App-Käufe werden auf diesem Gerät leider nicht unterstützt.");
-        window.location.href = "market://details?id=de.aquadiagnose.app"; 
-        return;
-    }
-
-    try {
-        const service = await window.getDigitalGoodsService('https://play.google.com/billing');
-        const productId = "aquadiagnose_premium"; 
-
-        const details = await service.getDetails([productId]);
-        if (!details || details.length === 0) {
-            alert("Das Produkt konnte im Play Store nicht gefunden werden.");
-            return;
-        }
-
-        const item = details[0];
-        const paymentRequest = new PaymentRequest([{
-            supportedMethods: 'https://play.google.com/billing',
-            data: { sku: productId }
-        }], {
-            total: {
-                label: item.title || 'AquaDiagnose Premium',
-                amount: { 
-                    currency: item.price.currency || 'EUR', 
-                    value: item.price.value || '0.00' 
-                }
-            }
-        });
-
-        const paymentResponse = await paymentRequest.show();
-        const purchaseToken = paymentResponse.details.purchaseToken;
-        console.log("Kauf erfolgreich! Token:", purchaseToken);
-
-        await paymentResponse.complete('success');
-        
-        isPremiumUser = true;
-        localStorage.setItem('isPremiumUser', 'true');
-        
-        alert("Vielen Dank! AquaDiagnose Premium wurde erfolgreich freigeschaltet.");
-        location.reload(); 
-
-    } catch (error) {
-    console.error("Kauf abgebrochen oder Fehler:", error);
-    if (error.message && error.message.includes("unsupported context")) {
-        window.location.href = "market://details?id=de.aquadiagnose.app";
-    } else if (error.name !== 'AbortError') {
-        alert("Hinweis zum Bezahlvorgang: " + (error.message || error));
-    }
+function redirectToStripe() {
+    window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
 }
-
-
 
 function showUpgradeModal(msg) {
     alert(msg || "Diese Funktion erfordert eine Premium-Freischaltung.");
