@@ -1789,12 +1789,14 @@ async function redirectToStripe() {
         location.reload(); 
 
     } catch (error) {
-        console.error("Kauf abgebrochen oder Fehler:", error);
-        if (error.name !== 'AbortError') {
-            alert("Hinweis zum Bezahlvorgang: " + error.message);
-        }
+    console.error("Kauf abgebrochen oder Fehler:", error);
+    if (error.message && error.message.includes("unsupported context")) {
+        window.location.href = "market://details?id=de.aquadiagnose.app";
+    } else if (error.name !== 'AbortError') {
+        alert("Hinweis zum Bezahlvorgang: " + (error.message || error));
     }
 }
+
 
 
 function showUpgradeModal(msg) {
