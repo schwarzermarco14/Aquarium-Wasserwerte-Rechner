@@ -66,17 +66,47 @@ Für ein Abonnement ist die Verifizierung entsprechend anzupassen.
 
 ## Noch erforderliche Einrichtung
 
-1. Im Google-Cloud-Projekt die Google Play Android Developer API aktivieren.
-   Einen Service-Account mit Zugriff auf diese App in der Play Console einrichten;
-   für Kaufprüfung und Bestätigung sind die entsprechenden Bestell-/Kaufrechte nötig.
-2. In Vercel serverseitig `GOOGLE_PLAY_SERVICE_ACCOUNT` auf das vollständige
-   Service-Account-JSON setzen. Der Schlüssel gehört weder ins HTML noch ins Git.
-3. Änderungen auf Vercel veröffentlichen. Die Function benötigt Node.js 22 und
+1. In der Google Cloud Console ein bestehendes oder neues Projekt auswählen und
+   unter **APIs & Dienste → Bibliothek** die **Google Play Android Developer API**
+   aktivieren. Unter **IAM & Verwaltung → Dienstkonten** einen Service-Account
+   anlegen, zum Beispiel `aquadiagnose-billing`. Die Service-Account-E-Mail kopieren.
+   Eine Cloud-Owner-/Editor-Rolle für den Service-Account ist dafür nicht erforderlich;
+   die App-Berechtigungen werden in der Play Console vergeben.
+2. In der **Google Play Console → Nutzer und Berechtigungen → Neue Nutzer einladen**
+   die Service-Account-E-Mail hinzufügen. Zugriff auf AquaDiagnose
+   (`com.schwarzermarco14.aquadiagnose2`) gewähren und folgende von Google für Billing
+   verlangten Rechte aktivieren (englische Originalbezeichnungen):
+   **View financial data, orders, and cancellation survey responses** sowie
+   **Manage orders and subscriptions**. Einladung abschließen.
+3. In der Cloud Console das Dienstkonto öffnen und unter
+   **Schlüssel → Schlüssel hinzufügen → Neuen Schlüssel erstellen → JSON**
+   einen Schlüssel herunterladen. In Vercel das AquaDiagnose-Projekt öffnen und
+   unter **Environment Variables** folgenden Eintrag anlegen:
+
+   | Einstellung | Wert |
+   | --- | --- |
+   | Name | `GOOGLE_PLAY_SERVICE_ACCOUNT` |
+   | Value | Vollständiger Inhalt der heruntergeladenen JSON-Datei, einschließlich `{` und `}` |
+   | Environment | `Production`; für einen gezielten PR-Test zusätzlich die passende Preview-Umgebung |
+
+   Den JSON-Inhalt direkt einfügen, ohne zusätzliche äußere Anführungszeichen oder
+   Base64-Kodierung. Die `\n`-Sequenzen innerhalb von `private_key` unverändert lassen.
+   Der Schlüssel gehört weder ins HTML, ins Git noch in einen PR-Kommentar.
+   Er wird ausschließlich von der Vercel Function gelesen.
+4. Änderungen auf Vercel veröffentlichen. Die Function benötigt Node.js 22 und
    `npm install`; das Web-Frontend bleibt statisches HTML.
-4. `GET /api/google-play` muss mit HTTP 200 und `{"ready":true}` antworten.
+   Nach dem Anlegen oder Ändern der Umgebungsvariable ein neues Deployment starten
+   bzw. unter **Deployments → Redeploy** erneut bereitstellen. Bereits laufende
+   Deployments übernehmen geänderte Variablen nicht automatisch.
+5. `GET /api/google-play` muss mit HTTP 200 und `{"ready":true}` antworten.
    Dabei werden Google-Zugang und Zugriff auf den Produktkatalog geprüft.
    Ohne erreichbaren Prüfserver startet die App keinen neuen Kauf.
-5. Auf der endgültigen Vercel-Domain die neue `assetlinks.json` prüfen.
+   Nach der produktiven Bereitstellung kann diese URL im Browser geöffnet werden:
+   `https://aquarium-wasserwerte-rechner.vercel.app/api/google-play`.
+   Die Bereitschaftsprüfung löst keinen Kauf aus und ersetzt noch keinen Test der
+   Kaufbestätigung. Bei HTTP 404 fehlt die Function im Deployment; bei HTTP 503
+   fehlen Konfiguration, API-/Play-Zugriff oder die Erreichbarkeit von Google.
+6. Auf der endgültigen Vercel-Domain die neue `assetlinks.json` prüfen.
    Auf dem verbundenen Telefon die Verifizierung erneut anstoßen:
 
    ```sh
@@ -87,7 +117,7 @@ Für ein Abonnement ist die Verifizierung entsprechend anzupassen.
    Die Verifizierung läuft asynchron; anschließend muss die Domain als `verified`
    erscheinen. Die App danach neu öffnen. Auch Chromes TWA-Verifizierung muss
    erfolgreich sein; der Android-App-Link-Status allein ersetzt diesen Test nicht.
-6. Mit einem Lizenztester über den internen Play-Test prüfen: Produkt verfügbar,
+7. Mit einem Lizenztester über den internen Play-Test prüfen: Produkt verfügbar,
    Testkauf, Kaufabbruch, ausstehende Zahlung, erneuter App-Start, Wiederherstellung.
    Dabei keine echten Zahlungen auslösen. Ein neues Android-Paket ist für die
    bestätigten Web-/Domain-Korrekturen zunächst nicht erforderlich.
@@ -109,3 +139,6 @@ Konto gebunden und Berechtigungen für jede Serveraktion erneut geprüft werden.
 - [Google: Kaufstatus prüfen](https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.productsv2/getproductpurchasev2)
 - [Google: Käufe bestätigen](https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.products/acknowledge)
 - [Google: Produktkatalog prüfen](https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.onetimeproducts/get)
+- [Google: API-Zugang und erforderliche Play-Berechtigungen](https://developers.google.com/android-publisher/getting_started)
+- [Google: JSON-Schlüssel erstellen](https://docs.cloud.google.com/iam/docs/keys-create-delete)
+- [Vercel: Umgebungsvariablen einrichten und neu bereitstellen](https://vercel.com/docs/environment-variables/managing-environment-variables)
