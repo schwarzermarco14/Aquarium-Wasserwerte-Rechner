@@ -5,7 +5,10 @@
       "namespace": "android_app",
       "package_name": "com.schwarzermarco14.aquadiagnose2",
       "sha256_cert_fingerprints":
-        ["12:68:02:E2:91:89:4D:EB:DF:65:5B:AA:10:B6:05:C2:77:2B:8B:9C:51:57:33:A2:C0:15:E8:A6:E2:70:AF:59"]
+        [
+          "12:68:02:E2:91:89:4D:EB:DF:65:5B:AA:10:B6:05:C2:77:2B:8B:9C:51:57:33:A2:C0:15:E8:A6:E2:70:AF:59",
+          "9A:13:E5:C4:BE:78:05:5A:D9:7D:78:AF:27:48:C2:23:9F:17:A3:26:1C:D0:D0:70:5A:0C:A0:17:81:72:83:4C"
+        ]
     }
   }
 ]
