@@ -1468,7 +1468,7 @@ function renderCalendar() {
       <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px;">
         <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 Premium-Funktion</h3>
         <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Das Aquarien-Tagebuch ist exklusiv für Premium-Mitglieder verfügbar.</p>
-        <button onclick="redirectToStripe()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+        <button onclick="buyGooglePlayPremium()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
           Jetzt Premium freischalten
         </button>
       </div>`;
@@ -1744,65 +1744,116 @@ let isPremiumUser = false;
 const MAX_TANKS_FREE = 1;
 const MAX_TANKS_PREMIUM = 15;
 const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose_premium";
+const GOOGLE_PLAY_BILLING = "https://play.google.com/billing";
+let purchaseInProgress = false;
 
-async function redirectToStripe() {
-    if (!('getDigitalGoodsService' in window)) {
-        // Fallback, falls die Digital Goods API im aktuellen Kontext nicht greift:
-        // Öffnet den Play Store direkt auf deiner App-Seite
-        window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
+async function callPlayBillingBackend(method, body) {
+    const response = await fetch('/api/google-play', {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: body ? JSON.stringify(body) : undefined,
+        cache: 'no-store',
+        signal: AbortSignal.timeout(30000)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(result.error || "Die Kaufprüfung ist nicht erreichbar. Bitte versuche es später erneut.");
+    }
+    return result;
+}
+
+async function verifyPlayPurchase(purchaseToken) {
+    if (typeof purchaseToken !== 'string' || !purchaseToken) {
+        throw new Error("Google Play hat keinen gültigen Kaufbeleg geliefert.");
+    }
+    const result = await callPlayBillingBackend('POST', {
+        productId: GOOGLE_PLAY_PRODUCT_ID,
+        purchaseToken
+    });
+    return result.premium === true;
+}
+
+function unlockPremium() {
+    isPremiumUser = true;
+    renderCalendar();
+}
+
+async function restorePlayPurchases(service) {
+    const purchases = await service.listPurchases();
+    for (const purchase of purchases) {
+        if (purchase.itemId === GOOGLE_PLAY_PRODUCT_ID && await verifyPlayPurchase(purchase.purchaseToken)) {
+            unlockPremium();
+            return true;
+        }
+    }
+    return false;
+}
+
+async function buyGooglePlayPremium() {
+    if (purchaseInProgress) return;
+    if (typeof window.getDigitalGoodsService !== 'function' || typeof window.PaymentRequest !== 'function') {
+        alert("Google Play Billing ist hier nicht verfügbar. Öffne die über Google Play installierte AquaDiagnose-App. Falls der Fehler dort auftritt, kontaktiere bitte den Anbieter.");
         return;
     }
 
+    purchaseInProgress = true;
+    let paymentResponse;
     try {
-        const service = await window.getDigitalGoodsService("https://play.google.com/store/apps/details?id=com.schwarzermarco14.aquadiagnose2");
-        const productId = "aquadiagnose_premium";
-        
-        const details = await service.getDetails([productId]);
-        if (details.length === 0) {
-            alert("Produkt konnte im Store nicht gefunden werden.");
+        const service = await window.getDigitalGoodsService(GOOGLE_PLAY_BILLING);
+        if (await restorePlayPurchases(service)) {
+            alert("Dein vorhandener Premium-Kauf wurde wiederhergestellt.");
             return;
         }
-
+        const details = await service.getDetails([GOOGLE_PLAY_PRODUCT_ID]);
+        const product = details.find(item => item.itemId === GOOGLE_PLAY_PRODUCT_ID);
+        if (!product) {
+            throw new Error("Das Premium-Produkt ist für dieses Google-Play-Konto nicht verfügbar. Bitte kontaktiere den Anbieter.");
+        }
+        const readiness = await callPlayBillingBackend('GET');
+        if (readiness.ready !== true) {
+            throw new Error("Die Kaufprüfung ist noch nicht bereit. Bitte versuche es später erneut.");
+        }
         const paymentMethod = [{
-            supportedMethods: "https://play.google.com/billing",
-            data: {
-                sku: productId
-            }
+            supportedMethods: GOOGLE_PLAY_BILLING,
+            data: { sku: GOOGLE_PLAY_PRODUCT_ID }
         }];
-
         const paymentDetails = {
             total: {
-                label: details[0].title,
-                amount: {
-                    currency: details[0].price.currency,
-                    value: details[0].price.value
-                }
+                label: product.title,
+                amount: product.price
             }
         };
-
         const request = new PaymentRequest(paymentMethod, paymentDetails);
-        const paymentResponse = await request.show();
-        const purchaseToken = paymentResponse.details.purchaseToken;
-        
-        console.log("Kauf erfolgreich! Token:", purchaseToken);
-
-        await paymentResponse.complete('success');
-
-        isPremiumUser = false;
-        localStorage.setItem('isPremiumUser', 'false');
-
-        alert("Vielen Dank! AquaDiagnose Premium wurde freigeschaltet.");
-        location.reload();
-
-    } catch (error) {
-        console.error("Kauf abgebrochen oder Fehler:", error);
-        if (error.name !== 'AbortError') {
-            // Bei einem Kontext-Fehler leiten wir direkt in den Play Store weiter
-            window.location.href = "market://details?id=com.schwarzermarco14.aquadiagnose2";
+        paymentResponse = await request.show();
+        if (!await verifyPlayPurchase(paymentResponse.details.purchaseToken)) {
+            throw new Error("Dein Kauf ist noch nicht bestätigt. Sobald Google Play die Zahlung abgeschlossen hat, öffne die App erneut, um den Kauf wiederherzustellen.");
         }
+        // Premium is a permanent entitlement: acknowledge on the server, never consume it.
+        unlockPremium();
+        // A timed-out payment dialog does not revoke a purchase Google already verified.
+        await paymentResponse.complete('success').catch(() => {});
+        alert("Vielen Dank! AquaDiagnose Premium wurde freigeschaltet.");
+    } catch (error) {
+        if (paymentResponse && !isPremiumUser) {
+            await paymentResponse.complete('fail').catch(() => {});
+        }
+        if (error.name !== 'AbortError') {
+            alert("Premium konnte nicht freigeschaltet werden: " + error.message);
+        }
+    } finally {
+        purchaseInProgress = false;
     }
 }
 
+async function restorePremiumOnStartup() {
+    if (typeof window.getDigitalGoodsService !== 'function') return;
+    try {
+        const service = await window.getDigitalGoodsService(GOOGLE_PLAY_BILLING);
+        await restorePlayPurchases(service);
+    } catch (error) {
+        console.warn("Premium-Wiederherstellung derzeit nicht verfügbar:", error.name);
+    }
+}
 
 function showUpgradeModal(msg) {
     alert(msg || "Diese Funktion erfordert eine Premium-Freischaltung.");
@@ -1813,6 +1864,7 @@ window.onload = function() {
     loadTankData();
     calcVol();
     switchLanguage(currentLang);
+    restorePremiumOnStartup();
 };
 </script>
 </body>
