@@ -1585,11 +1585,12 @@ function updateWaterChart() {
       let currentVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
       chartData = [currentVal, currentVal];
     } else {
-      dates.forEach(date => {
-        let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
-        chartData.push(liveVal);
+            dates.forEach(date => {
+        let dayEntry = diaryData[date] || {};
+        let val = parseFloat(dayEntry[paramId]) || 0;
+        chartData.push(val);
       });
-    }
+ }
     let color = colors[index % colors.length];
     datasets.push({
       label: paramLabel,
