@@ -1585,12 +1585,11 @@ function updateWaterChart() {
       let currentVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
       chartData = [currentVal, currentVal];
     } else {
-            dates.forEach(date => {
-        let dayEntry = diaryData[date] || {};
-        let val = parseFloat(dayEntry[paramId]) || 0;
-        chartData.push(val);
+      dates.forEach(date => {
+        let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
+        chartData.push(liveVal);
       });
- }
+    }
     let color = colors[index % colors.length];
     datasets.push({
       label: paramLabel,
@@ -1741,7 +1740,7 @@ ${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${
   alert('✅ Analyse im Kalender für heute (' + todayStr + ') gespeichert!');
 }
 
-let isPremiumUser = true;
+let isPremiumUser = false;
 const MAX_TANKS_FREE = 1;
 const MAX_TANKS_PREMIUM = 15;
 const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose_premium";
@@ -1869,4 +1868,4 @@ window.onload = function() {
 };
 </script>
 </body>
-  </html>
+</html>
