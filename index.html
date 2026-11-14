@@ -1552,6 +1552,7 @@ function saveDayEntry() {
   let targetDate = activeModalDate || todayStr;
   if(text.trim() === '') {
     delete diaryData[targetDate];
+    if (allTanks[currentTankName].measurements) delete allTanks[currentTankName].measurements[targetDate];
   } else {
     diaryData[targetDate] = text;
   }
@@ -1561,12 +1562,51 @@ function saveDayEntry() {
   updateWaterChart();
 }
 
+const WATER_PARAMS = ['ph','gh','kh','nh4','no2','no3','po4','k','ca','mg','fe','na','sio2','so4'];
+
+// Parses a measured value; accepts a German decimal comma. Returns null if not a number.
+function parseMeasurement(raw) {
+  if (raw === undefined || raw === null) return null;
+  let val = parseFloat(String(raw).trim().replace(',', '.'));
+  return Number.isFinite(val) ? val : null;
+}
+
+// Fallback for entries saved before structured measurements existed:
+// extracts values from the "--- WASSERWERTE ---" block of an analysis report.
+function parseMeasurementsFromReport(text) {
+  let result = {};
+  if (typeof text !== 'string') return result;
+  const lineRegex = /^([A-Z0-9]+): Wechsel = (.*), Aquarium = (.*)$/gm;
+  let match;
+  while ((match = lineRegex.exec(text)) !== null) {
+    let p = match[1].toLowerCase();
+    if (!WATER_PARAMS.includes(p)) continue;
+    result['w_' + p + '_wechsel'] = parseMeasurement(match[2]);
+    result['w_' + p + '_akt'] = parseMeasurement(match[3]);
+  }
+  return result;
+}
+
+// Returns all measurement days of the current tank, keyed by date (YYYY-MM-DD).
+function getTankMeasurements() {
+  let tank = allTanks[currentTankName] || {};
+  let measurements = {};
+  let diaryData = tank.diary || {};
+  Object.keys(diaryData).forEach(date => {
+    let parsed = parseMeasurementsFromReport(diaryData[date]);
+    if (Object.keys(parsed).length > 0) measurements[date] = parsed;
+  });
+  let stored = tank.measurements || {};
+  Object.keys(stored).forEach(date => { measurements[date] = stored[date]; });
+  return measurements;
+}
+
 function updateWaterChart() {
   const canvas = document.getElementById('waterChart');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
-  let diaryData = (allTanks[currentTankName] && allTanks[currentTankName].diary) ? allTanks[currentTankName].diary : {};
-  let dates = Object.keys(diaryData).sort();
+  let measurements = getTankMeasurements();
+  let dates = Object.keys(measurements).sort();
   const container = document.getElementById('chartParamSelect');
   const checkboxes = container ? container.querySelectorAll('input[type="checkbox"]:checked') : [];
   let labels = [];
@@ -1586,8 +1626,8 @@ function updateWaterChart() {
       chartData = [currentVal, currentVal];
     } else {
       dates.forEach(date => {
-        let liveVal = document.getElementById(paramId) ? parseFloat(document.getElementById(paramId).value) || 0 : 0;
-        chartData.push(liveVal);
+        let val = measurements[date][paramId];
+        chartData.push(val === undefined ? null : val);
       });
     }
     let color = colors[index % colors.length];
@@ -1598,7 +1638,8 @@ function updateWaterChart() {
       backgroundColor: color + '26',
       borderWidth: 2,
       fill: false,
-      tension: 0.2
+      tension: 0.2,
+      spanGaps: true
     });
   });
   if(myWaterChart) {
@@ -1721,11 +1762,14 @@ ${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${
     reportText += "\n";
   });
   reportText += "--- WASSERWERTE ---\n";
-  ['ph','gh','kh','nh4','no2','no3','po4','k','ca','mg','fe','na','sio2','so4'].forEach(p => {
+  let dayMeasurements = {};
+  WATER_PARAMS.forEach(p => {
     let wW = document.getElementById('w_' + p + '_wechsel');
     let wA = document.getElementById('w_' + p + '_akt');
     if (wW && wA) {
       reportText += `${p.toUpperCase()}: Wechsel = ${wW.value}, Aquarium = ${wA.value}\n`;
+      dayMeasurements['w_' + p + '_wechsel'] = parseMeasurement(wW.value);
+      dayMeasurements['w_' + p + '_akt'] = parseMeasurement(wA.value);
     }
   });
   let now = new Date();
@@ -1733,7 +1777,9 @@ ${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${
     String(now.getMonth() + 1).padStart(2, '0') + '-' +
     String(now.getDate()).padStart(2, '0');
   if (!allTanks[currentTankName].diary) allTanks[currentTankName].diary = {};
+  if (!allTanks[currentTankName].measurements) allTanks[currentTankName].measurements = {};
   allTanks[currentTankName].diary[todayStr] = reportText;
+  allTanks[currentTankName].measurements[todayStr] = dayMeasurements;
   localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
   renderCalendar();
   updateWaterChart();
