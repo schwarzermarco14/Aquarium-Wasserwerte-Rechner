@@ -16,6 +16,7 @@ function app(options = {}) {
   const context = vm.createContext({
     alert: message => alerts.push(message), console, AbortSignal,
     renderCalendar() {},
+    updateWaterChart() {},
     getDigitalGoodsService: async provider => {
       assert.equal(provider, 'https://play.google.com/billing');
       if (options.serviceError) throw options.serviceError;

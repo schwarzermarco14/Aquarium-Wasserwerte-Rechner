@@ -683,6 +683,8 @@ line-height: 1.5;
 <div class="card">
 <h2 data-i18n="tab_charts">📈 Wasserwerte-Verlauf (Diagramme)</h2>
 <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" data-i18n="charts_desc">Hier siehst du den zeitlichen Verlauf deiner gemessenen Aquarienwerte aus dem Tagebuch.</p>
+<div id="chartPremiumLock" style="display: none;"></div>
+<div id="chartContent">
 <div class="form-group" style="flex-direction: column; align-items: flex-start; margin-bottom: 15px;">
 <label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold; margin-bottom: 8px;">Parameter auswählen (mehrere möglich):</label>
 <div class="media-grid" id="chartParamSelect" style="width: 100%;">
@@ -704,6 +706,7 @@ line-height: 1.5;
 </div>
 <div style="position: relative; height: 260px; width: 100%; margin-bottom: 20px;">
 <canvas id="waterChart"></canvas>
+</div>
 </div>
 </div>
 </div>
@@ -1347,8 +1350,12 @@ function switchLanguage(lang) {
 }
 
 function createNewTank() {
-  if(Object.keys(allTanks).length >= 10) {
-    alert(currentLang === 'en' ? "Maximum limit of 10 aquariums reached." : "Maximale Anzahl von 10 Aquarien erreicht.");
+  if(!isPremiumUser && Object.keys(allTanks).length >= MAX_TANKS_FREE) {
+    offerPremium('tanks');
+    return;
+  }
+  if(Object.keys(allTanks).length >= MAX_TANKS_PREMIUM) {
+    alert(currentLang === 'en' ? `Maximum limit of ${MAX_TANKS_PREMIUM} aquariums reached.` : `Maximale Anzahl von ${MAX_TANKS_PREMIUM} Aquarien erreicht.`);
     return;
   }
   let promptText = currentLang === 'en' ? "Enter name for the new aquarium:" : "Name für das neue Aquarium eingeben:";
@@ -1381,6 +1388,12 @@ function renameCurrentTank() {
 }
 
 function switchTank(name) {
+  // Without Premium only the first aquarium is usable; data of the others is kept.
+  if(!isPremiumUser && name !== Object.keys(allTanks)[0]) {
+    document.getElementById('tankSelect').value = currentTankName;
+    offerPremium('tanks');
+    return;
+  }
   currentTankName = name;
   loadTankData();
   calcVol();
@@ -1459,19 +1472,42 @@ function calcVol() {
   document.getElementById('volumen').value = vol.toFixed(1);
 }
 
+// Premium unlocks three features with one purchase: calendar/diary, charts and multiple aquariums.
+const PREMIUM_FEATURE_TEXT = {
+  calendar: { de: 'Das Aquarien-Tagebuch', en: 'The aquarium diary' },
+  charts: { de: 'Die Wasserwerte-Diagramme', en: 'The water parameter charts' },
+  tanks: { de: 'Die Verwaltung mehrerer Aquarien', en: 'Managing multiple aquariums' }
+};
+
+function premiumLockHtml(feature) {
+  const en = currentLang === 'en';
+  const name = PREMIUM_FEATURE_TEXT[feature][en ? 'en' : 'de'];
+  return `
+      <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px;">
+        <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 ${en ? 'Premium feature' : 'Premium-Funktion'}</h3>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">${name} ${en ? 'is available exclusively for Premium members.' : 'ist exklusiv für Premium-Mitglieder verfügbar.'}<br>${en ? 'One purchase unlocks diary, charts and multiple aquariums.' : 'Ein Kauf schaltet Tagebuch, Diagramme und mehrere Aquarien frei.'}</p>
+        <button onclick="buyGooglePlayPremium()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+          ${en ? 'Unlock Premium now' : 'Jetzt Premium freischalten'}
+        </button>
+      </div>`;
+}
+
+// Asks the user whether to buy Premium after hitting a locked feature.
+function offerPremium(feature) {
+  const en = currentLang === 'en';
+  const name = PREMIUM_FEATURE_TEXT[feature][en ? 'en' : 'de'];
+  const msg = en
+    ? `🔒 ${name} is a Premium feature.\nOne purchase unlocks diary, charts and multiple aquariums.\n\nUnlock Premium now?`
+    : `🔒 ${name} ist eine Premium-Funktion.\nEin Kauf schaltet Tagebuch, Diagramme und mehrere Aquarien frei.\n\nJetzt Premium freischalten?`;
+  if (confirm(msg)) buyGooglePlayPremium();
+}
+
 function renderCalendar() {
   const grid = document.getElementById('calendarGrid');
   const monthYearEl = document.getElementById('calMonthYear');
   if(!grid) return;
   if (!isPremiumUser) {
-    grid.innerHTML = `
-      <div style="text-align:center; padding: 25px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 15px;">
-        <h3 style="color:#f59e0b; margin-bottom: 8px;">🔒 Premium-Funktion</h3>
-        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Das Aquarien-Tagebuch ist exklusiv für Premium-Mitglieder verfügbar.</p>
-        <button onclick="buyGooglePlayPremium()" style="background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">
-          Jetzt Premium freischalten
-        </button>
-      </div>`;
+    grid.innerHTML = premiumLockHtml('calendar');
     return;
   }
   grid.innerHTML = '';
@@ -1604,6 +1640,16 @@ function getTankMeasurements() {
 function updateWaterChart() {
   const canvas = document.getElementById('waterChart');
   if(!canvas) return;
+  const lockEl = document.getElementById('chartPremiumLock');
+  const contentEl = document.getElementById('chartContent');
+  if(!isPremiumUser) {
+    lockEl.innerHTML = premiumLockHtml('charts');
+    lockEl.style.display = 'block';
+    contentEl.style.display = 'none';
+    return;
+  }
+  lockEl.style.display = 'none';
+  contentEl.style.display = 'block';
   const ctx = canvas.getContext('2d');
   let measurements = getTankMeasurements();
   let dates = Object.keys(measurements).sort();
@@ -1822,6 +1868,7 @@ async function verifyPlayPurchase(purchaseToken) {
 function unlockPremium() {
     isPremiumUser = true;
     renderCalendar();
+    updateWaterChart();
 }
 
 async function restorePlayPurchases(service) {
