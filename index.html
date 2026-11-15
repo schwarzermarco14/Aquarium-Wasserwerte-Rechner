@@ -340,8 +340,8 @@ line-height: 1.5;
 <div class="header-controls">
 <div class="tank-selector-container">
 <select id="tankSelect" onchange="switchTank(this.value)"></select>
-<button type="button" onclick="createNewTank()" title="Neues Aquarium hinzufügen">+</button>
-<button type="button" onclick="renameCurrentTank()" title="Aktuelles Aquarium umbenennen">✏️</button>
+<button type="button" onclick="createNewTank()" title="Neues Aquarium hinzufügen" data-i18n-title="tip_new_tank">+</button>
+<button type="button" onclick="renameCurrentTank()" title="Aktuelles Aquarium umbenennen" data-i18n-title="tip_rename_tank">✏️</button>
 </div>
 <div class="lang-selector-container">
 <select id="langSelect" onchange="switchLanguage(this.value)">
@@ -413,7 +413,7 @@ line-height: 1.5;
 <label><input type="checkbox" class="fm-chk" onchange="saveDataAuto()"> <span data-i18n="fm_zeolite">Zeolith</span></label>
 </div>
 </div>
-<div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" id="inp_clean" placeholder="z. B. 2" oninput="saveDataAuto()"></div>
+<div class="form-group"><label data-i18n="lbl_clean_interval">In welchem Abstand wird der Filter gereinigt (in Wochen)?</label><input type="text" id="inp_clean" placeholder="z. B. 2" data-i18n-placeholder="ph_clean_interval" oninput="saveDataAuto()"></div>
 <div class="question-block" style="margin-top: 15px;">
 <label class="main-label" data-i18n="lbl_heater">Ist im Aquarium ein Heizstab installiert?</label>
 <div class="radio-row">
@@ -543,7 +543,7 @@ line-height: 1.5;
 <option value="spider_wood" data-i18n="wt_spider">Spider Wood (Astig, hell)</option>
 <option value="driftwood" data-i18n="wt_drift">Treibholz (Leicht sauer)</option>
 <option value="savannenholz" data-i18n="wt_savannah">Savannenholz (Hart, glatt)</option>
-<option value="rondeletia" data-i18n="wt_ironwood">Eisenholz (Sehr hart und schwer)</option>
+<option value="rondeletia" data-i18n="wt_rondeletia">Eisenholz (Sehr hart und schwer)</option>
 <option value="jumbo" data-i18n="wt_jumbo">Jumbo-Wurzel (Großstückig)</option>
 <option value="korkenzieher" data-i18n="wt_cork">Korkenzieherhasel (Dekorativ)</option>
 </select>
@@ -688,7 +688,7 @@ line-height: 1.5;
 <div class="form-group" style="flex-direction: column; align-items: flex-start; margin-bottom: 15px;">
 <label data-i18n="lbl_select_param" style="font-size: 0.85rem; color: var(--accent); font-weight: bold; margin-bottom: 8px;">Parameter auswählen (mehrere möglich):</label>
 <div class="media-grid" id="chartParamSelect" style="width: 100%;">
-<label class="check-group"><input type="checkbox" value="w_ph_akt" checked onchange="updateWaterChart()"> pH (Aquarienwasser)</label>
+<label class="check-group"><input type="checkbox" value="w_ph_akt" checked onchange="updateWaterChart()"> <span data-i18n="chart_ph">pH (Aquarienwasser)</span></label>
 <label class="check-group"><input type="checkbox" value="w_gh_akt" onchange="updateWaterChart()"> GH (°dH)</label>
 <label class="check-group"><input type="checkbox" value="w_kh_akt" onchange="updateWaterChart()"> KH (°dH)</label>
 <label class="check-group"><input type="checkbox" value="w_nh4_akt" onchange="updateWaterChart()"> NH₄ (ppm)</label>
@@ -731,7 +731,7 @@ line-height: 1.5;
 <h3 id="modalDateTitle" style="color:var(--accent); margin-bottom: 10px;">Datum</h3>
 <div class="modal-body">
 <p style="margin-bottom: 6px; color:var(--text-muted);" data-i18n="modal_subtitle">Vollständiger Analyse-Report:</p>
-<textarea id="modalEntryText" placeholder="Notizen oder gemessene Werte hier eintragen..."></textarea>
+<textarea id="modalEntryText" placeholder="Notizen oder gemessene Werte hier eintragen..." data-i18n-placeholder="ph_diary_entry"></textarea>
 <button type="button" class="modal-btn" onclick="saveDayEntry()" data-i18n="modal_save">Speichern</button>
 </div>
 </div>
@@ -871,6 +871,12 @@ sec_water_compare: "🧪 Wasserwerte-Vergleich",
 col_water_parameter: "Parameter",
 col_water_change: "Wasserwechsel",
 col_water_tank: "Aquarienwasser",
+tip_new_tank: "Neues Aquarium hinzufügen",
+tip_rename_tank: "Aktuelles Aquarium umbenennen",
+ph_clean_interval: "z. B. 2",
+ph_diary_entry: "Notizen oder gemessene Werte hier eintragen...",
+chart_ph: "pH (Aquarienwasser)",
+msg_analysis_saved: "✅ Analyse im Kalender für heute ({date}) gespeichert!",
 lbl_fish_small: "Kleine Fische (bis 3 cm):",
 lbl_fish_medium: "Mittelgroße Fische (3–8 cm):",
 lbl_fish_large: "Große Fische (über 8 cm):",
@@ -1148,7 +1154,7 @@ st_lava: "Lava Rock (Neutral, porous)",
 st_manten: "Manten Stone (Mostly neutral)",
 st_ada: "ADA Eiyu / Ryuoh Stone (Hardens water significantly)",
 st_granite: "Granite (Neutral, inert)",
-st_marble: "Marble / White Marble (Extremely calcareous)",
+st_marmor: "Marble / White Marble (Extremely calcareous)",
 st_loch: "Lochstein / Honeycomb limestone (Highly calcareous)",
 st_river: "River pebbles (Mostly neutral)",
 st_zebra: "Zebra Stone (Slightly calcareous)",
@@ -1172,6 +1178,12 @@ sec_water_compare: "🧪 Water Parameters Comparison",
 col_water_parameter: "Parameter",
 col_water_change: "Water Change",
 col_water_tank: "Tank Water",
+tip_new_tank: "Add new aquarium",
+tip_rename_tank: "Rename current aquarium",
+ph_clean_interval: "e.g. 2",
+ph_diary_entry: "Enter notes or measured values here...",
+chart_ph: "pH (tank water)",
+msg_analysis_saved: "✅ Analysis saved to the calendar for today ({date})!",
 lbl_fish_small: "Small fish (up to 3 cm):",
 lbl_fish_medium: "Medium fish (3–8 cm):",
 lbl_fish_large: "Large fish (over 8 cm):",
@@ -1384,6 +1396,15 @@ function switchLanguage(lang) {
     if(translations[lang] && translations[lang][key]) {
       el.innerText = translations[lang][key];
     }
+  });
+  // Attributes (tooltips, placeholders) are translated via data-i18n-<attribute>.
+  ['title', 'placeholder'].forEach(attr => {
+    document.querySelectorAll(`[data-i18n-${attr}]`).forEach(el => {
+      let key = el.getAttribute(`data-i18n-${attr}`);
+      if(translations[lang] && translations[lang][key]) {
+        el.setAttribute(attr, translations[lang][key]);
+      }
+    });
   });
   renderCalendar();
   updateWaterChart();
@@ -1874,7 +1895,7 @@ ${alertData.pro ? `<p style="margin-top: 6px;"><strong>${t.p_label}:</strong> ${
   localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
   renderCalendar();
   updateWaterChart();
-  alert('✅ Analyse im Kalender für heute (' + todayStr + ') gespeichert!');
+  alert(t.msg_analysis_saved.replace('{date}', todayStr));
 }
 
 let isPremiumUser = false;
@@ -1883,6 +1904,36 @@ const MAX_TANKS_PREMIUM = 15;
 const GOOGLE_PLAY_PRODUCT_ID = "aquadiagnose_premium";
 const GOOGLE_PLAY_BILLING = "https://play.google.com/billing";
 let purchaseInProgress = false;
+
+// User-facing billing messages; kept inside the billing block so it stays self-contained.
+const BILLING_TEXT = {
+    de: {
+        unreachable: "Die Kaufprüfung ist nicht erreichbar. Bitte versuche es später erneut.",
+        noToken: "Google Play hat keinen gültigen Kaufbeleg geliefert.",
+        unavailable: "Google Play Billing ist hier nicht verfügbar. Öffne die über Google Play installierte AquaDiagnose-App. Falls der Fehler dort auftritt, kontaktiere bitte den Anbieter.",
+        restored: "Dein vorhandener Premium-Kauf wurde wiederhergestellt.",
+        noProduct: "Das Premium-Produkt ist für dieses Google-Play-Konto nicht verfügbar. Bitte kontaktiere den Anbieter.",
+        notReady: "Die Kaufprüfung ist noch nicht bereit. Bitte versuche es später erneut.",
+        pending: "Dein Kauf ist noch nicht bestätigt. Sobald Google Play die Zahlung abgeschlossen hat, öffne die App erneut, um den Kauf wiederherzustellen.",
+        thanks: "Vielen Dank! AquaDiagnose Premium wurde freigeschaltet.",
+        failed: "Premium konnte nicht freigeschaltet werden: "
+    },
+    en: {
+        unreachable: "The purchase verification is not reachable. Please try again later.",
+        noToken: "Google Play did not return a valid purchase receipt.",
+        unavailable: "Google Play Billing is not available here. Open the AquaDiagnose app installed from Google Play. If the error occurs there, please contact the developer.",
+        restored: "Your existing Premium purchase has been restored.",
+        noProduct: "The Premium product is not available for this Google Play account. Please contact the developer.",
+        notReady: "The purchase verification is not ready yet. Please try again later.",
+        pending: "Your purchase is not confirmed yet. Once Google Play has completed the payment, reopen the app to restore the purchase.",
+        thanks: "Thank you! AquaDiagnose Premium has been unlocked.",
+        failed: "Premium could not be unlocked: "
+    }
+};
+
+function billingText(key) {
+    return (BILLING_TEXT[currentLang] || BILLING_TEXT.de)[key];
+}
 
 async function callPlayBillingBackend(method, body) {
     const response = await fetch('/api/google-play', {
@@ -1894,14 +1945,14 @@ async function callPlayBillingBackend(method, body) {
     });
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
-        throw new Error(result.error || "Die Kaufprüfung ist nicht erreichbar. Bitte versuche es später erneut.");
+        throw new Error(result.error || billingText("unreachable"));
     }
     return result;
 }
 
 async function verifyPlayPurchase(purchaseToken) {
     if (typeof purchaseToken !== 'string' || !purchaseToken) {
-        throw new Error("Google Play hat keinen gültigen Kaufbeleg geliefert.");
+        throw new Error(billingText("noToken"));
     }
     const result = await callPlayBillingBackend('POST', {
         productId: GOOGLE_PLAY_PRODUCT_ID,
@@ -1930,7 +1981,7 @@ async function restorePlayPurchases(service) {
 async function buyGooglePlayPremium() {
     if (purchaseInProgress) return;
     if (typeof window.getDigitalGoodsService !== 'function' || typeof window.PaymentRequest !== 'function') {
-        alert("Google Play Billing ist hier nicht verfügbar. Öffne die über Google Play installierte AquaDiagnose-App. Falls der Fehler dort auftritt, kontaktiere bitte den Anbieter.");
+        alert(billingText("unavailable"));
         return;
     }
 
@@ -1939,17 +1990,17 @@ async function buyGooglePlayPremium() {
     try {
         const service = await window.getDigitalGoodsService(GOOGLE_PLAY_BILLING);
         if (await restorePlayPurchases(service)) {
-            alert("Dein vorhandener Premium-Kauf wurde wiederhergestellt.");
+            alert(billingText("restored"));
             return;
         }
         const details = await service.getDetails([GOOGLE_PLAY_PRODUCT_ID]);
         const product = details.find(item => item.itemId === GOOGLE_PLAY_PRODUCT_ID);
         if (!product) {
-            throw new Error("Das Premium-Produkt ist für dieses Google-Play-Konto nicht verfügbar. Bitte kontaktiere den Anbieter.");
+            throw new Error(billingText("noProduct"));
         }
         const readiness = await callPlayBillingBackend('GET');
         if (readiness.ready !== true) {
-            throw new Error("Die Kaufprüfung ist noch nicht bereit. Bitte versuche es später erneut.");
+            throw new Error(billingText("notReady"));
         }
         const paymentMethod = [{
             supportedMethods: GOOGLE_PLAY_BILLING,
@@ -1964,19 +2015,19 @@ async function buyGooglePlayPremium() {
         const request = new PaymentRequest(paymentMethod, paymentDetails);
         paymentResponse = await request.show();
         if (!await verifyPlayPurchase(paymentResponse.details.purchaseToken)) {
-            throw new Error("Dein Kauf ist noch nicht bestätigt. Sobald Google Play die Zahlung abgeschlossen hat, öffne die App erneut, um den Kauf wiederherzustellen.");
+            throw new Error(billingText("pending"));
         }
         // Premium is a permanent entitlement: acknowledge on the server, never consume it.
         unlockPremium();
         // A timed-out payment dialog does not revoke a purchase Google already verified.
         await paymentResponse.complete('success').catch(() => {});
-        alert("Vielen Dank! AquaDiagnose Premium wurde freigeschaltet.");
+        alert(billingText("thanks"));
     } catch (error) {
         if (paymentResponse && !isPremiumUser) {
             await paymentResponse.complete('fail').catch(() => {});
         }
         if (error.name !== 'AbortError') {
-            alert("Premium konnte nicht freigeschaltet werden: " + error.message);
+            alert(billingText("failed") + error.message);
         }
     } finally {
         purchaseInProgress = false;
@@ -1994,7 +2045,7 @@ async function restorePremiumOnStartup() {
 }
 
 function showUpgradeModal(msg) {
-    alert(msg || "Diese Funktion erfordert eine Premium-Freischaltung.");
+    alert(msg || (currentLang === "en" ? "This feature requires Premium." : "Diese Funktion erfordert eine Premium-Freischaltung."));
 }
 
 window.onload = function() {
