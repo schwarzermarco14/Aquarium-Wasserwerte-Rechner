@@ -17,6 +17,7 @@ function app(options = {}) {
     alert: message => alerts.push(message), console, AbortSignal,
     renderCalendar() {},
     updateWaterChart() {},
+    currentLang: 'de',
     getDigitalGoodsService: async provider => {
       assert.equal(provider, 'https://play.google.com/billing');
       if (options.serviceError) throw options.serviceError;
