@@ -957,6 +957,50 @@ warn_overstock_sol: "Reduziere den Fischbesatz drastisch (z.B. durch Abgabe von 
 pro_tip_title: "💡 Profi-Tipp: Biologische Stabilität",
 pro_tip_expl: "Ein eingefahrenes Aquarium verzeiht kleine Fehler, aber verlasse dich nie auf Teststreifen allein – Tröpfchentests liefern exakte Ergebnisse für ein stabiles Millieu.",
 pro_tip_sol: "Führe wöchentlich feste Routinen für Wasserwechsel und Filterpflege ein, anstatt erst bei Problemen zu reagieren.",
+warn_ph_low_title: "🚨 pH-Wert kritisch niedrig",
+warn_ph_low_expl: "Ein pH-Wert unter 6,0 ist für die meisten Fische, Garnelen und die Filterbakterien gefährlich. Die Nitrifikation kommt fast zum Erliegen und empfindliche Tiere geraten unter starken Stress.",
+warn_ph_low_sol: "Wechsle 30–50 % des Wassers mit Leitungswasser höherer Karbonathärte, entferne säuernde Einflüsse (z. B. Moorkienholz, Torf) und kontrolliere pH und KH täglich, bis die Werte stabil sind (Ziel: pH 6,5–7,5, KH mindestens 4 °dH).",
+warn_ph_high_title: "⚠️ pH-Wert zu hoch",
+warn_ph_high_expl: "Ein pH-Wert über 8,5 ist für die meisten Süßwasserfische zu alkalisch. Zudem wird vorhandenes Ammonium bei hohem pH zu giftigem Ammoniak.",
+warn_ph_high_sol: "Prüfe die Ursache (kalkhaltige Steine oder Bodengrund, sehr hartes Leitungswasser). Senke den pH langsam über Wasserwechsel mit weicherem Wasser, nie mehr als 0,3 pH-Stufen pro Tag.",
+warn_kh_low_title: "⚠️ Karbonathärte zu niedrig (kein Puffer)",
+warn_kh_low_expl: "Bei einer KH unter 2 °dH fehlt dem Wasser der Puffer. Der pH-Wert kann jederzeit stark schwanken oder abstürzen.",
+warn_kh_low_sol: "Hebe die KH über Wasserwechsel mit härterem Leitungswasser oder ein KH-Aufhärtesalz auf mindestens 4 °dH an.",
+warn_co2_kh_title: "🚨 Gefahr: CO₂-Zugabe bei sehr niedriger KH",
+warn_co2_kh_expl: "Bei einer KH unter 2 °dH kann das zugeführte CO₂ den pH-Wert innerhalb kurzer Zeit massiv absenken. Das ist für Fische und Garnelen lebensgefährlich.",
+warn_co2_kh_sol: "Reduziere sofort die CO₂-Zufuhr oder schalte sie ab, bis die KH auf mindestens 4 °dH angehoben ist. Kontrolliere danach den pH-Wert mit einem Dauertest.",
+warn_nh4_title: "⚠️ Ammonium erhöht",
+warn_nh4_expl: "Ammonium entsteht durch Ausscheidungen, Futterreste und abgestorbene Pflanzenteile. Bei pH über 7 wandelt es sich in giftiges Ammoniak um.",
+warn_nh4_sol: "Mache einen Wasserwechsel von 30–50 %, füttere 2–3 Tage sparsam und entferne Futterreste und Abgestorbenes. Prüfe, ob der Filter richtig arbeitet.",
+warn_no2_title: "🚨 Nitrit erhöht (giftig)",
+warn_no2_expl: "Nitrit ist schon in geringen Mengen giftig für Fische, weil es die Sauerstoffaufnahme im Blut blockiert. Es zeigt, dass die Filterbakterien noch nicht ausreichen.",
+warn_no2_sol: "Wechsle sofort 50 % des Wassers, stelle das Füttern für 1–2 Tage ein und setze keine neuen Tiere ein. Teste täglich, bis Nitrit wieder bei 0 liegt.",
+warn_po4_title: "⚠️ Phosphat erhöht",
+warn_po4_expl: "Zu viel Phosphat fördert Algenwachstum, besonders wenn andere Nährstoffe fehlen oder viel Licht vorhanden ist.",
+warn_po4_sol: "Reduziere Futter und phosphathaltigen Dünger, mache regelmäßige Wasserwechsel und prüfe das Leitungswasser auf Phosphat.",
+warn_temp_low_title: "⚠️ Wassertemperatur zu niedrig",
+warn_temp_low_expl: "Unter 20 °C werden die meisten tropischen Fische träge und anfällig für Krankheiten.",
+warn_temp_low_sol: "Prüfe den Heizstab und stelle die Temperatur passend zum Besatz ein (meist 24–26 °C).",
+warn_temp_high_title: "⚠️ Wassertemperatur zu hoch",
+warn_temp_high_expl: "Über 30 °C sinkt der Sauerstoffgehalt im Wasser stark und die Tiere geraten unter Stress.",
+warn_temp_high_sol: "Senke die Temperatur langsam (Heizstab prüfen, Abdeckung öffnen, Lüfter). Sorge für starke Oberflächenbewegung, damit mehr Sauerstoff ins Wasser kommt.",
+warn_stock_high_title: "⚠️ Hoher Fischbesatz",
+warn_stock_high_expl: "Die geschätzte Gesamtlänge der Fische ist hoch im Verhältnis zum Wasservolumen. Das Becken ist stärker belastet und reagiert empfindlicher auf Fehler.",
+warn_stock_high_sol: "Setze vorerst keine weiteren Fische ein, füttere sparsam und mache regelmäßige Wasserwechsel. Achte besonders auf NH₄, NO₂ und NO₃.",
+info_wood_title: "💡 Hinweis: Holz beeinflusst das Wasser",
+info_wood_expl: "Dieses Holz gibt Huminstoffe und Gerbsäuren ab. Es kann pH und KH langsam senken und das Wasser gelblich färben.",
+info_wood_sol: "Kontrolliere pH und KH regelmäßig, besonders in den ersten Wochen. Bei weichem Wasser die KH im Blick behalten.",
+info_calc_stone_title: "💡 Hinweis: Kalkhaltige Steine",
+info_calc_stone_expl: "Diese Steine geben Kalk ab und können GH, KH und pH mit der Zeit ansteigen lassen.",
+info_calc_stone_sol: "Kontrolliere GH und KH regelmäßig. Für Weichwasserfische besser neutrale Steine wählen.",
+info_soil_new_title: "💡 Hinweis: Neuer Soil-Bodengrund",
+info_soil_new_expl: "Aktiver Soil senkt KH und pH und gibt in den ersten Wochen Ammonium ab.",
+info_soil_new_sol: "Teste NH₄ und NO₂ in den ersten 8 Wochen häufig, mache öfter Wasserwechsel und setze empfindliche Tiere erst danach ein.",
+cause_prefix: "Mögliche Ursache",
+cause_soil: "Soil-Bodengrund",
+cause_co2: "CO₂-Zugabe",
+cause_new_soil: "neuer Soil-Bodengrund gibt Ammonium ab",
+cause_cycling: "das Becken ist noch in der Einfahrphase",
 
 alg_green_thread_t: "🚨 Algen-Hilfe: Grüne Fadenalgen (grüne Haare)",
 alg_green_thread_e: "Diese langen, haarigen Algen entstehen meistens, wenn zu viel Eisen/Dünger im Wasser ist, das Licht zu lange brennt oder die CO₂-Zufuhr ungleichmäßig läuft.",
@@ -1263,6 +1307,50 @@ warn_overstock_sol: "Drastically reduce the stocking density (e.g., rehoming fis
 pro_tip_title: "💡 Pro Tip: Biological Stability",
 pro_tip_expl: "An mature aquarium forgives minor mistakes, but never rely solely on test strips – liquid drop tests provide exact results for a stable milieu.",
 pro_tip_sol: "Establish fixed routines for water changes and filter maintenance weekly instead of reacting only when issues arise.",
+warn_ph_low_title: "🚨 pH Critically Low",
+warn_ph_low_expl: "A pH below 6.0 is dangerous for most fish, shrimp and the filter bacteria. Nitrification almost stops and sensitive animals are put under severe stress.",
+warn_ph_low_sol: "Change 30–50% of the water using tap water with higher carbonate hardness, remove acidifying influences (e.g. bogwood, peat) and check pH and KH daily until stable (target: pH 6.5–7.5, KH at least 4 °dH).",
+warn_ph_high_title: "⚠️ pH Too High",
+warn_ph_high_expl: "A pH above 8.5 is too alkaline for most freshwater fish. At high pH, any ammonium also turns into toxic ammonia.",
+warn_ph_high_sol: "Find the cause (calcareous stones or substrate, very hard tap water). Lower the pH slowly through water changes with softer water, never more than 0.3 pH units per day.",
+warn_kh_low_title: "⚠️ Carbonate Hardness Too Low (No Buffer)",
+warn_kh_low_expl: "With a KH below 2 °dH the water has no buffer. The pH can swing or crash at any time.",
+warn_kh_low_sol: "Raise the KH to at least 4 °dH through water changes with harder tap water or a KH buffer salt.",
+warn_co2_kh_title: "🚨 Danger: CO₂ Injection with Very Low KH",
+warn_co2_kh_expl: "With a KH below 2 °dH, injected CO₂ can lower the pH massively within a short time. This is life-threatening for fish and shrimp.",
+warn_co2_kh_sol: "Reduce or switch off CO₂ immediately until the KH is raised to at least 4 °dH. Then monitor the pH with a drop checker.",
+warn_nh4_title: "⚠️ Ammonium Elevated",
+warn_nh4_expl: "Ammonium comes from waste, leftover food and decaying plant matter. Above pH 7 it turns into toxic ammonia.",
+warn_nh4_sol: "Do a 30–50% water change, feed sparingly for 2–3 days and remove leftovers and decaying matter. Check that the filter is working properly.",
+warn_no2_title: "🚨 Nitrite Elevated (Toxic)",
+warn_no2_expl: "Nitrite is toxic to fish even in small amounts because it blocks oxygen uptake in the blood. It shows that the filter bacteria are not yet sufficient.",
+warn_no2_sol: "Change 50% of the water immediately, stop feeding for 1–2 days and do not add new animals. Test daily until nitrite is back at 0.",
+warn_po4_title: "⚠️ Phosphate Elevated",
+warn_po4_expl: "Too much phosphate promotes algae growth, especially when other nutrients are lacking or there is a lot of light.",
+warn_po4_sol: "Reduce food and phosphate-containing fertilizer, do regular water changes and check your tap water for phosphate.",
+warn_temp_low_title: "⚠️ Water Temperature Too Low",
+warn_temp_low_expl: "Below 20 °C most tropical fish become sluggish and prone to disease.",
+warn_temp_low_sol: "Check the heater and set the temperature to suit your fish (usually 24–26 °C).",
+warn_temp_high_title: "⚠️ Water Temperature Too High",
+warn_temp_high_expl: "Above 30 °C the oxygen content of the water drops sharply and the animals become stressed.",
+warn_temp_high_sol: "Lower the temperature slowly (check the heater, open the lid, use a fan). Provide strong surface movement to get more oxygen into the water.",
+warn_stock_high_title: "⚠️ High Fish Stocking",
+warn_stock_high_expl: "The estimated total length of the fish is high relative to the water volume. The tank is under more load and reacts more sensitively to mistakes.",
+warn_stock_high_sol: "Do not add more fish for now, feed sparingly and do regular water changes. Keep a close eye on NH₄, NO₂ and NO₃.",
+info_wood_title: "💡 Notice: Wood Affects the Water",
+info_wood_expl: "This wood releases humic substances and tannins. It can slowly lower pH and KH and tint the water yellow.",
+info_wood_sol: "Check pH and KH regularly, especially in the first weeks. Keep an eye on the KH if your water is soft.",
+info_calc_stone_title: "💡 Notice: Calcareous Stones",
+info_calc_stone_expl: "These stones release lime and can raise GH, KH and pH over time.",
+info_calc_stone_sol: "Check GH and KH regularly. For soft-water fish, choose neutral stones instead.",
+info_soil_new_title: "💡 Notice: New Soil Substrate",
+info_soil_new_expl: "Active soil lowers KH and pH and releases ammonium during the first weeks.",
+info_soil_new_sol: "Test NH₄ and NO₂ frequently during the first 8 weeks, do more water changes and add sensitive animals only afterwards.",
+cause_prefix: "Possible cause",
+cause_soil: "soil substrate",
+cause_co2: "CO₂ injection",
+cause_new_soil: "new soil substrate releases ammonium",
+cause_cycling: "the tank is still cycling",
 
 alg_green_thread_t: "🚨 Algae Warning: Green Thread Algae",
 alg_green_thread_e: "Often caused by excess micronutrients (iron), an imbalance in macro-nutrients (N-P-K), or unstable CO₂ supply combined with high light intensity.",
@@ -1769,6 +1857,23 @@ function updateWaterChart() {
   });
 }
 
+// Analysis reference data. Fish lengths are rough adult sizes used to estimate the bioload.
+const CALCAREOUS_STONES = ['seiryu', 'rokkaku', 'mini_landscape', 'ada_eyi', 'marmor', 'lochgestein', 'zebra'];
+const ACIDIFYING_WOODS = ['moorkien', 'mangrove', 'driftwood', 'red_moor'];
+const FISH_LENGTH_CM = { besatz_klein: 3, besatz_mittel: 7, besatz_gross: 20, besatz_welse: 15, besatz_algen: 5 };
+
+// Parses the free-text running time (e.g. "7 Wochen", "3 Monate", "10 days") into weeks; null if unknown.
+function parseRuntimeWeeks(text) {
+  const m = String(text || '').trim().replace(',', '.').match(/^(\d+(?:\.\d+)?)\s*(\S*)/);
+  if (!m) return null;
+  const n = parseFloat(m[1]);
+  const unit = m[2].toLowerCase();
+  if (unit.startsWith('tag') || unit.startsWith('day')) return n / 7;
+  if (unit.startsWith('mon')) return n * 4.3;
+  if (unit.startsWith('jahr') || unit.startsWith('year')) return n * 52;
+  return n;
+}
+
 function runAnalysis(event) {
   if(event) event.preventDefault();
   const resSection = document.getElementById('resultSection');
@@ -1776,27 +1881,99 @@ function runAnalysis(event) {
   resContainer.querySelectorAll('.dynamic-alert').forEach(el => el.remove());
   let t = translations[currentLang];
   let alerts = [];
-  let ghAkt = parseFloat(document.getElementById('w_gh_akt').value) || 0;
-  let phAkt = parseFloat(document.getElementById('w_ph_akt').value) || 0;
-  let khAkt = parseFloat(document.getElementById('w_kh_akt').value) || 0;
-  let no3Akt = parseFloat(document.getElementById('w_no3_akt').value) || 0;
-  let steinArt = document.getElementById('steinArt').value;
-  let totalFish = (parseInt(document.getElementById('besatz_klein').value)||0) +
-                  (parseInt(document.getElementById('besatz_mittel').value)||0) +
-                  (parseInt(document.getElementById('besatz_gross').value)||0) +
-                  (parseInt(document.getElementById('besatz_welse').value)||0);
-  let vol = parseFloat(document.getElementById('volumen').value) || 60;
-  if((steinArt === 'seiryu' || steinArt === 'rokkaku' || steinArt === 'mini_landscape' || steinArt === 'ada_eyi' || steinArt === 'marmor' || steinArt === 'lochgestein') || ghAkt > 14) {
-    alerts.push({ type: 'orange', title: t.warn_gh_title, expl: t.warn_gh_expl, sol: t.warn_gh_sol });
+  // --- Water values (null = not entered, so no rule fires on empty fields) ---
+  const num = id => parseMeasurement(document.getElementById(id) ? document.getElementById(id).value : null);
+  const ph = num('w_ph_akt'), kh = num('w_kh_akt'), gh = num('w_gh_akt');
+  const nh4 = num('w_nh4_akt'), no2 = num('w_no2_akt'), no3 = num('w_no3_akt'), po4 = num('w_po4_akt');
+  const temp = num('inp_temp');
+  const vol = num('volumen') || 0;
+
+  // --- Setup that influences the water ---
+  const selectedText = id => { const el = document.getElementById(id); return el && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : ''; };
+  const steinArt = document.getElementById('steinArt').value;
+  const steinKg = num('steinMenge') || 0;
+  const holzArt = document.getElementById('holzArt').value;
+  const holzKg = num('holzMenge') || 0;
+  const bodenArt = document.getElementById('bodenArt').value;
+  const co2El = document.querySelector('input[name="co2_zuafuhr"]:checked');
+  const hasCo2 = !!co2El && co2El.value === 'ja';
+  const runtimeWeeks = parseRuntimeWeeks(document.getElementById('inp_runtime').value);
+  const hasCalcStone = CALCAREOUS_STONES.includes(steinArt);
+  const hasAcidWood = ACIDIFYING_WOODS.includes(holzArt);
+  const hasSoil = bodenArt === 'soil';
+
+  // Likely causes for a falling pH / KH, named with the user's own selection.
+  let acidCauses = [];
+  if (hasAcidWood) acidCauses.push(`${selectedText('holzArt')}${holzKg ? ` (${holzKg} kg)` : ''}`);
+  if (hasSoil) acidCauses.push(t.cause_soil);
+  if (hasCo2) acidCauses.push(t.cause_co2);
+  const withCauses = expl => acidCauses.length ? `${expl} ${t.cause_prefix}: ${acidCauses.join(', ')}.` : expl;
+
+  // --- pH / KH ---
+  let phAlert = false;
+  if (ph !== null && ph < 6.0) {
+    alerts.push({ type: 'red', title: `${t.warn_ph_low_title} (pH ${ph})`, expl: withCauses(t.warn_ph_low_expl), sol: t.warn_ph_low_sol });
+    phAlert = true;
+  } else if (ph !== null && kh !== null && ((ph < 6.2 && kh < 3) || (ph <= 6.5 && kh <= 4 && acidCauses.length))) {
+    alerts.push({ type: 'orange', title: t.warn_ph_title, expl: withCauses(t.warn_ph_expl), sol: t.warn_ph_sol });
+    phAlert = true;
+  } else if (ph !== null && ph > 8.5) {
+    alerts.push({ type: 'orange', title: `${t.warn_ph_high_title} (pH ${ph})`, expl: hasCalcStone ? `${t.warn_ph_high_expl} ${t.cause_prefix}: ${selectedText('steinArt')}.` : t.warn_ph_high_expl, sol: t.warn_ph_high_sol });
   }
-  if(phAkt < 6.2 && khAkt < 3) {
-    alerts.push({ type: 'orange', title: t.warn_ph_title, expl: t.warn_ph_expl, sol: t.warn_ph_sol });
+  if (kh !== null && kh < 2) {
+    if (hasCo2) {
+      alerts.push({ type: 'red', title: t.warn_co2_kh_title, expl: t.warn_co2_kh_expl, sol: t.warn_co2_kh_sol });
+    } else if (!phAlert) {
+      alerts.push({ type: 'orange', title: `${t.warn_kh_low_title} (KH ${kh})`, expl: withCauses(t.warn_kh_low_expl), sol: t.warn_kh_low_sol });
+    }
   }
-  if(no3Akt > 25) {
-    alerts.push({ type: 'red', title: t.warn_no3_title, expl: t.warn_no3_expl, sol: t.warn_no3_sol });
+  if (hasAcidWood && !phAlert) {
+    alerts.push({ type: 'blue', title: t.info_wood_title, expl: `${selectedText('holzArt')}${holzKg ? ` (${holzKg} kg)` : ''}: ${t.info_wood_expl}`, sol: t.info_wood_sol });
   }
-  if(totalFish > 20 && vol < 80) {
-    alerts.push({ type: 'red', title: t.warn_overstock_title, expl: t.warn_overstock_expl, sol: t.warn_overstock_sol });
+
+  // --- GH / calcareous stones (amount relative to the tank volume) ---
+  const stoneKgPer100L = vol > 0 ? steinKg / vol * 100 : 0;
+  if ((gh !== null && gh > 14) || (hasCalcStone && ((gh !== null && gh > 12) || stoneKgPer100L >= 5))) {
+    alerts.push({ type: 'orange', title: t.warn_gh_title, expl: hasCalcStone ? `${t.warn_gh_expl} ${t.cause_prefix}: ${selectedText('steinArt')} (${steinKg} kg).` : t.warn_gh_expl, sol: t.warn_gh_sol });
+  } else if (hasCalcStone) {
+    alerts.push({ type: 'blue', title: t.info_calc_stone_title, expl: `${selectedText('steinArt')} (${steinKg} kg): ${t.info_calc_stone_expl}`, sol: t.info_calc_stone_sol });
+  }
+
+  // --- Nitrogen cycle and nutrients ---
+  if (nh4 !== null && nh4 > 0.5) {
+    let expl = t.warn_nh4_expl;
+    if (hasSoil && runtimeWeeks !== null && runtimeWeeks <= 8) expl += ` ${t.cause_prefix}: ${t.cause_new_soil}.`;
+    alerts.push({ type: nh4 > 1.0 ? 'red' : 'orange', title: `${t.warn_nh4_title} (${nh4} mg/L)`, expl, sol: t.warn_nh4_sol });
+  } else if (hasSoil && runtimeWeeks !== null && runtimeWeeks <= 8) {
+    alerts.push({ type: 'blue', title: t.info_soil_new_title, expl: t.info_soil_new_expl, sol: t.info_soil_new_sol });
+  }
+  if (no2 !== null && no2 > 0.1) {
+    let expl = t.warn_no2_expl;
+    if (runtimeWeeks !== null && runtimeWeeks <= 6) expl += ` ${t.cause_prefix}: ${t.cause_cycling}.`;
+    alerts.push({ type: no2 > 0.5 ? 'red' : 'orange', title: `${t.warn_no2_title} (${no2} mg/L)`, expl, sol: t.warn_no2_sol });
+  }
+  if (no3 !== null && no3 > 25) {
+    alerts.push({ type: no3 > 50 ? 'red' : 'orange', title: `${t.warn_no3_title} (${no3} mg/L)`, expl: t.warn_no3_expl, sol: t.warn_no3_sol });
+  }
+  if (po4 !== null && po4 > 1.0) {
+    alerts.push({ type: 'orange', title: `${t.warn_po4_title} (${po4} mg/L)`, expl: t.warn_po4_expl, sol: t.warn_po4_sol });
+  }
+
+  // --- Temperature ---
+  if (temp !== null && temp < 20) {
+    alerts.push({ type: 'orange', title: `${t.warn_temp_low_title} (${temp} °C)`, expl: t.warn_temp_low_expl, sol: t.warn_temp_low_sol });
+  } else if (temp !== null && temp > 30) {
+    alerts.push({ type: 'orange', title: `${t.warn_temp_high_title} (${temp} °C)`, expl: t.warn_temp_high_expl, sol: t.warn_temp_high_sol });
+  }
+
+  // --- Stocking: estimated fish length (cm) per litre instead of a plain head count ---
+  const count = id => parseInt(document.getElementById(id).value, 10) || 0;
+  const fishCm = Object.entries(FISH_LENGTH_CM).reduce((sum, [id, cm]) => sum + count(id) * cm, 0);
+  const cmPerLitre = vol > 0 ? fishCm / vol : 0;
+  if (cmPerLitre > 2.0) {
+    alerts.push({ type: 'red', title: t.warn_overstock_title, expl: `${t.warn_overstock_expl} (${fishCm} cm / ${vol} L = ${cmPerLitre.toFixed(1)} cm/L)`, sol: t.warn_overstock_sol });
+  } else if (cmPerLitre > 1.5) {
+    alerts.push({ type: 'orange', title: t.warn_stock_high_title, expl: `${t.warn_stock_high_expl} (${fishCm} cm / ${vol} L = ${cmPerLitre.toFixed(1)} cm/L)`, sol: t.warn_stock_high_sol });
   }
   document.querySelectorAll('.symptom-chk:checked').forEach(chk => {
     let val = chk.value;
@@ -1826,7 +2003,7 @@ function runAnalysis(event) {
     }
     if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
     if(val === 'Trübes Wasser') alerts.push({ type: 'orange', title: t.wa_cloudy_t, expl: t.wa_cloudy_e, sol: t.wa_cloudy_s });
-    if(val === 'Gelbe Wasserfärbung') alerts.push({ type: 'blue', title: t.wa_yellow_t, expl: t.wa_yellow_e, sol: t.wa_yellow_s });
+    if(val === 'Gelbe Wasserfärbung') alerts.push({ type: 'blue', title: t.wa_yellow_t, expl: hasAcidWood ? `${t.wa_yellow_e} ${t.cause_prefix}: ${selectedText('holzArt')}.` : t.wa_yellow_e, sol: t.wa_yellow_s });
     if(val === 'Mineralische Ablagerungen') alerts.push({ type: 'blue', title: t.wa_deposits_t, expl: t.wa_deposits_e, sol: t.wa_deposits_s });
     if(val === 'Unangenehmer Geruch') alerts.push({ type: 'red', title: t.wa_odor_t, expl: t.wa_odor_e, sol: t.wa_odor_s });
     if(val === 'Weißer Belag auf Holz') alerts.push({ type: 'blue', title: t.wa_biofilm_t, expl: t.wa_biofilm_e, sol: t.wa_biofilm_s });
