@@ -1338,7 +1338,27 @@ fi_spots_p: "💡 Pro-Tip: Briefly increase the temperature to 30–31 °C for 4
 
 fi_fins_t: "⚠️ Health Warning: Frayed or dissolving fins",
 fi_fins_e: "Bacterial fin rot often caused by poor water hygiene, high germ load in the aquarium, or mechanical fin nipping.",
-fi_fins_s: "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates."
+fi_fins_s: "Improve water hygiene through frequent large water changes, reduce germ load, and isolate aggressive tank mates.",
+
+wa_cloudy_t: "⚠️ Water notice: Cloudy water",
+wa_cloudy_e: "The water is milky or cloudy, often caused by a bacterial bloom or suspended particles.",
+wa_cloudy_s: "Do a partial water change and reduce the amount of food.",
+
+wa_yellow_t: "💡 Water notice: Yellow or tea-colored water",
+wa_yellow_e: "Humic substances from roots or wood tint the water, which is even healthy for many fish.",
+wa_yellow_s: "Filter through activated carbon if the water is too dark for you, or enjoy the natural blackwater effect.",
+
+wa_deposits_t: "💡 Appearance: Lime or deposits",
+wa_deposits_e: "Mineral residues on the glass or equipment are caused by evaporating water.",
+wa_deposits_s: "Carefully remove deposits with a blade cleaner or vinegar water (without letting it get into the aquarium).",
+
+wa_odor_t: "🚨 Alert: Unpleasant odor",
+wa_odor_e: "A foul or muddy smell indicates decay processes in the substrate or filter.",
+wa_odor_s: "Check the filter and clean clogged mulm corners in the substrate immediately.",
+
+wa_biofilm_t: "💡 Notice: Biofilm on wood",
+wa_biofilm_e: "A whitish slime on new wood is a harmless layer of bacteria and fungi.",
+wa_biofilm_s: "This is harmless and disappears on its own after a few weeks (snails often eat it)."
 }
 };
 
@@ -1787,6 +1807,11 @@ function runAnalysis(event) {
       alerts.push(alertObj);
     }
     if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
+    if(val === 'Trübes Wasser') alerts.push({ type: 'orange', title: t.wa_cloudy_t, expl: t.wa_cloudy_e, sol: t.wa_cloudy_s });
+    if(val === 'Gelbe Wasserfärbung') alerts.push({ type: 'blue', title: t.wa_yellow_t, expl: t.wa_yellow_e, sol: t.wa_yellow_s });
+    if(val === 'Mineralische Ablagerungen') alerts.push({ type: 'blue', title: t.wa_deposits_t, expl: t.wa_deposits_e, sol: t.wa_deposits_s });
+    if(val === 'Unangenehmer Geruch') alerts.push({ type: 'red', title: t.wa_odor_t, expl: t.wa_odor_e, sol: t.wa_odor_s });
+    if(val === 'Weißer Belag auf Holz') alerts.push({ type: 'blue', title: t.wa_biofilm_t, expl: t.wa_biofilm_e, sol: t.wa_biofilm_s });
   });
   if(alerts.length === 0) {
     alerts.push({ type: 'blue', title: t.pro_tip_title, expl: t.pro_tip_expl, sol: t.pro_tip_sol });
