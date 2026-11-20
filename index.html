@@ -485,14 +485,13 @@ line-height: 1.5;
 <div id="tab-duengung" class="tab-content">
 <div class="card">
 <h2 data-i18n="tab_deco">🪨 Bodengrund und Dekoration</h2>
-<div class="form-group">
-<label data-i18n="lbl_sub_type">Art des Bodengrunds:</label>
-<select id="bodenArt" onchange="saveDataAuto()">
-<option value="" data-i18n="opt_select">-- Aus der Liste auswählen --</option>
-<option value="quarzkies" data-i18n="sub_gravel" selected>Quarzkies</option>
-<option value="sand" data-i18n="sub_sand">Sand</option>
-<option value="soil" data-i18n="sub_soil">Soil (Aktiver Bodengrund)</option>
-</select>
+<div class="question-block">
+<label class="main-label" data-i18n="lbl_sub_type">Art des Bodengrunds:</label>
+<div class="media-grid" id="bodenArt">
+<label><input type="checkbox" id="bodenArt_quarzkies" class="bodenArt-chk" value="quarzkies" checked onchange="saveDataAuto()"> <span data-i18n="sub_gravel">Quarzkies</span></label>
+<label><input type="checkbox" id="bodenArt_sand" class="bodenArt-chk" value="sand" onchange="saveDataAuto()"> <span data-i18n="sub_sand">Sand</span></label>
+<label><input type="checkbox" id="bodenArt_soil" class="bodenArt-chk" value="soil" onchange="saveDataAuto()"> <span data-i18n="sub_soil">Soil (Aktiver Bodengrund)</span></label>
+</div>
 </div>
 <div class="question-block">
 <label class="main-label" data-i18n="lbl_nutrient_sub">Wurde ein nährstoffreicher Untergrund verwendet?</label>
@@ -510,43 +509,41 @@ line-height: 1.5;
 </div>
 <div class="form-group" style="margin-top: 12px;"><label data-i18n="lbl_sub_vol">Gesamtvolumen des Bodengrunds (L):</label><input type="number" id="bodenVolumen" value="9.0" oninput="saveDataAuto()"></div>
 <h3 data-i18n="sec_stone">Steinauswahl (Kalk-Analyse)</h3>
-<div class="form-group">
-<label data-i18n="lbl_stone_type">Steinart:</label>
-<select id="steinArt" onchange="saveDataAuto()">
-<option value="" data-i18n="opt_nostone">-- Keine / Keine Angabe --</option>
-<option value="seiryu" data-i18n="st_seiryu">Seiryu Stone / Green Stone (Kalkhaltig)</option>
-<option value="dragon" data-i18n="st_dragon">Dragon Stone / Ohko Stone (Tonstein)</option>
-<option value="rokkaku" data-i18n="st_rokkaku">Rokkaku Stone (Kalkhaltig)</option>
-<option value="mini_landscape" data-i18n="st_mini">Mini-Landscape (Kalkhaltig)</option>
-<option value="schiefer" data-i18n="st_slate">Schiefer / Black Slate (Neutral)</option>
-<option value="lava" data-i18n="st_lava">Lavastein (Neutral, porös)</option>
-<option value="manten" data-i18n="st_manten">Manten Stone (Meist neutral)</option>
-<option value="ada_eyi" data-i18n="st_ada">ADA Eiyu / Ryuoh Stone (Härtet stark auf)</option>
-<option value="granit" data-i18n="st_granite">Granit (Neutral, inert)</option>
-<option value="marmor" data-i18n="st_marmor">Marmor / Weissmarmor (Extrem kalkhaltig)</option>
-<option value="lochgestein" data-i18n="st_loch">Lochgestein (Stark kalkhaltig)</option>
-<option value="flusskiesel" data-i18n="st_river">Flusskiesel (Meist neutral)</option>
-<option value="zebra" data-i18n="st_zebra">Zebra Stone (Leicht kalkhaltig)</option>
-<option value="holzstein" data-i18n="st_holzstein">Holzstein (Meist neutral)</option>
-<option value="tiger" data-i18n="st_tiger">Tiger Stone (Neutral)</option>
-</select>
+<div class="question-block">
+<label class="main-label" data-i18n="lbl_stone_type">Steinart:</label>
+<div class="media-grid" id="steinArt">
+<label><input type="checkbox" id="steinArt_seiryu" class="steinArt-chk" value="seiryu" onchange="saveDataAuto()"> <span data-i18n="st_seiryu">Seiryu Stone / Green Stone (Kalkhaltig)</span></label>
+<label><input type="checkbox" id="steinArt_dragon" class="steinArt-chk" value="dragon" onchange="saveDataAuto()"> <span data-i18n="st_dragon">Dragon Stone / Ohko Stone (Tonstein)</span></label>
+<label><input type="checkbox" id="steinArt_rokkaku" class="steinArt-chk" value="rokkaku" onchange="saveDataAuto()"> <span data-i18n="st_rokkaku">Rokkaku Stone (Kalkhaltig)</span></label>
+<label><input type="checkbox" id="steinArt_mini_landscape" class="steinArt-chk" value="mini_landscape" onchange="saveDataAuto()"> <span data-i18n="st_mini">Mini-Landscape (Kalkhaltig)</span></label>
+<label><input type="checkbox" id="steinArt_schiefer" class="steinArt-chk" value="schiefer" onchange="saveDataAuto()"> <span data-i18n="st_slate">Schiefer / Black Slate (Neutral)</span></label>
+<label><input type="checkbox" id="steinArt_lava" class="steinArt-chk" value="lava" onchange="saveDataAuto()"> <span data-i18n="st_lava">Lavastein (Neutral, porös)</span></label>
+<label><input type="checkbox" id="steinArt_manten" class="steinArt-chk" value="manten" onchange="saveDataAuto()"> <span data-i18n="st_manten">Manten Stone (Meist neutral)</span></label>
+<label><input type="checkbox" id="steinArt_ada_eyi" class="steinArt-chk" value="ada_eyi" onchange="saveDataAuto()"> <span data-i18n="st_ada">ADA Eiyu / Ryuoh Stone (Härtet stark auf)</span></label>
+<label><input type="checkbox" id="steinArt_granit" class="steinArt-chk" value="granit" onchange="saveDataAuto()"> <span data-i18n="st_granite">Granit (Neutral, inert)</span></label>
+<label><input type="checkbox" id="steinArt_marmor" class="steinArt-chk" value="marmor" onchange="saveDataAuto()"> <span data-i18n="st_marmor">Marmor / Weissmarmor (Extrem kalkhaltig)</span></label>
+<label><input type="checkbox" id="steinArt_lochgestein" class="steinArt-chk" value="lochgestein" onchange="saveDataAuto()"> <span data-i18n="st_loch">Lochgestein (Stark kalkhaltig)</span></label>
+<label><input type="checkbox" id="steinArt_flusskiesel" class="steinArt-chk" value="flusskiesel" onchange="saveDataAuto()"> <span data-i18n="st_river">Flusskiesel (Meist neutral)</span></label>
+<label><input type="checkbox" id="steinArt_zebra" class="steinArt-chk" value="zebra" onchange="saveDataAuto()"> <span data-i18n="st_zebra">Zebra Stone (Leicht kalkhaltig)</span></label>
+<label><input type="checkbox" id="steinArt_holzstein" class="steinArt-chk" value="holzstein" onchange="saveDataAuto()"> <span data-i18n="st_holzstein">Holzstein (Meist neutral)</span></label>
+<label><input type="checkbox" id="steinArt_tiger" class="steinArt-chk" value="tiger" onchange="saveDataAuto()"> <span data-i18n="st_tiger">Tiger Stone (Neutral)</span></label>
+</div>
 </div>
 <div class="form-group"><label data-i18n="lbl_stone_qty">Menge an Steinen (kg):</label><input type="number" id="steinMenge" value="5" step="0.1" oninput="saveDataAuto()"></div>
 <h3 data-i18n="sec_wood">Holzauswahl</h3>
-<div class="form-group">
-<label data-i18n="lbl_wood_type">Holzart:</label>
-<select id="holzArt" onchange="saveDataAuto()">
-<option value="" data-i18n="opt_nowood">-- Kein Holz / Keine Angabe --</option>
-<option value="red_moor" data-i18n="wt_redmoor">Red Moor Wood (Gibt Tannine ab)</option>
-<option value="mangrove" data-i18n="wt_mangrove">Mangrovenholz (Säuert leicht an)</option>
-<option value="moorkien" data-i18n="wt_moor">Moorkienholz (Säuert stark an)</option>
-<option value="spider_wood" data-i18n="wt_spider">Spider Wood (Astig, hell)</option>
-<option value="driftwood" data-i18n="wt_drift">Treibholz (Leicht sauer)</option>
-<option value="savannenholz" data-i18n="wt_savannah">Savannenholz (Hart, glatt)</option>
-<option value="rondeletia" data-i18n="wt_rondeletia">Eisenholz (Sehr hart und schwer)</option>
-<option value="jumbo" data-i18n="wt_jumbo">Jumbo-Wurzel (Großstückig)</option>
-<option value="korkenzieher" data-i18n="wt_cork">Korkenzieherhasel (Dekorativ)</option>
-</select>
+<div class="question-block">
+<label class="main-label" data-i18n="lbl_wood_type">Holzart:</label>
+<div class="media-grid" id="holzArt">
+<label><input type="checkbox" id="holzArt_red_moor" class="holzArt-chk" value="red_moor" onchange="saveDataAuto()"> <span data-i18n="wt_redmoor">Red Moor Wood (Gibt Tannine ab)</span></label>
+<label><input type="checkbox" id="holzArt_mangrove" class="holzArt-chk" value="mangrove" onchange="saveDataAuto()"> <span data-i18n="wt_mangrove">Mangrovenholz (Säuert leicht an)</span></label>
+<label><input type="checkbox" id="holzArt_moorkien" class="holzArt-chk" value="moorkien" onchange="saveDataAuto()"> <span data-i18n="wt_moor">Moorkienholz (Säuert stark an)</span></label>
+<label><input type="checkbox" id="holzArt_spider_wood" class="holzArt-chk" value="spider_wood" onchange="saveDataAuto()"> <span data-i18n="wt_spider">Spider Wood (Astig, hell)</span></label>
+<label><input type="checkbox" id="holzArt_driftwood" class="holzArt-chk" value="driftwood" onchange="saveDataAuto()"> <span data-i18n="wt_drift">Treibholz (Leicht sauer)</span></label>
+<label><input type="checkbox" id="holzArt_savannenholz" class="holzArt-chk" value="savannenholz" onchange="saveDataAuto()"> <span data-i18n="wt_savannah">Savannenholz (Hart, glatt)</span></label>
+<label><input type="checkbox" id="holzArt_rondeletia" class="holzArt-chk" value="rondeletia" onchange="saveDataAuto()"> <span data-i18n="wt_rondeletia">Eisenholz (Sehr hart und schwer)</span></label>
+<label><input type="checkbox" id="holzArt_jumbo" class="holzArt-chk" value="jumbo" onchange="saveDataAuto()"> <span data-i18n="wt_jumbo">Jumbo-Wurzel (Großstückig)</span></label>
+<label><input type="checkbox" id="holzArt_korkenzieher" class="holzArt-chk" value="korkenzieher" onchange="saveDataAuto()"> <span data-i18n="wt_cork">Korkenzieherhasel (Dekorativ)</span></label>
+</div>
 </div>
 <div class="form-group"><label data-i18n="lbl_wood_qty">Menge an Holz (kg):</label><input type="number" id="holzMenge" value="2" step="0.1" oninput="saveDataAuto()"></div>
 </div>
@@ -1574,7 +1571,11 @@ function loadTankData() {
   if(!tankData || !tankData.inputs) return;
   let data = tankData.inputs;
   for(let id in data) {
-    if(id.startsWith('radio_')) {
+    if(MULTI_SELECT_GROUPS.includes(id)) {
+      // Legacy data: the group was a single-choice <select>; map its value onto the checkboxes.
+      if(Object.keys(data).some(k => k.startsWith(id + '_'))) continue;
+      document.querySelectorAll(`.${id}-chk`).forEach(el => el.checked = el.value === data[id]);
+    } else if(id.startsWith('radio_')) {
       let rName = id.replace('radio_', '');
       let targetVal = data[id];
       let radioEl = document.querySelector(`input[name="${rName}"][value="${targetVal}"]`);
@@ -1858,6 +1859,8 @@ function updateWaterChart() {
 }
 
 // Analysis reference data. Fish lengths are rough adult sizes used to estimate the bioload.
+// Setup groups rendered as checkbox lists (multiple choices per group).
+const MULTI_SELECT_GROUPS = ['bodenArt', 'steinArt', 'holzArt'];
 const CALCAREOUS_STONES = ['seiryu', 'rokkaku', 'mini_landscape', 'ada_eyi', 'marmor', 'lochgestein', 'zebra'];
 const ACIDIFYING_WOODS = ['moorkien', 'mangrove', 'driftwood', 'red_moor'];
 const FISH_LENGTH_CM = { besatz_klein: 3, besatz_mittel: 7, besatz_gross: 20, besatz_welse: 15, besatz_algen: 5 };
@@ -1897,22 +1900,25 @@ function runAnalysis(event) {
   const vol = num('volumen') || 0;
 
   // --- Setup that influences the water ---
-  const selectedText = id => { const el = document.getElementById(id); return el && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : ''; };
-  const steinArt = document.getElementById('steinArt').value;
+  // Multi-select groups: checked boxes, optionally limited to values in `relevant`; names joined for display.
+  const checkedBoxes = (group, relevant) => [...document.querySelectorAll(`.${group}-chk:checked`)]
+    .filter(el => !relevant || relevant.includes(el.value));
+  const checkedText = (group, relevant) => checkedBoxes(group, relevant)
+    .map(el => el.parentElement.textContent.trim()).join(', ');
   const steinKg = num('steinMenge') || 0;
-  const holzArt = document.getElementById('holzArt').value;
   const holzKg = num('holzMenge') || 0;
-  const bodenArt = document.getElementById('bodenArt').value;
   const co2El = document.querySelector('input[name="co2_zuafuhr"]:checked');
   const hasCo2 = !!co2El && co2El.value === 'ja';
   const runtimeWeeks = parseRuntimeWeeks(document.getElementById('inp_runtime').value);
-  const hasCalcStone = CALCAREOUS_STONES.includes(steinArt);
-  const hasAcidWood = ACIDIFYING_WOODS.includes(holzArt);
-  const hasSoil = bodenArt === 'soil';
+  const hasCalcStone = checkedBoxes('steinArt', CALCAREOUS_STONES).length > 0;
+  const hasAcidWood = checkedBoxes('holzArt', ACIDIFYING_WOODS).length > 0;
+  const hasSoil = checkedBoxes('bodenArt', ['soil']).length > 0;
+  const calcStoneText = checkedText('steinArt', CALCAREOUS_STONES);
+  const acidWoodText = checkedText('holzArt', ACIDIFYING_WOODS);
 
   // Likely causes for a falling pH / KH, named with the user's own selection.
   let acidCauses = [];
-  if (hasAcidWood) acidCauses.push(`${selectedText('holzArt')}${holzKg ? ` (${holzKg} kg)` : ''}`);
+  if (hasAcidWood) acidCauses.push(`${acidWoodText}${holzKg ? ` (${holzKg} kg)` : ''}`);
   if (hasSoil) acidCauses.push(t.cause_soil);
   if (hasCo2) acidCauses.push(t.cause_co2);
   const withCauses = expl => acidCauses.length ? `${expl} ${t.cause_prefix}: ${acidCauses.join(', ')}.` : expl;
@@ -1926,7 +1932,7 @@ function runAnalysis(event) {
     alerts.push({ type: 'orange', title: t.warn_ph_title, expl: withCauses(t.warn_ph_expl), sol: t.warn_ph_sol });
     phAlert = true;
   } else if (ph !== null && ph > 8.5) {
-    alerts.push({ type: 'orange', title: `${t.warn_ph_high_title} (pH ${ph})`, expl: hasCalcStone ? `${t.warn_ph_high_expl} ${t.cause_prefix}: ${selectedText('steinArt')}.` : t.warn_ph_high_expl, sol: t.warn_ph_high_sol });
+    alerts.push({ type: 'orange', title: `${t.warn_ph_high_title} (pH ${ph})`, expl: hasCalcStone ? `${t.warn_ph_high_expl} ${t.cause_prefix}: ${calcStoneText}.` : t.warn_ph_high_expl, sol: t.warn_ph_high_sol });
   }
   if (kh !== null && kh < 2) {
     if (hasCo2) {
@@ -1936,15 +1942,15 @@ function runAnalysis(event) {
     }
   }
   if (hasAcidWood && !phAlert) {
-    alerts.push({ type: 'blue', title: t.info_wood_title, expl: `${selectedText('holzArt')}${holzKg ? ` (${holzKg} kg)` : ''}: ${t.info_wood_expl}`, sol: t.info_wood_sol });
+    alerts.push({ type: 'blue', title: t.info_wood_title, expl: `${acidWoodText}${holzKg ? ` (${holzKg} kg)` : ''}: ${t.info_wood_expl}`, sol: t.info_wood_sol });
   }
 
   // --- GH / calcareous stones (amount relative to the tank volume) ---
   const stoneKgPer100L = vol > 0 ? steinKg / vol * 100 : 0;
   if ((gh !== null && gh > 14) || (hasCalcStone && ((gh !== null && gh > 12) || stoneKgPer100L >= 5))) {
-    alerts.push({ type: 'orange', title: t.warn_gh_title, expl: hasCalcStone ? `${t.warn_gh_expl} ${t.cause_prefix}: ${selectedText('steinArt')} (${steinKg} kg).` : t.warn_gh_expl, sol: t.warn_gh_sol });
+    alerts.push({ type: 'orange', title: t.warn_gh_title, expl: hasCalcStone ? `${t.warn_gh_expl} ${t.cause_prefix}: ${calcStoneText} (${steinKg} kg).` : t.warn_gh_expl, sol: t.warn_gh_sol });
   } else if (hasCalcStone) {
-    alerts.push({ type: 'blue', title: t.info_calc_stone_title, expl: `${selectedText('steinArt')} (${steinKg} kg): ${t.info_calc_stone_expl}`, sol: t.info_calc_stone_sol });
+    alerts.push({ type: 'blue', title: t.info_calc_stone_title, expl: `${calcStoneText} (${steinKg} kg): ${t.info_calc_stone_expl}`, sol: t.info_calc_stone_sol });
   }
 
   // --- Nitrogen cycle and nutrients ---
@@ -2011,7 +2017,7 @@ function runAnalysis(event) {
     }
     if(val === 'Ausgefranste Flossen') alerts.push({ type: 'orange', title: t.fi_fins_t, expl: t.fi_fins_e, sol: t.fi_fins_s });
     if(val === 'Trübes Wasser') alerts.push({ type: 'orange', title: t.wa_cloudy_t, expl: t.wa_cloudy_e, sol: t.wa_cloudy_s });
-    if(val === 'Gelbe Wasserfärbung') alerts.push({ type: 'blue', title: t.wa_yellow_t, expl: hasAcidWood ? `${t.wa_yellow_e} ${t.cause_prefix}: ${selectedText('holzArt')}.` : t.wa_yellow_e, sol: t.wa_yellow_s });
+    if(val === 'Gelbe Wasserfärbung') alerts.push({ type: 'blue', title: t.wa_yellow_t, expl: hasAcidWood ? `${t.wa_yellow_e} ${t.cause_prefix}: ${acidWoodText}.` : t.wa_yellow_e, sol: t.wa_yellow_s });
     if(val === 'Mineralische Ablagerungen') alerts.push({ type: 'blue', title: t.wa_deposits_t, expl: t.wa_deposits_e, sol: t.wa_deposits_s });
     if(val === 'Unangenehmer Geruch') alerts.push({ type: 'orange', title: t.wa_odor_t, expl: t.wa_odor_e, sol: t.wa_odor_s });
     if(val === 'Weißer Belag auf Holz') alerts.push({ type: 'blue', title: t.wa_biofilm_t, expl: t.wa_biofilm_e, sol: t.wa_biofilm_s });
