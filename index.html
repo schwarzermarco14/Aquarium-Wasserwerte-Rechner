@@ -734,7 +734,8 @@ line-height: 1.5;
 </div>
 
 <footer class="app-footer">
-<p><span data-i18n="footer_text">AquaDiagnose v2.9</span> | <a href="#" onclick="alert(currentLang==='en'?'Data saved locally':'Daten lokal gespeichert'); return false;" data-i18n="footer_save">Daten sichern</a></p>
+<p><span data-i18n="footer_text">AquaDiagnose v2.9</span> | <a href="#" onclick="exportBackup(); return false;" data-i18n="footer_save">Daten sichern</a> | <a href="#" onclick="document.getElementById('backupFileInput').click(); return false;" data-i18n="footer_restore">Daten wiederherstellen</a></p>
+<input type="file" id="backupFileInput" accept=".json,application/json" style="display: none;" onchange="importBackup(this.files[0]); this.value = '';">
 <p style="margin-top: 4px;"><span data-i18n="footer_provider">Bereitgestellt von</span> <a href="https://aqua-enthusiasts.de" target="_blank">Aqua-Enthusiasts.de</a></p>
 </footer>
 
@@ -929,6 +930,10 @@ modal_subtitle: "Vollständiger Analyse-Report:",
 modal_save: "Speichern",
 footer_text: "AquaDiagnose v2.9",
 footer_save: "Daten sichern",
+footer_restore: "Daten wiederherstellen",
+msg_restore_confirm: "Sicherung vom {date} einspielen? Alle aktuellen Daten in der App werden dabei ersetzt.",
+msg_restore_invalid: "Die Datei ist keine gültige AquaDiagnose-Sicherung.",
+msg_restore_done: "Sicherung wurde wiederhergestellt.",
 footer_provider: "Bereitgestellt von",
 click_details: "Klicken für Details",
 expl_label: "Erklärung",
@@ -1279,6 +1284,10 @@ modal_subtitle: "Complete analysis report:",
 modal_save: "Save",
 footer_text: "AquaDiagnose v2.9",
 footer_save: "Save Data",
+footer_restore: "Restore Data",
+msg_restore_confirm: "Restore the backup from {date}? All current data in the app will be replaced.",
+msg_restore_invalid: "This file is not a valid AquaDiagnose backup.",
+msg_restore_done: "Backup restored.",
 footer_provider: "Provided by",
 click_details: "Click for details",
 expl_label: "Explanation",
@@ -1549,7 +1558,7 @@ function saveDataAuto() {
   if(!allTanks[currentTankName]) allTanks[currentTankName] = {};
   let data = {};
   document.querySelectorAll('input, select').forEach(el => {
-    if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText') {
+    if(el.id && el.id !== 'tankSelect' && el.id !== 'langSelect' && el.id !== 'modalEntryText' && el.id !== 'backupFileInput') {
       if(el.type === 'checkbox' || el.type === 'radio') {
         data[el.id || el.name + '_' + Math.random()] = el.checked;
       } else {
@@ -2235,12 +2244,75 @@ function showUpgradeModal(msg) {
     alert(msg || (currentLang === "en" ? "This feature requires Premium." : "Diese Funktion erfordert eine Premium-Freischaltung."));
 }
 
+// --- Backup: export/import of all locally stored data (localStorage is lost when users clear app data) ---
+const BACKUP_APP_ID = 'aquadiagnose';
+const BACKUP_VERSION = 1;
+
+function buildBackup(tanks, lang, now) {
+  return { app: BACKUP_APP_ID, version: BACKUP_VERSION, exportedAt: now.toISOString(), lang, tanks };
+}
+
+// Returns the validated backup object or null if the text is not a usable backup.
+function parseBackup(text) {
+  let data;
+  try { data = JSON.parse(text); } catch (e) { return null; }
+  if (!data || data.app !== BACKUP_APP_ID || typeof data.version !== 'number' || data.version > BACKUP_VERSION) return null;
+  const tanks = data.tanks;
+  if (!tanks || typeof tanks !== 'object' || Array.isArray(tanks) || Object.keys(tanks).length === 0) return null;
+  const validTank = tank => tank && typeof tank === 'object' && !Array.isArray(tank);
+  if (!Object.values(tanks).every(validTank)) return null;
+  return data;
+}
+
+function exportBackup() {
+  saveDataAuto();
+  const now = new Date();
+  const json = JSON.stringify(buildBackup(allTanks, currentLang, now), null, 2);
+  const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+  const link = document.createElement('a');
+  link.href = url;
+  const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  link.download = `aquadiagnose-backup-${localDate}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function importBackup(file) {
+  if (!file) return;
+  const t = translations[currentLang];
+  const backup = parseBackup(await file.text());
+  if (!backup) {
+    alert(t.msg_restore_invalid);
+    return;
+  }
+  const date = new Date(backup.exportedAt);
+  const dateText = isNaN(date) ? '?' : date.toLocaleDateString(currentLang === 'en' ? 'en-GB' : 'de-DE');
+  if (!confirm(t.msg_restore_confirm.replace('{date}', dateText))) return;
+  localStorage.setItem('awr_all_tanks', JSON.stringify(backup.tanks));
+  if (backup.lang === 'de' || backup.lang === 'en') localStorage.setItem('awr_lang', backup.lang);
+  alert(t.msg_restore_done);
+  location.reload();
+}
+
+// Asks the browser not to evict our storage under pressure; does not protect against manual clearing.
+async function requestPersistentStorage() {
+  try {
+    if (navigator.storage && navigator.storage.persist && !(await navigator.storage.persisted())) {
+      await navigator.storage.persist();
+    }
+  } catch (e) { /* not supported: data stays best-effort */ }
+}
+// --- End backup ---
+
 window.onload = function() {
     updateTankSelector();
     loadTankData();
     calcVol();
     switchLanguage(currentLang);
     restorePremiumOnStartup();
+    requestPersistentStorage();
 };
 </script>
 </body>
