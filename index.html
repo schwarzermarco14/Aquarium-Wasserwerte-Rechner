@@ -342,6 +342,7 @@ line-height: 1.5;
 <select id="tankSelect" onchange="switchTank(this.value)"></select>
 <button type="button" onclick="createNewTank()" title="Neues Aquarium hinzufügen" data-i18n-title="tip_new_tank">+</button>
 <button type="button" onclick="renameCurrentTank()" title="Aktuelles Aquarium umbenennen" data-i18n-title="tip_rename_tank">✏️</button>
+<button type="button" onclick="deleteCurrentTank()" title="Aktuelles Aquarium löschen" data-i18n-title="tip_delete_tank">🗑️</button>
 </div>
 <div class="lang-selector-container">
 <select id="langSelect" onchange="switchLanguage(this.value)">
@@ -869,6 +870,7 @@ col_water_parameter: "Parameter",
 col_water_tank: "Aquarienwasser",
 tip_new_tank: "Neues Aquarium hinzufügen",
 tip_rename_tank: "Aktuelles Aquarium umbenennen",
+tip_delete_tank: "Aktuelles Aquarium löschen",
 ph_clean_interval: "z. B. 2",
 ph_diary_entry: "Notizen oder gemessene Werte hier eintragen...",
 chart_ph: "pH (Aquarienwasser)",
@@ -1223,6 +1225,7 @@ col_water_parameter: "Parameter",
 col_water_tank: "Tank Water",
 tip_new_tank: "Add new aquarium",
 tip_rename_tank: "Rename current aquarium",
+tip_delete_tank: "Delete current aquarium",
 ph_clean_interval: "e.g. 2",
 ph_diary_entry: "Enter notes or measured values here...",
 chart_ph: "pH (tank water)",
@@ -1537,6 +1540,27 @@ function renameCurrentTank() {
   currentTankName = newNameNeun;
   updateTankSelector();
   saveDataAuto();
+}
+
+function deleteCurrentTank() {
+  if(Object.keys(allTanks).length <= 1) {
+    alert(currentLang === 'en' ? "The last aquarium cannot be deleted." : "Das letzte Aquarium kann nicht gelöscht werden.");
+    return;
+  }
+  let confirmText = currentLang === 'en'
+    ? `Really delete the aquarium "${currentTankName}" including all measurements and diary entries? This cannot be undone.`
+    : `Aquarium "${currentTankName}" inklusive aller Messwerte und Tagebucheinträge wirklich löschen? Das kann nicht rückgängig gemacht werden.`;
+  if(!confirm(confirmText)) return;
+  delete allTanks[currentTankName];
+  localStorage.setItem('awr_all_tanks', JSON.stringify(allTanks));
+  // The first aquarium is always usable, also without Premium.
+  currentTankName = Object.keys(allTanks)[0];
+  updateTankSelector();
+  loadTankData();
+  calcVol();
+  renderCalendar();
+  updateWaterChart();
+  document.getElementById('resultSection').style.display = 'none';
 }
 
 function switchTank(name) {
